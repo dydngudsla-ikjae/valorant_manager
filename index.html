@@ -89,21 +89,7 @@
 <!-- ============ PLAYER DETAIL ============ -->
 <section class="screen" id="scPlayer">
   <div class="wrap">
-    <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:18px">
-      <div>
-        <div class="eyebrow" id="plRole">—</div>
-        <h1 class="big" style="font-size:clamp(26px,5vw,40px)" id="plName">Player</h1>
-      </div>
-      <div class="btnrow" style="margin:0; width:auto">
-        <div class="povr" id="plOvr" style="font-size:34px; margin-right:8px">—</div>
-        <button class="btn ghost" style="width:auto" onclick="go('scSquad')">Back to Squad</button>
-      </div>
-    </div>
-    <div class="pdgrid">
-      <div class="panel"><div class="ph">Attributes</div><div class="pbody" id="plStats"></div></div>
-      <div class="panel"><div class="ph">Position proficiency</div><div class="pbody" id="plProf"></div></div>
-      <div class="panel"><div class="ph">Agent mastery</div><div class="pbody" id="plAgents"></div></div>
-    </div>
+    <div id="playerRoot"></div>
   </div>
 </section>
 

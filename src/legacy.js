@@ -4,10 +4,10 @@ import { counterEdge, playerOVR, teamAxis, teamOVR } from './core/ratings.js';
 import { applyRealStats, buildAgentPools, visiblePool } from './core/roster.js';
 import { agentMap, applyRoundStats, finalizeRatings, matchMVP, newStat, simOneMap, topKillerOfRound } from './core/round-engine.js';
 import { firstUnplayedWeek, makeSchedule, nameById, pickMaps, simRestOfWeek, sortedStandings, teamObj } from './core/season.js';
-import { MATCH, ST, setMatch } from './core/state.js';
+import { MATCH, ST, bump, setMatch } from './core/state.js';
 import { ARCH, MAPDATA, agIcon } from './data/agents.js';
 import { MV } from './data/geo/ascent.js';
-import { LEAGUES, MAPS, PROFBANDS, ROLE, displayRole, p, profBand, roleColor, roleFull } from './data/leagues.js';
+import { LEAGUES, MAPS, ROLE, displayRole, p, profBand, roleColor, roleFull } from './data/leagues.js';
 import { mvBuild, mvPlayRound } from './ui/mapview.js';
 
 export function buildSelect(){
@@ -86,6 +86,7 @@ export function selectTeam(lk,idx){
   document.getElementById('teamBadge').style.display='flex';
   document.getElementById('badgeName').textContent=bt.name;
   document.getElementById('badgeDot').style.background=bt.color;
+  bump(); // Squad/PlayerDetail (React) read ST.teams/myTeamIdx via useStore()
   renderHub(); go('scHub');
 }
 
@@ -144,66 +145,8 @@ export function renderSchedule(){
   });
 }
 
-export function renderSquad(){
-  const my=ST.teams[ST.myTeamIdx];
-  const g=document.getElementById('squadGrid'); g.innerHTML='';
-  const axes=[['aim','Aim'],['sense','Sense'],['clutch','Clutch'],['util','Util'],['mental','Mental']];
-  const mkCard=(pl,isSub)=>{
-    const disp=displayRole(pl); const ovr=playerOVR(pl);
-    const card=document.createElement('div'); card.className='pcard clickable'+(isSub?' sub':'');
-    card.onclick=()=>openPlayer(pl.name);
-    const profStrip=['DUE','INI','SEN','CON'].map(rr=>{const b=profBand(pl.prof[rr]);
-      return `<span class="profseg" title="${ROLE[rr].name} ${pl.prof[rr]}"><i>${rr}</i><em style="background:${b[2]}"></em></span>`;}).join('');
-    card.innerHTML=`<div class="prow">
-      <div class="rolechip" style="background:${roleColor(pl)}">${disp}</div>
-      <div><div class="pn">${pl.name}${isSub?' <span class="subtag">SUB</span>':''}</div><div class="pmeta">${roleFull(pl)}</div></div>
-      <div class="povr" style="color:${ovr>=90?'var(--gold)':'var(--text)'}">${ovr}</div>
-    </div>`+
-    `<div class="profrow">${profStrip}</div>`+
-    axes.map(([k,lbl])=>{
-      const v=pl[k]; const col=v>=90?'var(--gold)':v>=82?'var(--def)':'var(--ini)';
-      return `<div class="stat"><label>${lbl}</label>
-        <div class="track"><i style="width:${v}%;background:${col}"></i></div>
-        <span class="v">${v}</span></div>`;
-    }).join('')+
-    `<div class="poolrow"><span class="poollbl">Agent pool</span>`+
-      visiblePool(pl,4).map(x=>`<span class="ag r-${x.role||pl.role}">${agIcon(x.agent,'ag-sm')}${x.agent} <b>${x.mastery}</b></span>`).join('')+
-    `</div><div class="cardhint">상세 보기 →</div>`;
-    g.appendChild(card);
-  };
-  [...my.roster].sort((a,b)=>playerOVR(b)-playerOVR(a)).forEach(pl=>mkCard(pl,false));
-  (my.bench||[]).forEach(pl=>mkCard(pl,true));
-}
-
-export function openPlayer(name){ ST._viewPlayer=name; renderPlayer(); go('scPlayer'); }
-
-export function renderPlayer(){
-  const my=ST.teams[ST.myTeamIdx];
-  const pl=[...my.roster,...(my.bench||[])].find(x=>x.name===ST._viewPlayer)||my.roster[0]; if(!pl)return;
-  const disp=displayRole(pl), ovr=playerOVR(pl);
-  document.getElementById('plName').textContent=pl.name;
-  document.getElementById('plRole').textContent=disp+' · '+roleFull(pl);
-  document.getElementById('plOvr').textContent=ovr;
-  const axes=[['aim','Aim'],['sense','Sense'],['clutch','Clutch'],['util','Util'],['mental','Mental']];
-  document.getElementById('plStats').innerHTML=axes.map(([k,lbl])=>{
-    const v=pl[k]; const col=v>=90?'var(--gold)':v>=82?'var(--def)':'var(--ini)';
-    return `<div class="stat"><label>${lbl}</label><div class="track"><i style="width:${v}%;background:${col}"></i></div><span class="v">${v}</span></div>`;
-  }).join('');
-  // position proficiency (FM-style, color banded)
-  document.getElementById('plProf').innerHTML=`<div class="proflegend">`+
-    PROFBANDS.map(b=>`<span><em style="background:${b[2]}"></em>${b[1]} ${b[0]?b[0]+'+':'&lt;10'}</span>`).join('')+`</div>`+
-    ['DUE','INI','SEN','CON'].map(rr=>{
-    const v=pl.prof[rr], b=profBand(v);
-    return `<div class="stat"><label style="color:${ROLE[rr].c}">${ROLE[rr].name}</label>
-      <div class="track"><i style="width:${v/20*100}%;background:${b[2]}"></i></div><span class="v" style="color:${b[2]}">${v}</span></div>`;
-  }).join('');
-  // agent mastery
-  document.getElementById('plAgents').innerHTML=(pl.pool||[]).map(x=>{
-    const b=profBand(x.mastery);
-    return `<div class="agrow"><span class="ag r-${x.role||pl.role}">${agIcon(x.agent,'ag-sm')}${x.agent}</span>
-      <div class="track"><i style="width:${x.mastery/20*100}%;background:${b[2]}"></i></div><span class="v">${x.mastery}</span></div>`;
-  }).join('')||'<div class="pmeta">에이전트 풀 데이터 없음</div>';
-}
+// Squad grid (#squadGrid) and player detail (#playerRoot) are React now --
+// see src/ui/screens/Squad.jsx and PlayerDetail.jsx.
 
 /* ============ MATCH ENGINE ============
    Bo3. Each map: rounds to 13, win-by-2 OT.
@@ -738,7 +681,6 @@ export function showChampCheck(){
 export function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
   document.getElementById(id).classList.add('on');
-  if(id==='scSquad')renderSquad();
   if(id==='scHub')renderHub();
   window.scrollTo({top:0,behavior:'smooth'});
 }

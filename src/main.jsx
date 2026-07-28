@@ -1,3 +1,4 @@
+import { createRoot } from 'react-dom/client';
 import './styles/index.css';
 import { applyRealStats, buildAgentPools } from './core/roster.js';
 import {
@@ -5,6 +6,8 @@ import {
   go, startNextMatch, vetoSkip, startMapDraft, skipMatch, selectAgent,
   confirmDraft, backToHub, simCurrentMap, setBoxSide,
 } from './legacy.js';
+import { Squad } from './ui/screens/Squad.jsx';
+import { PlayerDetail } from './ui/screens/PlayerDetail.jsx';
 
 // TEMP (Phase 0, still needed until Phase 4 step 10): the script is an ES
 // module, so its top-level bindings aren't visible to onclick="" strings
@@ -19,3 +22,9 @@ Object.assign(window, {
 applyRealStats();
 buildAgentPools();
 buildSelect();
+
+// One persistent React root per migrated screen (see PLAN.md Phase 4). Each
+// mounts once here and re-renders itself via useStore()/bump() -- go() no
+// longer needs to know these screens exist.
+createRoot(document.getElementById('squadGrid')).render(<Squad />);
+createRoot(document.getElementById('playerRoot')).render(<PlayerDetail />);

@@ -3,12 +3,19 @@
 > 다음 세션에서 이 파일을 읽고 다음 미완료 Phase부터 순서대로 실행.
 > **각 Phase 끝마다 `npm run dev`로 앱이 그대로 동작하는지 확인 후 커밋. 안 돌면 다음으로 넘어가지 말 것.**
 
-**진행 상황 (2026-07-28 기준): Phase 0~3a 완료.** 다음은 Phase 4(React 이관).
+**진행 상황 (2026-07-28 기준): Phase 0~3a 완료, Phase 4는 아래 체크리스트 2/10.**
 - Phase 0: Vite 스캐폴딩 (커밋 `0fe16ca`)
 - Phase 1: 인라인 데이터 4종 추출 — AGENT_IMG/STATS_BY_NAME/ASCENT_BG/NAVGRID (커밋 `ce6d7b0`)
 - (부수) 에이전트 아이콘을 `images/Characters/_small` 원본에서 64px로 리사이즈해 교체 (커밋 `42acc37`)
 - Phase 2: CSS 9분할 (커밋 `279bc81`)
 - Phase 3a: `main.js`(163개 top-level 선언)를 `data/`(4) + `core/`(7) + `core/state.js` + `ui/mapview.js` + `legacy.js`로 분리 (커밋 `9543db8`). `tools/split-main.mjs`가 DOM 접근 여부를 grep으로 실측해 분류함 — 섹션 주석만 믿지 않음. 맵 비토 함수들은 겉보기엔 독립적이지만 서로 순환 호출하다 `renderVeto()`의 DOM 조작으로 귀결돼 전부 `legacy.js`로 감(`mapSuitFor`만 순수). `MATCH` 재할당은 `openMatch()` 단 한 곳뿐이라 `setMatch()`로 우회. `core/round-engine.js`↔`core/season.js` 순환 import 있음 — 오가는 심볼이 전부 `function` 선언(호이스팅)이라 안전 확인 완료.
+- Phase 4 step 1: React 툴링 셋업 (커밋 `188b3d4`). `@vitejs/plugin-react`는 최신(6.x)이 vite 8을 요구해서 vite 5와 호환되는 5.2.0으로 고정.
+- Phase 4 step 2: Squad + PlayerDetail 화면 이관. **이후 화면 이관에도 반복할 패턴:**
+  - React 루트는 `main.jsx`에서 **부팅 시 한 번만** 마운트 (화면 전환마다 마운트/언마운트 안 함). `useStore()`(→`bump()`)로 재렌더링.
+  - 화면이 의존하는 상태를 바꾸는 지점에 `bump()` 추가 (예: `selectTeam()`이 `ST.myTeamIdx`를 바꾸므로 거기에 추가). `go()`에서 해당 화면의 수동 `renderXxx()` 호출은 제거.
+  - 마운트 대상은 화면마다 다르게 판단: 헤더 텍스트를 **다른 화면의 함수가** 채우고 있으면(예: `squadRegion`/`squadTitle`은 `renderHub()`가 설정) 그 부분은 안 건드리고 진짜 동적인 하위 요소(`#squadGrid`)만 React가 소유. 반대로 화면 전체가 한 함수 소유면(`renderPlayer()` → `#scPlayer`) `index.html`을 살짝 고쳐 단일 마운트 지점(`#playerRoot`) 하나로 합침.
+  - `ST.myTeamIdx`/`ST._viewPlayer`가 아직 없을 때(부팅 직후, 팀 선택 전) 컴포넌트가 크래시하지 않도록 최상단에서 `if(!my) return null;` 가드 필수 — 화면이 안 보여도 React는 마운트 시점에 즉시 렌더링을 시도함.
+  - `agIcon()`(HTML 문자열 반환)은 legacy.js 전용. React 컴포넌트는 `agImg()`(경로만 반환)로 직접 `<img>` JSX를 그림.
 
 **확정 사항: React로 이관한다.** 따라서 `ui/` 렌더 코드를 바닐라 모듈로 정리하는 단계는 건너뛴다
 (어차피 버릴 코드를 정리하는 낭비 ~670줄). 엔진만 뽑아내고 바로 React로 간다.
@@ -177,7 +184,7 @@ vlm/
 다음 세션(또는 다음 지시)에서 첫 번째 미체크 항목부터 이어간다.
 
 - [x] **1. 셋업** — `npm i react react-dom` + `@vitejs/plugin-react`, `main.js` → `main.jsx`, `src/ui/useStore.js` 작성 (§4의 `useSyncExternalStore` 훅)
-- [ ] **2. Squad 화면** — ~58줄. 가장 단순, `ST` 읽기만 함. 패턴 확립용
+- [x] **2. Squad 화면** — ~58줄. 가장 단순, `ST` 읽기만 함. 패턴 확립용
 - [ ] **3. Hub 화면** — ~63줄. 순위표 + 일정 테이블
 - [ ] **4. Select 화면** — ~75줄. 팀 선택
 - [ ] **5. Box 화면** — ~63줄. 박스스코어 + 타임라인
