@@ -3,7 +3,7 @@
 > 다음 세션에서 이 파일을 읽고 다음 미완료 Phase부터 순서대로 실행.
 > **각 Phase 끝마다 `npm run dev`로 앱이 그대로 동작하는지 확인 후 커밋. 안 돌면 다음으로 넘어가지 말 것.**
 
-**진행 상황 (2026-07-28 기준): Phase 0~3a 완료, Phase 4는 아래 체크리스트 6/10.**
+**진행 상황 (2026-07-29 기준): Phase 0~3a 완료, Phase 4는 아래 체크리스트 7/10.**
 - Phase 0: Vite 스캐폴딩 (커밋 `0fe16ca`)
 - Phase 1: 인라인 데이터 4종 추출 — AGENT_IMG/STATS_BY_NAME/ASCENT_BG/NAVGRID (커밋 `ce6d7b0`)
 - (부수) 에이전트 아이콘을 `images/Characters/_small` 원본에서 64px로 리사이즈해 교체 (커밋 `42acc37`)
@@ -20,6 +20,7 @@
 - Phase 4 step 4: Select 화면 이관. 이 화면은 팀 확정 전까지만 존재하고(`go('scSelect')`로 되돌아오는 곳이 코드 어디에도 없음) `ST`를 전혀 읽지 않으므로, **다른 이관 화면들과 달리 `useStore()`/`bump()` 불필요** — 현재 리그 탭(`lk`)과 미리보기 중인 팀(`previewIdx`)은 순수 컴포넌트 로컬 `useState`로 충분. `scrollIntoView`는 `useEffect(() => {...}, [previewIdx])`로 이식(원본은 클릭마다 무조건 스크롤했지만, 같은 카드를 연속 클릭해도 `previewIdx`가 안 바뀌면 재스크롤 안 함 — 사소한 차이, 회귀 아님). `buildSelect`/`renderTeams`/`previewTeam` 3개 함수 삭제, `main.js`의 부팅 시 `buildSelect()` 호출도 제거(React가 마운트 시 알아서 첫 리그를 그림). 이 함수들만 쓰던 `playerOVR`/`teamAxis`/`teamOVR`/`agIcon`/`visiblePool`/`displayRole`/`profBand`/`roleColor`/`roleFull` import를 legacy.js에서 제거(전부 다른 화면에도 안 쓰여 완전히 죽은 참조였음 확인 후 정리 — legacy.js 전체를 정리한 게 아니라 이번 삭제로 죽은 것만 제거).
 - Phase 4 step 5: Box 화면(박스스코어+타임라인) 이관. 이 화면은 `scMatch` 전체가 아니라 그 안의 `#boxWrap`+`#timelineWrap` 두 블록만 해당(나머지 `scMatch` 오케스트레이션은 8번). 두 블록은 항상 같이 켜지므로(둘 다 `endMatch()` 직후에만 표시) `#boxRoot` 하나로 합쳐 `Box.jsx`가 함께 그림. **표시 여부를 별도 플래그 없이 `MATCH.fx.played`로 파생** — `endMatch()`가 `fx.played=true`를 세팅하는 바로 그 시점에만 참이 되고, 이미 있던 `bump()` 한 번(step 3에서 추가)이 Box도 같이 깨움. 탭 상태(`side: 'home'|'away'`)는 컴포넌트 로컬 `useState`로 교체 — 기존 `setBoxSide()`/모듈 전역 `let boxSide`와 `window.setBoxSide` 노출 전부 제거. `openMatch()`/`skipMatch()`에 있던 `document.getElementById('boxWrap').style.display='none'` 수동 리셋 2곳도 삭제(React가 `MATCH.fx.played`로 알아서 숨김 — 새 매치 시작 시 `fx.played`는 항상 false). `showBox`/`renderBox`/`renderTimeline` 3개 함수 전부 삭제, `matchMVP` import도 legacy.js에서 죽어서 제거.
 - Phase 4 step 6: Veto 화면 이관. `scVeto` 전체를 `#vetoRoot` 단일 마운트로. 기존엔 `stepVeto`/`applyVeto`/`finalizeVeto`가 매 상태 변화마다 `renderVeto([done])`를 직접 호출했는데, 전부 `bump()`로 교체하고 `renderVeto` 자체(및 그 안에서만 쓰던 DOM 생성 로직)는 삭제. `done`(비토 완료 여부)도 별도 플래그 없이 `v.step >= v.order.length`로 파생 — `renderVeto(true)` 호출 지점이 정확히 그 조건이 참인 순간이었음. AI 턴 진행용 `setTimeout(...,550)`은 그대로 유지(엔진 타이밍 로직이라 이관 대상 아님), 다만 이제 그 콜백(`aiVetoAct`→`applyVeto`)이 부르는 `bump()`가 UI를 깨움. 타일은 `canClick&&!a`일 때만 `button`, 아니면 `div`로 렌더(원본 `document.createElement(cond?'button':'div')`와 동일 효과) — JSX에서 `const Tag = cond ? 'button' : 'div'; <Tag>` 패턴으로 재현. `vetoSkip`/`startMapDraft`의 `window` 노출도 제거(마지막 inline onclick 소비처였음, 이제 Veto.jsx가 직접 import). **주의: `DEV_ASCENT_BO1=true`면 이 화면을 건너뛰므로, 검증 시엔 일시적으로 `false`로 바꿔 전체 밴/픽 플로우를 확인한 뒤 반드시 `true`로 되돌릴 것** (안 그러면 이후 매치 검증이 매번 비토를 거쳐야 해서 느려짐).
+- Phase 4 step 7: Draft 화면 이관. `scDraft` 전체를 `#draftRoot` 단일 마운트로. `renderDraftScreen(mi)` 삭제 — `startMapDraft`(진입), `selectStance`, `selectAgent` 3곳의 호출을 전부 `bump()`로 교체. `mi`(맵 인덱스)는 `MATCH.curMap`과 항상 같은 값이라 Draft.jsx는 prop 없이 `MATCH.curMap`을 직접 읽고, `selectStance(mi,s)`/`selectAgent(mi,name,agent)`/`confirmDraft(mi)` 호출부에만 그 값을 넘김(함수 시그니처 자체는 그대로 둠 — `confirmDraft`는 여전히 `mi`를 실제로 씀). `confirmDraft` 본문(맵 칩 갱신·`go('scMatch')`·매치 버튼 렌더)은 그대로 legacy.js에 남음 — Match 화면 오케스트레이션(8번) 영역이라 이번 스텝 범위 밖. `selectAgent`/`confirmDraft`의 `window` 노출 제거(마지막 inline onclick 소비처였음). 이 화면만 쓰던 `stanceSuit`/`buildCompForStance`/`ROLE` import를 legacy.js에서 제거(죽은 참조 확인 후 정리 — `counterEdge`/`buildCompChoice`/`autoAgentFor`/`ARCH`/`MAPDATA`는 `confirmDraft`·`renderDraft`(8번 몫)에서 계속 씀).
 
 **확정 사항: React로 이관한다.** 따라서 `ui/` 렌더 코드를 바닐라 모듈로 정리하는 단계는 건너뛴다
 (어차피 버릴 코드를 정리하는 낭비 ~670줄). 엔진만 뽑아내고 바로 React로 간다.
@@ -193,7 +194,7 @@ vlm/
 - [x] **4. Select 화면** — ~75줄. 팀 선택
 - [x] **5. Box 화면** — ~63줄. 박스스코어 + 타임라인
 - [x] **6. Veto 화면** — ~38줄. 맵 비토
-- [ ] **7. Draft 화면** — ~136줄. **React 이득이 가장 큰 화면** (폼·상태 복잡)
+- [x] **7. Draft 화면** — ~136줄. **React 이득이 가장 큰 화면** (폼·상태 복잡)
 - [ ] **8. Match 화면** — ~240줄. 오케스트레이션, 가장 까다로움
 - [ ] **9. MapView.jsx** — `mapview.js`를 `useRef`+`useEffect`로 감싸는 래퍼만. **내부 명령형 코드는 손대지 않음**
 - [ ] **10. 최종 통합** — 루트를 하나로 합치고 `go()`를 `screen` state로 대체, `legacy.js` 삭제, 임시 `window` 노출 제거, 인라인 `onclick` 23개 제거, 전 기능 회귀 테스트

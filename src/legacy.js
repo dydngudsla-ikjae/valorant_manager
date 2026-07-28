@@ -1,4 +1,4 @@
-import { autoAgentFor, buildCompChoice, buildCompForStance, draftComp, draftPair, mapSuitFor, matchupRead, stanceSuit } from './core/draft.js';
+import { autoAgentFor, buildCompChoice, draftComp, draftPair, mapSuitFor, matchupRead } from './core/draft.js';
 import { buyLabel, initEcon } from './core/economy.js';
 import { counterEdge } from './core/ratings.js';
 import { applyRealStats, buildAgentPools } from './core/roster.js';
@@ -7,7 +7,7 @@ import { firstUnplayedWeek, makeSchedule, pickMaps, simRestOfWeek, sortedStandin
 import { MATCH, ST, bump, setMatch } from './core/state.js';
 import { ARCH, MAPDATA } from './data/agents.js';
 import { MV } from './data/geo/ascent.js';
-import { LEAGUES, MAPS, ROLE, p } from './data/leagues.js';
+import { LEAGUES, MAPS, p } from './data/leagues.js';
 import { mvBuild, mvPlayRound } from './ui/mapview.js';
 
 // Select screen (#selectRoot) is React now -- see src/ui/screens/Select.jsx.
@@ -146,79 +146,15 @@ export function startMapDraft(mi){
   MATCH.draftSel={stance:null, choice:{}};
   const oppTeam = MATCH.playerSide==='home'?MATCH.away:MATCH.home;
   MATCH.pendingOpp = draftComp(oppTeam, MATCH.mapPool[mi], null);
-  renderDraftScreen(mi);
+  bump(); // Draft (React) reads MATCH.curMap/pendingOpp/draftSel via useStore()
   go('scDraft');
 }
 
-export function renderDraftScreen(mi){
-  const map=MATCH.mapPool[mi];
-  const me=ST.teams[ST.myTeamIdx];
-  const oppTeam=MATCH.playerSide==='home'?MATCH.away:MATCH.home;
-  const opp=MATCH.pendingOpp;
-  const sel=MATCH.draftSel;
-  document.getElementById('dVenue').textContent=`${MATCH.home.short} vs ${MATCH.away.short} · Week ${MATCH.wi+1} · Draft`;
-  document.getElementById('dMapNo').textContent=`Map ${mi+1}`;
-  document.getElementById('dMapName').textContent=`${map} — favors ${ARCH[MAPDATA[map].favor].name} · ${MATCH.hMaps}-${MATCH.aMaps} maps`;
-  const hc=document.getElementById('dHomeCrest'),ac=document.getElementById('dAwayCrest');
-  hc.textContent=MATCH.home.short;hc.style.background=MATCH.home.color;hc.style.fontSize='13px';
-  ac.textContent=MATCH.away.short;ac.style.background=MATCH.away.color;ac.style.fontSize='13px';
-  document.getElementById('dHomeName').textContent=MATCH.home.name;
-  document.getElementById('dAwayName').textContent=MATCH.away.name;
-  // opponent read
-  document.getElementById('oppRead').innerHTML=
-    `<div class="olbl">${oppTeam.short} locked in</div>
-     <div class="ostance">${ARCH[opp.stance].name}</div>
-     <div class="oags">${opp.agents.map(a=>`<span class="ag r-${a.role}${a.favored?' fav':''}">${a.agent}</span>`).join('')}</div>`;
-  // stance options with live preview vs opponent
-  const grid=document.getElementById('stanceGrid'); grid.innerHTML='';
-  const previews=['AGGRO','CONTROL','LOCKDOWN','BALANCED'].map(s=>{
-    const comp=buildCompForStance(me,map,s);
-    const edge=counterEdge(s,opp.stance);
-    return {s,comp,edge,projected:+(comp.delta - opp.delta + edge).toFixed(1)};
-  });
-  const bestProj=Math.max(...previews.map(p=>p.projected));
-  previews.forEach(({s,comp,edge,projected})=>{
-    const rec=projected===bestProj, chosen=sel.stance===s;
-    const suit=stanceSuit(me,s);
-    const verdict = edge>0?['good',`Counters ${ARCH[opp.stance].name} +${edge}`]
-                  : edge<0?['bad',`Countered ${edge}`]
-                  : ['even',`Even read`];
-    const card=document.createElement('button'); card.className='stanceopt'+(rec?' rec':'')+(chosen?' chosen':'');
-    card.innerHTML=`${rec?'<span class="recflag">Analyst pick</span>':''}
-      <div class="sname">${ARCH[s].name}</div>
-      <div class="sblurb">${ARCH[s].blurb}</div>
-      <div class="verdict ${verdict[0]}">${verdict[1]}</div>
-      <div class="fitrow"><span>Fit <b>${suit>=2?'high':suit>=1?'ok':'low'}</b></span>
-        <span>Map <b>${MAPDATA[map].favor===s?'favored':'neutral'}</b></span></div>
-      <div class="pw ${projected>=0?'pos':'neg'}">${projected>=0?'+':''}${projected}</div>`;
-    card.onclick=()=>selectStance(mi,s);
-    grid.appendChild(card);
-  });
-  // comp editor (agent per player) — visible once a stance is chosen
-  const lbl=document.getElementById('compEditLbl'), ce=document.getElementById('compEdit');
-  if(!sel.stance){ lbl.style.display='none'; ce.innerHTML=''; document.getElementById('draftBtns').innerHTML=
-    `<button class="btn" disabled>Pick a game plan first</button>
-     <button class="btn ghost" style="width:auto" onclick="skipMatch()">Skip match</button>`; return; }
-  lbl.style.display='block';
-  const fav=MAPDATA[map].agents;
-  ce.innerHTML=me.roster.map(pl=>{
-    const chosenAg=sel.choice[pl.name]||autoAgentFor(pl,map);
-    return `<div class="pcomp"><div class="pcname"><span class="rolechip sm" style="background:${ROLE[pl.role].c}">${pl.role}</span>${pl.name}</div>
-      <div class="agpick">${pl.pool.map(x=>`<button class="agopt r-${pl.role}${x.agent===chosenAg?' on':''}${fav.includes(x.agent)?' fav':''}" onclick="selectAgent(${mi},'${pl.name.replace(/'/g,"\\'")}','${x.agent}')">${x.agent}<b>${x.mastery}</b></button>`).join('')}</div></div>`;
-  }).join('');
-  // live comp summary + lock
-  const choice={}; me.roster.forEach(pl=>choice[pl.name]=sel.choice[pl.name]||autoAgentFor(pl,map));
-  const myComp=buildCompChoice(me,map,sel.stance,choice);
-  const edge=counterEdge(sel.stance,opp.stance);
-  const proj=+(myComp.delta-opp.delta+edge).toFixed(1);
-  document.getElementById('draftBtns').innerHTML=
-    `<button class="btn" onclick="confirmDraft(${mi})">Lock comp &amp; play · <span style="opacity:.85">avg mastery ${myComp.avgMastery} · map agents ${myComp.favCount}/5 · proj ${proj>=0?'+':''}${proj}</span></button>
-     <button class="btn ghost" style="width:auto" onclick="skipMatch()">Skip</button>`;
-}
+// Draft screen (#draftRoot) is React now -- see src/ui/screens/Draft.jsx.
 
-export function selectStance(mi,s){ MATCH.draftSel.stance=s; renderDraftScreen(mi); }
+export function selectStance(mi,s){ MATCH.draftSel.stance=s; bump(); }
 
-export function selectAgent(mi,name,agent){ MATCH.draftSel.choice[name]=agent; renderDraftScreen(mi); }
+export function selectAgent(mi,name,agent){ MATCH.draftSel.choice[name]=agent; bump(); }
 
 export function confirmDraft(mi){
   const me=ST.teams[ST.myTeamIdx]; const map=MATCH.mapPool[mi];
