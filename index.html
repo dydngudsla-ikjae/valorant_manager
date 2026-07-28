@@ -48,41 +48,14 @@
 <!-- ============ HUB ============ -->
 <section class="screen" id="scHub">
   <div class="wrap">
-    <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:20px">
-      <div>
-        <div class="eyebrow" id="hubLeague">—</div>
-        <h1 class="big" style="font-size:clamp(26px,5vw,40px)" id="hubTitle">Season Hub</h1>
-      </div>
-      <div class="btnrow" style="margin:0; width:auto">
-        <button class="btn ghost" style="width:auto" onclick="go('scSquad')">Squad</button>
-        <button class="btn" style="width:auto" id="playBtn" onclick="startNextMatch()">Play Next</button>
-      </div>
-    </div>
-    <div class="hublayout">
-      <div class="panel">
-        <div class="ph">Standings <span class="rl" id="standRegion">—</span></div>
-        <div style="overflow-x:auto"><table id="standTable"></table></div>
-      </div>
-      <div class="panel hidesmall">
-        <div class="ph">Fixtures <span class="rl" id="fixMeta">—</span></div>
-        <div class="sched" id="schedList"></div>
-      </div>
-    </div>
+    <div id="hubRoot"></div>
   </div>
 </section>
 
 <!-- ============ SQUAD ============ -->
 <section class="screen" id="scSquad">
   <div class="wrap">
-    <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:8px">
-      <div>
-        <div class="eyebrow" id="squadRegion">—</div>
-        <h1 class="big" style="font-size:clamp(26px,5vw,40px)" id="squadTitle">Roster</h1>
-      </div>
-      <button class="btn ghost" style="width:auto" onclick="go('scHub')">Back to Hub</button>
-    </div>
-    <p class="sub" style="margin-bottom:20px">Five ratings drive everything: <b style="color:var(--text)">Aim</b> wins duels, <b style="color:var(--text)">Sense</b> reads rounds, <b style="color:var(--text)">Clutch</b> saves lost ones, <b style="color:var(--text)">Util</b> is setup &amp; support, <b style="color:var(--text)">Mental</b> holds under pressure. Role weights how each counts.</p>
-    <div class="squadgrid" id="squadGrid"></div>
+    <div id="squadRoot"></div>
   </div>
 </section>
 

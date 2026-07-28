@@ -3,7 +3,7 @@ import { ST, bump } from '../../core/state.js';
 import { playerOVR } from '../../core/ratings.js';
 import { visiblePool } from '../../core/roster.js';
 import { agImg } from '../../data/agents.js';
-import { ROLE, displayRole, profBand, roleColor, roleFull } from '../../data/leagues.js';
+import { LEAGUES, ROLE, displayRole, profBand, roleColor, roleFull } from '../../data/leagues.js';
 import { go } from '../../legacy.js';
 
 const AXES = [['aim', 'Aim'], ['sense', 'Sense'], ['clutch', 'Clutch'], ['util', 'Util'], ['mental', 'Mental']];
@@ -75,8 +75,18 @@ export function Squad() {
   const roster = [...my.roster].sort((a, b) => playerOVR(b) - playerOVR(a));
   return (
     <>
-      {roster.map(pl => <PlayerCard pl={pl} isSub={false} key={pl.name} />)}
-      {(my.bench || []).map(pl => <PlayerCard pl={pl} isSub={true} key={pl.name} />)}
+      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '8px' }}>
+        <div>
+          <div className="eyebrow">{LEAGUES[ST.league].name} · My Club</div>
+          <h1 className="big" style={{ fontSize: 'clamp(26px,5vw,40px)' }}>{my.name}</h1>
+        </div>
+        <button className="btn ghost" style={{ width: 'auto' }} onClick={() => go('scHub')}>Back to Hub</button>
+      </div>
+      <p className="sub" style={{ marginBottom: '20px' }}>Five ratings drive everything: <b style={{ color: 'var(--text)' }}>Aim</b> wins duels, <b style={{ color: 'var(--text)' }}>Sense</b> reads rounds, <b style={{ color: 'var(--text)' }}>Clutch</b> saves lost ones, <b style={{ color: 'var(--text)' }}>Util</b> is setup &amp; support, <b style={{ color: 'var(--text)' }}>Mental</b> holds under pressure. Role weights how each counts.</p>
+      <div className="squadgrid">
+        {roster.map(pl => <PlayerCard pl={pl} isSub={false} key={pl.name} />)}
+        {(my.bench || []).map(pl => <PlayerCard pl={pl} isSub={true} key={pl.name} />)}
+      </div>
     </>
   );
 }

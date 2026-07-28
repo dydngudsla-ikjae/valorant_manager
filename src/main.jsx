@@ -6,6 +6,7 @@ import {
   go, startNextMatch, vetoSkip, startMapDraft, skipMatch, selectAgent,
   confirmDraft, backToHub, simCurrentMap, setBoxSide,
 } from './legacy.js';
+import { Hub } from './ui/screens/Hub.jsx';
 import { Squad } from './ui/screens/Squad.jsx';
 import { PlayerDetail } from './ui/screens/PlayerDetail.jsx';
 
@@ -26,5 +27,6 @@ buildSelect();
 // One persistent React root per migrated screen (see PLAN.md Phase 4). Each
 // mounts once here and re-renders itself via useStore()/bump() -- go() no
 // longer needs to know these screens exist.
-createRoot(document.getElementById('squadGrid')).render(<Squad />);
+createRoot(document.getElementById('hubRoot')).render(<Hub />);
+createRoot(document.getElementById('squadRoot')).render(<Squad />);
 createRoot(document.getElementById('playerRoot')).render(<PlayerDetail />);

@@ -3,7 +3,7 @@ import { buyLabel, initEcon } from './core/economy.js';
 import { counterEdge, playerOVR, teamAxis, teamOVR } from './core/ratings.js';
 import { applyRealStats, buildAgentPools, visiblePool } from './core/roster.js';
 import { agentMap, applyRoundStats, finalizeRatings, matchMVP, newStat, simOneMap, topKillerOfRound } from './core/round-engine.js';
-import { firstUnplayedWeek, makeSchedule, nameById, pickMaps, simRestOfWeek, sortedStandings, teamObj } from './core/season.js';
+import { firstUnplayedWeek, makeSchedule, pickMaps, simRestOfWeek, sortedStandings, teamObj } from './core/season.js';
 import { MATCH, ST, bump, setMatch } from './core/state.js';
 import { ARCH, MAPDATA, agIcon } from './data/agents.js';
 import { MV } from './data/geo/ascent.js';
@@ -86,67 +86,14 @@ export function selectTeam(lk,idx){
   document.getElementById('teamBadge').style.display='flex';
   document.getElementById('badgeName').textContent=bt.name;
   document.getElementById('badgeDot').style.background=bt.color;
-  bump(); // Squad/PlayerDetail (React) read ST.teams/myTeamIdx via useStore()
-  renderHub(); go('scHub');
+  bump(); // Squad/PlayerDetail/Hub (React) read ST.teams/myTeamIdx via useStore()
+  go('scHub');
 }
 
 /* round-robin (single). circle method */
 
-export function renderHub(){
-  const L=LEAGUES[ST.league];
-  document.getElementById('hubLeague').textContent=L.name+' · Regular Season';
-  document.getElementById('standRegion').textContent=L.name;
-  document.getElementById('squadRegion').textContent=L.name+' · My Club';
-  const my=ST.teams[ST.myTeamIdx];
-  document.getElementById('squadTitle').textContent=my.name;
-  renderStandings(); renderSchedule();
-  const pb=document.getElementById('playBtn');
-  if(ST.seasonOver){pb.textContent='Season Done'; pb.disabled=true;
-    document.getElementById('hubTitle').textContent='Season Complete';
-  } else {pb.disabled=false; pb.textContent='Play Next';}
-}
-
-export function renderStandings(){
-  const t=document.getElementById('standTable');
-  const rows=sortedStandings();
-  t.innerHTML=`<thead><tr><th class="rank">#</th><th>Team</th><th>W-L</th>
-    <th class="hide">Maps</th><th class="hide">RD</th><th>OVR</th></tr></thead><tbody>`+
-    rows.map((tm,i)=>{
-      const s=ST.standings[tm.id]; const mine=tm.id===ST.teams[ST.myTeamIdx].id;
-      const q=i<8?`<span class="qbadge">PO</span>`:'';
-      return `<tr class="${mine?'me':''}"><td class="rank">${i+1}</td>
-        <td class="tn"><span class="dot" style="display:inline-block;background:${tm.color};margin-right:8px;vertical-align:middle"></span>${tm.name}${q}</td>
-        <td class="wl"><b>${s.w}</b>-${s.l}</td>
-        <td class="hide mono">${s.mapW}-${s.mapL}</td>
-        <td class="hide mono">${s.rd>0?'+':''}${s.rd}</td>
-        <td class="mono" style="color:var(--gold)">${teamOVR(tm)}</td></tr>`;
-    }).join('')+`</tbody>`;
-}
-
-export function renderSchedule(){
-  const box=document.getElementById('schedList'); box.innerHTML='';
-  const myId=ST.teams[ST.myTeamIdx].id;
-  const myFix=[];
-  ST.schedule.forEach((wk,wi)=>wk.forEach(f=>{if(f.home===myId||f.away===myId)myFix.push({...f,wi});}));
-  document.getElementById('fixMeta').textContent=`${myFix.filter(f=>f.played).length}/${myFix.length}`;
-  const nextWi=firstUnplayedWeek();
-  myFix.forEach(f=>{
-    const opp=f.home===myId?f.away:f.home;
-    const isNext=!f.played && f.wi===nextWi;
-    let resHtml='';
-    if(f.played){const r=f.res; const won=(f.home===myId&&r.hMaps>r.aMaps)||(f.away===myId&&r.aMaps>r.hMaps);
-      const my=f.home===myId?r.hMaps:r.aMaps, th=f.home===myId?r.aMaps:r.hMaps;
-      resHtml=`<span class="res ${won?'w':'l'}">${my}-${th}</span>`;}
-    const div=document.createElement('div');
-    div.className='fxrow'+(f.played?' done':'')+(isNext?' next':'');
-    div.innerHTML=`<span class="wk">W${f.wi+1}</span>
-      <span class="teams">vs <b>${nameById(opp)}</b></span>${resHtml||(isNext?'<span class="res" style="color:var(--val)">NEXT</span>':'')}`;
-    box.appendChild(div);
-  });
-}
-
-// Squad grid (#squadGrid) and player detail (#playerRoot) are React now --
-// see src/ui/screens/Squad.jsx and PlayerDetail.jsx.
+// Hub (#hubRoot), Squad grid (#squadRoot) and player detail (#playerRoot) are
+// React now -- see src/ui/screens/Hub.jsx, Squad.jsx and PlayerDetail.jsx.
 
 /* ============ MATCH ENGINE ============
    Bo3. Each map: rounds to 13, win-by-2 OT.
@@ -157,7 +104,7 @@ export function startNextMatch(){
   const myId=ST.teams[ST.myTeamIdx].id;
   const fx=ST.schedule[wi].find(f=>!f.played&&(f.home===myId||f.away===myId));
   if(!fx){ // my match this week already played -> sim rest, advance
-    simRestOfWeek(wi); renderHub(); toast('Week advanced.'); return;
+    simRestOfWeek(wi); bump(); toast('Week advanced.'); return;
   }
   openMatch(fx,wi);
 }
@@ -550,6 +497,7 @@ export function endMatch(){
   if(MATCH.hMaps>MATCH.aMaps){H.w++;A.l++;}else{A.w++;H.l++;}
   // sim the rest of this week's other matches
   simRestOfWeek(MATCH.wi, fx);
+  bump(); // Hub (React) reads ST.standings/ST.schedule/ST.seasonOver via useStore()
   showBox();
   renderTimeline();
   renderMatchButtons('end');
@@ -665,7 +613,7 @@ export function skipMatch(){
   endMatch();
 }
 
-export function backToHub(){renderHub();go('scHub');
+export function backToHub(){go('scHub');
   if(ST.seasonOver){showChampCheck();}
 }
 
@@ -681,7 +629,6 @@ export function showChampCheck(){
 export function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
   document.getElementById(id).classList.add('on');
-  if(id==='scHub')renderHub();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
