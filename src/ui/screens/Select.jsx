@@ -1,0 +1,135 @@
+import { useEffect, useRef, useState } from 'react';
+import { playerOVR, teamAxis, teamOVR } from '../../core/ratings.js';
+import { visiblePool } from '../../core/roster.js';
+import { agImg } from '../../data/agents.js';
+import { LEAGUES, ROLE, displayRole, profBand, roleColor, roleFull } from '../../data/leagues.js';
+import { selectTeam } from '../../legacy.js';
+
+const AXES = [['aim', 'Aim'], ['sense', 'Sense'], ['clutch', 'Clutch'], ['util', 'Util'], ['mental', 'Mental']];
+const PROF_ROLES = ['DUE', 'INI', 'SEN', 'CON'];
+const MINI_AXES = ['aim', 'sense', 'clutch', 'util', 'mental'];
+
+function TeamCard({ t, lk, selected, onClick }) {
+  return (
+    <button className={'pick teamcard' + (selected ? ' sel' : '')} onClick={onClick}>
+      <div className="stripe" style={{ background: t.color }}></div>
+      <div className="ovr">{teamOVR(t)}<span>OVR</span></div>
+      <div className="tname">{t.name}</div>
+      <div className="tregion">{LEAGUES[lk].name}</div>
+      <div className="mini">
+        {MINI_AXES.map(ax => {
+          const v = Math.round(teamAxis(t, ax));
+          const col = ax === 'aim' ? 'var(--val)' : ax === 'util' ? 'var(--ini)' : 'var(--def)';
+          return <div className="m" title={ax} key={ax}><i style={{ width: v + '%', background: col }}></i></div>;
+        })}
+      </div>
+    </button>
+  );
+}
+
+function PreviewAgentChip({ x, role }) {
+  const src = agImg(x.agent);
+  return (
+    <span className={`ag r-${x.role || role}`}>
+      {src && <img className="agicon ag-sm" src={src} alt={x.agent} loading="lazy" />}
+      {x.agent} <b>{x.mastery}</b>
+    </span>
+  );
+}
+
+function PreviewPlayerCard({ pl, isSub }) {
+  const disp = displayRole(pl);
+  const ovr = playerOVR(pl);
+  return (
+    <div className={'pcard' + (isSub ? ' sub' : '')}>
+      <div className="prow">
+        <div className="rolechip" style={{ background: roleColor(pl) }}>{disp}</div>
+        <div>
+          <div className="pn">{pl.name}{isSub && <span className="subtag">SUB</span>}</div>
+          <div className="pmeta">{roleFull(pl)}</div>
+        </div>
+        <div className="povr" style={{ color: ovr >= 90 ? 'var(--gold)' : 'var(--text)' }}>{ovr}</div>
+      </div>
+      <div className="profrow">
+        {PROF_ROLES.map(rr => {
+          const b = profBand(pl.prof[rr]);
+          return (
+            <span className="profseg" key={rr} title={`${ROLE[rr].name} ${pl.prof[rr]}`}>
+              <i>{rr}</i><em style={{ background: b[2] }}></em>
+            </span>
+          );
+        })}
+      </div>
+      {AXES.map(([k, lbl]) => {
+        const v = pl[k];
+        const col = v >= 90 ? 'var(--gold)' : v >= 82 ? 'var(--def)' : 'var(--ini)';
+        return (
+          <div className="stat" key={k}>
+            <label>{lbl}</label>
+            <div className="track"><i style={{ width: v + '%', background: col }}></i></div>
+            <span className="v">{v}</span>
+          </div>
+        );
+      })}
+      <div className="poolrow">
+        <span className="poollbl">Agent pool</span>
+        {visiblePool(pl, 4).map(x => <PreviewAgentChip x={x} role={pl.role} key={x.agent} />)}
+      </div>
+    </div>
+  );
+}
+
+export function Select() {
+  const leagueKeys = Object.keys(LEAGUES);
+  const [lk, setLk] = useState(leagueKeys[0]);
+  const [previewIdx, setPreviewIdx] = useState(null);
+  const previewRef = useRef(null);
+
+  useEffect(() => {
+    if (previewIdx !== null) previewRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [previewIdx]);
+
+  const league = LEAGUES[lk];
+  const previewT = previewIdx !== null ? league.teams[previewIdx] : null;
+  const roster = previewT
+    ? [...previewT.roster].sort((a, b) => playerOVR(b) - playerOVR(a))
+        .concat((previewT.bench || []).map(pl => ({ ...pl, _sub: true })))
+    : [];
+
+  return (
+    <>
+      <div className="tabs">
+        {leagueKeys.map(k => (
+          <button className={'tab' + (k === lk ? ' on' : '')} onClick={() => { setLk(k); setPreviewIdx(null); }} key={k}>
+            {LEAGUES[k].name}
+          </button>
+        ))}
+      </div>
+      <div className="grid g-teams">
+        {league.teams.map((t, idx) => (
+          <TeamCard t={t} lk={lk} selected={idx === previewIdx} onClick={() => setPreviewIdx(idx)} key={t.name} />
+        ))}
+      </div>
+      {previewT && (
+        <div className="selectpreview" ref={previewRef}>
+          <div className="sppanel">
+            <div className="sphead">
+              <div>
+                <div className="eyebrow">{league.name}</div>
+                <h2 className="spname">{previewT.name}</h2>
+              </div>
+              <div className="spright">
+                <div className="povr" style={{ fontSize: '30px' }}>{teamOVR(previewT)}</div>
+                <button className="btn" style={{ width: 'auto' }} onClick={() => selectTeam(lk, previewIdx)}>이 팀 선택 →</button>
+              </div>
+            </div>
+            <p className="sub" style={{ margin: '2px 0 14px' }}>이 스쿼드로 시즌을 운영합니다. 선수 능력치·역할을 확인하고 <b>이 팀 선택</b>을 누르면 확정됩니다.</p>
+            <div className="squadgrid">
+              {roster.map(pl => <PreviewPlayerCard pl={pl} isSub={!!pl._sub} key={pl.name} />)}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

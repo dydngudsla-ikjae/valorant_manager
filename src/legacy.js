@@ -1,75 +1,16 @@
 import { autoAgentFor, buildCompChoice, buildCompForStance, draftComp, draftPair, mapSuitFor, matchupRead, stanceSuit } from './core/draft.js';
 import { buyLabel, initEcon } from './core/economy.js';
-import { counterEdge, playerOVR, teamAxis, teamOVR } from './core/ratings.js';
-import { applyRealStats, buildAgentPools, visiblePool } from './core/roster.js';
+import { counterEdge } from './core/ratings.js';
+import { applyRealStats, buildAgentPools } from './core/roster.js';
 import { agentMap, applyRoundStats, finalizeRatings, matchMVP, newStat, simOneMap, topKillerOfRound } from './core/round-engine.js';
 import { firstUnplayedWeek, makeSchedule, pickMaps, simRestOfWeek, sortedStandings, teamObj } from './core/season.js';
 import { MATCH, ST, bump, setMatch } from './core/state.js';
-import { ARCH, MAPDATA, agIcon } from './data/agents.js';
+import { ARCH, MAPDATA } from './data/agents.js';
 import { MV } from './data/geo/ascent.js';
-import { LEAGUES, MAPS, ROLE, displayRole, p, profBand, roleColor, roleFull } from './data/leagues.js';
+import { LEAGUES, MAPS, ROLE, p } from './data/leagues.js';
 import { mvBuild, mvPlayRound } from './ui/mapview.js';
 
-export function buildSelect(){
-  const tabs=document.getElementById('leagueTabs'); tabs.innerHTML='';
-  Object.keys(LEAGUES).forEach((k,i)=>{
-    const b=document.createElement('button'); b.className='tab'+(i===0?' on':'');
-    b.textContent=LEAGUES[k].name; b.onclick=()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));b.classList.add('on');renderTeams(k);};
-    tabs.appendChild(b);
-  });
-  renderTeams(Object.keys(LEAGUES)[0]);
-}
-
-export function renderTeams(lk){
-  const pv=document.getElementById('selectPreview'); if(pv)pv.style.display='none';
-  const g=document.getElementById('teamGrid'); g.innerHTML='';
-  LEAGUES[lk].teams.forEach((t,idx)=>{
-    const ovr=teamOVR(t);
-    const c=document.createElement('button'); c.className='pick teamcard';
-    c.innerHTML=`<div class="stripe" style="background:${t.color}"></div>
-      <div class="ovr">${ovr}<span>OVR</span></div>
-      <div class="tname">${t.name}</div>
-      <div class="tregion">${LEAGUES[lk].name}</div>
-      <div class="mini">
-        ${['aim','sense','clutch','util','mental'].map(ax=>{
-          const v=Math.round(teamAxis(t,ax));
-          return `<div class="m" title="${ax}"><i style="width:${v}%;background:${ax==='aim'?'var(--val)':ax==='util'?'var(--ini)':'var(--def)'}"></i></div>`;
-        }).join('')}
-      </div>`;
-    c.onclick=()=>previewTeam(lk,idx,c);
-    g.appendChild(c);
-  });
-}
-
-export function previewTeam(lk,idx,cardEl){
-  document.querySelectorAll('#teamGrid .teamcard').forEach(x=>x.classList.remove('sel'));
-  if(cardEl)cardEl.classList.add('sel');
-  const t=LEAGUES[lk].teams[idx];
-  document.getElementById('spRegion').textContent=LEAGUES[lk].name;
-  document.getElementById('spName').textContent=t.name;
-  document.getElementById('spOvr').textContent=teamOVR(t);
-  document.getElementById('spConfirm').onclick=()=>selectTeam(lk,idx);
-  const g=document.getElementById('spRoster'); g.innerHTML='';
-  const axes=[['aim','Aim'],['sense','Sense'],['clutch','Clutch'],['util','Util'],['mental','Mental']];
-  [...t.roster].sort((a,b)=>playerOVR(b)-playerOVR(a)).concat((t.bench||[]).map(b=>Object.assign({_sub:true},b))).forEach(pl=>{
-    const disp=displayRole(pl), ovr=playerOVR(pl);
-    const card=document.createElement('div'); card.className='pcard'+(pl._sub?' sub':'');
-    const profStrip=['DUE','INI','SEN','CON'].map(rr=>{const b=profBand(pl.prof[rr]);
-      return `<span class="profseg" title="${ROLE[rr].name} ${pl.prof[rr]}"><i>${rr}</i><em style="background:${b[2]}"></em></span>`;}).join('');
-    card.innerHTML=`<div class="prow">
-      <div class="rolechip" style="background:${roleColor(pl)}">${disp}</div>
-      <div><div class="pn">${pl.name}${pl._sub?' <span class="subtag">SUB</span>':''}</div><div class="pmeta">${roleFull(pl)}</div></div>
-      <div class="povr" style="color:${ovr>=90?'var(--gold)':'var(--text)'}">${ovr}</div>
-    </div><div class="profrow">${profStrip}</div>`+
-    axes.map(([k,lbl])=>{const v=pl[k]; const col=v>=90?'var(--gold)':v>=82?'var(--def)':'var(--ini)';
-      return `<div class="stat"><label>${lbl}</label><div class="track"><i style="width:${v}%;background:${col}"></i></div><span class="v">${v}</span></div>`;}).join('')+
-    `<div class="poolrow"><span class="poollbl">Agent pool</span>`+
-      visiblePool(pl,4).map(x=>`<span class="ag r-${x.role||pl.role}">${agIcon(x.agent,'ag-sm')}${x.agent} <b>${x.mastery}</b></span>`).join('')+`</div>`;
-    g.appendChild(card);
-  });
-  const pv=document.getElementById('selectPreview'); pv.style.display='block';
-  pv.scrollIntoView({behavior:'smooth',block:'start'});
-}
+// Select screen (#selectRoot) is React now -- see src/ui/screens/Select.jsx.
 
 /* ============ SEASON SETUP ============ */
 
