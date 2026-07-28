@@ -1,7 +1,14 @@
 # VLM 분리 계획 (valorant-league-manager.html → Vite + React)
 
-> 다음 세션에서 이 파일을 읽고 Phase 0부터 순서대로 실행.
+> 다음 세션에서 이 파일을 읽고 다음 미완료 Phase부터 순서대로 실행.
 > **각 Phase 끝마다 `npm run dev`로 앱이 그대로 동작하는지 확인 후 커밋. 안 돌면 다음으로 넘어가지 말 것.**
+
+**진행 상황 (2026-07-28 기준): Phase 0~3a 완료.** 다음은 Phase 4(React 이관).
+- Phase 0: Vite 스캐폴딩 (커밋 `0fe16ca`)
+- Phase 1: 인라인 데이터 4종 추출 — AGENT_IMG/STATS_BY_NAME/ASCENT_BG/NAVGRID (커밋 `ce6d7b0`)
+- (부수) 에이전트 아이콘을 `images/Characters/_small` 원본에서 64px로 리사이즈해 교체 (커밋 `42acc37`)
+- Phase 2: CSS 9분할 (커밋 `279bc81`)
+- Phase 3a: `main.js`(163개 top-level 선언)를 `data/`(4) + `core/`(7) + `core/state.js` + `ui/mapview.js` + `legacy.js`로 분리 (커밋 `9543db8`). `tools/split-main.mjs`가 DOM 접근 여부를 grep으로 실측해 분류함 — 섹션 주석만 믿지 않음. 맵 비토 함수들은 겉보기엔 독립적이지만 서로 순환 호출하다 `renderVeto()`의 DOM 조작으로 귀결돼 전부 `legacy.js`로 감(`mapSuitFor`만 순수). `MATCH` 재할당은 `openMatch()` 단 한 곳뿐이라 `setMatch()`로 우회. `core/round-engine.js`↔`core/season.js` 순환 import 있음 — 오가는 심볼이 전부 `function` 선언(호이스팅)이라 안전 확인 완료.
 
 **확정 사항: React로 이관한다.** 따라서 `ui/` 렌더 코드를 바닐라 모듈로 정리하는 단계는 건너뛴다
 (어차피 버릴 코드를 정리하는 낭비 ~670줄). 엔진만 뽑아내고 바로 React로 간다.
