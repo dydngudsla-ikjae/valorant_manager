@@ -69,32 +69,7 @@
 <!-- ============ MATCH ============ -->
 <section class="screen" id="scMatch">
   <div class="wrap">
-    <div class="matchhead">
-      <div class="mvenue" id="mVenue">Regular Season</div>
-      <div class="scoreline">
-        <div class="side home">
-          <div class="crest" id="homeCrest">H</div>
-          <div class="sn" id="homeName">Home</div>
-        </div>
-        <div class="bigscore"><span class="s" id="homeMaps">0</span><span class="colon">:</span><span class="s" id="awayMaps">0</span></div>
-        <div class="side away">
-          <div class="crest" id="awayCrest">A</div>
-          <div class="sn" id="awayName">Away</div>
-        </div>
-      </div>
-      <div class="mapchips" id="mapChips"></div>
-    </div>
-
-    <div class="mapname" id="curMapName">—</div>
-    <div class="draftpanel" id="draftPanel"></div>
-    <div class="rounds">
-      <div class="rlabel"><span id="rHomeName">HOME</span><span id="rRoundNo">Round 0</span><span id="rAwayName">AWAY</span></div>
-      <div class="pips">
-        <div class="pipwrap" id="pipsHome"></div>
-        <div class="halfmark"></div>
-        <div class="pipwrap right" id="pipsAway"></div>
-      </div>
-    </div>
+    <div id="matchHeadRoot"></div>
 
     <div class="mapview" id="mapView" style="display:none">
       <div class="bcast">
@@ -116,11 +91,11 @@
       <div class="mvalive" id="mvAlive" style="display:none"></div>
     </div>
 
-    <div class="feed" id="feed"></div>
+    <div id="matchFeedRoot"></div>
 
     <div id="boxRoot"></div>
 
-    <div class="btnrow" id="matchBtns"></div>
+    <div id="matchBtnsRoot"></div>
   </div>
 </section>
 

@@ -1,11 +1,10 @@
-import { autoAgentFor, buildCompChoice, draftComp, draftPair, mapSuitFor, matchupRead } from './core/draft.js';
+import { autoAgentFor, buildCompChoice, draftComp, draftPair, mapSuitFor } from './core/draft.js';
 import { buyLabel, initEcon } from './core/economy.js';
 import { counterEdge } from './core/ratings.js';
 import { applyRealStats, buildAgentPools } from './core/roster.js';
 import { agentMap, applyRoundStats, finalizeRatings, newStat, simOneMap, topKillerOfRound } from './core/round-engine.js';
 import { firstUnplayedWeek, makeSchedule, pickMaps, simRestOfWeek, sortedStandings, teamObj } from './core/season.js';
 import { MATCH, ST, bump, setMatch } from './core/state.js';
-import { ARCH, MAPDATA } from './data/agents.js';
 import { MV } from './data/geo/ascent.js';
 import { LEAGUES, MAPS, p } from './data/leagues.js';
 import { mvBuild, mvPlayRound } from './ui/mapview.js';
@@ -57,23 +56,11 @@ export function openMatch(fx,wi){
   const myId=ST.teams[ST.myTeamIdx].id;
   setMatch({fx,wi,home,away,hMaps:0,aMaps:0,mapResults:[],
     mapPool:pickMaps(3), curMap:0, box:{}, running:false, comps:[],
-    mapsToWin:2, roundsPlayed:0,
+    mapsToWin:2, roundsPlayed:0, feed:[], liveRound:{h:0,a:0},
     playerSide: fx.home===myId?'home':'away'});
   if(DEV_ASCENT_BO1){ MATCH.mapPool=['Ascent']; MATCH.mapsToWin=1; }
   // init box stats
   [...home.roster,...away.roster].forEach(pl=>MATCH.box[pl.name]=newStat());
-  // paint match head (used after draft)
-  document.getElementById('mVenue').textContent=`${LEAGUES[ST.league].name} · Week ${wi+1} · ${DEV_ASCENT_BO1?'Ascent (Bo1)':'Best of 3'}`;
-  document.getElementById('homeName').textContent=home.name;
-  document.getElementById('awayName').textContent=away.name;
-  const hc=document.getElementById('homeCrest'), ac=document.getElementById('awayCrest');
-  hc.textContent=home.short; hc.style.background=home.color; hc.style.fontSize='13px';
-  ac.textContent=away.short; ac.style.background=away.color; ac.style.fontSize='13px';
-  document.getElementById('homeMaps').textContent='0';
-  document.getElementById('awayMaps').textContent='0';
-  document.getElementById('rHomeName').textContent=home.short;
-  document.getElementById('rAwayName').textContent=away.short;
-  document.getElementById('feed').innerHTML='';
   if(DEV_ASCENT_BO1){ startMapDraft(0); return; } // straight to agent draft on Ascent
   startVeto();
 }
@@ -166,80 +153,37 @@ export function confirmDraft(mi){
   } else {
     MATCH.comps[mi]={home:opp, away:myComp, edge:counterEdge(opp.stance,myComp.stance), mapName:map};
   }
-  renderMapChips();
   go('scMatch');
-  renderMatchButtons('start');
   paintMap(0,0);
-}
-
-export function renderMapChips(){
-  const box=document.getElementById('mapChips'); box.innerHTML='';
-  MATCH.mapPool.forEach((m,i)=>{
-    let cls='mapchip';
-    if(MATCH.mapResults[i]){cls+= MATCH.mapResults[i].hWon?' w':' l';}
-    else if(i===MATCH.curMap && MATCH.running) cls+=' live';
-    const c=document.createElement('span'); c.className=cls;
-    c.textContent=m+(MATCH.mapResults[i]?` ${MATCH.mapResults[i].h}-${MATCH.mapResults[i].a}`:'');
-    box.appendChild(c);
-  });
 }
 
 export function paintMap(h,a){
   if(!MATCH.comps) MATCH.comps=[];
   // player-drafted maps already have comps set by lockDraft; only auto-draft as a safety net
   if(!MATCH.comps[MATCH.curMap]) MATCH.comps[MATCH.curMap]=draftPair(MATCH.home,MATCH.away,MATCH.mapPool[MATCH.curMap]);
-  document.getElementById('curMapName').textContent=MATCH.mapPool[MATCH.curMap]||'—';
-  renderDraft();
-  buildPips(h,a);
-  document.getElementById('rRoundNo').textContent=`Round ${h+a}`;
+  MATCH.liveRound={h,a};
+  bump(); // Match (React) reads MATCH.comps/curMap/running/liveRound/feed via useStore()
 }
 
-export function renderDraft(){
-  const cc=MATCH.comps[MATCH.curMap]; const p=document.getElementById('draftPanel'); if(!cc||!p)return;
-  const chips=comp=>comp.agents.map(a=>`<span class="ag r-${a.role}${a.favored?' fav':''}" title="${a.name} · mastery ${a.mastery}${a.favored?' · map pick':''}">${a.agent}</span>`).join('');
-  const favor=MAPDATA[cc.mapName]?ARCH[MAPDATA[cc.mapName].favor].name:'';
-  p.innerHTML=`
-    <div class="drafthd"><span>Draft</span><span class="mapfav">${cc.mapName} favors ${favor}</span></div>
-    <div class="draftrow">
-      <div class="dside">
-        <div class="dstance h">${ARCH[cc.home.stance].name}<em>${ARCH[cc.home.stance].blurb}</em></div>
-        <div class="agrow">${chips(cc.home)}</div>
-      </div>
-      <div class="dsplit">${cc.edge>0?'◀':cc.edge<0?'▶':'='}</div>
-      <div class="dside right">
-        <div class="dstance a">${ARCH[cc.away.stance].name}<em>${ARCH[cc.away.stance].blurb}</em></div>
-        <div class="agrow">${chips(cc.away)}</div>
-      </div>
-    </div>
-    <div class="dread ${cc.edge>0?'h':cc.edge<0?'a':''}">${matchupRead(cc,MATCH.home.short,MATCH.away.short)}${cc.edge!==0?` · +${Math.abs(cc.edge)} round power`:''}</div>`;
-}
 /* ============ PHASE 3 — ROUND ENGINE (sides · economy · duels) ============
    simOneMap computes the full round-by-round log; the three entry points
    (animated / skip / background) all replay or apply the same result. */
-
-export function buildPips(h,a){
-  const hp=document.getElementById('pipsHome'), ap=document.getElementById('pipsAway');
-  hp.innerHTML=''; ap.innerHTML='';
-  const need=Math.max(13,h,a);
-  for(let i=0;i<need;i++){const d=document.createElement('div');d.className='pip'+(i<h?' home':'');hp.appendChild(d);}
-  for(let i=0;i<need;i++){const d=document.createElement('div');d.className='pip'+(i<a?' away':'');ap.appendChild(d);}
-}
 
 /* ============ TOP-DOWN MAP VIEW ============ */
 
 export function simCurrentMap(speed){
   if(MATCH.running)return;
   speed=speed||'normal';
-  MATCH.running=true; renderMatchButtons('running'); renderMapChips();
+  MATCH.running=true;
   const home=MATCH.home, away=MATCH.away, cc=MATCH.comps[MATCH.curMap];
   if(MATCH.playerSide) MATCH.homeStartAtk = MATCH.playerSide==='home'; else MATCH.homeStartAtk=true;
   const result=simOneMap(home,away,cc,MATCH.homeStartAtk);
   MATCH.curResult=result;
-  const feed=document.getElementById('feed'); feed.innerHTML='';
+  MATCH.feed=[];
   document.getElementById('mapView').style.display='block';
   mvBuild(home,away,agentMap(cc));
   initEcon(); MATCH.curEconHist=[];
-  paintMap(0,0);
+  paintMap(0,0); // also bumps -- reflects running=true, cleared feed, reset pips
   let idx=0;
   const step=()=>{
     if(idx>=result.rounds.length){ document.getElementById('mvBanner').innerHTML=''; finishMap(result.h,result.a); return; }
@@ -265,20 +209,13 @@ export function simCurrentMap(speed){
       const loserBuyLbl=buyLabel(rd.winner==='home'?rd.buyA:rd.buyH);
       const tk=topKillerOfRound(rd);
       const sideTag=winSide==='atk'?'ATK':'DEF';
-      const tags=[];
-      if(rd.ability) tags.push(`<span class="abtag${rd.ability.ult?' ult':''}">${rd.ability.name}</span>`);
-      if(rd.clutch) tags.push(`<span class="cltag">${rd.clutch.player} 1v${rd.clutch.vs}</span>`);
-      if(rd.defuse) tags.push(`<span class="evtag">defuse</span>`); else if(rd.plant) tags.push(`<span class="evtag">plant</span>`);
-      const ln=document.createElement('div'); ln.className='ln '+rd.winner;
-      ln.innerHTML=`<span style="color:var(--muted)">R${rd.n}</span> <span class="sidetag ${winSide}">${sideTag}</span> `+
-        `<span class="k">${winTeam.short}</span>`+
-        `${rd.isPistol?' <span style="color:var(--muted)">pistol</span>':` <span style="color:var(--muted)">vs ${loserBuyLbl}</span>`}`+
-        ` <span style="color:var(--muted)">· FB ${rd.fb.killer}</span>`+
-        `${tk?` · ${tk.name} ${tk.k}k`:''} ${tags.join(' ')}`+
-        `<span style="float:right;color:var(--text)">${rd.h} - ${rd.a}</span>`;
-      feed.prepend(ln);
-      while(feed.children.length>7)feed.removeChild(feed.lastChild);
-      buildPips(rd.h,rd.a);
+      MATCH.feed=[{winner:rd.winner, n:rd.n, winSide, sideTag, teamShort:winTeam.short,
+        isPistol:rd.isPistol, loserBuyLbl, fbKiller:rd.fb.killer,
+        topKiller: tk?{name:tk.name,k:tk.k}:null,
+        ability: rd.ability?{name:rd.ability.name,ult:rd.ability.ult}:null,
+        clutch: rd.clutch?{player:rd.clutch.player,vs:rd.clutch.vs}:null,
+        defuse:rd.defuse, plant:rd.plant, h:rd.h, a:rd.a}, ...MATCH.feed].slice(0,7);
+      MATCH.liveRound={h:rd.h,a:rd.a};
       if(bsh)bsh.textContent=rd.h; if(bsa)bsa.textContent=rd.a;
       // economy: carry remaining + income (win 3000 / loss 1900) + 200/kill + plant bonus
       if(MV.econ&&MV.remaining){
@@ -295,9 +232,7 @@ export function simCurrentMap(speed){
           });
         });
       }
-      const sel=rd.winner==='home'?document.querySelectorAll('#pipsHome .pip.home'):document.querySelectorAll('#pipsAway .pip.away');
-      if(sel.length){const lp=sel[sel.length-1];lp.classList.add('pop');setTimeout(()=>lp.classList.remove('pop'),120);}
-      document.getElementById('rRoundNo').textContent=`Round ${rd.h+rd.a}`;
+      bump(); // Match (React): feed line, pips, round number -- pip "pop" flash is Pips' own effect
       step();
     });
   };
@@ -309,11 +244,7 @@ export function finishMap(h,a){
   MATCH.mapResults[MATCH.curMap]={h,a,hWon,rounds:(MATCH.curResult?MATCH.curResult.rounds:[]),mapName:MATCH.mapPool[MATCH.curMap],econ:(MATCH.curEconHist||[]).slice()};
   MATCH.roundsPlayed=(MATCH.roundsPlayed||0)+(h+a);
   if(hWon)MATCH.hMaps++; else MATCH.aMaps++;
-  document.getElementById('homeMaps').textContent=MATCH.hMaps;
-  document.getElementById('awayMaps').textContent=MATCH.aMaps;
-  document.getElementById('homeMaps').className='s '+(MATCH.hMaps>MATCH.aMaps?'win':'lose');
-  document.getElementById('awayMaps').className='s '+(MATCH.aMaps>MATCH.hMaps?'win':'lose');
-  MATCH.running=false; renderMapChips();
+  MATCH.running=false;
   const done=MATCH.hMaps===MATCH.mapsToWin||MATCH.aMaps===MATCH.mapsToWin;
   if(done){ endMatch(); }
   else {
@@ -334,35 +265,17 @@ export function endMatch(){
   if(MATCH.hMaps>MATCH.aMaps){H.w++;A.l++;}else{A.w++;H.l++;}
   // sim the rest of this week's other matches
   simRestOfWeek(MATCH.wi, fx);
-  bump(); // Hub (React) reads ST.standings/ST.schedule/ST.seasonOver, Box (React) reads MATCH.fx.played, via useStore()
-  renderMatchButtons('end');
+  bump(); // Hub (React) reads ST.standings/ST.schedule/ST.seasonOver, Box+Match (React) read MATCH.fx.played, via useStore()
 }
 
-// Box score + timeline (#boxRoot) are React now -- see src/ui/screens/Box.jsx.
-
-/* ---- match buttons ---- */
-
-export function renderMatchButtons(phase){
-  const box=document.getElementById('matchBtns'); box.innerHTML='';
-  if(phase==='start'){
-    box.innerHTML=`<button class="btn" onclick="simCurrentMap('normal')">▶ Watch · ${MATCH.mapPool[MATCH.curMap]}</button>
-    <button class="btn ghost" style="width:auto" onclick="simCurrentMap('fast')">⏩ Fast</button>
-    <button class="btn ghost" style="width:auto" onclick="skipMatch()">⏭ Skip</button>`;
-  } else if(phase==='running'){
-    box.innerHTML=`<button class="btn" disabled>Playing…</button>`;
-  } else if(phase==='nextmap'){
-    box.innerHTML=`<button class="btn" onclick="simCurrentMap()">Sim Map ${MATCH.curMap+1} · ${MATCH.mapPool[MATCH.curMap]}</button>`;
-  } else if(phase==='end'){
-    const myId=ST.teams[ST.myTeamIdx].id;
-    const won=(MATCH.fx.home===myId&&MATCH.hMaps>MATCH.aMaps)||(MATCH.fx.away===myId&&MATCH.aMaps>MATCH.hMaps);
-    box.innerHTML=`<button class="btn ${won?'gold':''}" onclick="backToHub()">${won?'Great win — Continue':'Continue'}</button>`;
-  }
-}
+// Box score + timeline (#boxRoot) and match orchestration (#matchHeadRoot /
+// #matchFeedRoot / #matchBtnsRoot) are React now -- see src/ui/screens/Box.jsx
+// and Match.jsx.
 
 export function skipMatch(){
   go('scMatch'); // may be called from the veto or draft screen
   document.getElementById('mapView').style.display='none';
-  document.getElementById('feed').innerHTML='';
+  MATCH.feed=[];
   if(!MATCH.comps)MATCH.comps=[];
   const homeStartAtk = MATCH.playerSide ? MATCH.playerSide==='home' : true;
   while(MATCH.hMaps<MATCH.mapsToWin&&MATCH.aMaps<MATCH.mapsToWin){
@@ -377,11 +290,6 @@ export function skipMatch(){
     MATCH.curMap++;
   }
   MATCH.curMap=Math.min(MATCH.curMap,MATCH.mapPool.length-1);
-  document.getElementById('homeMaps').textContent=MATCH.hMaps;
-  document.getElementById('awayMaps').textContent=MATCH.aMaps;
-  document.getElementById('homeMaps').className='s '+(MATCH.hMaps>MATCH.aMaps?'win':'lose');
-  document.getElementById('awayMaps').className='s '+(MATCH.aMaps>MATCH.hMaps?'win':'lose');
-  renderMapChips();
   endMatch();
 }
 
@@ -408,5 +316,3 @@ export let toastTimer=null;
 
 export function toast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('on');
   clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('on'),3200);}
-
-export function setBoxSide(v){ boxSide=v; renderBox(); }

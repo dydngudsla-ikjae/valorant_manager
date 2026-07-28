@@ -3,7 +3,7 @@
 > 다음 세션에서 이 파일을 읽고 다음 미완료 Phase부터 순서대로 실행.
 > **각 Phase 끝마다 `npm run dev`로 앱이 그대로 동작하는지 확인 후 커밋. 안 돌면 다음으로 넘어가지 말 것.**
 
-**진행 상황 (2026-07-29 기준): Phase 0~3a 완료, Phase 4는 아래 체크리스트 7/10.**
+**진행 상황 (2026-07-29 기준): Phase 0~3a 완료, Phase 4는 아래 체크리스트 8/10.**
 - Phase 0: Vite 스캐폴딩 (커밋 `0fe16ca`)
 - Phase 1: 인라인 데이터 4종 추출 — AGENT_IMG/STATS_BY_NAME/ASCENT_BG/NAVGRID (커밋 `ce6d7b0`)
 - (부수) 에이전트 아이콘을 `images/Characters/_small` 원본에서 64px로 리사이즈해 교체 (커밋 `42acc37`)
@@ -21,6 +21,13 @@
 - Phase 4 step 5: Box 화면(박스스코어+타임라인) 이관. 이 화면은 `scMatch` 전체가 아니라 그 안의 `#boxWrap`+`#timelineWrap` 두 블록만 해당(나머지 `scMatch` 오케스트레이션은 8번). 두 블록은 항상 같이 켜지므로(둘 다 `endMatch()` 직후에만 표시) `#boxRoot` 하나로 합쳐 `Box.jsx`가 함께 그림. **표시 여부를 별도 플래그 없이 `MATCH.fx.played`로 파생** — `endMatch()`가 `fx.played=true`를 세팅하는 바로 그 시점에만 참이 되고, 이미 있던 `bump()` 한 번(step 3에서 추가)이 Box도 같이 깨움. 탭 상태(`side: 'home'|'away'`)는 컴포넌트 로컬 `useState`로 교체 — 기존 `setBoxSide()`/모듈 전역 `let boxSide`와 `window.setBoxSide` 노출 전부 제거. `openMatch()`/`skipMatch()`에 있던 `document.getElementById('boxWrap').style.display='none'` 수동 리셋 2곳도 삭제(React가 `MATCH.fx.played`로 알아서 숨김 — 새 매치 시작 시 `fx.played`는 항상 false). `showBox`/`renderBox`/`renderTimeline` 3개 함수 전부 삭제, `matchMVP` import도 legacy.js에서 죽어서 제거.
 - Phase 4 step 6: Veto 화면 이관. `scVeto` 전체를 `#vetoRoot` 단일 마운트로. 기존엔 `stepVeto`/`applyVeto`/`finalizeVeto`가 매 상태 변화마다 `renderVeto([done])`를 직접 호출했는데, 전부 `bump()`로 교체하고 `renderVeto` 자체(및 그 안에서만 쓰던 DOM 생성 로직)는 삭제. `done`(비토 완료 여부)도 별도 플래그 없이 `v.step >= v.order.length`로 파생 — `renderVeto(true)` 호출 지점이 정확히 그 조건이 참인 순간이었음. AI 턴 진행용 `setTimeout(...,550)`은 그대로 유지(엔진 타이밍 로직이라 이관 대상 아님), 다만 이제 그 콜백(`aiVetoAct`→`applyVeto`)이 부르는 `bump()`가 UI를 깨움. 타일은 `canClick&&!a`일 때만 `button`, 아니면 `div`로 렌더(원본 `document.createElement(cond?'button':'div')`와 동일 효과) — JSX에서 `const Tag = cond ? 'button' : 'div'; <Tag>` 패턴으로 재현. `vetoSkip`/`startMapDraft`의 `window` 노출도 제거(마지막 inline onclick 소비처였음, 이제 Veto.jsx가 직접 import). **주의: `DEV_ASCENT_BO1=true`면 이 화면을 건너뛰므로, 검증 시엔 일시적으로 `false`로 바꿔 전체 밴/픽 플로우를 확인한 뒤 반드시 `true`로 되돌릴 것** (안 그러면 이후 매치 검증이 매번 비토를 거쳐야 해서 느려짐).
 - Phase 4 step 7: Draft 화면 이관. `scDraft` 전체를 `#draftRoot` 단일 마운트로. `renderDraftScreen(mi)` 삭제 — `startMapDraft`(진입), `selectStance`, `selectAgent` 3곳의 호출을 전부 `bump()`로 교체. `mi`(맵 인덱스)는 `MATCH.curMap`과 항상 같은 값이라 Draft.jsx는 prop 없이 `MATCH.curMap`을 직접 읽고, `selectStance(mi,s)`/`selectAgent(mi,name,agent)`/`confirmDraft(mi)` 호출부에만 그 값을 넘김(함수 시그니처 자체는 그대로 둠 — `confirmDraft`는 여전히 `mi`를 실제로 씀). `confirmDraft` 본문(맵 칩 갱신·`go('scMatch')`·매치 버튼 렌더)은 그대로 legacy.js에 남음 — Match 화면 오케스트레이션(8번) 영역이라 이번 스텝 범위 밖. `selectAgent`/`confirmDraft`의 `window` 노출 제거(마지막 inline onclick 소비처였음). 이 화면만 쓰던 `stanceSuit`/`buildCompForStance`/`ROLE` import를 legacy.js에서 제거(죽은 참조 확인 후 정리 — `counterEdge`/`buildCompChoice`/`autoAgentFor`/`ARCH`/`MAPDATA`는 `confirmDraft`·`renderDraft`(8번 몫)에서 계속 씀).
+- Phase 4 step 8: Match 화면(오케스트레이션) 이관 — **`#mapView`는 절대 건드리지 않음.** `scMatch`의 나머지(헤더/스코어/맵칩/드래프트 요약/라운드 핍/피드/버튼)를 React로 옮기되, 라운드-바이-라운드 애니메이션을 도는 `#mapView`(브로드캐스트 HUD·SVG 필드·킬피드)는 여전히 순수 명령형(9번 몫)이라 **같은 React 트리 안에 두면 위험** — Match 쪽이 라운드마다 `bump()`로 재렌더링되는데, 그 서브트리 안에 `#mapView`를 자식으로 두면 React 재조정(reconciliation)이 `mvBuild`/`mvPlayRound`가 직접 꽂아넣은 DOM(필드 SVG, 킬피드 줄 등)을 다음 렌더에서 지워버릴 수 있음. 그래서 `#mapView`를 **형제로 분리**해 `#matchHeadRoot`(헤더+맵칩+드래프트 요약+라운드 핍, `MatchHead`) / `#mapView`(그대로) / `#matchFeedRoot`(피드, `MatchFeed`) / `#boxRoot`(기존, 5번) / `#matchBtnsRoot`(버튼, `MatchButtons`) 5개를 나란히 마운트 — 한 화면에 React 루트 여러 개 + 순수 DOM 섬 하나가 공존(이미 `#boxRoot`가 그 전례).
+  - 피드는 `feed.prepend(ln)` + `while(children.length>7)` DOM 조작이었던 것을, `MATCH.feed`(최신이 앞) 구조화 배열 + `.slice(0,7)`로 교체하고 `FeedRow` 컴포넌트가 그림.
+  - 라운드 핍/라운드 번호는 `MATCH.liveRound={h,a}`라는 새 필드로 파생(단순히 `feed[0]`에서 유도하면 안 됨 — `paintMap(0,0)`이 새 맵 시작 시 0-0으로 리셋하는 타이밍이 `feed` 클리어 타이밍과 다르기 때문에 별도 상태 필요). 핍 "pop" 애니메이션(새로 채워진 핍이 잠깐 커지는 효과)은 `Pips` 컴포넌트 자체의 `useEffect`(`liveRound` 변화 감지 + `feed[0].winner`로 어느 쪽이 이겼는지 판단)로 재구현 — 레거시의 `document.querySelectorAll('#pipsHome .pip.home')` 직접 조작 코드는 삭제.
+  - 매치 버튼의 phase는 `renderMatchButtons(phase)` 인자로 넘기던 것을 `MATCH.fx.played ? 'end' : MATCH.running ? 'running' : 'start'`로 파생. **`'nextmap'` 분기는 삭제** — 호출부 3곳(`confirmDraft`/`simCurrentMap`/`endMatch`) 어디도 그 값을 넘긴 적이 없어 원래도 도달 불가능한 죽은 분기였음(Bo3 다음 맵은 버튼이 아니라 `startMapDraft()`로 바로 드래프트 화면행).
+  - `openMatch`/`finishMap`/`skipMatch`의 스코어·맵칩 DOM 직접 쓰기 전부 삭제 — 뒤이어 어차피 `paintMap`/`startMapDraft`/`endMatch` 중 하나가 `bump()`를 부르므로 별도 bump 불필요(동기 코드라 화면엔 최종 상태만 반영됨).
+  - **step 5에서 놓친 버그를 여기서 발견해 수정**: 삭제됐어야 할 `boxSide`/`renderBox`를 참조하는 고아 `setBoxSide` 함수가 파일 맨 끝(go/toast 옆)에 남아 있었음 — 아무 데서도 안 불렸으니 안 터졌을 뿐, 호출됐다면 `ReferenceError`. 지금 삭제.
+  - 이 스텝을 끝으로 **레거시 innerHTML 템플릿에 남아있던 `onclick="..."` 문자열이 코드베이스 전체에서 0개**가 됨 → `main.jsx`의 임시 `Object.assign(window, {...})` 노출 블록(Phase 0부터 있던 것)이 전부 죽은 코드가 되어 통째로 제거. 원래 10번 스텝 몫으로 예정했던 정리인데 8번에서 이미 끝남 — 10번엔 `go()`→화면 상태 전환·`legacy.js` 삭제만 남음.
 
 **확정 사항: React로 이관한다.** 따라서 `ui/` 렌더 코드를 바닐라 모듈로 정리하는 단계는 건너뛴다
 (어차피 버릴 코드를 정리하는 낭비 ~670줄). 엔진만 뽑아내고 바로 React로 간다.
@@ -195,7 +202,7 @@ vlm/
 - [x] **5. Box 화면** — ~63줄. 박스스코어 + 타임라인
 - [x] **6. Veto 화면** — ~38줄. 맵 비토
 - [x] **7. Draft 화면** — ~136줄. **React 이득이 가장 큰 화면** (폼·상태 복잡)
-- [ ] **8. Match 화면** — ~240줄. 오케스트레이션, 가장 까다로움
+- [x] **8. Match 화면** — ~240줄. 오케스트레이션, 가장 까다로움
 - [ ] **9. MapView.jsx** — `mapview.js`를 `useRef`+`useEffect`로 감싸는 래퍼만. **내부 명령형 코드는 손대지 않음**
 - [ ] **10. 최종 통합** — 루트를 하나로 합치고 `go()`를 `screen` state로 대체, `legacy.js` 삭제, 임시 `window` 노출 제거, 인라인 `onclick` 23개 제거, 전 기능 회귀 테스트
 
