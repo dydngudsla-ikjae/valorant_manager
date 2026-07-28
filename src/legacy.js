@@ -86,17 +86,15 @@ export function startVeto(){
     : [['away','ban'],['home','ban'],['away','pick'],['home','pick'],['away','ban'],['home','ban']];
   MATCH.veto={remaining:[...MAPS], picks:[], acts:[], order, step:0};
   go('scVeto');
-  document.getElementById('vVenue').textContent=`${MATCH.home.short} vs ${MATCH.away.short} · Week ${MATCH.wi+1} · Map Veto`;
-  document.getElementById('vetoBtns').innerHTML=`<button class="btn ghost" onclick="vetoSkip()">Auto-veto &amp; skip match</button>`;
-  renderVeto(); stepVeto();
+  bump(); // Veto (React) reads MATCH.veto via useStore()
+  stepVeto();
 }
 
 export function stepVeto(){
   const v=MATCH.veto;
   if(v.step>=v.order.length){ finalizeVeto(); return; }
   const [side]=v.order[v.step];
-  if(side===MATCH.playerSide){ renderVeto(); }        // wait for player click
-  else { setTimeout(()=>{ aiVetoAct(); }, 550); renderVeto(); }
+  if(side!==MATCH.playerSide){ setTimeout(()=>{ aiVetoAct(); }, 550); }        // else: wait for player click
 }
 
 export function aiVetoAct(){
@@ -126,7 +124,8 @@ export function applyVeto(side,act,map){
   v.acts.push({side,act,map});
   if(act==='pick') v.picks.push({side,map});
   v.step++;
-  renderVeto(); stepVeto();
+  bump();
+  stepVeto();
 }
 
 export function finalizeVeto(){
@@ -134,48 +133,10 @@ export function finalizeVeto(){
   const decider=v.remaining[0];
   v.acts.push({side:'decider',act:'decider',map:decider});
   MATCH.mapPool=[v.picks[0].map, v.picks[1].map, decider];
-  renderVeto(true);
-  document.getElementById('vetoBtns').innerHTML=
-    `<button class="btn" onclick="startMapDraft(0)">To the draft →</button>`;
+  bump();
 }
 
-export function renderVeto(done){
-  const v=MATCH.veto;
-  const myTeam=ST.teams[ST.myTeamIdx];
-  let prompt;
-  if(done){ prompt='Veto complete — 3 maps set'; }
-  else if(v.step<v.order.length){
-    const [side,act]=v.order[v.step];
-    const mine=side===MATCH.playerSide;
-    const who=mine?'Your':(side==='home'?MATCH.home.short:MATCH.away.short)+"'s";
-    prompt=`${who} turn — ${act.toUpperCase()} a map`;
-  }
-  document.getElementById('vPrompt').textContent=prompt;
-  const actedBy={}; v.acts.forEach(a=>actedBy[a.map]=a);
-  const canClick = !done && v.step<v.order.length && v.order[v.step][0]===MATCH.playerSide;
-  const grid=document.getElementById('vetoGrid'); grid.innerHTML='';
-  MAPS.forEach(map=>{
-    const a=actedBy[map];
-    const fav=ARCH[MAPDATA[map].favor].name;
-    const suit=mapSuitFor(myTeam,map);
-    const tile=document.createElement(canClick&&!a?'button':'div');
-    tile.className='vtile'+(a?(' '+a.act):'')+(canClick&&!a?' live':'');
-    let tag = a ? (a.act==='pick'?`PICK · ${a.side===MATCH.playerSide?'you':(a.side==='home'?MATCH.home.short:MATCH.away.short)}`
-                 : a.act==='ban'?`BAN · ${a.side==='decider'?'':a.side===MATCH.playerSide?'you':(a.side==='home'?MATCH.home.short:MATCH.away.short)}`
-                 : 'DECIDER') : `favors ${fav}`;
-    tile.innerHTML=`<div class="vmap">${map}</div><div class="vtag">${tag}</div>
-      ${!a?`<div class="vsuit">roster fit ${suit>=2?'★★':suit>=1?'★':'·'}</div>`:''}`;
-    if(canClick&&!a) tile.onclick=()=>playerVeto(map);
-    grid.appendChild(tile);
-  });
-  // result order strip
-  const rs=document.getElementById('vetoResult');
-  if(v.picks.length||done){
-    const order=[...v.picks.map((p,i)=>({label:`Map ${i+1}`,map:p.map})),
-      ...(done?[{label:'Decider',map:MATCH.mapPool[2]}]:[])];
-    rs.innerHTML=order.map(o=>`<span class="vres"><b>${o.label}</b> ${o.map}</span>`).join('');
-  } else rs.innerHTML='';
-}
+// Map veto screen (#vetoRoot) is React now -- see src/ui/screens/Veto.jsx.
 
 export function vetoSkip(){ MATCH.mapPool=pickMaps(3); skipMatch(); }
 // player drafts this map: opponent commits first (map-optimal), player gets last-pick info
