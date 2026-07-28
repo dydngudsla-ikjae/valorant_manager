@@ -3,8 +3,9 @@ import './styles/index.css';
 import { applyRealStats, buildAgentPools } from './core/roster.js';
 import {
   go, startNextMatch, vetoSkip, startMapDraft, skipMatch, selectAgent,
-  confirmDraft, backToHub, simCurrentMap, setBoxSide,
+  confirmDraft, backToHub, simCurrentMap,
 } from './legacy.js';
+import { Box } from './ui/screens/Box.jsx';
 import { Hub } from './ui/screens/Hub.jsx';
 import { Select } from './ui/screens/Select.jsx';
 import { Squad } from './ui/screens/Squad.jsx';
@@ -17,7 +18,7 @@ import { PlayerDetail } from './ui/screens/PlayerDetail.jsx';
 // Removed once every screen has moved off legacy.js's innerHTML rendering.
 Object.assign(window, {
   go, startNextMatch, vetoSkip, startMapDraft, skipMatch, selectAgent,
-  confirmDraft, backToHub, simCurrentMap, setBoxSide,
+  confirmDraft, backToHub, simCurrentMap,
 });
 
 applyRealStats();
@@ -30,3 +31,4 @@ createRoot(document.getElementById('selectRoot')).render(<Select />);
 createRoot(document.getElementById('hubRoot')).render(<Hub />);
 createRoot(document.getElementById('squadRoot')).render(<Squad />);
 createRoot(document.getElementById('playerRoot')).render(<PlayerDetail />);
+createRoot(document.getElementById('boxRoot')).render(<Box />);

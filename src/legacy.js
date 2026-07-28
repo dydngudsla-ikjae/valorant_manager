@@ -2,7 +2,7 @@ import { autoAgentFor, buildCompChoice, buildCompForStance, draftComp, draftPair
 import { buyLabel, initEcon } from './core/economy.js';
 import { counterEdge } from './core/ratings.js';
 import { applyRealStats, buildAgentPools } from './core/roster.js';
-import { agentMap, applyRoundStats, finalizeRatings, matchMVP, newStat, simOneMap, topKillerOfRound } from './core/round-engine.js';
+import { agentMap, applyRoundStats, finalizeRatings, newStat, simOneMap, topKillerOfRound } from './core/round-engine.js';
 import { firstUnplayedWeek, makeSchedule, pickMaps, simRestOfWeek, sortedStandings, teamObj } from './core/season.js';
 import { MATCH, ST, bump, setMatch } from './core/state.js';
 import { ARCH, MAPDATA } from './data/agents.js';
@@ -73,7 +73,6 @@ export function openMatch(fx,wi){
   document.getElementById('awayMaps').textContent='0';
   document.getElementById('rHomeName').textContent=home.short;
   document.getElementById('rAwayName').textContent=away.short;
-  document.getElementById('boxWrap').style.display='none';
   document.getElementById('feed').innerHTML='';
   if(DEV_ASCENT_BO1){ startMapDraft(0); return; } // straight to agent draft on Ascent
   startVeto();
@@ -438,75 +437,11 @@ export function endMatch(){
   if(MATCH.hMaps>MATCH.aMaps){H.w++;A.l++;}else{A.w++;H.l++;}
   // sim the rest of this week's other matches
   simRestOfWeek(MATCH.wi, fx);
-  bump(); // Hub (React) reads ST.standings/ST.schedule/ST.seasonOver via useStore()
-  showBox();
-  renderTimeline();
+  bump(); // Hub (React) reads ST.standings/ST.schedule/ST.seasonOver, Box (React) reads MATCH.fx.played, via useStore()
   renderMatchButtons('end');
 }
 
-export let boxSide='home';
-
-export function showBox(){
-  document.getElementById('boxWrap').style.display='block';
-  const tb=document.getElementById('boxTabs');
-  tb.innerHTML=`<button class="${boxSide==='home'?'on':''}" onclick="setBoxSide('home')">${MATCH.home.short}</button>
-    <button class="${boxSide==='away'?'on':''}" onclick="setBoxSide('away')">${MATCH.away.short}</button>`;
-  renderBox();
-}
-
-export function renderBox(){
-  document.getElementById('boxTabs').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',(i===0)===(boxSide==='home')));
-  const team=boxSide==='home'?MATCH.home:MATCH.away;
-  const agBy = MATCH.comps[0]? agentMap(MATCH.comps[0]) : {};
-  const rows=team.roster.map(pl=>({pl,b:MATCH.box[pl.name]})).sort((x,y)=>y.b.rating-x.b.rating);
-  const mvpName=matchMVP();
-  const t=document.getElementById('boxTable');
-  t.innerHTML=`<thead><tr><th>Player</th><th title="Impact rating">RAT</th><th>ACS</th><th>K</th><th>D</th><th>A</th>
-    <th title="First bloods" class="hide">FB</th><th title="First deaths" class="hide">FD</th><th title="Clutches">CL</th><th title="Utility plays" class="hide">UT</th></tr></thead><tbody>`+
-    rows.map(({pl,b})=>{
-      const ag=agBy[pl.name]||'';
-      const ratCls=b.rating>=1.15?'pos':b.rating<0.85?'neg':'';
-      return `<tr><td class="pl">${pl.name==mvpName?'<span class="mvpstar">★</span> ':''}${pl.name}<span class="agtag"> ${ag}</span></td>
-      <td class="rat ${ratCls}">${b.rating.toFixed(2)}</td>
-      <td class="acs">${b.acsFinal}</td><td>${b.k}</td><td>${b.d}</td><td>${b.a}</td>
-      <td class="hide">${b.fb}</td><td class="hide">${b.fd}</td><td>${b.cl||0}</td><td class="hide">${b.util||0}</td></tr>`;
-    }).join('')+`</tbody>`;
-}
-
-export function renderTimeline(){
-  const wrap=document.getElementById('timelineWrap'); if(!wrap)return;
-  wrap.style.display='block';
-  const mvp=matchMVP(); const mvpStat=MATCH.box[mvp];
-  let html=`<div class="tlmvp"><span class="mvplbl">Player of the match</span>
-    <span class="mvpname">★ ${mvp}</span>
-    <span class="mvpline">${mvpStat.rating.toFixed(2)} rating · ${mvpStat.k}/${mvpStat.d}/${mvpStat.a} · ${mvpStat.fb} FB${mvpStat.cl?` · ${mvpStat.cl} clutch`:''}</span></div>`;
-  MATCH.mapResults.forEach((mr,mi)=>{
-    if(!mr||!mr.rounds)return;
-    html+=`<div class="tlmap"><div class="tlmaphd">${mr.mapName} <b>${mr.h}-${mr.a}</b></div><div class="tlrow">`;
-    mr.rounds.forEach(rd=>{
-      const winCls=rd.winner;
-      const icons=(rd.defuse?'◈':rd.plant?'✸':'')+(rd.clutch?'★':'');
-      const title=`R${rd.n} ${(rd.winner==='home'?rd.hSide:rd.aSide).toUpperCase()} ${rd.winner==='home'?MATCH.home.short:MATCH.away.short} win`+
-        ` · FB ${rd.fb.killer}`+(rd.ability?` · ${rd.ability.name}`:'')+(rd.plant?(rd.defuse?' · defused':' · planted'):'')+(rd.clutch?` · ${rd.clutch.player} 1v${rd.clutch.vs}`:'');
-      html+=`<span class="tlcell ${winCls}${rd.isPistol?' pistol':''}" title="${title}"><span class="tln">${rd.n}</span><span class="tlic">${icons}</span></span>`;
-    });
-    html+=`</div></div>`;
-  });
-  // economy graphs per map (credits per round)
-  MATCH.mapResults.forEach((mr,mi)=>{
-    if(!mr||!mr.econ||!mr.econ.length)return;
-    const W=460,H=70,pad=4,max=45000,n=mr.econ.length;
-    const xf=i=>pad+(n<=1?0:i*(W-2*pad)/(n-1));
-    const yf=v=>H-pad-(v/max)*(H-2*pad);
-    const line=(key,col)=>mr.econ.map((e,i)=>`${i?'L':'M'}${xf(i).toFixed(1)},${yf(e[key]).toFixed(1)}`).join(' ');
-    html+=`<div class="econgraph"><div class="eghd">${mr.mapName} · team credits by round</div>
-      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
-        <path d="${line('h','')}" fill="none" stroke="var(--val)" stroke-width="2"/>
-        <path d="${line('a','')}" fill="none" stroke="var(--def)" stroke-width="2"/>
-      </svg></div>`;
-  });
-  wrap.innerHTML=html;
-}
+// Box score + timeline (#boxRoot) are React now -- see src/ui/screens/Box.jsx.
 
 /* ---- match buttons ---- */
 
@@ -529,7 +464,6 @@ export function renderMatchButtons(phase){
 
 export function skipMatch(){
   go('scMatch'); // may be called from the veto or draft screen
-  document.getElementById('boxWrap').style.display='none';
   document.getElementById('mapView').style.display='none';
   document.getElementById('feed').innerHTML='';
   if(!MATCH.comps)MATCH.comps=[];

@@ -3,7 +3,7 @@
 > 다음 세션에서 이 파일을 읽고 다음 미완료 Phase부터 순서대로 실행.
 > **각 Phase 끝마다 `npm run dev`로 앱이 그대로 동작하는지 확인 후 커밋. 안 돌면 다음으로 넘어가지 말 것.**
 
-**진행 상황 (2026-07-28 기준): Phase 0~3a 완료, Phase 4는 아래 체크리스트 4/10.**
+**진행 상황 (2026-07-28 기준): Phase 0~3a 완료, Phase 4는 아래 체크리스트 5/10.**
 - Phase 0: Vite 스캐폴딩 (커밋 `0fe16ca`)
 - Phase 1: 인라인 데이터 4종 추출 — AGENT_IMG/STATS_BY_NAME/ASCENT_BG/NAVGRID (커밋 `ce6d7b0`)
 - (부수) 에이전트 아이콘을 `images/Characters/_small` 원본에서 64px로 리사이즈해 교체 (커밋 `42acc37`)
@@ -18,6 +18,7 @@
   - `agIcon()`(HTML 문자열 반환)은 legacy.js 전용. React 컴포넌트는 `agImg()`(경로만 반환)로 직접 `<img>` JSX를 그림.
 - Phase 4 step 3: Hub 화면 이관. `renderHub()`가 자기 화면(standings/schedule) 말고도 Squad의 `squadRegion`/`squadTitle`까지 채우고 있었던 부분은, Hub를 걷어내는 김에 **Squad가 이미 갖고 있는 데이터(`ST.teams[myTeamIdx]`, `LEAGUES[ST.league]`)로 Squad.jsx가 직접 그리도록 옮겨** 임시 크로스-화면 의존을 해소함(→ `#squadRoot` 단일 마운트로 Squad도 전체 화면 소유 전환). `renderHub`/`renderStandings`/`renderSchedule` 3개 함수 전부 삭제. 대신 `bump()`를 `endMatch()`(스탠딩 갱신 직후)와 `startNextMatch()`의 bye-week 분기(`simRestOfWeek` 직후)에 추가 — 이 두 곳이 Hub가 읽는 상태(`ST.standings`/`ST.schedule`/`ST.seasonOver`)를 실제로 바꾸는 지점이었음. `go()`의 `if(id==='scHub')renderHub()` 특례도 제거(이제 Hub가 상시 마운트돼 스스로 재렌더링).
 - Phase 4 step 4: Select 화면 이관. 이 화면은 팀 확정 전까지만 존재하고(`go('scSelect')`로 되돌아오는 곳이 코드 어디에도 없음) `ST`를 전혀 읽지 않으므로, **다른 이관 화면들과 달리 `useStore()`/`bump()` 불필요** — 현재 리그 탭(`lk`)과 미리보기 중인 팀(`previewIdx`)은 순수 컴포넌트 로컬 `useState`로 충분. `scrollIntoView`는 `useEffect(() => {...}, [previewIdx])`로 이식(원본은 클릭마다 무조건 스크롤했지만, 같은 카드를 연속 클릭해도 `previewIdx`가 안 바뀌면 재스크롤 안 함 — 사소한 차이, 회귀 아님). `buildSelect`/`renderTeams`/`previewTeam` 3개 함수 삭제, `main.js`의 부팅 시 `buildSelect()` 호출도 제거(React가 마운트 시 알아서 첫 리그를 그림). 이 함수들만 쓰던 `playerOVR`/`teamAxis`/`teamOVR`/`agIcon`/`visiblePool`/`displayRole`/`profBand`/`roleColor`/`roleFull` import를 legacy.js에서 제거(전부 다른 화면에도 안 쓰여 완전히 죽은 참조였음 확인 후 정리 — legacy.js 전체를 정리한 게 아니라 이번 삭제로 죽은 것만 제거).
+- Phase 4 step 5: Box 화면(박스스코어+타임라인) 이관. 이 화면은 `scMatch` 전체가 아니라 그 안의 `#boxWrap`+`#timelineWrap` 두 블록만 해당(나머지 `scMatch` 오케스트레이션은 8번). 두 블록은 항상 같이 켜지므로(둘 다 `endMatch()` 직후에만 표시) `#boxRoot` 하나로 합쳐 `Box.jsx`가 함께 그림. **표시 여부를 별도 플래그 없이 `MATCH.fx.played`로 파생** — `endMatch()`가 `fx.played=true`를 세팅하는 바로 그 시점에만 참이 되고, 이미 있던 `bump()` 한 번(step 3에서 추가)이 Box도 같이 깨움. 탭 상태(`side: 'home'|'away'`)는 컴포넌트 로컬 `useState`로 교체 — 기존 `setBoxSide()`/모듈 전역 `let boxSide`와 `window.setBoxSide` 노출 전부 제거. `openMatch()`/`skipMatch()`에 있던 `document.getElementById('boxWrap').style.display='none'` 수동 리셋 2곳도 삭제(React가 `MATCH.fx.played`로 알아서 숨김 — 새 매치 시작 시 `fx.played`는 항상 false). `showBox`/`renderBox`/`renderTimeline` 3개 함수 전부 삭제, `matchMVP` import도 legacy.js에서 죽어서 제거.
 
 **확정 사항: React로 이관한다.** 따라서 `ui/` 렌더 코드를 바닐라 모듈로 정리하는 단계는 건너뛴다
 (어차피 버릴 코드를 정리하는 낭비 ~670줄). 엔진만 뽑아내고 바로 React로 간다.
@@ -189,7 +190,7 @@ vlm/
 - [x] **2. Squad 화면** — ~58줄. 가장 단순, `ST` 읽기만 함. 패턴 확립용
 - [x] **3. Hub 화면** — ~63줄. 순위표 + 일정 테이블
 - [x] **4. Select 화면** — ~75줄. 팀 선택
-- [ ] **5. Box 화면** — ~63줄. 박스스코어 + 타임라인
+- [x] **5. Box 화면** — ~63줄. 박스스코어 + 타임라인
 - [ ] **6. Veto 화면** — ~38줄. 맵 비토
 - [ ] **7. Draft 화면** — ~136줄. **React 이득이 가장 큰 화면** (폼·상태 복잡)
 - [ ] **8. Match 화면** — ~240줄. 오케스트레이션, 가장 까다로움
