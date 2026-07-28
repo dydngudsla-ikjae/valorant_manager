@@ -176,7 +176,7 @@ vlm/
 **한 세션에 한 단계씩만 진행. 끝나면 커밋하고 아래 체크박스에 표시한 뒤 멈춘다.**
 다음 세션(또는 다음 지시)에서 첫 번째 미체크 항목부터 이어간다.
 
-- [ ] **1. 셋업** — `npm i react react-dom` + `@vitejs/plugin-react`, `main.js` → `main.jsx`, `src/ui/useStore.js` 작성 (§4의 `useSyncExternalStore` 훅)
+- [x] **1. 셋업** — `npm i react react-dom` + `@vitejs/plugin-react`, `main.js` → `main.jsx`, `src/ui/useStore.js` 작성 (§4의 `useSyncExternalStore` 훅)
 - [ ] **2. Squad 화면** — ~58줄. 가장 단순, `ST` 읽기만 함. 패턴 확립용
 - [ ] **3. Hub 화면** — ~63줄. 순위표 + 일정 테이블
 - [ ] **4. Select 화면** — ~75줄. 팀 선택
