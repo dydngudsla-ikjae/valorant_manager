@@ -1,6 +1,7 @@
 node_modules
 dist
 .DS_Store
+.claude/
 
 # Original data sources — large, not committed. See PLAN.md.
 images/
