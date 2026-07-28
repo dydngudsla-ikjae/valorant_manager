@@ -1,0 +1,7 @@
+node_modules
+dist
+.DS_Store
+
+# Original data sources — large, not committed. See PLAN.md.
+images/
+stats/

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VALORANT League Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <div class="logo"><span class="sq"></span>VAL<span class="tag">·</span>MANAGER</div>
+    <div class="spacer"></div>
+    <div class="myteam" id="teamBadge" style="display:none">
+      <span class="lbl">MY CLUB</span>
+      <span class="dot" id="badgeDot"></span>
+      <b id="badgeName">—</b>
+    </div>
+  </div>
+</header>
+
+<!-- ============ SELECT ============ -->
+<section class="screen on" id="scSelect">
+  <div class="wrap">
+    <div class="eyebrow">2026 Season · Career Mode</div>
+    <h1 class="big">Take the <em>chair</em>.</h1>
+    <p class="sub">Pick a club from one of the four international leagues. You run the roster and the game plan — the server decides the rest, round by round. Foundation build: static ratings, live match sim, full regular season.</p>
+    <div class="tabs" id="leagueTabs"></div>
+    <div class="grid g-teams" id="teamGrid"></div>
+    <div id="selectPreview" class="selectpreview" style="display:none">
+      <div class="sppanel">
+        <div class="sphead">
+          <div><div class="eyebrow" id="spRegion">—</div><h2 class="spname" id="spName">Team</h2></div>
+          <div class="spright">
+            <div class="povr" id="spOvr" style="font-size:30px">—</div>
+            <button class="btn" style="width:auto" id="spConfirm">이 팀 선택 →</button>
+          </div>
+        </div>
+        <p class="sub" style="margin:2px 0 14px">이 스쿼드로 시즌을 운영합니다. 선수 능력치·역할을 확인하고 <b>이 팀 선택</b>을 누르면 확정됩니다.</p>
+        <div class="squadgrid" id="spRoster"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HUB ============ -->
+<section class="screen" id="scHub">
+  <div class="wrap">
+    <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:20px">
+      <div>
+        <div class="eyebrow" id="hubLeague">—</div>
+        <h1 class="big" style="font-size:clamp(26px,5vw,40px)" id="hubTitle">Season Hub</h1>
+      </div>
+      <div class="btnrow" style="margin:0; width:auto">
+        <button class="btn ghost" style="width:auto" onclick="go('scSquad')">Squad</button>
+        <button class="btn" style="width:auto" id="playBtn" onclick="startNextMatch()">Play Next</button>
+      </div>
+    </div>
+    <div class="hublayout">
+      <div class="panel">
+        <div class="ph">Standings <span class="rl" id="standRegion">—</span></div>
+        <div style="overflow-x:auto"><table id="standTable"></table></div>
+      </div>
+      <div class="panel hidesmall">
+        <div class="ph">Fixtures <span class="rl" id="fixMeta">—</span></div>
+        <div class="sched" id="schedList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SQUAD ============ -->
+<section class="screen" id="scSquad">
+  <div class="wrap">
+    <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:8px">
+      <div>
+        <div class="eyebrow" id="squadRegion">—</div>
+        <h1 class="big" style="font-size:clamp(26px,5vw,40px)" id="squadTitle">Roster</h1>
+      </div>
+      <button class="btn ghost" style="width:auto" onclick="go('scHub')">Back to Hub</button>
+    </div>
+    <p class="sub" style="margin-bottom:20px">Five ratings drive everything: <b style="color:var(--text)">Aim</b> wins duels, <b style="color:var(--text)">Sense</b> reads rounds, <b style="color:var(--text)">Clutch</b> saves lost ones, <b style="color:var(--text)">Util</b> is setup &amp; support, <b style="color:var(--text)">Mental</b> holds under pressure. Role weights how each counts.</p>
+    <div class="squadgrid" id="squadGrid"></div>
+  </div>
+</section>
+
+<!-- ============ PLAYER DETAIL ============ -->
+<section class="screen" id="scPlayer">
+  <div class="wrap">
+    <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:18px">
+      <div>
+        <div class="eyebrow" id="plRole">—</div>
+        <h1 class="big" style="font-size:clamp(26px,5vw,40px)" id="plName">Player</h1>
+      </div>
+      <div class="btnrow" style="margin:0; width:auto">
+        <div class="povr" id="plOvr" style="font-size:34px; margin-right:8px">—</div>
+        <button class="btn ghost" style="width:auto" onclick="go('scSquad')">Back to Squad</button>
+      </div>
+    </div>
+    <div class="pdgrid">
+      <div class="panel"><div class="ph">Attributes</div><div class="pbody" id="plStats"></div></div>
+      <div class="panel"><div class="ph">Position proficiency</div><div class="pbody" id="plProf"></div></div>
+      <div class="panel"><div class="ph">Agent mastery</div><div class="pbody" id="plAgents"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MAP VETO ============ -->
+<section class="screen" id="scVeto">
+  <div class="wrap">
+    <div class="matchhead">
+      <div class="mvenue" id="vVenue">Map Veto</div>
+      <div class="mapname" id="vPrompt">—</div>
+    </div>
+    <div class="vetogrid" id="vetoGrid"></div>
+    <div class="vetoresult" id="vetoResult"></div>
+    <div class="btnrow" id="vetoBtns"></div>
+  </div>
+</section>
+
+<!-- ============ DRAFT (player picks stance) ============ -->
+<section class="screen" id="scDraft">
+  <div class="wrap">
+    <div class="matchhead">
+      <div class="mvenue" id="dVenue">Draft</div>
+      <div class="scoreline" style="margin:10px 0">
+        <div class="side home"><div class="crest" id="dHomeCrest">H</div><div class="sn" id="dHomeName">Home</div></div>
+        <div class="bigscore" style="font-size:clamp(20px,4vw,30px)"><span id="dMapNo">Map 1</span></div>
+        <div class="side away"><div class="crest" id="dAwayCrest">A</div><div class="sn" id="dAwayName">Away</div></div>
+      </div>
+      <div class="mapname" id="dMapName">—</div>
+    </div>
+    <div class="oppread" id="oppRead"></div>
+    <div class="eyebrow" style="margin:22px 0 10px">Your call — pick a game plan</div>
+    <div class="stancegrid" id="stanceGrid"></div>
+    <div class="eyebrow" id="compEditLbl" style="margin:24px 0 10px;display:none">Set your comp — pick each starter's agent</div>
+    <div class="compedit" id="compEdit"></div>
+    <div class="btnrow" id="draftBtns" style="margin-top:18px"></div>
+  </div>
+</section>
+
+<!-- ============ MATCH ============ -->
+<section class="screen" id="scMatch">
+  <div class="wrap">
+    <div class="matchhead">
+      <div class="mvenue" id="mVenue">Regular Season</div>
+      <div class="scoreline">
+        <div class="side home">
+          <div class="crest" id="homeCrest">H</div>
+          <div class="sn" id="homeName">Home</div>
+        </div>
+        <div class="bigscore"><span class="s" id="homeMaps">0</span><span class="colon">:</span><span class="s" id="awayMaps">0</span></div>
+        <div class="side away">
+          <div class="crest" id="awayCrest">A</div>
+          <div class="sn" id="awayName">Away</div>
+        </div>
+      </div>
+      <div class="mapchips" id="mapChips"></div>
+    </div>
+
+    <div class="mapname" id="curMapName">—</div>
+    <div class="draftpanel" id="draftPanel"></div>
+    <div class="rounds">
+      <div class="rlabel"><span id="rHomeName">HOME</span><span id="rRoundNo">Round 0</span><span id="rAwayName">AWAY</span></div>
+      <div class="pips">
+        <div class="pipwrap" id="pipsHome"></div>
+        <div class="halfmark"></div>
+        <div class="pipwrap right" id="pipsAway"></div>
+      </div>
+    </div>
+
+    <div class="mapview" id="mapView" style="display:none">
+      <div class="bcast">
+        <div class="bcrest" id="bcH">H</div>
+        <div class="bcards" id="cardsHome"></div>
+        <div class="bcenter">
+          <div class="bscore"><span id="bScoreH">0</span><span class="bcolon">:</span><span id="bScoreA">0</span></div>
+          <div class="btimer" id="rTimer">1:40</div>
+          <div class="bround" id="bRound">Round 1</div>
+          <div class="bspike" id="bSpike"></div>
+        </div>
+        <div class="bcards" id="cardsAway"></div>
+        <div class="bcrest" id="bcA">A</div>
+      </div>
+      <div class="mvbanner" id="mvBanner"></div>
+      <div class="fieldwrap"><div class="mvfield" id="mvField"></div><div class="killfeed" id="killFeed"></div></div>
+      <div class="mvphase" id="mvPhase"></div>
+      <div class="mvlegend" id="mvLegend"></div>
+      <div class="mvalive" id="mvAlive" style="display:none"></div>
+    </div>
+
+    <div class="feed" id="feed"></div>
+
+    <div class="box" id="boxWrap" style="display:none">
+      <div class="boxtab" id="boxTabs"></div>
+      <div class="panel"><div style="overflow-x:auto"><table id="boxTable"></table></div></div>
+    </div>
+    <div class="timeline" id="timelineWrap" style="display:none"></div>
+
+    <div class="btnrow" id="matchBtns"></div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
