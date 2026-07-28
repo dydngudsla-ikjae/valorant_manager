@@ -1,0 +1,44 @@
+:root{
+    --ink:#0B0E14; --panel:#141A24; --panel2:#1B222E; --line:#253044;
+    --val:#FF4655; --def:#23E0A8; --gold:#F5C542;
+    --text:#E7ECF3; --muted:#7C899C;
+    --due:#FF4655; --ini:#54B8FF; --sen:#23E0A8; --con:#C58BFF; --flex:#F2A65A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--ink); color:var(--text);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;
+    line-height:1.5; overflow-x:hidden;
+    background-image:radial-gradient(circle at 50% -10%, #16202e 0%, var(--ink) 60%);
+    min-height:100vh;
+  }
+  .mono{font-family:"IBM Plex Mono",monospace}
+  .disp{font-family:"Oswald",sans-serif; text-transform:uppercase; letter-spacing:.04em}
+  button{font-family:inherit; cursor:pointer; color:inherit}
+  button:focus-visible, .pick:focus-visible{outline:2px solid var(--def); outline-offset:2px}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 18px}
+
+  /* top bar */
+  header{position:sticky; top:0; z-index:20; background:rgba(11,14,20,.86);
+    backdrop-filter:blur(10px); border-bottom:1px solid var(--line)}
+  .bar{display:flex; align-items:center; gap:14px; height:58px}
+  .logo{font-family:"Oswald"; font-weight:700; font-size:20px; letter-spacing:.06em;
+    text-transform:uppercase; display:flex; align-items:center; gap:9px}
+  .logo .tag{color:var(--val)}
+  .logo .sq{width:11px; height:22px; background:var(--val); box-shadow:16px 0 0 -3px var(--def)}
+  .bar .spacer{flex:1}
+  .myteam{display:flex; align-items:center; gap:9px; font-size:13px; color:var(--muted)}
+  .myteam b{color:var(--text); font-family:"Oswald"; font-size:15px; letter-spacing:.03em}
+  .dot{width:10px;height:10px;border-radius:2px}
+
+  .screen{display:none; padding:26px 0 80px}
+  .screen.on{display:block; animation:fade .35s ease}
+  @keyframes fade{from{opacity:0; transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-family:"Oswald"; text-transform:uppercase; letter-spacing:.22em;
+    font-size:11px; color:var(--muted); margin-bottom:6px}
+  h1.big{font-family:"Oswald"; font-weight:700; font-size:clamp(30px,6vw,52px);
+    line-height:.98; text-transform:uppercase; letter-spacing:.01em; margin-bottom:8px}
+  h1.big em{font-style:normal; color:var(--val)}
+  .sub{color:var(--muted); max-width:560px; margin-bottom:26px}

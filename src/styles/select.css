@@ -1,0 +1,22 @@
+/* league tabs */
+  .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px}
+  .tab{background:var(--panel); border:1px solid var(--line); color:var(--muted);
+    padding:9px 16px; border-radius:8px; font-family:"Oswald"; text-transform:uppercase;
+    letter-spacing:.06em; font-size:14px; transition:.15s}
+  .tab:hover{border-color:#3a4964; color:var(--text)}
+  .tab.on{background:var(--val); border-color:var(--val); color:#fff}
+
+  .grid{display:grid; gap:12px}
+  .g-teams{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+  .teamcard{background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:16px; text-align:left; transition:.15s; position:relative; overflow:hidden}
+  .teamcard:hover{transform:translateY(-3px); border-color:#3a4964}
+  .teamcard .stripe{position:absolute; left:0; top:0; bottom:0; width:5px}
+  .teamcard .tname{font-family:"Oswald"; font-size:20px; text-transform:uppercase;
+    letter-spacing:.02em; margin-bottom:2px}
+  .teamcard .tregion{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.12em}
+  .ovr{position:absolute; top:14px; right:14px; font-family:"Oswald"; font-size:26px; color:var(--gold)}
+  .ovr span{font-size:11px; color:var(--muted); display:block; text-align:right; letter-spacing:.1em}
+  .mini{display:flex; gap:5px; margin-top:14px}
+  .mini .m{flex:1; height:4px; border-radius:2px; background:#0d1219; overflow:hidden}
+  .mini .m i{display:block; height:100%}

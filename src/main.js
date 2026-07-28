@@ -1,4 +1,4 @@
-import './styles/all.css';
+import './styles/index.css';
 import STATS_BY_NAME from './data/player-stats.json';
 import NAVGRID from './data/geo/ascent-navgrid.json';
 

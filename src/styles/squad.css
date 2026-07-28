@@ -1,0 +1,41 @@
+/* squad */
+  .squadgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px}
+  .teamcard.sel{outline:2px solid var(--val); outline-offset:2px}
+  .selectpreview{margin-top:22px}
+  .sppanel{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px}
+  .sphead{display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px}
+  .sphead .spname{font-family:"Oswald"; font-size:26px; margin:2px 0 0}
+  .spright{display:flex; align-items:center; gap:14px}
+  .pcard.clickable{cursor:pointer; transition:border-color .15s, transform .15s}
+  .pcard.sub{opacity:.82; border-style:dashed}
+  .subtag{font-family:"IBM Plex Mono"; font-size:9px; color:var(--bg); background:var(--muted); padding:1px 5px; border-radius:4px; vertical-align:middle; margin-left:4px; letter-spacing:.05em}
+  .pcard.clickable:hover{border-color:var(--val); transform:translateY(-2px)}
+  .profrow{display:flex; gap:6px; margin:2px 0 12px}
+  .profseg{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px}
+  .profseg i{font-style:normal; font-size:8.5px; color:var(--muted); font-family:"IBM Plex Mono"; letter-spacing:.04em}
+  .profseg em{display:block; width:100%; height:5px; border-radius:3px}
+  .cardhint{margin-top:11px; font-size:10px; color:var(--muted); text-align:right; letter-spacing:.04em}
+  .pdgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; align-items:start}
+  .pdgrid .pbody{padding:14px 16px}
+  .agrow{display:grid; grid-template-columns:96px 1fr 30px; align-items:center; gap:9px; margin:8px 0}
+  .agrow .ag{justify-self:start}
+  .proflegend{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px; font-size:10px; color:var(--muted)}
+  .proflegend span{display:flex; align-items:center; gap:4px}
+  .proflegend em{width:10px; height:10px; border-radius:2px; display:inline-block}
+  .pcard{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:15px}
+  .pcard .prow{display:flex; align-items:center; gap:11px; margin-bottom:13px}
+  .rolechip{width:34px; height:34px; border-radius:8px; display:grid; place-items:center;
+    font-family:"Oswald"; font-size:11px; color:#0b0e14; font-weight:700; flex:none}
+  .pcard .pn{font-family:"Oswald"; font-size:19px; text-transform:uppercase; letter-spacing:.02em}
+  .pcard .pmeta{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em}
+  .pcard .povr{margin-left:auto; font-family:"Oswald"; font-size:28px}
+  .stat{display:grid; grid-template-columns:64px 1fr 30px; align-items:center; gap:9px; margin:7px 0}
+  .stat label{font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em}
+  .stat .track{height:6px; background:#0d1219; border-radius:3px; overflow:hidden}
+  .stat .track i{display:block; height:100%; border-radius:3px}
+  .stat .v{font-family:"IBM Plex Mono"; font-size:12px; text-align:right; color:var(--text)}
+  .poolrow{margin-top:12px; padding-top:11px; border-top:1px solid #1a2230; display:flex;
+    flex-wrap:wrap; gap:5px; align-items:center}
+  .poolrow .poollbl{font-size:10px; color:var(--muted); text-transform:uppercase;
+    letter-spacing:.1em; width:100%; margin-bottom:2px}
+  .poolrow .ag b{font-family:"IBM Plex Mono"; color:var(--text); margin-left:2px}

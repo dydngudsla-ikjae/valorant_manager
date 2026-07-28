@@ -1,0 +1,26 @@
+/* box score */
+  .box{margin-top:8px}
+  .boxtab{display:flex; gap:8px; margin-bottom:10px}
+  .boxtab button{background:var(--panel); border:1px solid var(--line); color:var(--muted);
+    padding:7px 14px; border-radius:7px; font-family:"Oswald"; font-size:13px;
+    letter-spacing:.05em; text-transform:uppercase}
+  .boxtab button.on{border-color:var(--text); color:var(--text)}
+  .box table{font-family:"IBM Plex Mono"; font-size:12.5px}
+  .box td.pl{font-family:"IBM Plex Sans"; font-weight:600}
+  .box .mvpstar{color:var(--gold)}
+  .box td.acs{color:var(--text); font-weight:600}
+  .kd .pos{color:var(--def)} .kd .neg{color:var(--val)}
+
+  .toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(80px);
+    background:var(--panel2); border:1px solid var(--line); border-radius:10px;
+    padding:13px 20px; font-size:14px; box-shadow:0 10px 40px rgba(0,0,0,.5);
+    transition:.3s; z-index:50; max-width:90vw}
+  .toast.on{transform:translateX(-50%) translateY(0)}
+  .toast b{color:var(--gold)}
+
+  .emptybtn{background:none;border:none;color:var(--muted);font-size:13px;
+    text-decoration:underline; padding:4px}
+  .champbanner{background:linear-gradient(135deg,#2a2103,#1a1400); border:1px solid var(--gold);
+    border-radius:12px; padding:22px; text-align:center; margin-bottom:16px}
+  .champbanner .ct{font-family:"Oswald"; color:var(--gold); font-size:28px;
+    text-transform:uppercase; letter-spacing:.05em}

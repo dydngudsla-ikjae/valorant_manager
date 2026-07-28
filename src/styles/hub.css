@@ -1,0 +1,46 @@
+/* hub */
+  .hublayout{display:grid; grid-template-columns:1fr 340px; gap:16px; align-items:start}
+  @media(max-width:860px){.hublayout{grid-template-columns:1fr} .hidesmall{order:2}}
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:12px}
+  .panel .ph{padding:14px 16px; border-bottom:1px solid var(--line);
+    font-family:"Oswald"; text-transform:uppercase; letter-spacing:.08em; font-size:14px;
+    display:flex; align-items:center; justify-content:space-between}
+  .ph .rl{color:var(--muted); font-size:11px; letter-spacing:.14em}
+
+  table{width:100%; border-collapse:collapse; font-size:13.5px}
+  th,td{padding:9px 12px; text-align:left}
+  thead th{font-family:"Oswald"; text-transform:uppercase; letter-spacing:.08em;
+    font-size:11px; color:var(--muted); border-bottom:1px solid var(--line)}
+  tbody tr{border-bottom:1px solid #1a2230}
+  tbody tr:last-child{border-bottom:none}
+  tbody tr.me{background:rgba(255,70,85,.08)}
+  tbody tr.me td:first-child{box-shadow:inset 3px 0 0 var(--val)}
+  .rank{color:var(--muted); width:26px; text-align:center}
+  .wl{color:var(--muted)}
+  .wl b{color:var(--text)}
+  td.tn{font-family:"Oswald"; letter-spacing:.02em; font-size:15px; text-transform:uppercase}
+  .qbadge{font-size:9px; letter-spacing:.1em; padding:2px 6px; border-radius:4px;
+    background:rgba(35,224,168,.14); color:var(--def); margin-left:8px; vertical-align:middle}
+
+  /* schedule */
+  .sched{padding:6px}
+  .fxrow{display:flex; align-items:center; gap:10px; padding:11px 12px; border-radius:9px}
+  .fxrow+.fxrow{border-top:1px solid #1a2230}
+  .fxrow .wk{width:34px; font-family:"Oswald"; color:var(--muted); font-size:12px}
+  .fxrow .teams{flex:1; font-size:13.5px}
+  .fxrow .teams .vs{color:var(--muted); margin:0 6px}
+  .fxrow.next{background:rgba(255,70,85,.08); border:1px solid rgba(255,70,85,.3)}
+  .fxrow .res{font-family:"IBM Plex Mono"; font-weight:600; font-size:14px}
+  .fxrow .res.w{color:var(--def)} .fxrow .res.l{color:var(--val)}
+  .fxrow.done .teams{color:var(--muted)}
+
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--val); color:#fff; border:none; padding:13px 22px; border-radius:9px;
+    font-family:"Oswald"; text-transform:uppercase; letter-spacing:.08em; font-size:15px;
+    transition:.15s; width:100%}
+  .btn:hover{filter:brightness(1.1)}
+  .btn.ghost{background:transparent; border:1px solid var(--line); color:var(--text)}
+  .btn.ghost:hover{border-color:#3a4964}
+  .btn.gold{background:var(--gold); color:#161200}
+  .btn:disabled{opacity:.4; cursor:not-allowed; filter:none}
+  .btnrow{display:flex; gap:10px; margin-top:14px}
