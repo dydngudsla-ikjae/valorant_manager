@@ -9,6 +9,7 @@ import { Select } from './ui/screens/Select.jsx';
 import { Squad } from './ui/screens/Squad.jsx';
 import { PlayerDetail } from './ui/screens/PlayerDetail.jsx';
 import { Veto } from './ui/screens/Veto.jsx';
+import { MapView } from './ui/MapView.jsx';
 
 applyRealStats();
 buildAgentPools();
@@ -26,5 +27,6 @@ createRoot(document.getElementById('boxRoot')).render(<Box />);
 createRoot(document.getElementById('vetoRoot')).render(<Veto />);
 createRoot(document.getElementById('draftRoot')).render(<Draft />);
 createRoot(document.getElementById('matchHeadRoot')).render(<MatchHead />);
+createRoot(document.getElementById('mapViewRoot')).render(<MapView />);
 createRoot(document.getElementById('matchFeedRoot')).render(<MatchFeed />);
 createRoot(document.getElementById('matchBtnsRoot')).render(<MatchButtons />);

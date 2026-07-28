@@ -3,7 +3,7 @@
 > 다음 세션에서 이 파일을 읽고 다음 미완료 Phase부터 순서대로 실행.
 > **각 Phase 끝마다 `npm run dev`로 앱이 그대로 동작하는지 확인 후 커밋. 안 돌면 다음으로 넘어가지 말 것.**
 
-**진행 상황 (2026-07-29 기준): Phase 0~3a 완료, Phase 4는 아래 체크리스트 8/10.**
+**진행 상황 (2026-07-29 기준): Phase 0~3a 완료, Phase 4는 아래 체크리스트 9/10.**
 - Phase 0: Vite 스캐폴딩 (커밋 `0fe16ca`)
 - Phase 1: 인라인 데이터 4종 추출 — AGENT_IMG/STATS_BY_NAME/ASCENT_BG/NAVGRID (커밋 `ce6d7b0`)
 - (부수) 에이전트 아이콘을 `images/Characters/_small` 원본에서 64px로 리사이즈해 교체 (커밋 `42acc37`)
@@ -28,6 +28,7 @@
   - `openMatch`/`finishMap`/`skipMatch`의 스코어·맵칩 DOM 직접 쓰기 전부 삭제 — 뒤이어 어차피 `paintMap`/`startMapDraft`/`endMatch` 중 하나가 `bump()`를 부르므로 별도 bump 불필요(동기 코드라 화면엔 최종 상태만 반영됨).
   - **step 5에서 놓친 버그를 여기서 발견해 수정**: 삭제됐어야 할 `boxSide`/`renderBox`를 참조하는 고아 `setBoxSide` 함수가 파일 맨 끝(go/toast 옆)에 남아 있었음 — 아무 데서도 안 불렸으니 안 터졌을 뿐, 호출됐다면 `ReferenceError`. 지금 삭제.
   - 이 스텝을 끝으로 **레거시 innerHTML 템플릿에 남아있던 `onclick="..."` 문자열이 코드베이스 전체에서 0개**가 됨 → `main.jsx`의 임시 `Object.assign(window, {...})` 노출 블록(Phase 0부터 있던 것)이 전부 죽은 코드가 되어 통째로 제거. 원래 10번 스텝 몫으로 예정했던 정리인데 8번에서 이미 끝남 — 10번엔 `go()`→화면 상태 전환·`legacy.js` 삭제만 남음.
+- Phase 4 step 9: `MapView.jsx` — `#mapView`(방송 HUD + 탑다운 필드 + 킬피드)를 감싸는 얇은 래퍼. `ui/mapview.js` 내부(mvBuild/mvPlayRound 등)는 한 글자도 안 건드림 — 지금까지 `index.html`에 정적 마크업으로 박혀 있던 `#mapView` 블록을 그대로 JSX로 옮겨 `#mapViewRoot`에 마운트했을 뿐. 이 컴포넌트는 어떤 store도 구독하지 않아 부팅 시 **딱 한 번**만 렌더링되므로, `mvBuild`가 `#mvField`/`#mvLegend`에 꽂는 `innerHTML`이나 `legacy.js`가 `#mapView`에 직접 쓰는 `style.display` 토글을 React가 다음 렌더에서 지워버릴 위험이 없다(리렌더 자체가 없으므로). `useEffect` 클린업에서 `mvStopRAF()`를 호출하도록만 추가 — 지금은 이 루트가 부팅 후 언마운트되는 일이 없어 죽은 코드지만, 10번에서 `go()`를 `screen` state로 바꾸면 화면 전환이 마운트/언마운트가 될 수 있어 그때를 대비한 안전장치. 헤드리스 Chromium(Playwright)으로 팀 선택→허브→드래프트→매치→시뮬레이션 전 구간 검증: `mvBuild`가 만든 10개 도트·에이전트 아이콘·사이트콘·브로드캐스트 카드·킬피드·라운드 핍 전부 정상 렌더, `skipMatch()` 경로도 `#mapView` 숨김+박스스코어 렌더 정상, 콘솔 에러 0건. (검증 중 발견: 헤드리스 환경에서 라운드 애니메이션이 15라운드쯤에서 멈추는 현상이 있으나, 리팩터 이전 커밋(`87e613f`)에서도 동일하게 재현돼 이번 변경과 무관한 기존 이슈로 확인 — 조치 안 함.)
 
 **확정 사항: React로 이관한다.** 따라서 `ui/` 렌더 코드를 바닐라 모듈로 정리하는 단계는 건너뛴다
 (어차피 버릴 코드를 정리하는 낭비 ~670줄). 엔진만 뽑아내고 바로 React로 간다.
@@ -203,7 +204,7 @@ vlm/
 - [x] **6. Veto 화면** — ~38줄. 맵 비토
 - [x] **7. Draft 화면** — ~136줄. **React 이득이 가장 큰 화면** (폼·상태 복잡)
 - [x] **8. Match 화면** — ~240줄. 오케스트레이션, 가장 까다로움
-- [ ] **9. MapView.jsx** — `mapview.js`를 `useRef`+`useEffect`로 감싸는 래퍼만. **내부 명령형 코드는 손대지 않음**
+- [x] **9. MapView.jsx** — `mapview.js`를 `useRef`+`useEffect`로 감싸는 래퍼만. **내부 명령형 코드는 손대지 않음**
 - [ ] **10. 최종 통합** — 루트를 하나로 합치고 `go()`를 `screen` state로 대체, `legacy.js` 삭제, 임시 `window` 노출 제거, 인라인 `onclick` 23개 제거, 전 기능 회귀 테스트
 
 각 화면 단계마다: React 컴포넌트 작성 → 해당 `.screen` 섹션에 독립 React 루트 마운트 → `legacy.js`에서 그 화면 코드 삭제 → 헤드리스 Chrome으로 검증 → 커밋.
