@@ -1,9 +1,9 @@
 import { useStore } from '../useStore.js';
-import { ST } from '../../core/state.js';
+import { ST, go } from '../../core/state.js';
 import { teamOVR } from '../../core/ratings.js';
 import { firstUnplayedWeek, nameById, sortedStandings } from '../../core/season.js';
 import { LEAGUES } from '../../data/leagues.js';
-import { go, startNextMatch } from '../../legacy.js';
+import { startNextMatch } from '../match-flow.js';
 
 function StandingsTable() {
   const rows = sortedStandings();

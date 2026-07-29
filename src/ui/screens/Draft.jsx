@@ -4,7 +4,7 @@ import { autoAgentFor, buildCompChoice, buildCompForStance, stanceSuit } from '.
 import { counterEdge } from '../../core/ratings.js';
 import { ARCH, MAPDATA } from '../../data/agents.js';
 import { ROLE } from '../../data/leagues.js';
-import { confirmDraft, selectAgent, selectStance, skipMatch } from '../../legacy.js';
+import { confirmDraft, selectAgent, selectStance, skipMatch } from '../match-flow.js';
 
 const STANCES = ['AGGRO', 'CONTROL', 'LOCKDOWN', 'BALANCED'];
 

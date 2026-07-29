@@ -3,7 +3,7 @@ import { playerOVR, teamAxis, teamOVR } from '../../core/ratings.js';
 import { visiblePool } from '../../core/roster.js';
 import { agImg } from '../../data/agents.js';
 import { LEAGUES, ROLE, displayRole, profBand, roleColor, roleFull } from '../../data/leagues.js';
-import { selectTeam } from '../../legacy.js';
+import { selectTeam } from '../match-flow.js';
 
 const AXES = [['aim', 'Aim'], ['sense', 'Sense'], ['clutch', 'Clutch'], ['util', 'Util'], ['mental', 'Mental']];
 const PROF_ROLES = ['DUE', 'INI', 'SEN', 'CON'];

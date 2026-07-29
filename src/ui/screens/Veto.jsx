@@ -3,7 +3,7 @@ import { MATCH, ST } from '../../core/state.js';
 import { mapSuitFor } from '../../core/draft.js';
 import { ARCH, MAPDATA } from '../../data/agents.js';
 import { MAPS } from '../../data/leagues.js';
-import { playerVeto, startMapDraft, vetoSkip } from '../../legacy.js';
+import { playerVeto, startMapDraft, vetoSkip } from '../match-flow.js';
 
 function sideLabel(side) {
   return side === MATCH.playerSide ? 'you' : (side === 'home' ? MATCH.home.short : MATCH.away.short);

@@ -4,10 +4,10 @@
 // direct reassignment of the binding (MATCH = x) that only the defining
 // module may do, so openMatch() calls setMatch() instead.
 //
-// subscribe/bump exist for Phase 4 (React reads state through them via
-// useSyncExternalStore); nothing in Phase 3a calls bump() yet -- legacy.js
-// mutates ST/MATCH the same way it always did.
-export const ST = { league:null, myTeamIdx:null, teams:[], schedule:[], week:0, standings:{}, seasonOver:false };
+// subscribe/bump let React read state via useSyncExternalStore (see
+// ui/useStore.js); every mutation site that a screen depends on must call
+// bump() itself after mutating ST/MATCH in place.
+export const ST = { league:null, myTeamIdx:null, teams:[], schedule:[], week:0, standings:{}, seasonOver:false, screen:'scSelect' };
 export let MATCH = null;
 
 let version = 0;
@@ -16,3 +16,16 @@ export function subscribe(fn){ subs.add(fn); return () => subs.delete(fn); }
 export function getVersion(){ return version; }
 export function bump(){ version++; subs.forEach(f => f()); }
 export function setMatch(m){ MATCH = m; bump(); }
+
+// Screen nav lives here (not ui/App.jsx) so screens can go() without importing
+// React at all -- same reasoning as bump(): a plain state setter every module
+// can call. The scroll-to-top side effect that used to live inside go() moved
+// to App's useEffect([ST.screen]), since core/ stays DOM-free.
+export function go(screen){ ST.screen = screen; bump(); }
+
+// Toast is also plain state + bump(); Toast.jsx (ui/) owns the show/auto-hide
+// timing. `id` lets Toast tell "new toast while one is showing" apart from
+// "re-render, same toast" without comparing message strings.
+let toastSeq = 0;
+export let toastState = null;
+export function toast(msg){ toastState = { msg, id: ++toastSeq }; bump(); }

@@ -3,7 +3,7 @@
 > 다음 세션에서 이 파일을 읽고 다음 미완료 Phase부터 순서대로 실행.
 > **각 Phase 끝마다 `npm run dev`로 앱이 그대로 동작하는지 확인 후 커밋. 안 돌면 다음으로 넘어가지 말 것.**
 
-**진행 상황 (2026-07-29 기준): Phase 0~3a 완료, Phase 4는 아래 체크리스트 9/10.**
+**진행 상황 (2026-07-29 기준): Phase 0~4 완료. 다음은 Phase 5.**
 - Phase 0: Vite 스캐폴딩 (커밋 `0fe16ca`)
 - Phase 1: 인라인 데이터 4종 추출 — AGENT_IMG/STATS_BY_NAME/ASCENT_BG/NAVGRID (커밋 `ce6d7b0`)
 - (부수) 에이전트 아이콘을 `images/Characters/_small` 원본에서 64px로 리사이즈해 교체 (커밋 `42acc37`)
@@ -29,6 +29,15 @@
   - **step 5에서 놓친 버그를 여기서 발견해 수정**: 삭제됐어야 할 `boxSide`/`renderBox`를 참조하는 고아 `setBoxSide` 함수가 파일 맨 끝(go/toast 옆)에 남아 있었음 — 아무 데서도 안 불렸으니 안 터졌을 뿐, 호출됐다면 `ReferenceError`. 지금 삭제.
   - 이 스텝을 끝으로 **레거시 innerHTML 템플릿에 남아있던 `onclick="..."` 문자열이 코드베이스 전체에서 0개**가 됨 → `main.jsx`의 임시 `Object.assign(window, {...})` 노출 블록(Phase 0부터 있던 것)이 전부 죽은 코드가 되어 통째로 제거. 원래 10번 스텝 몫으로 예정했던 정리인데 8번에서 이미 끝남 — 10번엔 `go()`→화면 상태 전환·`legacy.js` 삭제만 남음.
 - Phase 4 step 9: `MapView.jsx` — `#mapView`(방송 HUD + 탑다운 필드 + 킬피드)를 감싸는 얇은 래퍼. `ui/mapview.js` 내부(mvBuild/mvPlayRound 등)는 한 글자도 안 건드림 — 지금까지 `index.html`에 정적 마크업으로 박혀 있던 `#mapView` 블록을 그대로 JSX로 옮겨 `#mapViewRoot`에 마운트했을 뿐. 이 컴포넌트는 어떤 store도 구독하지 않아 부팅 시 **딱 한 번**만 렌더링되므로, `mvBuild`가 `#mvField`/`#mvLegend`에 꽂는 `innerHTML`이나 `legacy.js`가 `#mapView`에 직접 쓰는 `style.display` 토글을 React가 다음 렌더에서 지워버릴 위험이 없다(리렌더 자체가 없으므로). `useEffect` 클린업에서 `mvStopRAF()`를 호출하도록만 추가 — 지금은 이 루트가 부팅 후 언마운트되는 일이 없어 죽은 코드지만, 10번에서 `go()`를 `screen` state로 바꾸면 화면 전환이 마운트/언마운트가 될 수 있어 그때를 대비한 안전장치. 헤드리스 Chromium(Playwright)으로 팀 선택→허브→드래프트→매치→시뮬레이션 전 구간 검증: `mvBuild`가 만든 10개 도트·에이전트 아이콘·사이트콘·브로드캐스트 카드·킬피드·라운드 핍 전부 정상 렌더, `skipMatch()` 경로도 `#mapView` 숨김+박스스코어 렌더 정상, 콘솔 에러 0건. (검증 중 발견: 헤드리스 환경에서 라운드 애니메이션이 15라운드쯤에서 멈추는 현상이 있으나, 리팩터 이전 커밋(`87e613f`)에서도 동일하게 재현돼 이번 변경과 무관한 기존 이슈로 확인 — 조치 안 함.)
+- Phase 4 step 10 (최종 통합): `go(id)`가 하던 `querySelectorAll('.screen')`/`classList` 토글을 걷어내고 `core/state.js`에 `ST.screen`(초기값 `'scSelect'`) + `go(screen){ ST.screen=screen; bump(); }`로 대체 — 화면 전환도 이제 그냥 상태 변경. `go()`가 하던 `window.scrollTo` 부수효과는 `core/`가 DOM에 안 닿는다는 원칙을 지키기 위해 새 `ui/App.jsx`의 `useEffect(()=>{...}, [ST.screen])`로 옮김. 같은 이유로 `toast()`도 `core/state.js`에 `toastState={msg,id}` + `bump()`만 하는 순수 상태 세터로 옮기고, 실제 표시/자동 숨김 타이머는 새 `ui/Toast.jsx`가 담당(`id`로 "표시 중에 새 토스트"와 "같은 토스트로 재렌더"를 구분).
+  - **루트 통합**: 화면마다 따로 있던 `createRoot(...).render(<Screen/>)` 11개를 걷어내고 `src/ui/App.jsx` 하나가 `ST.screen` 값에 따라 해당 화면만 조건부 렌더링. `index.html`도 8개 `<section id="scXxx">` + 11개 `#xxxRoot` 마운트 지점을 `<div id="root"></div>` 하나로 축소, `main.jsx`는 `createRoot(root).render(<App/>)` 한 줄. `.screen.on`에 걸려 있던 페이드인 애니메이션은 화면이 실제로 mount/unmount되므로 그대로 유지(교체된 화면마다 `<section className="screen on">`을 새로 그림).
+  - **`MapView`만 예외 — `memo()`로 감쌈**: `App`이 `useStore()`로 매 `bump()`마다 리렌더되는데, `MapView`를 그냥 자식으로 두면 `bump()`마다 `MapView()` 함수 본문이 다시 호출돼 하드코딩된 `style={{display:'none'}}` JSX가 `simCurrentMap`/`skipMatch`가 직접 써넣은 `style.display='block'`을 매번 지워버림(리액트는 매 렌더마다 style 객체의 각 prop을 DOM에 재적용함, 내용이 "같아 보여도" 얕은 비교를 안 함). `const StableMapView = memo(MapView)`로 감싸 props 없는 이 컴포넌트는 부모가 리렌더돼도 절대 재실행되지 않게 함 — 이게 8/9번에서 각각 별도 루트로 분리했던 진짜 이유(재조정 위험)를 하나의 트리 안에서도 유지하는 방법.
+  - **`legacy.js` 삭제, 내용은 `ui/match-flow.js`로**: 화면 전환용 `go()`/`toast()`를 뺀 나머지(전부 액션 핸들러: `selectTeam`/`startNextMatch`/veto 6종/draft 4종/`simCurrentMap`/`finishMap`/`endMatch`/`skipMatch`/`backToHub`/`showChampCheck`)는 `core/`가 아니라 `ui/match-flow.js`로 옮김 — `mapview.js`처럼 브로드캐스트 HUD DOM(`#bScoreH`/`#bRound`/`#mvBanner`/`#mapView`)에 직접 쓰기 때문에 "DOM 접근 0"인 `core/`엔 안 맞음. 옮기며 죽은 참조 2개 정리: `legacy.js`가 갖고 있던 `applyRealStats`/`buildAgentPools`(둘 다 `main.jsx` 부팅 시퀀스 전용, 여기선 미사용) import와 `data/leagues.js`의 `p` import.
+  - **`selectTeam()`의 `teamBadge` DOM 코드 삭제**: `document.getElementById('teamBadge').style.display='flex'` 등 3줄은 새 `ui/Header.jsx`(`ST.teams[ST.myTeamIdx]`를 `useStore()`로 구독, 있으면 `.myteam` 렌더)로 대체 — Squad/Hub 등과 똑같은 패턴이라 특별 취급 불필요해짐.
+  - 각 화면의 `import { go } from '../../legacy.js'` 7곳을 `import { go } from '../../core/state.js'`로, 액션 함수 import는 `'../../legacy.js'` → `'../match-flow.js'`로 갱신.
+  - 헤드리스 Chromium으로 회귀 검증: 팀 선택(헤더 배지 반영 확인)→허브→드래프트→매치→스킵→박스스코어→허브 복귀(순위표 갱신 확인)→스쿼드→선수 상세→스쿼드 복귀, 콘솔 에러 0건. `DEV_ASCENT_BO1=false`로 잠시 바꿔 비토 플로우도 별도 검증(6단계 밴/픽 전부 클릭 가능·decider 계산 정상) 후 `true`로 원복. **검증 중 발견(조치 안 함)**: 비토를 거쳐 맵 3장이 정해진 드래프트 화면에서 `opp.agents.map(...key={a.agent})`(`Draft.jsx` 상대 코멘트 라인)가 같은 에이전트를 두 번 키로 써서 React 중복 키 경고가 뜸 — `DEV_ASCENT_BO1=true`(기본값)라 평소엔 이 경로를 안 타서 지금까지 안 드러났던 7번 스텝 때부터의 기존 결함. 렌더는 깨지지 않고 경고만 뜸 — 별도 세션에서 `core/draft.js`의 팀 컴프 생성(같은 에이전트 중복 배정 허용 여부)부터 확인 필요.
+
+**Phase 4 완료.** 인라인 `onclick` 23개 → 0개, `legacy.js` 삭제, React 단일 루트(`App.jsx`) + `ui/mapview.js`(명령형 유지) 두 갈래로 최종 정리됨.
 
 **확정 사항: React로 이관한다.** 따라서 `ui/` 렌더 코드를 바닐라 모듈로 정리하는 단계는 건너뛴다
 (어차피 버릴 코드를 정리하는 낭비 ~670줄). 엔진만 뽑아내고 바로 React로 간다.
@@ -205,7 +214,7 @@ vlm/
 - [x] **7. Draft 화면** — ~136줄. **React 이득이 가장 큰 화면** (폼·상태 복잡)
 - [x] **8. Match 화면** — ~240줄. 오케스트레이션, 가장 까다로움
 - [x] **9. MapView.jsx** — `mapview.js`를 `useRef`+`useEffect`로 감싸는 래퍼만. **내부 명령형 코드는 손대지 않음**
-- [ ] **10. 최종 통합** — 루트를 하나로 합치고 `go()`를 `screen` state로 대체, `legacy.js` 삭제, 임시 `window` 노출 제거, 인라인 `onclick` 23개 제거, 전 기능 회귀 테스트
+- [x] **10. 최종 통합** — 루트를 하나로 합치고 `go()`를 `screen` state로 대체, `legacy.js` 삭제, 임시 `window` 노출 제거, 인라인 `onclick` 23개 제거, 전 기능 회귀 테스트
 
 각 화면 단계마다: React 컴포넌트 작성 → 해당 `.screen` 섹션에 독립 React 루트 마운트 → `legacy.js`에서 그 화면 코드 삭제 → 헤드리스 Chrome으로 검증 → 커밋.
 

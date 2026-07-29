@@ -1,15 +1,16 @@
-import { autoAgentFor, buildCompChoice, draftComp, draftPair, mapSuitFor } from './core/draft.js';
-import { buyLabel, initEcon } from './core/economy.js';
-import { counterEdge } from './core/ratings.js';
-import { applyRealStats, buildAgentPools } from './core/roster.js';
-import { agentMap, applyRoundStats, finalizeRatings, newStat, simOneMap, topKillerOfRound } from './core/round-engine.js';
-import { firstUnplayedWeek, makeSchedule, pickMaps, simRestOfWeek, sortedStandings, teamObj } from './core/season.js';
-import { MATCH, ST, bump, setMatch } from './core/state.js';
-import { MV } from './data/geo/ascent.js';
-import { LEAGUES, MAPS, p } from './data/leagues.js';
-import { mvBuild, mvPlayRound } from './ui/mapview.js';
-
-// Select screen (#selectRoot) is React now -- see src/ui/screens/Select.jsx.
+// Action handlers that bridge UI events to the engine (core/) and to the
+// imperative broadcast HUD (mapview.js / MapView.jsx's #bScoreH, #bRound,
+// #mvBanner, #mapView nodes). Lives in ui/, not core/, because -- like
+// mapview.js -- it writes those DOM nodes directly; core/ stays DOM-free.
+import { autoAgentFor, buildCompChoice, draftComp, draftPair, mapSuitFor } from '../core/draft.js';
+import { buyLabel, initEcon } from '../core/economy.js';
+import { counterEdge } from '../core/ratings.js';
+import { agentMap, applyRoundStats, finalizeRatings, newStat, simOneMap, topKillerOfRound } from '../core/round-engine.js';
+import { firstUnplayedWeek, makeSchedule, pickMaps, simRestOfWeek, sortedStandings, teamObj } from '../core/season.js';
+import { MATCH, ST, bump, go, setMatch, toast } from '../core/state.js';
+import { MV } from '../data/geo/ascent.js';
+import { LEAGUES, MAPS } from '../data/leagues.js';
+import { mvBuild, mvPlayRound } from './mapview.js';
 
 /* ============ SEASON SETUP ============ */
 
@@ -21,19 +22,10 @@ export function selectTeam(lk,idx){
   ST.standings={};
   ST.teams.forEach(t=>ST.standings[t.id]={w:0,l:0,mapW:0,mapL:0,rd:0});
   ST.schedule=makeSchedule(ST.teams.length);
-  // badge
-  const bt=ST.teams[idx];
-  document.getElementById('teamBadge').style.display='flex';
-  document.getElementById('badgeName').textContent=bt.name;
-  document.getElementById('badgeDot').style.background=bt.color;
-  bump(); // Squad/PlayerDetail/Hub (React) read ST.teams/myTeamIdx via useStore()
-  go('scHub');
+  go('scHub'); // Header (React) reads ST.teams/myTeamIdx via useStore()
 }
 
 /* round-robin (single). circle method */
-
-// Hub (#hubRoot), Squad grid (#squadRoot) and player detail (#playerRoot) are
-// React now -- see src/ui/screens/Hub.jsx, Squad.jsx and PlayerDetail.jsx.
 
 /* ============ MATCH ENGINE ============
    Bo3. Each map: rounds to 13, win-by-2 OT.
@@ -123,8 +115,6 @@ export function finalizeVeto(){
   bump();
 }
 
-// Map veto screen (#vetoRoot) is React now -- see src/ui/screens/Veto.jsx.
-
 export function vetoSkip(){ MATCH.mapPool=pickMaps(3); skipMatch(); }
 // player drafts this map: opponent commits first (map-optimal), player gets last-pick info
 
@@ -136,8 +126,6 @@ export function startMapDraft(mi){
   bump(); // Draft (React) reads MATCH.curMap/pendingOpp/draftSel via useStore()
   go('scDraft');
 }
-
-// Draft screen (#draftRoot) is React now -- see src/ui/screens/Draft.jsx.
 
 export function selectStance(mi,s){ MATCH.draftSel.stance=s; bump(); }
 
@@ -253,7 +241,6 @@ export function finishMap(h,a){
   }
 }
 
-
 export function endMatch(){
   finalizeRatings(MATCH.box, MATCH.roundsPlayed||1);
   // record result into season
@@ -267,10 +254,6 @@ export function endMatch(){
   simRestOfWeek(MATCH.wi, fx);
   bump(); // Hub (React) reads ST.standings/ST.schedule/ST.seasonOver, Box+Match (React) read MATCH.fx.played, via useStore()
 }
-
-// Box score + timeline (#boxRoot) and match orchestration (#matchHeadRoot /
-// #matchFeedRoot / #matchBtnsRoot) are React now -- see src/ui/screens/Box.jsx
-// and Match.jsx.
 
 export function skipMatch(){
   go('scMatch'); // may be called from the veto or draft screen
@@ -293,7 +276,8 @@ export function skipMatch(){
   endMatch();
 }
 
-export function backToHub(){go('scHub');
+export function backToHub(){
+  go('scHub');
   if(ST.seasonOver){showChampCheck();}
 }
 
@@ -303,16 +287,3 @@ export function showChampCheck(){
   const pos=rows.findIndex(t=>t.id===my.id)+1;
   toast(`Regular season done — ${my.name} finished #${pos}. Playoffs coming in the next build.`);
 }
-
-/* ---- nav + toast ---- */
-
-export function go(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-export let toastTimer=null;
-
-export function toast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('on');
-  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('on'),3200);}

@@ -1,10 +1,9 @@
 import { useStore } from '../useStore.js';
-import { ST, bump } from '../../core/state.js';
+import { ST, bump, go } from '../../core/state.js';
 import { playerOVR } from '../../core/ratings.js';
 import { visiblePool } from '../../core/roster.js';
 import { agImg } from '../../data/agents.js';
 import { LEAGUES, ROLE, displayRole, profBand, roleColor, roleFull } from '../../data/leagues.js';
-import { go } from '../../legacy.js';
 
 const AXES = [['aim', 'Aim'], ['sense', 'Sense'], ['clutch', 'Clutch'], ['util', 'Util'], ['mental', 'Mental']];
 const PROF_ROLES = ['DUE', 'INI', 'SEN', 'CON'];

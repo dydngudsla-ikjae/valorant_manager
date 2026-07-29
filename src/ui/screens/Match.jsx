@@ -4,7 +4,7 @@ import { MATCH, ST } from '../../core/state.js';
 import { matchupRead } from '../../core/draft.js';
 import { ARCH, MAPDATA } from '../../data/agents.js';
 import { LEAGUES } from '../../data/leagues.js';
-import { DEV_ASCENT_BO1, backToHub, simCurrentMap, skipMatch } from '../../legacy.js';
+import { DEV_ASCENT_BO1, backToHub, simCurrentMap, skipMatch } from '../match-flow.js';
 
 function MapChips() {
   return (
