@@ -1,5 +1,5 @@
 import { BUYMOD, SIDEMOD, decideBuy, homeSideAt } from './economy.js';
-import { kitOf, playerOVR } from './ratings.js';
+import { kitOf, playerAttribute, playerOVR } from './ratings.js';
 import { rollForm, teamPower } from './season.js';
 import { spatialRound } from './spatial.js';
 import { MATCH } from './state.js';
@@ -11,7 +11,8 @@ export function agentMap(cc){const m={};cc.home.agents.forEach(a=>m[a.name]=a.ag
 // weighted pick by aim + a kit dimension + form
 
 export function pickByKit(team,form,agByName,dim,mult){
-  const w=team.roster.map(pl=>Math.max(1, pl.aim*0.4 + kitOf(agByName[pl.name],pl.role)[dim]*(mult||3) + (form[pl.name]||0)));
+  const attr=dim==='en'?'entry':dim==='le'?'firepower':(dim==='in'||dim==='co'||dim==='su')?'tactical':'combatEfficiency';
+  const w=team.roster.map(pl=>Math.max(1, playerAttribute(pl,attr)*0.4 + kitOf(agByName[pl.name],pl.role)[dim]*(mult||3) + (form[pl.name]||0)));
   const tot=w.reduce((s,x)=>s+x,0); let r=Math.random()*tot;
   for(let i=0;i<team.roster.length;i++){r-=w[i];if(r<=0)return team.roster[i];}
   return team.roster[0];
@@ -19,7 +20,7 @@ export function pickByKit(team,form,agByName,dim,mult){
 
 export function fbSbYScore(team,form,agByName){ // entry duel score of a team's best entry
   const pl=pickByKit(team,form,agByName,'en',3);
-  return {pl, score: pl.aim*0.5 + kitOf(agByName[pl.name],pl.role).en*3 + (form[pl.name]||0)};
+  return {pl, score: playerAttribute(pl,'entry')*0.25+playerAttribute(pl,'firepower')*0.2+playerAttribute(pl,'explosiveness')*0.05 + kitOf(agByName[pl.name],pl.role).en*3 + (form[pl.name]||0)};
 }
 
 export function applyKills(box,kills){
@@ -59,7 +60,7 @@ export function simOneMap(home,away,cc,homeStartAtk){
   const baseA=teamPower(away,aForm)+cc.away.delta;
   let credH=800,credA=800;
   let h=0,a=0,r=0; const rounds=[];
-  const effR=(pl,form)=>playerOVR(pl)+kitOf(agBy[pl.name],pl.role).le*0.5+(form[pl.name]||0)+(pl.role==='DUE'?3:0);
+  const effR=(pl,form)=>playerOVR(pl)*0.55+playerAttribute(pl,'firepower')*0.2+playerAttribute(pl,'combatEfficiency')*0.15+playerAttribute(pl,'positioning')*0.1+kitOf(agBy[pl.name],pl.role).le*0.5+(form[pl.name]||0)+(pl.role==='DUE'?3:0);
   while(!((h>=13||a>=13)&&Math.abs(h-a)>=2)){
     if(r>50)break;
     const hSide=homeSideAt(r,homeStartAtk), aSide=hSide==='atk'?'def':'atk';
@@ -114,7 +115,7 @@ export function topKillerOfRound(rd){const c={};rd.kills.forEach(k=>{if(k.side==
 
 
 export function weightedPlayer(team,form){
-  const weights=team.roster.map(pl=>Math.max(1,pl.aim + (form[pl.name]||0) + (pl.role==='DUE'?8:0)));
+  const weights=team.roster.map(pl=>Math.max(1,playerAttribute(pl,'firepower')*0.65+playerAttribute(pl,'combatEfficiency')*0.35 + (form[pl.name]||0) + (pl.role==='DUE'?8:0)));
   const tot=weights.reduce((s,w)=>s+w,0); let r=Math.random()*tot;
   for(let i=0;i<team.roster.length;i++){r-=weights[i];if(r<=0)return team.roster[i];}
   return team.roster[0];

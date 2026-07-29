@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "modelVersion": "vct-player-ratings-2.1.0",
+  "generatedAt": "2026-07-29T06:02:48.585Z",
+  "purpose": "Data-derived player attributes, tendencies, and masteries for simulation.",
+  "scale": {
+    "minimum": 20,
+    "maximum": 99,
+    "neutralPercentile": 0.5
+  },
+  "formulaConfig": "config/rating-model.json",
+  "yearlyStats": "data/players/<year>.json",
+  "latestStats": "data/latest.json",
+  "validationReport": "validation-report.json"
+}

@@ -1,23 +1,23 @@
 /* MATCH SCREEN */
   .matchhead{text-align:center; margin-bottom:20px}
-  .matchhead .mvenue{font-family:"Oswald"; letter-spacing:.2em; color:var(--muted);
+  .matchhead .mvenue{font-family:"Rajdhani","Pretendard"; letter-spacing:.2em; color:var(--muted);
     font-size:12px; text-transform:uppercase}
   .scoreline{display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
     gap:16px; margin:16px 0}
   .side{display:flex; align-items:center; gap:12px}
   .side.away{flex-direction:row-reverse; text-align:right}
-  .side .sn{font-family:"Oswald"; font-size:clamp(20px,4vw,30px); text-transform:uppercase; letter-spacing:.02em}
+  .side .sn{font-family:"Rajdhani","Pretendard"; font-size:clamp(20px,4vw,30px); text-transform:uppercase; letter-spacing:.02em}
   .side .crest{width:46px; height:46px; border-radius:10px; flex:none;
-    display:grid; place-items:center; font-family:"Oswald"; font-weight:700; font-size:18px; color:#0b0e14}
-  .bigscore{font-family:"Oswald"; font-size:clamp(46px,11vw,86px); line-height:1;
+    display:grid; place-items:center; font-family:"Rajdhani","Pretendard"; font-weight:700; font-size:18px; color:#0b0e14}
+  .bigscore{font-family:"Rajdhani","Pretendard"; font-size:clamp(46px,11vw,86px); line-height:1;
     display:flex; align-items:center; gap:14px}
   .bigscore .colon{color:var(--muted)}
   .bigscore .s.win{color:var(--def)} .bigscore .s.lose{color:var(--muted)}
-  .mapname{text-align:center; font-family:"Oswald"; letter-spacing:.18em;
+  .mapname{text-align:center; font-family:"Rajdhani","Pretendard"; letter-spacing:.18em;
     color:var(--muted); font-size:12px; text-transform:uppercase; margin-bottom:6px}
   .mapchips{display:flex; justify-content:center; gap:8px; margin-bottom:22px; flex-wrap:wrap}
   .mapchip{padding:5px 12px; border:1px solid var(--line); border-radius:20px; font-size:12px;
-    font-family:"Oswald"; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+    font-family:"Rajdhani","Pretendard"; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
   .mapchip.w{border-color:var(--def); color:var(--def)}
   .mapchip.l{border-color:var(--val); color:var(--val)}
   .mapchip.live{border-color:var(--gold); color:var(--gold)}
@@ -25,7 +25,7 @@
   /* SIGNATURE: round tracker */
   .rounds{background:var(--panel); border:1px solid var(--line); border-radius:12px;
     padding:16px; margin-bottom:16px}
-  .rlabel{display:flex; justify-content:space-between; font-family:"Oswald"; font-size:12px;
+  .rlabel{display:flex; justify-content:space-between; font-family:"Rajdhani","Pretendard"; font-size:12px;
     letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:10px}
   .pips{display:flex; gap:3px; align-items:center}
   .pipwrap{flex:1; display:flex; gap:3px}
@@ -38,12 +38,12 @@
   .halfmark{width:2px; height:26px; background:var(--line); margin:0 4px}
 
   .feed{background:#0d1219; border:1px solid var(--line); border-radius:10px;
-    height:132px; overflow:hidden; padding:10px 14px; font-family:"IBM Plex Mono";
+    height:132px; overflow:hidden; padding:10px 14px; font-family:"IBM Plex Mono Local","Pretendard";
     font-size:12.5px; margin-bottom:16px}
   .feed .ln{opacity:0; animation:sl .3s forwards; padding:2px 0; color:var(--muted)}
   .feed .ln .k{color:var(--text)}
   .feed .ln.home .k{color:var(--val)} .feed .ln.away .k{color:var(--def)}
-  .feed .sidetag{font-size:10px; font-family:"Oswald"; letter-spacing:.08em; padding:1px 5px;
+  .feed .sidetag{font-size:10px; font-family:"Rajdhani","Pretendard"; letter-spacing:.08em; padding:1px 5px;
     border-radius:3px; margin:0 2px}
   .feed .sidetag.atk{background:rgba(255,70,85,.16); color:#ff8b95}
   .feed .sidetag.def{background:rgba(35,224,168,.16); color:#7fecc9}
@@ -51,17 +51,17 @@
   .feed .abtag.ult{color:var(--gold)}
   .feed .cltag{color:var(--gold); font-size:11px}
   .feed .evtag{color:var(--muted); font-size:11px; border:1px solid #2a3547; border-radius:3px; padding:0 4px}
-  .box td.rat{font-weight:700; font-family:"IBM Plex Mono"}
+  .box td.rat{font-weight:700; font-family:"IBM Plex Mono Local","Pretendard"}
   .box td.rat.pos{color:var(--def)} .box td.rat.neg{color:var(--val)}
-  .box .agtag{color:var(--muted); font-size:11px; font-family:"IBM Plex Sans"}
+  .box .agtag{color:var(--muted); font-size:11px; font-family:"Pretendard"}
   /* round timeline */
   .timeline{margin-top:16px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px}
   .tlmvp{display:flex; flex-direction:column; gap:2px; padding-bottom:14px; margin-bottom:14px; border-bottom:1px solid var(--line)}
-  .tlmvp .mvplbl{font-family:"Oswald"; text-transform:uppercase; letter-spacing:.16em; font-size:10px; color:var(--muted)}
-  .tlmvp .mvpname{font-family:"Oswald"; font-size:22px; color:var(--gold); text-transform:uppercase; letter-spacing:.02em}
-  .tlmvp .mvpline{font-family:"IBM Plex Mono"; font-size:12px; color:var(--muted)}
+  .tlmvp .mvplbl{font-family:"Rajdhani","Pretendard"; text-transform:uppercase; letter-spacing:.16em; font-size:10px; color:var(--muted)}
+  .tlmvp .mvpname{font-family:"Rajdhani","Pretendard"; font-size:22px; color:var(--gold); text-transform:uppercase; letter-spacing:.02em}
+  .tlmvp .mvpline{font-family:"IBM Plex Mono Local","Pretendard"; font-size:12px; color:var(--muted)}
   .tlmap{margin-top:12px}
-  .tlmaphd{font-family:"Oswald"; text-transform:uppercase; letter-spacing:.06em; font-size:12px; color:var(--muted); margin-bottom:6px}
+  .tlmaphd{font-family:"Rajdhani","Pretendard"; text-transform:uppercase; letter-spacing:.06em; font-size:12px; color:var(--muted); margin-bottom:6px}
   .tlmaphd b{color:var(--text); margin-left:4px}
   .tlrow{display:flex; flex-wrap:wrap; gap:3px}
   .tlcell{width:26px; height:34px; border-radius:4px; display:flex; flex-direction:column;

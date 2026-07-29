@@ -6,3 +6,10 @@ dist
 # Original data sources — large, not committed. See PLAN.md.
 images/
 stats/
+
+# Rebuildable normalized/profile/rating stores. Their source CSVs are also ignored above.
+# Keep schemas, configs, scripts, manifests, and reports in Git.
+vct_json/data/
+vct_json/quarantine/
+profile_json/data/
+stat_json/data/

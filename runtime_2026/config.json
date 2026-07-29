@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "modelVersion": "vct-runtime-2026-1.0.0",
+  "targetYear": 2026,
+  "teamIdOverrides": {},
+  "displayNameOverrides": { "4866": "Kushy" },
+  "attributeYearWeights": {
+    "default": { "2026": 1.0, "2025": 0.8, "2024": 0.35, "2023": 0.12, "2022": 0.04, "2021": 0.01 },
+    "positioning": { "2026": 1.0, "2025": 0.82, "2024": 0.4, "2023": 0.15, "2022": 0.05, "2021": 0.01 },
+    "adaptability": { "2026": 1.0, "2025": 0.85, "2024": 0.5, "2023": 0.25, "2022": 0.1, "2021": 0.03 },
+    "clutch": { "2026": 1.0, "2025": 0.65, "2024": 0.25, "2023": 0.08, "2022": 0.02, "2021": 0.0 },
+    "pressure": { "2026": 1.0, "2025": 0.65, "2024": 0.25, "2023": 0.08, "2022": 0.02, "2021": 0.0 }
+  },
+  "agentYearWeights": { "2026": 1.0, "2025": 0.95, "2024": 0.85, "2023": 0.7, "2022": 0.0, "2021": 0.0 },
+  "agentHistoryMinimumYear": 2023,
+  "agentMinimumEvidenceRounds": 60,
+  "roleYearWeights": { "2026": 1.0, "2025": 0.55, "2024": 0.2, "2023": 0.08, "2022": 0.02, "2021": 0.0 },
+  "roleExperienceYearWeights": { "2026": 1.0, "2025": 0.95, "2024": 0.85, "2023": 0.7, "2022": 0.0, "2021": 0.0 },
+  "roleExperienceSaturationRounds": 450,
+  "roleAgentMinimumRounds": 60,
+  "mapYearWeights": { "2026": 1.0, "2025": 0.72, "2024": 0.5, "2023": 0.32, "2022": 0.2, "2021": 0.12 },
+  "agentInactivityPenalty": { "2026": 0, "2025": 1, "2024": 2, "2023": 4, "2022": 6, "2021": 8 },
+  "evidenceCaps": { "attributeRounds": 1000, "agentRounds": 500, "roleRounds": 800, "mapRounds": 500 },
+  "neutralPriorRounds": { "attribute": 120, "agent": 60, "role": 80, "map": 60 },
+  "form": { "maximumAdjustment": 4, "conversion": 0.2 },
+  "provenAbilityFloor": { "attributes": ["firepower", "combatEfficiency", "explosiveness"], "minimumRounds": 300, "seasonPenalty": { "2026": 0.0, "2025": 0.03, "2024": 0.1 } },
+  "scale": { "minimum": 20, "maximum": 99, "neutral": 60 }
+}

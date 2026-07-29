@@ -7,7 +7,8 @@
 // subscribe/bump let React read state via useSyncExternalStore (see
 // ui/useStore.js); every mutation site that a screen depends on must call
 // bump() itself after mutating ST/MATCH in place.
-export const ST = { league:null, myTeamIdx:null, teams:[], schedule:[], week:0, standings:{}, seasonOver:false, screen:'scSelect' };
+const savedLanguage = typeof window !== 'undefined' ? window.localStorage.getItem('vlm-language') : null;
+export const ST = { language:savedLanguage === 'en' ? 'en' : 'ko', league:null, myTeamIdx:null, teams:[], schedule:[], week:0, standings:{}, seasonOver:false, screen:'scSelect', previewLeague:null, previewTeamIdx:null, playerViewContext:null };
 export let MATCH = null;
 
 let version = 0;

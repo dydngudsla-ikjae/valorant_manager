@@ -1,0 +1,439 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-29T07:27:40.829Z",
+  "source": "VLR team profile pages; runtime uses local files only.",
+  "teams": [
+    {
+      "id": "120",
+      "name": "100 Thieves",
+      "leagueId": "AMER",
+      "file": "/img/teams/120.png",
+      "sourcePage": "https://www.vlr.gg/team/120/100-thieves/",
+      "sourceImage": "https://owcdn.net/img/603c00d5c5a08.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "188",
+      "name": "Cloud9",
+      "leagueId": "AMER",
+      "file": "/img/teams/188.png",
+      "sourcePage": "https://www.vlr.gg/team/188/cloud9/",
+      "sourceImage": "https://owcdn.net/img/628addcbd509e.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "427",
+      "name": "Envy",
+      "leagueId": "AMER",
+      "file": "/img/teams/427.png",
+      "sourcePage": "https://www.vlr.gg/team/427/envy/",
+      "sourceImage": "https://owcdn.net/img/5f3ca822464a3.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "5248",
+      "name": "Evil Geniuses",
+      "leagueId": "AMER",
+      "file": "/img/teams/5248.png",
+      "sourcePage": "https://www.vlr.gg/team/5248/evil-geniuses/",
+      "sourceImage": "https://owcdn.net/img/667462f046618.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "2406",
+      "name": "FURIA",
+      "leagueId": "AMER",
+      "file": "/img/teams/2406.png",
+      "sourcePage": "https://www.vlr.gg/team/2406/furia/",
+      "sourceImage": "https://owcdn.net/img/632be843b7d51.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "11058",
+      "name": "G2 Esports",
+      "leagueId": "AMER",
+      "file": "/img/teams/11058.png",
+      "sourcePage": "https://www.vlr.gg/team/11058/g2-esports/",
+      "sourceImage": "https://owcdn.net/img/633822848a741.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "2355",
+      "name": "KRÜ Esports",
+      "leagueId": "AMER",
+      "file": "/img/teams/2355.png",
+      "sourcePage": "https://www.vlr.gg/team/2355/kru-esports/",
+      "sourceImage": "https://owcdn.net/img/63976677069e1.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "2359",
+      "name": "LEVIATÁN",
+      "leagueId": "AMER",
+      "file": "/img/teams/2359.png",
+      "sourcePage": "https://www.vlr.gg/team/2359/leviatan/",
+      "sourceImage": "https://owcdn.net/img/61b8888cc3860.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "6961",
+      "name": "LOUD",
+      "leagueId": "AMER",
+      "file": "/img/teams/6961.png",
+      "sourcePage": "https://www.vlr.gg/team/6961/loud/",
+      "sourceImage": "https://owcdn.net/img/62bbec8dc1b9f.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "7386",
+      "name": "MIBR",
+      "leagueId": "AMER",
+      "file": "/img/teams/7386.png",
+      "sourcePage": "https://www.vlr.gg/team/7386/mibr/",
+      "sourceImage": "https://owcdn.net/img/632be7626d6d9.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "1034",
+      "name": "NRG Esports",
+      "leagueId": "AMER",
+      "file": "/img/teams/1034.png",
+      "sourcePage": "https://www.vlr.gg/team/1034/nrg-esports/",
+      "sourceImage": "https://owcdn.net/img/6610f026c1a9e.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "2",
+      "name": "Sentinels",
+      "leagueId": "AMER",
+      "file": "/img/teams/2.png",
+      "sourcePage": "https://www.vlr.gg/team/2/sentinels/",
+      "sourceImage": "https://owcdn.net/img/62875027c8e06.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "1119",
+      "name": "All Gamers",
+      "leagueId": "CN",
+      "file": "/img/teams/1119.png",
+      "sourcePage": "https://www.vlr.gg/team/1119/all-gamers/",
+      "sourceImage": "https://owcdn.net/img/6549c2b905061.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "12010",
+      "name": "Bilibili Gaming",
+      "leagueId": "CN",
+      "file": "/img/teams/12010.png",
+      "sourcePage": "https://www.vlr.gg/team/12010/bilibili-gaming/",
+      "sourceImage": "https://owcdn.net/img/63f25d72216c1.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "11981",
+      "name": "Dragon Ranger Gaming",
+      "leagueId": "CN",
+      "file": "/img/teams/11981.png",
+      "sourcePage": "https://www.vlr.gg/team/11981/dragon-ranger-gaming/",
+      "sourceImage": "https://owcdn.net/img/642233fc01f26.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "1120",
+      "name": "EDward Gaming",
+      "leagueId": "CN",
+      "file": "/img/teams/1120.png",
+      "sourcePage": "https://www.vlr.gg/team/1120/edward-gaming/",
+      "sourceImage": "https://owcdn.net/img/62c82049253b2.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "11328",
+      "name": "FunPlus Phoenix",
+      "leagueId": "CN",
+      "file": "/img/teams/11328.png",
+      "sourcePage": "https://www.vlr.gg/team/11328/funplus-phoenix/",
+      "sourceImage": "https://owcdn.net/img/65a17b313b131.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "13576",
+      "name": "JDG Esports",
+      "leagueId": "CN",
+      "file": "/img/teams/13576.png",
+      "sourcePage": "https://www.vlr.gg/team/13576/jdg-esports/",
+      "sourceImage": "https://owcdn.net/img/64f9825408326.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "12064",
+      "name": "Nova Esports",
+      "leagueId": "CN",
+      "file": "/img/teams/12064.png",
+      "sourcePage": "https://www.vlr.gg/team/12064/nova-esports/",
+      "sourceImage": "https://owcdn.net/img/6404c0174250b.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "14137",
+      "name": "Titan Esports Club",
+      "leagueId": "CN",
+      "file": "/img/teams/14137.png",
+      "sourcePage": "https://www.vlr.gg/team/14137/titan-esports-club/",
+      "sourceImage": "https://owcdn.net/img/65487414b8562.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "12685",
+      "name": "Trace Esports",
+      "leagueId": "CN",
+      "file": "/img/teams/12685.png",
+      "sourcePage": "https://www.vlr.gg/team/12685/trace-esports/",
+      "sourceImage": "https://owcdn.net/img/6433a2cc3ae72.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "731",
+      "name": "TYLOO",
+      "leagueId": "CN",
+      "file": "/img/teams/731.png",
+      "sourcePage": "https://www.vlr.gg/team/731/tyloo/",
+      "sourceImage": "https://owcdn.net/img/63eb60fb08390.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "13790",
+      "name": "Wolves Esports",
+      "leagueId": "CN",
+      "file": "/img/teams/13790.png",
+      "sourcePage": "https://www.vlr.gg/team/13790/wolves-esports/",
+      "sourceImage": "https://owcdn.net/img/651d33f8e6a1f.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "13581",
+      "name": "Xi Lai Gaming",
+      "leagueId": "CN",
+      "file": "/img/teams/13581.png",
+      "sourcePage": "https://www.vlr.gg/team/13581/xi-lai-gaming/",
+      "sourceImage": "https://owcdn.net/img/671742f863b9b.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "397",
+      "name": "BBL Esports",
+      "leagueId": "EMEA",
+      "file": "/img/teams/397.png",
+      "sourcePage": "https://www.vlr.gg/team/397/bbl-esports/",
+      "sourceImage": "https://owcdn.net/img/65b8ccef5e273.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "6392",
+      "name": "Eternal Fire",
+      "leagueId": "EMEA",
+      "file": "/img/teams/6392.png",
+      "sourcePage": "https://www.vlr.gg/team/6392/eternal-fire/",
+      "sourceImage": "https://owcdn.net/img/6628980dcdaea.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "2593",
+      "name": "FNATIC",
+      "leagueId": "EMEA",
+      "file": "/img/teams/2593.png",
+      "sourcePage": "https://www.vlr.gg/team/2593/fnatic/",
+      "sourceImage": "https://owcdn.net/img/62a40cc2b5e29.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "1184",
+      "name": "FUT Esports",
+      "leagueId": "EMEA",
+      "file": "/img/teams/1184.png",
+      "sourcePage": "https://www.vlr.gg/team/1184/fut-esports/",
+      "sourceImage": "https://owcdn.net/img/632be9976b8fe.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "12694",
+      "name": "Gentle Mates",
+      "leagueId": "EMEA",
+      "file": "/img/teams/12694.png",
+      "sourcePage": "https://www.vlr.gg/team/12694/gentle-mates/",
+      "sourceImage": "https://owcdn.net/img/6670153fa9120.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "14419",
+      "name": "GIANTX",
+      "leagueId": "EMEA",
+      "file": "/img/teams/14419.png",
+      "sourcePage": "https://www.vlr.gg/team/14419/giantx/",
+      "sourceImage": "https://owcdn.net/img/657b2f3fcd199.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "8877",
+      "name": "Karmine Corp",
+      "leagueId": "EMEA",
+      "file": "/img/teams/8877.png",
+      "sourcePage": "https://www.vlr.gg/team/8877/karmine-corp/",
+      "sourceImage": "https://owcdn.net/img/627403a0d9e48.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "4915",
+      "name": "Natus Vincere",
+      "leagueId": "EMEA",
+      "file": "/img/teams/4915.png",
+      "sourcePage": "https://www.vlr.gg/team/4915/natus-vincere/",
+      "sourceImage": "https://owcdn.net/img/62a4109ddbd7f.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "3478",
+      "name": "PCIFIC Espor",
+      "leagueId": "EMEA",
+      "file": "/img/teams/3478.png",
+      "sourcePage": "https://www.vlr.gg/team/3478/pcific-espor/",
+      "sourceImage": "https://owcdn.net/img/656e2ae2b8a48.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "1001",
+      "name": "Team Heretics",
+      "leagueId": "EMEA",
+      "file": "/img/teams/1001.png",
+      "sourcePage": "https://www.vlr.gg/team/1001/team-heretics/",
+      "sourceImage": "https://owcdn.net/img/637b755224c12.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "474",
+      "name": "Team Liquid",
+      "leagueId": "EMEA",
+      "file": "/img/teams/474.png",
+      "sourcePage": "https://www.vlr.gg/team/474/team-liquid/",
+      "sourceImage": "https://owcdn.net/img/640c381f0603f.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "2059",
+      "name": "Team Vitality",
+      "leagueId": "EMEA",
+      "file": "/img/teams/2059.png",
+      "sourcePage": "https://www.vlr.gg/team/2059/team-vitality/",
+      "sourceImage": "https://owcdn.net/img/6466d79e1ed40.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "278",
+      "name": "DetonatioN FocusMe",
+      "leagueId": "PAC",
+      "file": "/img/teams/278.png",
+      "sourcePage": "https://www.vlr.gg/team/278/detonation-focusme/",
+      "sourceImage": "https://owcdn.net/img/63972e548cdc9.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "8185",
+      "name": "DRX",
+      "leagueId": "PAC",
+      "file": "/img/teams/8185.png",
+      "sourcePage": "https://www.vlr.gg/team/8185/drx/",
+      "sourceImage": "https://owcdn.net/img/6a353ee73ab25.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "4050",
+      "name": "FULL SENSE",
+      "leagueId": "PAC",
+      "file": "/img/teams/4050.png",
+      "sourcePage": "https://www.vlr.gg/team/4050/full-sense/",
+      "sourceImage": "https://owcdn.net/img/6537a7954d915.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "17",
+      "name": "Gen.G",
+      "leagueId": "PAC",
+      "file": "/img/teams/17.png",
+      "sourcePage": "https://www.vlr.gg/team/17/gen-g/",
+      "sourceImage": "https://owcdn.net/img/6970c986eddc6.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "918",
+      "name": "Global Esports",
+      "leagueId": "PAC",
+      "file": "/img/teams/918.png",
+      "sourcePage": "https://www.vlr.gg/team/918/global-esports/",
+      "sourceImage": "https://owcdn.net/img/629f316ddd4dd.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "11060",
+      "name": "Nongshim RedForce",
+      "leagueId": "PAC",
+      "file": "/img/teams/11060.png",
+      "sourcePage": "https://www.vlr.gg/team/11060/nongshim-redforce/",
+      "sourceImage": "https://owcdn.net/img/6399bb707aacb.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "624",
+      "name": "Paper Rex",
+      "leagueId": "PAC",
+      "file": "/img/teams/624.png",
+      "sourcePage": "https://www.vlr.gg/team/624/paper-rex/",
+      "sourceImage": "https://owcdn.net/img/62bbeba74d5cb.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "878",
+      "name": "Rex Regum Qeon",
+      "leagueId": "PAC",
+      "file": "/img/teams/878.png",
+      "sourcePage": "https://www.vlr.gg/team/878/rex-regum-qeon/",
+      "sourceImage": "https://owcdn.net/img/629f17f51e7a3.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "14",
+      "name": "T1",
+      "leagueId": "PAC",
+      "file": "/img/teams/14.png",
+      "sourcePage": "https://www.vlr.gg/team/14/t1/",
+      "sourceImage": "https://owcdn.net/img/62fe0b8f6b084.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "6199",
+      "name": "Team Secret",
+      "leagueId": "PAC",
+      "file": "/img/teams/6199.png",
+      "sourcePage": "https://www.vlr.gg/team/6199/team-secret/",
+      "sourceImage": "https://owcdn.net/img/629f13085ead6.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "11229",
+      "name": "VARREL",
+      "leagueId": "PAC",
+      "file": "/img/teams/11229.png",
+      "sourcePage": "https://www.vlr.gg/team/11229/varrel/",
+      "sourceImage": "https://owcdn.net/img/63a74624cc76a.png",
+      "status": "downloaded"
+    },
+    {
+      "id": "5448",
+      "name": "ZETA DIVISION",
+      "leagueId": "PAC",
+      "file": "/img/teams/5448.png",
+      "sourcePage": "https://www.vlr.gg/team/5448/zeta-division/",
+      "sourceImage": "https://owcdn.net/img/62a411783d94d.png",
+      "status": "downloaded"
+    }
+  ]
+}

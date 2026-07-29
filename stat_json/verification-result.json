@@ -1,0 +1,549 @@
+{
+  "verifiedAt": "2026-07-29T06:02:59.329Z",
+  "valid": true,
+  "modelVersion": "vct-player-ratings-2.1.0",
+  "distributions": {
+    "2021": {
+      "firepower": {
+        "min": 29,
+        "p10": 53,
+        "median": 58,
+        "p90": 67,
+        "max": 94,
+        "mean": 59.15
+      },
+      "combatEfficiency": {
+        "min": 40,
+        "p10": 53,
+        "median": 57,
+        "p90": 64,
+        "max": 84,
+        "mean": 58.14
+      },
+      "entry": {
+        "min": 47,
+        "p10": 56,
+        "median": 59,
+        "p90": 63,
+        "max": 82,
+        "mean": 59.43
+      },
+      "positioning": {
+        "min": 39,
+        "p10": 53,
+        "median": 57,
+        "p90": 64,
+        "max": 84,
+        "mean": 58.12
+      },
+      "teamplay": {
+        "min": 43,
+        "p10": 54,
+        "median": 58,
+        "p90": 62,
+        "max": 77,
+        "mean": 58.14
+      },
+      "tactical": {
+        "min": 47,
+        "p10": 56,
+        "median": 58,
+        "p90": 60,
+        "max": 70,
+        "mean": 58.12
+      },
+      "clutch": {
+        "min": 48,
+        "p10": 57,
+        "median": 60,
+        "p90": 62,
+        "max": 84,
+        "mean": 59.72
+      },
+      "explosiveness": {
+        "min": 35,
+        "p10": 50,
+        "median": 57,
+        "p90": 63,
+        "max": 89,
+        "mean": 57.1
+      },
+      "consistency": {
+        "min": 34,
+        "p10": 53,
+        "median": 62,
+        "p90": 67,
+        "max": 78,
+        "mean": 60.87
+      },
+      "adaptability": {
+        "min": 44,
+        "p10": 55,
+        "median": 58,
+        "p90": 60,
+        "max": 73,
+        "mean": 57.69
+      },
+      "pressure": {
+        "min": 46,
+        "p10": 58,
+        "median": 60,
+        "p90": 60,
+        "max": 72,
+        "mean": 59.67
+      }
+    },
+    "2022": {
+      "firepower": {
+        "min": 35,
+        "p10": 53,
+        "median": 59,
+        "p90": 69,
+        "max": 92,
+        "mean": 60.01
+      },
+      "combatEfficiency": {
+        "min": 42,
+        "p10": 54,
+        "median": 58,
+        "p90": 65,
+        "max": 82,
+        "mean": 58.65
+      },
+      "entry": {
+        "min": 49,
+        "p10": 56,
+        "median": 59,
+        "p90": 64,
+        "max": 80,
+        "mean": 59.56
+      },
+      "positioning": {
+        "min": 39,
+        "p10": 54,
+        "median": 57,
+        "p90": 64,
+        "max": 85,
+        "mean": 58.43
+      },
+      "teamplay": {
+        "min": 44,
+        "p10": 55,
+        "median": 58,
+        "p90": 63,
+        "max": 80,
+        "mean": 58.32
+      },
+      "tactical": {
+        "min": 49,
+        "p10": 56,
+        "median": 58,
+        "p90": 61,
+        "max": 71,
+        "mean": 58.65
+      },
+      "clutch": {
+        "min": 50,
+        "p10": 58,
+        "median": 60,
+        "p90": 65,
+        "max": 79,
+        "mean": 61.01
+      },
+      "explosiveness": {
+        "min": 50,
+        "p10": 57,
+        "median": 60,
+        "p90": 69,
+        "max": 88,
+        "mean": 61.65
+      },
+      "consistency": {
+        "min": 37,
+        "p10": 53,
+        "median": 62,
+        "p90": 67,
+        "max": 79,
+        "mean": 60.76
+      },
+      "adaptability": {
+        "min": 46,
+        "p10": 55,
+        "median": 58,
+        "p90": 61,
+        "max": 73,
+        "mean": 57.92
+      },
+      "pressure": {
+        "min": 45,
+        "p10": 57,
+        "median": 60,
+        "p90": 61,
+        "max": 74,
+        "mean": 59.82
+      }
+    },
+    "2023": {
+      "firepower": {
+        "min": 34,
+        "p10": 49,
+        "median": 60,
+        "p90": 74,
+        "max": 88,
+        "mean": 60.62
+      },
+      "combatEfficiency": {
+        "min": 44,
+        "p10": 53,
+        "median": 59,
+        "p90": 67,
+        "max": 81,
+        "mean": 59.76
+      },
+      "entry": {
+        "min": 48,
+        "p10": 55,
+        "median": 59,
+        "p90": 65,
+        "max": 75,
+        "mean": 59.76
+      },
+      "positioning": {
+        "min": 47,
+        "p10": 53,
+        "median": 59,
+        "p90": 68,
+        "max": 87,
+        "mean": 60.3
+      },
+      "teamplay": {
+        "min": 45,
+        "p10": 53,
+        "median": 61,
+        "p90": 69,
+        "max": 79,
+        "mean": 61.1
+      },
+      "tactical": {
+        "min": 50,
+        "p10": 55,
+        "median": 60,
+        "p90": 66,
+        "max": 72,
+        "mean": 60.3
+      },
+      "clutch": {
+        "min": 51,
+        "p10": 56,
+        "median": 61,
+        "p90": 68,
+        "max": 82,
+        "mean": 61.36
+      },
+      "explosiveness": {
+        "min": 43,
+        "p10": 53,
+        "median": 60,
+        "p90": 72,
+        "max": 84,
+        "mean": 61.67
+      },
+      "consistency": {
+        "min": 45,
+        "p10": 56,
+        "median": 64,
+        "p90": 72,
+        "max": 78,
+        "mean": 64.12
+      },
+      "adaptability": {
+        "min": 49,
+        "p10": 53,
+        "median": 58,
+        "p90": 64,
+        "max": 73,
+        "mean": 58.16
+      },
+      "pressure": {
+        "min": 51,
+        "p10": 57,
+        "median": 60,
+        "p90": 64,
+        "max": 75,
+        "mean": 60.12
+      }
+    },
+    "2024": {
+      "firepower": {
+        "min": 32,
+        "p10": 47,
+        "median": 58,
+        "p90": 75,
+        "max": 92,
+        "mean": 60.09
+      },
+      "combatEfficiency": {
+        "min": 46,
+        "p10": 52,
+        "median": 59,
+        "p90": 69,
+        "max": 79,
+        "mean": 59.82
+      },
+      "entry": {
+        "min": 50,
+        "p10": 54,
+        "median": 59,
+        "p90": 66,
+        "max": 77,
+        "mean": 59.52
+      },
+      "positioning": {
+        "min": 44,
+        "p10": 53,
+        "median": 60,
+        "p90": 68,
+        "max": 83,
+        "mean": 60.06
+      },
+      "teamplay": {
+        "min": 42,
+        "p10": 51,
+        "median": 60,
+        "p90": 70,
+        "max": 76,
+        "mean": 60.16
+      },
+      "tactical": {
+        "min": 48,
+        "p10": 54,
+        "median": 59,
+        "p90": 65,
+        "max": 69,
+        "mean": 59.48
+      },
+      "clutch": {
+        "min": 50,
+        "p10": 54,
+        "median": 60,
+        "p90": 69,
+        "max": 76,
+        "mean": 60.63
+      },
+      "explosiveness": {
+        "min": 33,
+        "p10": 37,
+        "median": 59,
+        "p90": 71,
+        "max": 85,
+        "mean": 56.87
+      },
+      "consistency": {
+        "min": 37,
+        "p10": 51,
+        "median": 59,
+        "p90": 67,
+        "max": 76,
+        "mean": 59.32
+      },
+      "adaptability": {
+        "min": 47,
+        "p10": 53,
+        "median": 59,
+        "p90": 66,
+        "max": 74,
+        "mean": 59.1
+      },
+      "pressure": {
+        "min": 50,
+        "p10": 55,
+        "median": 60,
+        "p90": 66,
+        "max": 73,
+        "mean": 60.26
+      }
+    },
+    "2025": {
+      "firepower": {
+        "min": 31,
+        "p10": 48,
+        "median": 59,
+        "p90": 73,
+        "max": 88,
+        "mean": 59.3
+      },
+      "combatEfficiency": {
+        "min": 44,
+        "p10": 52,
+        "median": 59,
+        "p90": 68,
+        "max": 78,
+        "mean": 59.74
+      },
+      "entry": {
+        "min": 49,
+        "p10": 55,
+        "median": 59,
+        "p90": 65,
+        "max": 78,
+        "mean": 59.71
+      },
+      "positioning": {
+        "min": 45,
+        "p10": 52,
+        "median": 59,
+        "p90": 68,
+        "max": 80,
+        "mean": 59.6
+      },
+      "teamplay": {
+        "min": 45,
+        "p10": 52,
+        "median": 59,
+        "p90": 68,
+        "max": 77,
+        "mean": 59.22
+      },
+      "tactical": {
+        "min": 49,
+        "p10": 55,
+        "median": 59,
+        "p90": 65,
+        "max": 71,
+        "mean": 59.48
+      },
+      "clutch": {
+        "min": 51,
+        "p10": 55,
+        "median": 60,
+        "p90": 67,
+        "max": 82,
+        "mean": 60.91
+      },
+      "explosiveness": {
+        "min": 32,
+        "p10": 37,
+        "median": 59,
+        "p90": 72,
+        "max": 87,
+        "mean": 58.09
+      },
+      "consistency": {
+        "min": 37,
+        "p10": 52,
+        "median": 59,
+        "p90": 66,
+        "max": 75,
+        "mean": 58.88
+      },
+      "adaptability": {
+        "min": 48,
+        "p10": 54,
+        "median": 60,
+        "p90": 69,
+        "max": 79,
+        "mean": 61.42
+      },
+      "pressure": {
+        "min": 48,
+        "p10": 55,
+        "median": 60,
+        "p90": 65,
+        "max": 75,
+        "mean": 59.85
+      }
+    },
+    "2026": {
+      "firepower": {
+        "min": 36,
+        "p10": 49,
+        "median": 59,
+        "p90": 72,
+        "max": 86,
+        "mean": 59.75
+      },
+      "combatEfficiency": {
+        "min": 47,
+        "p10": 53,
+        "median": 59,
+        "p90": 67,
+        "max": 80,
+        "mean": 59.86
+      },
+      "entry": {
+        "min": 49,
+        "p10": 55,
+        "median": 60,
+        "p90": 66,
+        "max": 73,
+        "mean": 59.98
+      },
+      "positioning": {
+        "min": 46,
+        "p10": 52,
+        "median": 59,
+        "p90": 68,
+        "max": 78,
+        "mean": 59.63
+      },
+      "teamplay": {
+        "min": 47,
+        "p10": 52,
+        "median": 59,
+        "p90": 66,
+        "max": 73,
+        "mean": 58.85
+      },
+      "tactical": {
+        "min": 51,
+        "p10": 55,
+        "median": 59,
+        "p90": 64,
+        "max": 69,
+        "mean": 58.92
+      },
+      "clutch": {
+        "min": 50,
+        "p10": 54,
+        "median": 60,
+        "p90": 66,
+        "max": 76,
+        "mean": 60.23
+      },
+      "explosiveness": {
+        "min": 35,
+        "p10": 39,
+        "median": 60,
+        "p90": 72,
+        "max": 84,
+        "mean": 58.24
+      },
+      "consistency": {
+        "min": 41,
+        "p10": 52,
+        "median": 60,
+        "p90": 67,
+        "max": 74,
+        "mean": 59.76
+      },
+      "adaptability": {
+        "min": 49,
+        "p10": 53,
+        "median": 58,
+        "p90": 66,
+        "max": 72,
+        "mean": 59.09
+      },
+      "pressure": {
+        "min": 49,
+        "p10": 55,
+        "median": 60,
+        "p90": 65,
+        "max": 73,
+        "mean": 59.83
+      }
+    }
+  },
+  "failures": [],
+  "failureCount": 0
+}

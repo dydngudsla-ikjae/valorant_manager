@@ -1,7 +1,9 @@
 import { playerOVR, seededPool } from './ratings.js';
 import { AGENTS, AGENT_ROLE } from '../data/agents.js';
 import { LEAGUES, primaryRole, secondaryRole } from '../data/leagues.js';
-import STATS_BY_NAME from '../data/player-stats.json';
+import RUNTIME_2026 from '../data/player-runtime-2026.json';
+
+const norm=value=>String(value??'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'');
 
 export function visiblePool(pl,n){ n=n||4; const pool=(pl.pool||[]).slice(); if(!pool.length)return [];
   const roleOf=x=>x.role||'?'; const prim=primaryRole(pl);
@@ -14,13 +16,16 @@ export function visiblePool(pl,n){ n=n||4; const pool=(pl.pool||[]).slice(); if(
 // 0-20 proficiency bands: [min, label, color]
 
 export function applyRealStats(){
-  Object.values(LEAGUES).forEach(L=>L.teams.forEach(t=>[...t.roster,...(t.bench||[])].forEach(pl=>{
-    const s=STATS_BY_NAME[pl.name.toLowerCase()]; if(!s)return;
-    pl.aim=s.aim; pl.sense=s.sense; pl.clutch=s.clutch; pl.util=s.util; pl.mental=s.mental;
-    if(s.role) pl.role=s.role;
-    if(typeof s.flex==="boolean") pl._flex=s.flex;
-    if(s.prof) pl.prof=Object.assign({DUE:8,INI:8,SEN:8,CON:8},s.prof);
-    if(s.pool&&s.pool.length){ pl.pool=s.pool.map(x=>({agent:x.agent,mastery:x.mastery,role:x.role})); pl._realpool=true; }
+  Object.entries(LEAGUES).forEach(([leagueId,L])=>L.teams.forEach(t=>[...t.roster,...(t.bench||[])].forEach(pl=>{
+    const s=RUNTIME_2026.players[`${leagueId}:${t.short}:${norm(pl.name)}`]; if(!s)return;
+    Object.assign(pl,s.legacy);
+    pl.playerId=s.playerId; pl.teamId=s.teamId; pl.role=s.primaryRole||pl.role;
+    pl.attributes=s.appliedAttributes; pl.baseAttributes=s.baseAttributes; pl.season2026Attributes=s.season2026Attributes;
+    pl.attributeReliability=s.attributeReliability; pl.tendencies=s.tendencies; pl.mapMastery=s.mapMastery;
+    pl.form=s.form; pl.sample2026=s.sample2026; pl.runtimeModel=RUNTIME_2026.modelVersion;
+    pl.prof=Object.assign({DUE:1,INI:1,SEN:1,CON:1},Object.fromEntries(Object.entries(s.roleMastery||{}).map(([r,v])=>[r,v.gameProficiency])));
+    pl.pool=(s.agentMastery||[]).filter(x=>x.role).map(x=>({agent:x.agent,mastery:x.gameMastery,role:x.role,readiness:x.readiness,reliability:x.reliability,usage2026:x.usage2026,lastObservedYear:x.lastObservedYear}));
+    if(pl.pool.length)pl._realpool=true;
     pl._real=true;
   })));
 }

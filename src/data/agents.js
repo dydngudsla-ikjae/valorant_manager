@@ -1,8 +1,8 @@
 export const AGENTS = {
-  DUE:['Jett','Raze','Reyna','Phoenix','Neon','Yoru','Iso'],
+  DUE:['Jett','Raze','Reyna','Phoenix','Neon','Yoru','Iso','Waylay'],
   INI:['Sova','Fade','Breach','Skye','KAY/O','Gekko','Tejo'],
-  SEN:['Killjoy','Cypher','Sage','Chamber','Deadlock','Vyse'],
-  CON:['Omen','Brimstone','Viper','Astra','Harbor','Clove'],
+  SEN:['Killjoy','Cypher','Sage','Chamber','Deadlock','Vyse','Veto'],
+  CON:['Omen','Brimstone','Viper','Astra','Harbor','Clove','Miks'],
   FLEX:['Raze','Neon','Omen','Astra','KAY/O','Gekko','Sova','Cypher'],
 };
 // Each agent: kit vector en(entry) in(info) co(control) su(support) cl(clutch) le(lethality) + 4 abilities

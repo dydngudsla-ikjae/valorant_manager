@@ -1,3 +1,7 @@
+import GAME_ROSTERS_2026 from './game-rosters-2026.json' with { type: 'json' };
+import LEAGUE_MEMBERSHIPS_2026 from '../../runtime_2026/league-memberships-2026.json' with { type: 'json' };
+import { roleLabel, tr } from '../i18n.js';
+
 export const ROLE = {
   DUE:{name:"Duelist",  c:"var(--due)", w:{aim:.36,sense:.20,clutch:.22,util:.08,mental:.14}},
   INI:{name:"Initiator",c:"var(--ini)", w:{aim:.24,sense:.28,clutch:.12,util:.24,mental:.12}},
@@ -26,7 +30,7 @@ export function displayRole(pl){ if(isFlex(pl))return 'FLEX'; const sec=secondar
 
 export function roleColor(pl){ return ROLE[primaryRole(pl)].c; }
 
-export function roleFull(pl){ if(isFlex(pl))return 'Flex · main '+ROLE[primaryRole(pl)].name; const sec=secondaryRole(pl); return ROLE[primaryRole(pl)].name+(sec?' / '+ROLE[sec].name:''); }
+export function roleFull(pl){ if(isFlex(pl))return tr('플렉스 · 주 역할 ', 'Flex · main ')+roleLabel(primaryRole(pl)); const sec=secondaryRole(pl); return roleLabel(primaryRole(pl))+(sec?' / '+roleLabel(sec):''); }
 // a compact, role-balanced pool for cards: top by mastery, but guarantee a secondary-role agent shows
 
 export const PROFBANDS=[[18,'능숙함','#2ECC71'],[15,'자연스러움','#A3E635'],[10,'가능함','#F5C518'],[0,'불가능','#FF4655']];
@@ -84,5 +88,26 @@ export const LEAGUES = {
     {name:"All Gamers", short:"AG", color:"#9B59B6", roster:[p("K1ra","CON",80,80,80,80,80),p("Shr1mp","INI",80,80,80,80,80),p("iamgrq","CON",80,80,80,80,80),p("f4ngeer","DUE",80,80,80,80,80),p("Youze","DUE",80,80,80,80,80)], bench:[p("Au1","CON",80,80,80,80,80)]},
   ]},
 };
+
+// League membership is ID-based and derived from 2026 regional Stage 1 participation.
+// Existing entries provide presentation colors; new entries receive a neutral fallback.
+Object.entries(LEAGUE_MEMBERSHIPS_2026.leagues).forEach(([leagueId, memberships]) => {
+  const configured = LEAGUES[leagueId].teams;
+  LEAGUES[leagueId].teams = memberships.map(membership => {
+    const presentation = configured.find(team => team.short === membership.short)
+      || configured.find(team => team.name === membership.name);
+    return Object.assign({ color: '#111111', roster: [], bench: [] }, presentation || {}, membership);
+  });
+});
+
+// Player membership comes from profile_json's observed 2026 rosters. Team names,
+// colors and league placement above remain presentation/game configuration.
+Object.entries(LEAGUES).forEach(([leagueId,league])=>league.teams.forEach(team=>{
+  const source=GAME_ROSTERS_2026.teams[`${leagueId}:${team.short}`];
+  if(!source)return;
+  const make=x=>Object.assign(p(x.name,x.role,60,60,60,60,60),{playerId:x.playerId,teamId:source.teamId,observedRounds2026:x.rounds});
+  team.roster=source.active.map(make);
+  team.bench=source.bench.map(make);
+}));
 
 /* ---- ratings ---- */

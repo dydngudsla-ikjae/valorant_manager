@@ -1,12 +1,32 @@
 import { AGENTS, AGENT_KITS, BEATS, KIT_DEFAULT } from '../data/agents.js';
 import { ROLE, p } from '../data/leagues.js';
 
-export function playerOVR(pl){const w=ROLE[pl.role].w;
-  return Math.round(pl.aim*w.aim+pl.sense*w.sense+pl.clutch*w.clutch+pl.util*w.util+pl.mental*w.mental);}
+export const ATTRIBUTE_DEFS = [
+  ['firepower','Firepower'], ['combatEfficiency','Combat efficiency'], ['entry','Entry'],
+  ['positioning','Positioning'], ['teamplay','Teamplay'], ['tactical','Tactical'],
+  ['clutch','Clutch'], ['explosiveness','Explosiveness'], ['consistency','Consistency'],
+  ['adaptability','Adaptability'], ['pressure','Pressure']
+];
+export const CORE_ATTRIBUTE_KEYS=['firepower','combatEfficiency','positioning','tactical','clutch'];
+const OVR_WEIGHTS={
+  DUE:{firepower:.22,combatEfficiency:.16,entry:.18,positioning:.07,teamplay:.04,tactical:.04,clutch:.08,explosiveness:.10,consistency:.04,adaptability:.03,pressure:.04},
+  INI:{firepower:.10,combatEfficiency:.10,entry:.06,positioning:.11,teamplay:.15,tactical:.17,clutch:.05,explosiveness:.04,consistency:.08,adaptability:.08,pressure:.06},
+  SEN:{firepower:.10,combatEfficiency:.12,entry:.04,positioning:.17,teamplay:.11,tactical:.14,clutch:.10,explosiveness:.03,consistency:.09,adaptability:.05,pressure:.05},
+  CON:{firepower:.08,combatEfficiency:.10,entry:.03,positioning:.16,teamplay:.15,tactical:.18,clutch:.07,explosiveness:.03,consistency:.09,adaptability:.06,pressure:.05},
+  FLEX:{firepower:.12,combatEfficiency:.12,entry:.08,positioning:.12,teamplay:.10,tactical:.12,clutch:.08,explosiveness:.06,consistency:.07,adaptability:.08,pressure:.05}
+};
+const LEGACY_FALLBACK={firepower:'aim',combatEfficiency:'aim',entry:'aim',positioning:'sense',teamplay:'util',tactical:'util',clutch:'clutch',explosiveness:'aim',consistency:'mental',adaptability:'sense',pressure:'mental'};
+export function playerAttribute(pl,key){return pl.attributes?.[key] ?? pl[LEGACY_FALLBACK[key]] ?? 60;}
+export const ROLE_FIT_PERCENT=[55,58,61,64,67,70,73,76,79,82,85,87,89,91,93,95,97,98,99,100];
+export function roleFitPercent(pl,role){const proficiency=Math.max(1,Math.min(20,Math.round(pl.prof?.[role]??1)));return ROLE_FIT_PERCENT[proficiency-1];}
+export function playerRoleAbilityOVR(pl,role){const w=OVR_WEIGHTS[role]||OVR_WEIGHTS.FLEX;
+  return Math.round(Object.entries(w).reduce((sum,[key,weight])=>sum+playerAttribute(pl,key)*weight,0));}
+export function playerRoleOVR(pl,role){return Math.round(playerRoleAbilityOVR(pl,role)*roleFitPercent(pl,role)/100);}
+export function playerOVR(pl){return playerRoleOVR(pl,pl.role);}
 
 export function teamOVR(t){return Math.round(t.roster.reduce((s,p)=>s+playerOVR(p),0)/t.roster.length);}
 
-export function teamAxis(t,axis){return t.roster.reduce((s,p)=>s+p[axis],0)/t.roster.length;}
+export function teamAxis(t,axis){return t.roster.reduce((s,p)=>s+playerAttribute(p,axis),0)/t.roster.length;}
 
 /* ============================================================
    PHASE 1 — AGENTS · COMPS · COUNTERS · MAP CONTEXT

@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "modelVersion": "vct-player-ratings-2.1.0",
+  "evaluationModel": "absolute_fixed_anchors",
+  "generatedAt": "2026-07-29T06:02:48.585Z",
+  "years": {
+    "2021": {
+      "sourceProfiles": 11557,
+      "ratedPlayers": 11531,
+      "roles": {
+        "DUE": 3646,
+        "INI": 2665,
+        "SEN": 2783,
+        "CON": 2437,
+        "UNKNOWN": 0
+      },
+      "attributeNulls": {
+        "firepower": 0,
+        "combatEfficiency": 0,
+        "entry": 0,
+        "positioning": 0,
+        "teamplay": 0,
+        "tactical": 0,
+        "clutch": 0,
+        "explosiveness": 0,
+        "consistency": 0,
+        "adaptability": 0,
+        "pressure": 0
+      }
+    },
+    "2022": {
+      "sourceProfiles": 7663,
+      "ratedPlayers": 7648,
+      "roles": {
+        "DUE": 1890,
+        "INI": 2458,
+        "SEN": 1640,
+        "CON": 1660,
+        "UNKNOWN": 0
+      },
+      "attributeNulls": {
+        "firepower": 0,
+        "combatEfficiency": 0,
+        "entry": 0,
+        "positioning": 0,
+        "teamplay": 0,
+        "tactical": 0,
+        "clutch": 0,
+        "explosiveness": 0,
+        "consistency": 0,
+        "adaptability": 0,
+        "pressure": 0
+      }
+    },
+    "2023": {
+      "sourceProfiles": 284,
+      "ratedPlayers": 284,
+      "roles": {
+        "DUE": 67,
+        "INI": 93,
+        "SEN": 51,
+        "CON": 73,
+        "UNKNOWN": 0
+      },
+      "attributeNulls": {
+        "firepower": 0,
+        "combatEfficiency": 0,
+        "entry": 0,
+        "positioning": 0,
+        "teamplay": 0,
+        "tactical": 0,
+        "clutch": 0,
+        "explosiveness": 0,
+        "consistency": 0,
+        "adaptability": 0,
+        "pressure": 0
+      }
+    },
+    "2024": {
+      "sourceProfiles": 260,
+      "ratedPlayers": 260,
+      "roles": {
+        "DUE": 55,
+        "INI": 87,
+        "SEN": 46,
+        "CON": 72,
+        "UNKNOWN": 0
+      },
+      "attributeNulls": {
+        "firepower": 0,
+        "combatEfficiency": 0,
+        "entry": 0,
+        "positioning": 0,
+        "teamplay": 0,
+        "tactical": 0,
+        "clutch": 0,
+        "explosiveness": 0,
+        "consistency": 0,
+        "adaptability": 0,
+        "pressure": 0
+      }
+    },
+    "2025": {
+      "sourceProfiles": 343,
+      "ratedPlayers": 343,
+      "roles": {
+        "DUE": 79,
+        "INI": 117,
+        "SEN": 69,
+        "CON": 78,
+        "UNKNOWN": 0
+      },
+      "attributeNulls": {
+        "firepower": 0,
+        "combatEfficiency": 0,
+        "entry": 0,
+        "positioning": 0,
+        "teamplay": 0,
+        "tactical": 0,
+        "clutch": 0,
+        "explosiveness": 0,
+        "consistency": 0,
+        "adaptability": 0,
+        "pressure": 0
+      }
+    },
+    "2026": {
+      "sourceProfiles": 284,
+      "ratedPlayers": 284,
+      "roles": {
+        "DUE": 99,
+        "INI": 64,
+        "SEN": 23,
+        "CON": 98,
+        "UNKNOWN": 0
+      },
+      "attributeNulls": {
+        "firepower": 0,
+        "combatEfficiency": 0,
+        "entry": 0,
+        "positioning": 0,
+        "teamplay": 0,
+        "tactical": 0,
+        "clutch": 0,
+        "explosiveness": 0,
+        "consistency": 0,
+        "adaptability": 0,
+        "pressure": 0
+      }
+    }
+  }
+}

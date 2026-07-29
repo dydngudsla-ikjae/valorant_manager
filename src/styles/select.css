@@ -1,7 +1,7 @@
 /* league tabs */
   .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px}
   .tab{background:var(--panel); border:1px solid var(--line); color:var(--muted);
-    padding:9px 16px; border-radius:8px; font-family:"Oswald"; text-transform:uppercase;
+    padding:9px 16px; border-radius:8px; font-family:"Rajdhani","Pretendard"; text-transform:uppercase;
     letter-spacing:.06em; font-size:14px; transition:.15s}
   .tab:hover{border-color:#3a4964; color:var(--text)}
   .tab.on{background:var(--val); border-color:var(--val); color:#fff}
@@ -10,13 +10,31 @@
   .g-teams{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
   .teamcard{background:var(--panel); border:1px solid var(--line); border-radius:12px;
     padding:16px; text-align:left; transition:.15s; position:relative; overflow:hidden}
-  .teamcard:hover{transform:translateY(-3px); border-color:#3a4964}
+  .teamcard:hover{border-color:#3a4964}
   .teamcard .stripe{position:absolute; left:0; top:0; bottom:0; width:5px}
-  .teamcard .tname{font-family:"Oswald"; font-size:20px; text-transform:uppercase;
-    letter-spacing:.02em; margin-bottom:2px}
+  .teamcard .teamlogo{position:absolute; left:15px; top:15px; width:34px; height:34px; padding:4px; object-fit:contain; box-sizing:border-box;
+    border:1px solid rgba(255,255,255,.32); border-radius:7px; background:radial-gradient(circle,#f5f7fa 0%,#c5ccd6 100%); filter:drop-shadow(0 1px 2px rgba(0,0,0,.7))}
+  .teamcard .tname{display:flex; align-items:center; width:calc(100% - 43px); height:38px; padding:0;
+    font-family:"Rajdhani","Pretendard"; font-size:20px; font-weight:600; line-height:1.05; text-transform:uppercase;
+    letter-spacing:.02em; margin:-2px 0 2px 43px; text-align:left; overflow:hidden; overflow-wrap:normal}
+  .teamcard .tname span{display:-webkit-box; width:100%; max-height:2.3em; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden}
+  .teamcard .tname.long{font-size:15px; line-height:1.15; letter-spacing:0}
+  .teamcard .tname.extra-long{font-size:14px; line-height:1.2; letter-spacing:-.01em}
   .teamcard .tregion{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.12em}
-  .ovr{position:absolute; top:14px; right:14px; font-family:"Oswald"; font-size:26px; color:var(--gold)}
+  .ovr{position:absolute; top:14px; right:14px; font-family:"Rajdhani","Pretendard"; font-size:26px; color:var(--gold)}
   .ovr span{font-size:11px; color:var(--muted); display:block; text-align:right; letter-spacing:.1em}
   .mini{display:flex; gap:5px; margin-top:14px}
   .mini .m{flex:1; height:4px; border-radius:2px; background:#0d1219; overflow:hidden}
   .mini .m i{display:block; height:100%}
+  .teamcardwrap{position:relative; min-width:0; transition:transform .15s}
+  .teamcardwrap:hover{transform:translateY(-3px)}
+  .teamcardwrap .teamcard{width:100%; height:100%; padding-right:52px}
+  .teamcard.sel{outline:2px solid var(--val); outline-offset:2px; border-color:var(--val)}
+  .teamdetail{position:absolute; right:11px; bottom:10px; width:32px; height:30px; display:grid; place-items:center;
+    border:1px solid #344157; border-radius:7px; background:#111923; color:var(--text); font-size:17px; z-index:2; transition:.15s}
+  .teamdetail:hover{border-color:var(--val); color:var(--val); transform:translateY(-1px)}
+  .teamselectactions{display:flex; justify-content:flex-end; align-items:center; gap:14px; margin-top:18px;
+    padding:14px 0; border-top:1px solid var(--line)}
+  .teamselectactions span{font:11px "IBM Plex Mono Local","Pretendard"; color:var(--muted); text-transform:uppercase; letter-spacing:.06em}
+  .teamselectactions .btn{width:auto; min-width:150px}
+  .teamselectactions .btn:disabled{opacity:.38; cursor:not-allowed; filter:saturate(.3)}

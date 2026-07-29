@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "modelVersion": "vct-player-ratings-2.1.0",
+  "scale": { "minimum": 20, "maximum": 99, "neutralPercentile": 0.5 },
+  "samples": { "overallHalfLifeRounds": 400, "masteryHalfLifeRounds": 140, "consistencyHalfLifeMaps": 12, "pressureHalfLifeRounds": 240, "minimumReferencePlayers": 20 },
+  "attributeConfidence": { "firepower": 1.0, "combatEfficiency": 0.95, "entry": 0.95, "positioning": 0.9, "teamplay": 0.72, "tactical": 0.68, "clutch": 0.75, "explosiveness": 0.9, "consistency": 0.9, "adaptability": 0.82, "pressure": 0.65 },
+  "evaluationModel": "absolute_fixed_anchors",
+  "absoluteFeatureAnchors": {
+    "adr": [100, 127, 160], "kpr": [0.5, 0.68, 0.88], "rating": [0.75, 0.97, 1.2],
+    "kdRatio": [0.65, 0.97, 1.3], "inverseDpr": [-0.82, -0.7, -0.58], "kast": [0.62, 0.71, 0.8], "headshotRate": [0.18, 0.28, 0.4],
+    "firstKillsPerRound": [0.01, 0.08, 0.2], "inverseFirstDeathsPerRound": [-0.2, -0.09, -0.02], "firstKillDifferentialPerRound": [-0.08, 0.0, 0.08],
+    "assistsPerRound": [0.12, 0.27, 0.48], "objectiveActionsPerRound": [0.0, 0.05, 0.22], "sideBalance": [-0.2, 0.0, 0.2],
+    "agentEffectiveCount": [1.0, 3.75, 8.0], "roleEffectiveCount": [1.0, 1.58, 3.2], "mapEffectiveCount": [1.0, 7.16, 10.0],
+    "clutchImpactPerRound": [0.0, 0.018, 0.05], "multiKillImpactPerRound": [0.0, 0.12, 0.23],
+    "inverseRatingCv": [-0.5, -0.3, -0.15], "inverseAcsCv": [-0.4, -0.26, -0.12], "agentPerformanceStability": [-0.3, -0.09, 0.05],
+    "pressureRating": [0.7, 0.97, 1.2], "pressureDelta": [-0.2, 0.0, 0.15],
+    "entryActivity": [0.03, 0.16, 0.3], "entrySuccess": [0.35, 0.5, 0.65], "riskIndex": [0.02, 0.08, 0.18],
+    "objectiveDuty": [0.0, 0.05, 0.22], "agentSpecialization": [0.2, 0.45, 0.85]
+  },
+  "attributes": {
+    "firepower": { "adr": 0.40, "kpr": 0.40, "rating": 0.20 },
+    "combatEfficiency": { "kdRatio": 0.30, "kpr": 0.15, "inverseDpr": 0.25, "kast": 0.20, "headshotRate": 0.10 },
+    "entry": { "firstKillsPerRound": 0.45, "inverseFirstDeathsPerRound": 0.25, "firstKillDifferentialPerRound": 0.30 },
+    "positioning": { "inverseDpr": 0.40, "kast": 0.35, "kdRatio": 0.15, "inverseFirstDeathsPerRound": 0.10 },
+    "teamplay": { "assistsPerRound": 0.55, "kast": 0.45 },
+    "tactical": { "assistsPerRound": 0.30, "kast": 0.25, "objectiveActionsPerRound": 0.15, "sideBalance": 0.15, "agentEffectiveCount": 0.15 },
+    "clutch": { "clutchImpactPerRound": 1.0 },
+    "explosiveness": { "multiKillImpactPerRound": 1.0 },
+    "consistency": { "inverseRatingCv": 0.60, "inverseAcsCv": 0.40 },
+    "adaptability": { "agentEffectiveCount": 0.30, "roleEffectiveCount": 0.25, "mapEffectiveCount": 0.25, "agentPerformanceStability": 0.20 },
+    "pressure": { "pressureRating": 0.55, "pressureDelta": 0.45 }
+  },
+  "roles": {
+    "DUE": ["jett", "raze", "reyna", "phoenix", "neon", "yoru", "iso", "waylay"],
+    "INI": ["sova", "fade", "breach", "skye", "kayo", "gekko", "tejo"],
+    "SEN": ["killjoy", "cypher", "sage", "chamber", "deadlock", "vyse", "veto"],
+    "CON": ["omen", "brimstone", "viper", "astra", "harbor", "clove", "miks"]
+  },
+  "pressureKeywords": ["playoff", "final", "decider", "elimination", "lower", "upper final", "championship"]
+}

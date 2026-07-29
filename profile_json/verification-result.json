@@ -1,0 +1,61 @@
+{
+  "verifiedAt": "2026-07-29T06:02:29.073Z",
+  "valid": true,
+  "results": {
+    "2021": {
+      "players": 11557,
+      "teams": 2766,
+      "maps": 8,
+      "games": 14484,
+      "rounds": 290990,
+      "playerMapObservations": 143706,
+      "playerCompetitionObservations": 194966
+    },
+    "2022": {
+      "players": 7663,
+      "teams": 1569,
+      "maps": 8,
+      "games": 8864,
+      "rounds": 179873,
+      "playerMapObservations": 88386,
+      "playerCompetitionObservations": 126641
+    },
+    "2023": {
+      "players": 284,
+      "teams": 51,
+      "maps": 8,
+      "games": 830,
+      "rounds": 17757,
+      "playerMapObservations": 8300,
+      "playerCompetitionObservations": 11249
+    },
+    "2024": {
+      "players": 260,
+      "teams": 44,
+      "maps": 9,
+      "games": 1104,
+      "rounds": 23377,
+      "playerMapObservations": 11040,
+      "playerCompetitionObservations": 15030
+    },
+    "2025": {
+      "players": 343,
+      "teams": 58,
+      "maps": 11,
+      "games": 1277,
+      "rounds": 26992,
+      "playerMapObservations": 12760,
+      "playerCompetitionObservations": 17996
+    },
+    "2026": {
+      "players": 284,
+      "teams": 49,
+      "maps": 10,
+      "games": 886,
+      "rounds": 18751,
+      "playerMapObservations": 8860,
+      "playerCompetitionObservations": 11821
+    }
+  },
+  "failures": []
+}

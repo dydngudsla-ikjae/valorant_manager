@@ -1,5 +1,5 @@
 import { draftPair } from './draft.js';
-import { playerOVR } from './ratings.js';
+import { playerAttribute, playerOVR } from './ratings.js';
 import { freshBox, simOneMap } from './round-engine.js';
 import { ST } from './state.js';
 import { MAPS } from '../data/leagues.js';
@@ -53,7 +53,8 @@ export function rollForm(t){ // per-map ±, mental dampens downside
   t.roster.forEach(pl=>{
     const base=(Math.random()*2-1); // -1..1
     const swing = base*10; // ±10
-    const mentalGuard = base<0 ? (pl.mental-80)/5 : 0; // high mental reduces bad days
+    const resilience=playerAttribute(pl,'consistency')*.6+playerAttribute(pl,'pressure')*.4;
+    const mentalGuard = base<0 ? (resilience-60)/8 : 0; // reliable players soften bad days
     f[pl.name]=Math.round(swing + mentalGuard);
   });
   return f;

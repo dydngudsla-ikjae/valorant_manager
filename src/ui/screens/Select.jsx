@@ -1,25 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
-import { playerOVR, teamAxis, teamOVR } from '../../core/ratings.js';
+import { ATTRIBUTE_DEFS, CORE_ATTRIBUTE_KEYS, playerAttribute, playerOVR, teamAxis, teamOVR } from '../../core/ratings.js';
 import { visiblePool } from '../../core/roster.js';
 import { agImg } from '../../data/agents.js';
-import { LEAGUES, ROLE, displayRole, profBand, roleColor, roleFull } from '../../data/leagues.js';
+import { LEAGUES, ROLE, isFlex, primaryRole, profBand } from '../../data/leagues.js';
+import { roleLabel } from '../../i18n.js';
 import { selectTeam } from '../match-flow.js';
+import { teamLogo } from '../../data/team-logos.js';
 
-const AXES = [['aim', 'Aim'], ['sense', 'Sense'], ['clutch', 'Clutch'], ['util', 'Util'], ['mental', 'Mental']];
 const PROF_ROLES = ['DUE', 'INI', 'SEN', 'CON'];
-const MINI_AXES = ['aim', 'sense', 'clutch', 'util', 'mental'];
+const ROLE_IMAGES = { DUE:'/img/roles/duelist.png', INI:'/img/roles/initiator.png', SEN:'/img/roles/sentinel.png', CON:'/img/roles/controller.png' };
+const MINI_AXES = CORE_ATTRIBUTE_KEYS;
 
 function TeamCard({ t, lk, selected, onClick }) {
+  const nameClass=t.name.length>25?' extra-long':t.name.length>16?' long':'';
+  const logo=teamLogo(t.id,t.name);
   return (
     <button className={'pick teamcard' + (selected ? ' sel' : '')} onClick={onClick}>
       <div className="stripe" style={{ background: t.color }}></div>
+      {logo&&<img className="teamlogo" src={logo} alt="" />}
       <div className="ovr">{teamOVR(t)}<span>OVR</span></div>
-      <div className="tname">{t.name}</div>
+      <div className={'tname'+nameClass} title={t.name}><span>{t.name}</span></div>
       <div className="tregion">{LEAGUES[lk].name}</div>
       <div className="mini">
         {MINI_AXES.map(ax => {
           const v = Math.round(teamAxis(t, ax));
-          const col = ax === 'aim' ? 'var(--val)' : ax === 'util' ? 'var(--ini)' : 'var(--def)';
+          const col = ax === 'firepower' ? 'var(--val)' : ax === 'tactical' ? 'var(--ini)' : 'var(--def)';
           return <div className="m" title={ax} key={ax}><i style={{ width: v + '%', background: col }}></i></div>;
         })}
       </div>
@@ -30,38 +35,38 @@ function TeamCard({ t, lk, selected, onClick }) {
 function PreviewAgentChip({ x, role }) {
   const src = agImg(x.agent);
   return (
-    <span className={`ag r-${x.role || role}`}>
-      {src && <img className="agicon ag-sm" src={src} alt={x.agent} loading="lazy" />}
-      {x.agent} <b>{x.mastery}</b>
+    <span className={`agentportrait r-${x.role || role}`} title={x.agent}>
+      {src && <img src={src} alt={x.agent} loading="lazy" />}
     </span>
   );
 }
 
 function PreviewPlayerCard({ pl, isSub }) {
-  const disp = displayRole(pl);
+  const mainRole=primaryRole(pl),flex=isFlex(pl);
   const ovr = playerOVR(pl);
   return (
-    <div className={'pcard' + (isSub ? ' sub' : '')}>
+    <div className={'pcard' + (isSub ? ' bench' : '')}>
       <div className="prow">
-        <div className="rolechip" style={{ background: roleColor(pl) }}>{disp}</div>
-        <div>
-          <div className="pn">{pl.name}{isSub && <span className="subtag">SUB</span>}</div>
-          <div className="pmeta">{roleFull(pl)}</div>
+        <div className="roleunit">
+          <div className="rolechip roleiconchip" style={{ '--role-color':ROLE[mainRole].c }}><img src={ROLE_IMAGES[mainRole]} alt="" /></div>
+          <span className="rolecaption">{roleLabel(mainRole)}</span>
         </div>
+        <div className="playeridentity"><div className="pn"><span>{pl.name}</span></div></div>
         <div className="povr" style={{ color: ovr >= 90 ? 'var(--gold)' : 'var(--text)' }}>{ovr}</div>
       </div>
+      <div className="cardbadges">{flex&&<span className="playerbadge flex">FLEX</span>}{isSub&&<span className="playerbadge substitute">SUB</span>}</div>
       <div className="profrow">
         {PROF_ROLES.map(rr => {
           const b = profBand(pl.prof[rr]);
           return (
             <span className="profseg" key={rr} title={`${ROLE[rr].name} ${pl.prof[rr]}`}>
-              <i>{rr}</i><em style={{ background: b[2] }}></em>
+              <i>{roleLabel(rr)}</i><em style={{ background: b[2] }}></em>
             </span>
           );
         })}
       </div>
-      {AXES.map(([k, lbl]) => {
-        const v = pl[k];
+      {ATTRIBUTE_DEFS.map(([k, lbl]) => {
+        const v = playerAttribute(pl,k);
         const col = v >= 90 ? 'var(--gold)' : v >= 82 ? 'var(--def)' : 'var(--ini)';
         return (
           <div className="stat" key={k}>

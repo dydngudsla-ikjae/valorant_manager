@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vct-json-record.schema.json",
+  "title": "Normalized VCT CSV row",
+  "type": "object",
+  "required": ["_source", "year", "refs", "values"],
+  "properties": {
+    "_source": {
+      "type": "object",
+      "required": ["file", "line"],
+      "properties": {
+        "file": { "type": "string" },
+        "line": { "type": "integer", "minimum": 2 }
+      },
+      "additionalProperties": false
+    },
+    "year": { "type": ["integer", "null"] },
+    "refs": { "type": "object" },
+    "values": { "type": "object" }
+  },
+  "additionalProperties": false
+}

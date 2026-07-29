@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-29T06:02:14.644Z",
+  "years": {
+    "2021": {
+      "sourceRows": {
+        "maps_scores": 14503,
+        "scores": 7224,
+        "overview": 599355,
+        "kills_stats": 125783,
+        "players_stats": 194966,
+        "eco_rounds": 363518,
+        "win_methods": 580342,
+        "draft": 3378
+      },
+      "quality": {
+        "incompleteMapScoreRows": 19,
+        "overviewAggregateRowsExcluded": 168177,
+        "overviewRowsMissingPlayableRefs": 60,
+        "killsStatsAggregateRowsExcluded": 36060
+      },
+      "profiles": {
+        "players": 11557,
+        "teams": 2766,
+        "rosters": 2724,
+        "maps": 8,
+        "agents": 16
+      },
+      "observations": {
+        "playerMaps": 143706,
+        "playerCompetitionSplits": 194966
+      },
+      "samples": {
+        "matches": 7222,
+        "games": 14484,
+        "rounds": 290990
+      }
+    },
+    "2022": {
+      "sourceRows": {
+        "maps_scores": 8884,
+        "scores": 3842,
+        "overview": 379378,
+        "kills_stats": 126337,
+        "players_stats": 126641,
+        "eco_rounds": 358798,
+        "win_methods": 359210,
+        "draft": 7432
+      },
+      "quality": {
+        "incompleteMapScoreRows": 20,
+        "overviewAggregateRowsExcluded": 114240,
+        "overviewRowsMissingPlayableRefs": 0,
+        "killsStatsAggregateRowsExcluded": 38100
+      },
+      "profiles": {
+        "players": 7663,
+        "teams": 1569,
+        "rosters": 1569,
+        "maps": 8,
+        "agents": 19
+      },
+      "observations": {
+        "playerMaps": 88386,
+        "playerCompetitionSplits": 126641
+      },
+      "samples": {
+        "matches": 3842,
+        "games": 8864,
+        "rounds": 179873
+      }
+    },
+    "2023": {
+      "sourceRows": {
+        "maps_scores": 830,
+        "scores": 331,
+        "overview": 34944,
+        "kills_stats": 10868,
+        "players_stats": 11249,
+        "eco_rounds": 33032,
+        "win_methods": 35514,
+        "draft": 1898
+      },
+      "quality": {
+        "incompleteMapScoreRows": 0,
+        "overviewAggregateRowsExcluded": 10044,
+        "overviewRowsMissingPlayableRefs": 0,
+        "killsStatsAggregateRowsExcluded": 3158
+      },
+      "profiles": {
+        "players": 284,
+        "teams": 51,
+        "rosters": 51,
+        "maps": 8,
+        "agents": 21
+      },
+      "observations": {
+        "playerMaps": 8300,
+        "playerCompetitionSplits": 11249
+      },
+      "samples": {
+        "matches": 331,
+        "games": 830,
+        "rounds": 17757
+      }
+    },
+    "2024": {
+      "sourceRows": {
+        "maps_scores": 1104,
+        "scores": 434,
+        "overview": 46152,
+        "kills_stats": 11354,
+        "players_stats": 15030,
+        "eco_rounds": 34514,
+        "win_methods": 46754,
+        "draft": 2604
+      },
+      "quality": {
+        "incompleteMapScoreRows": 0,
+        "overviewAggregateRowsExcluded": 13032,
+        "overviewRowsMissingPlayableRefs": 0,
+        "killsStatsAggregateRowsExcluded": 3204
+      },
+      "profiles": {
+        "players": 260,
+        "teams": 44,
+        "rosters": 44,
+        "maps": 9,
+        "agents": 24
+      },
+      "observations": {
+        "playerMaps": 11040,
+        "playerCompetitionSplits": 15030
+      },
+      "samples": {
+        "matches": 434,
+        "games": 1104,
+        "rounds": 23377
+      }
+    },
+    "2025": {
+      "sourceRows": {
+        "maps_scores": 1277,
+        "scores": 503,
+        "overview": 53226,
+        "kills_stats": 13912,
+        "players_stats": 17996,
+        "eco_rounds": 25182,
+        "win_methods": 53950,
+        "draft": 2988
+      },
+      "quality": {
+        "incompleteMapScoreRows": 0,
+        "overviewAggregateRowsExcluded": 14946,
+        "overviewRowsMissingPlayableRefs": 0,
+        "killsStatsAggregateRowsExcluded": 3922
+      },
+      "profiles": {
+        "players": 343,
+        "teams": 58,
+        "rosters": 56,
+        "maps": 11,
+        "agents": 27
+      },
+      "observations": {
+        "playerMaps": 12760,
+        "playerCompetitionSplits": 17996
+      },
+      "samples": {
+        "matches": 503,
+        "games": 1277,
+        "rounds": 26992
+      }
+    },
+    "2026": {
+      "sourceRows": {
+        "maps_scores": 886,
+        "scores": 342,
+        "overview": 36840,
+        "kills_stats": 9440,
+        "players_stats": 11821,
+        "eco_rounds": 28944,
+        "win_methods": 37502,
+        "draft": 2052
+      },
+      "quality": {
+        "incompleteMapScoreRows": 0,
+        "overviewAggregateRowsExcluded": 10260,
+        "overviewRowsMissingPlayableRefs": 0,
+        "killsStatsAggregateRowsExcluded": 2640
+      },
+      "profiles": {
+        "players": 284,
+        "teams": 49,
+        "rosters": 49,
+        "maps": 10,
+        "agents": 29
+      },
+      "observations": {
+        "playerMaps": 8860,
+        "playerCompetitionSplits": 11821
+      },
+      "samples": {
+        "matches": 342,
+        "games": 886,
+        "rounds": 18751
+      }
+    }
+  }
+}

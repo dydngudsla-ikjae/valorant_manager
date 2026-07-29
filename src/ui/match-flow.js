@@ -22,6 +22,7 @@ export function selectTeam(lk,idx){
   ST.standings={};
   ST.teams.forEach(t=>ST.standings[t.id]={w:0,l:0,mapW:0,mapL:0,rd:0});
   ST.schedule=makeSchedule(ST.teams.length);
+  ST.playerViewContext=null;
   go('scHub'); // Header (React) reads ST.teams/myTeamIdx via useStore()
 }
 

@@ -6,7 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "data:rosters": "node .\\runtime_2026\\scripts\\build-game-rosters-2026.mjs",
+    "data:runtime": "node .\\runtime_2026\\scripts\\build-runtime-2026.mjs",
+    "data:history": "node .\\history_json\\scripts\\build-player-history.mjs",
+    "assets:team-logos": "node .\\scripts\\download-team-logos.mjs",
+    "assets:role-icons": "node .\\scripts\\normalize-role-icons.mjs",
+    "verify:runtime": "node .\\runtime_2026\\scripts\\verify-runtime-2026.mjs"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.2.0",

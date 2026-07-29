@@ -1,0 +1,376 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-29T05:32:30.932Z",
+  "sourceRoot": "stats",
+  "counters": {
+    "inputFiles": 131,
+    "inputRows": 9277579,
+    "outputRows": 9277579,
+    "quarantinedRows": 496646,
+    "byDataset": {
+      "all_matches_games_ids": {
+        "files": 1,
+        "inputRows": 27450,
+        "outputRows": 27450,
+        "quarantined": 0
+      },
+      "all_players_ids": {
+        "files": 1,
+        "inputRows": 15654,
+        "outputRows": 15654,
+        "quarantined": 0
+      },
+      "all_teams_ids": {
+        "files": 1,
+        "inputRows": 4025,
+        "outputRows": 4025,
+        "quarantined": 0
+      },
+      "all_teams_mapping": {
+        "files": 1,
+        "inputRows": 3524,
+        "outputRows": 3524,
+        "quarantined": 0
+      },
+      "all_tournaments_stages_match_types_ids": {
+        "files": 1,
+        "inputRows": 3539,
+        "outputRows": 3539,
+        "quarantined": 0
+      },
+      "agents_pick_rates": {
+        "files": 6,
+        "inputRows": 418849,
+        "outputRows": 418849,
+        "quarantined": 0
+      },
+      "maps_stats": {
+        "files": 6,
+        "inputRows": 17157,
+        "outputRows": 17157,
+        "quarantined": 0
+      },
+      "teams_picked_agents": {
+        "files": 6,
+        "inputRows": 413238,
+        "outputRows": 413238,
+        "quarantined": 3429
+      },
+      "players_ids": {
+        "files": 6,
+        "inputRows": 19935,
+        "outputRows": 19935,
+        "quarantined": 0
+      },
+      "teams_ids": {
+        "files": 6,
+        "inputRows": 4515,
+        "outputRows": 4515,
+        "quarantined": 0
+      },
+      "tournaments_stages_match_types_ids": {
+        "files": 6,
+        "inputRows": 3521,
+        "outputRows": 3521,
+        "quarantined": 0
+      },
+      "tournaments_stages_matches_games_ids": {
+        "files": 6,
+        "inputRows": 27450,
+        "outputRows": 27450,
+        "quarantined": 0
+      },
+      "draft_phase": {
+        "files": 6,
+        "inputRows": 20352,
+        "outputRows": 20352,
+        "quarantined": 28
+      },
+      "eco_rounds": {
+        "files": 6,
+        "inputRows": 843988,
+        "outputRows": 843988,
+        "quarantined": 6015
+      },
+      "eco_stats": {
+        "files": 6,
+        "inputRows": 297920,
+        "outputRows": 297920,
+        "quarantined": 2010
+      },
+      "kills": {
+        "files": 6,
+        "inputRows": 2234175,
+        "outputRows": 2234175,
+        "quarantined": 208245
+      },
+      "kills_stats": {
+        "files": 6,
+        "inputRows": 297694,
+        "outputRows": 297694,
+        "quarantined": 14408
+      },
+      "maps_played": {
+        "files": 6,
+        "inputRows": 27447,
+        "outputRows": 27447,
+        "quarantined": 0
+      },
+      "maps_scores": {
+        "files": 6,
+        "inputRows": 27484,
+        "outputRows": 27484,
+        "quarantined": 428
+      },
+      "overview": {
+        "files": 6,
+        "inputRows": 1149895,
+        "outputRows": 1149895,
+        "quarantined": 60505
+      },
+      "rounds_kills": {
+        "files": 6,
+        "inputRows": 1857244,
+        "outputRows": 1857244,
+        "quarantined": 173468
+      },
+      "scores": {
+        "files": 6,
+        "inputRows": 12676,
+        "outputRows": 12676,
+        "quarantined": 210
+      },
+      "team_mapping": {
+        "files": 6,
+        "inputRows": 3978,
+        "outputRows": 3978,
+        "quarantined": 0
+      },
+      "win_loss_methods_count": {
+        "files": 6,
+        "inputRows": 54894,
+        "outputRows": 54894,
+        "quarantined": 433
+      },
+      "win_loss_methods_round_number": {
+        "files": 6,
+        "inputRows": 1113272,
+        "outputRows": 1113272,
+        "quarantined": 8906
+      },
+      "players_stats": {
+        "files": 6,
+        "inputRows": 377703,
+        "outputRows": 377703,
+        "quarantined": 18561
+      }
+    },
+    "quarantineReasons": {
+      "ambiguous_team": 92026,
+      "unresolved_team": 113,
+      "ambiguous_player": 409831,
+      "unresolved_player": 14213
+    },
+    "unresolvedRefs": {
+      "team": 113,
+      "player": 14213
+    },
+    "ambiguousRefs": {
+      "team": 92026,
+      "player": 409831
+    }
+  },
+  "entityCounts": {
+    "players": 16926,
+    "teams": 4106,
+    "tournaments": 251,
+    "stages": 593,
+    "matchTypes": 3300,
+    "matches": 12693,
+    "games": 27491,
+    "maps": 14,
+    "agents": 29
+  },
+  "entityResolution": {
+    "players": {
+      "canonical": 15225,
+      "synthetic": 1701,
+      "aggregate": 0,
+      "placeholder": 0
+    },
+    "teams": {
+      "canonical": 4019,
+      "synthetic": 86,
+      "aggregate": 0,
+      "placeholder": 1
+    },
+    "tournaments": {
+      "canonical": 250,
+      "synthetic": 1,
+      "aggregate": 0,
+      "placeholder": 0
+    },
+    "stages": {
+      "canonical": 590,
+      "synthetic": 2,
+      "aggregate": 1,
+      "placeholder": 0
+    },
+    "matchTypes": {
+      "canonical": 3272,
+      "synthetic": 27,
+      "aggregate": 1,
+      "placeholder": 0
+    },
+    "matches": {
+      "canonical": 12677,
+      "synthetic": 16,
+      "aggregate": 0,
+      "placeholder": 0
+    },
+    "games": {
+      "canonical": 27449,
+      "synthetic": 42,
+      "aggregate": 0,
+      "placeholder": 0
+    }
+  },
+  "outputBytes": 6008620201,
+  "files": {
+    "data/2021/agents_pick_rates.jsonl": 85730997,
+    "data/2021/draft_phase.jsonl": 1598135,
+    "data/2021/eco_rounds.jsonl": 205695008,
+    "data/2021/eco_stats.jsonl": 64035488,
+    "data/2021/kills.jsonl": 625285492,
+    "data/2021/kills_stats.jsonl": 82789683,
+    "data/2021/maps_played.jsonl": 6211652,
+    "data/2021/maps_scores.jsonl": 10083365,
+    "data/2021/maps_stats.jsonl": 3910539,
+    "data/2021/overview.jsonl": 460352136,
+    "data/2021/players_ids.jsonl": 3130666,
+    "data/2021/players_stats.jsonl": 183353954,
+    "data/2021/rounds_kills.jsonl": 560303709,
+    "data/2021/scores.jsonl": 3881498,
+    "data/2021/teams_ids.jsonl": 760370,
+    "data/2021/teams_picked_agents.jsonl": 127375685,
+    "data/2021/team_mapping.jsonl": 701057,
+    "data/2021/tournaments_stages_matches_games_ids.jsonl": 7448691,
+    "data/2021/tournaments_stages_match_types_ids.jsonl": 798611,
+    "data/2021/win_loss_methods_count.jsonl": 17977207,
+    "data/2021/win_loss_methods_round_number.jsonl": 312355365,
+    "data/2022/agents_pick_rates.jsonl": 58644327,
+    "data/2022/draft_phase.jsonl": 3532688,
+    "data/2022/eco_rounds.jsonl": 204112114,
+    "data/2022/eco_stats.jsonl": 64345329,
+    "data/2022/kills.jsonl": 627192116,
+    "data/2022/kills_stats.jsonl": 83607536,
+    "data/2022/maps_played.jsonl": 3831718,
+    "data/2022/maps_scores.jsonl": 6211359,
+    "data/2022/maps_stats.jsonl": 2677865,
+    "data/2022/overview.jsonl": 293103302,
+    "data/2022/players_ids.jsonl": 2116270,
+    "data/2022/players_stats.jsonl": 118394895,
+    "data/2022/rounds_kills.jsonl": 554384136,
+    "data/2022/scores.jsonl": 2077767,
+    "data/2022/teams_ids.jsonl": 435753,
+    "data/2022/teams_picked_agents.jsonl": 74343451,
+    "data/2022/team_mapping.jsonl": 412079,
+    "data/2022/tournaments_stages_matches_games_ids.jsonl": 4595673,
+    "data/2022/tournaments_stages_match_types_ids.jsonl": 482313,
+    "data/2022/win_loss_methods_count.jsonl": 11067686,
+    "data/2022/win_loss_methods_round_number.jsonl": 194775132,
+    "data/2023/agents_pick_rates.jsonl": 7733391,
+    "data/2023/draft_phase.jsonl": 881854,
+    "data/2023/eco_rounds.jsonl": 18334527,
+    "data/2023/eco_stats.jsonl": 5369451,
+    "data/2023/kills.jsonl": 52320077,
+    "data/2023/kills_stats.jsonl": 7020095,
+    "data/2023/maps_played.jsonl": 349125,
+    "data/2023/maps_scores.jsonl": 568980,
+    "data/2023/maps_stats.jsonl": 353431,
+    "data/2023/overview.jsonl": 26548083,
+    "data/2023/players_ids.jsonl": 78776,
+    "data/2023/players_stats.jsonl": 10270387,
+    "data/2023/rounds_kills.jsonl": 48742502,
+    "data/2023/scores.jsonl": 173824,
+    "data/2023/teams_ids.jsonl": 14084,
+    "data/2023/teams_picked_agents.jsonl": 6429304,
+    "data/2023/team_mapping.jsonl": 14953,
+    "data/2023/tournaments_stages_matches_games_ids.jsonl": 422995,
+    "data/2023/tournaments_stages_match_types_ids.jsonl": 60405,
+    "data/2023/win_loss_methods_count.jsonl": 1014834,
+    "data/2023/win_loss_methods_round_number.jsonl": 18813579,
+    "data/2024/agents_pick_rates.jsonl": 10802555,
+    "data/2024/draft_phase.jsonl": 1203874,
+    "data/2024/eco_rounds.jsonl": 18969260,
+    "data/2024/eco_stats.jsonl": 5567581,
+    "data/2024/kills.jsonl": 54366452,
+    "data/2024/kills_stats.jsonl": 7276555,
+    "data/2024/maps_played.jsonl": 460470,
+    "data/2024/maps_scores.jsonl": 752625,
+    "data/2024/maps_stats.jsonl": 493789,
+    "data/2024/overview.jsonl": 35058231,
+    "data/2024/players_ids.jsonl": 72105,
+    "data/2024/players_stats.jsonl": 13690674,
+    "data/2024/rounds_kills.jsonl": 50103949,
+    "data/2024/scores.jsonl": 226867,
+    "data/2024/teams_ids.jsonl": 12105,
+    "data/2024/teams_picked_agents.jsonl": 8529258,
+    "data/2024/team_mapping.jsonl": 12852,
+    "data/2024/tournaments_stages_matches_games_ids.jsonl": 558726,
+    "data/2024/tournaments_stages_match_types_ids.jsonl": 86342,
+    "data/2024/win_loss_methods_count.jsonl": 1342668,
+    "data/2024/win_loss_methods_round_number.jsonl": 24606588,
+    "data/2025/agents_pick_rates.jsonl": 12805812,
+    "data/2025/draft_phase.jsonl": 1349517,
+    "data/2025/eco_rounds.jsonl": 17631142,
+    "data/2025/eco_stats.jsonl": 6700127,
+    "data/2025/kills.jsonl": 65654029,
+    "data/2025/kills_stats.jsonl": 8777982,
+    "data/2025/maps_played.jsonl": 519544,
+    "data/2025/maps_scores.jsonl": 858370,
+    "data/2025/maps_stats.jsonl": 521729,
+    "data/2025/overview.jsonl": 39720609,
+    "data/2025/players_ids.jsonl": 96933,
+    "data/2025/players_stats.jsonl": 16198367,
+    "data/2025/rounds_kills.jsonl": 60587186,
+    "data/2025/scores.jsonl": 257909,
+    "data/2025/teams_ids.jsonl": 15986,
+    "data/2025/teams_picked_agents.jsonl": 9826905,
+    "data/2025/team_mapping.jsonl": 16960,
+    "data/2025/tournaments_stages_matches_games_ids.jsonl": 633197,
+    "data/2025/tournaments_stages_match_types_ids.jsonl": 86563,
+    "data/2025/win_loss_methods_count.jsonl": 1526838,
+    "data/2025/win_loss_methods_round_number.jsonl": 27840796,
+    "data/2026/agents_pick_rates.jsonl": 9063286,
+    "data/2026/draft_phase.jsonl": 945352,
+    "data/2026/eco_rounds.jsonl": 15943261,
+    "data/2026/eco_stats.jsonl": 4652964,
+    "data/2026/kills.jsonl": 45481984,
+    "data/2026/kills_stats.jsonl": 6073800,
+    "data/2026/maps_played.jsonl": 368040,
+    "data/2026/maps_scores.jsonl": 604073,
+    "data/2026/maps_stats.jsonl": 344112,
+    "data/2026/overview.jsonl": 27791585,
+    "data/2026/players_ids.jsonl": 78872,
+    "data/2026/players_stats.jsonl": 10724000,
+    "data/2026/rounds_kills.jsonl": 42198470,
+    "data/2026/scores.jsonl": 178413,
+    "data/2026/teams_ids.jsonl": 13498,
+    "data/2026/teams_picked_agents.jsonl": 6323124,
+    "data/2026/team_mapping.jsonl": 14324,
+    "data/2026/tournaments_stages_matches_games_ids.jsonl": 445934,
+    "data/2026/tournaments_stages_match_types_ids.jsonl": 56291,
+    "data/2026/win_loss_methods_count.jsonl": 1075409,
+    "data/2026/win_loss_methods_round_number.jsonl": 19678790,
+    "data/entities/competition.json": 6539180,
+    "data/entities/players.json": 1619719,
+    "data/entities/taxonomy.json": 3417,
+    "data/entities/teams.json": 435005,
+    "data/global/all_matches_games_ids.jsonl": 14405938,
+    "data/global/all_players_ids.jsonl": 4354484,
+    "data/global/all_teams_ids.jsonl": 1109318,
+    "data/global/all_teams_mapping.jsonl": 1022355,
+    "data/global/all_tournaments_stages_match_types_ids.jsonl": 1617702
+  }
+}

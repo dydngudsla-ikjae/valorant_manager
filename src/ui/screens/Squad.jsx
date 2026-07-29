@@ -1,15 +1,19 @@
 import { useStore } from '../useStore.js';
 import { ST, bump, go } from '../../core/state.js';
-import { playerOVR } from '../../core/ratings.js';
+import { ATTRIBUTE_DEFS, playerAttribute, playerOVR } from '../../core/ratings.js';
 import { visiblePool } from '../../core/roster.js';
 import { agImg } from '../../data/agents.js';
-import { LEAGUES, ROLE, displayRole, profBand, roleColor, roleFull } from '../../data/leagues.js';
+import { LEAGUES, ROLE, isFlex, primaryRole, profBand } from '../../data/leagues.js';
+import { selectTeam } from '../match-flow.js';
+import { attributeLabel, roleLabel, tr } from '../../i18n.js';
+import { teamLogo } from '../../data/team-logos.js';
 
-const AXES = [['aim', 'Aim'], ['sense', 'Sense'], ['clutch', 'Clutch'], ['util', 'Util'], ['mental', 'Mental']];
 const PROF_ROLES = ['DUE', 'INI', 'SEN', 'CON'];
+const ROLE_IMAGES = { DUE:'/img/roles/duelist.png', INI:'/img/roles/initiator.png', SEN:'/img/roles/sentinel.png', CON:'/img/roles/controller.png' };
 
-function openPlayer(name) {
+function openPlayer(name,context) {
   ST._viewPlayer = name;
+  ST.playerViewContext=context;
   bump();
   go('scPlayer');
 }
@@ -17,49 +21,49 @@ function openPlayer(name) {
 function AgentChip({ x, role }) {
   const src = agImg(x.agent);
   return (
-    <span className={`ag r-${x.role || role}`}>
-      {src && <img className="agicon ag-sm" src={src} alt={x.agent} loading="lazy" />}
-      {x.agent} <b>{x.mastery}</b>
+    <span className={`agentportrait r-${x.role || role}`} title={x.agent}>
+      {src && <img src={src} alt={x.agent} loading="lazy" />}
     </span>
   );
 }
 
-function PlayerCard({ pl, isSub }) {
-  const disp = displayRole(pl);
+function PlayerCard({ pl, isSub, viewContext }) {
+  const mainRole=primaryRole(pl),flex=isFlex(pl);
   const ovr = playerOVR(pl);
   return (
-    <div className={'pcard clickable' + (isSub ? ' sub' : '')} onClick={() => openPlayer(pl.name)}>
+    <div className={'pcard clickable' + (isSub ? ' bench' : '')} onClick={() => openPlayer(pl.name,viewContext)}>
       <div className="prow">
-        <div className="rolechip" style={{ background: roleColor(pl) }}>{disp}</div>
-        <div>
-          <div className="pn">{pl.name}{isSub && <span className="subtag">SUB</span>}</div>
-          <div className="pmeta">{roleFull(pl)}</div>
+        <div className="roleunit">
+          <div className="rolechip roleiconchip" style={{ '--role-color':ROLE[mainRole].c }}><img src={ROLE_IMAGES[mainRole]} alt="" /></div>
+          <span className="rolecaption">{roleLabel(mainRole)}</span>
         </div>
+        <div className="playeridentity"><div className="pn"><span>{pl.name}</span></div></div>
         <div className="povr" style={{ color: ovr >= 90 ? 'var(--gold)' : 'var(--text)' }}>{ovr}</div>
       </div>
+      <div className="cardbadges">{flex&&<span className="playerbadge flex">FLEX</span>}{isSub&&<span className="playerbadge substitute">SUB</span>}</div>
       <div className="profrow">
         {PROF_ROLES.map(rr => {
           const b = profBand(pl.prof[rr]);
           return (
             <span className="profseg" key={rr} title={`${ROLE[rr].name} ${pl.prof[rr]}`}>
-              <i>{rr}</i><em style={{ background: b[2] }}></em>
+              <i>{roleLabel(rr)}</i><em style={{ background: b[2] }}></em>
             </span>
           );
         })}
       </div>
-      {AXES.map(([k, lbl]) => {
-        const v = pl[k];
+      {ATTRIBUTE_DEFS.map(([k, lbl]) => {
+        const v = playerAttribute(pl,k);
         const col = v >= 90 ? 'var(--gold)' : v >= 82 ? 'var(--def)' : 'var(--ini)';
         return (
           <div className="stat" key={k}>
-            <label>{lbl}</label>
+            <label>{attributeLabel(k)}</label>
             <div className="track"><i style={{ width: v + '%', background: col }}></i></div>
             <span className="v">{v}</span>
           </div>
         );
       })}
       <div className="poolrow">
-        <span className="poollbl">Agent pool</span>
+        <span className="poollbl">{tr('요원폭','Agent pool')}</span>
         {visiblePool(pl, 4).map(x => <AgentChip x={x} role={pl.role} key={x.agent} />)}
       </div>
       <div className="cardhint">상세 보기 →</div>
@@ -67,24 +71,34 @@ function PlayerCard({ pl, isSub }) {
   );
 }
 
-export function Squad() {
+export function Squad({preview=false}) {
   useStore();
-  const my = ST.teams[ST.myTeamIdx];
+  const previewLeague=ST.previewLeague,previewIdx=ST.previewTeamIdx;
+  const my = preview ? LEAGUES[previewLeague]?.teams?.[previewIdx] : ST.teams[ST.myTeamIdx];
   if (!my) return null;
+  const viewContext=preview?{returnScreen:'scTeamPreview',previewLeague,previewTeamIdx:previewIdx}:{returnScreen:'scSquad'};
   const roster = [...my.roster].sort((a, b) => playerOVR(b) - playerOVR(a));
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '8px' }}>
-        <div>
-          <div className="eyebrow">{LEAGUES[ST.league].name} · My Club</div>
-          <h1 className="big" style={{ fontSize: 'clamp(26px,5vw,40px)' }}>{my.name}</h1>
+        <div className="teamtitle">
+          {teamLogo(my.id,my.name)&&<img className="teamtitlelogo" src={teamLogo(my.id,my.name)} alt="" />}
+          <div>
+            <h1 className="big" style={{ fontSize: 'clamp(26px,5vw,40px)' }}>{my.name}</h1>
+          </div>
         </div>
-        <button className="btn ghost" style={{ width: 'auto' }} onClick={() => go('scHub')}>Back to Hub</button>
+        <div className="btnrow" style={{margin:0,width:'auto'}}>
+          {preview&&<button className="btn" style={{width:'auto'}} onClick={()=>selectTeam(previewLeague,previewIdx)}>{tr('이 팀 선택','Select this team')}</button>}
+          <button className="btn ghost" style={{width:'auto'}} onClick={()=>go(preview?'scSelect':'scHub')}>{preview?tr('팀 목록으로','Back to teams'):tr('허브로','Back to Hub')}</button>
+        </div>
       </div>
-      <p className="sub" style={{ marginBottom: '20px' }}>Five ratings drive everything: <b style={{ color: 'var(--text)' }}>Aim</b> wins duels, <b style={{ color: 'var(--text)' }}>Sense</b> reads rounds, <b style={{ color: 'var(--text)' }}>Clutch</b> saves lost ones, <b style={{ color: 'var(--text)' }}>Util</b> is setup &amp; support, <b style={{ color: 'var(--text)' }}>Mental</b> holds under pressure. Role weights how each counts.</p>
+      <p className="sub" style={{ marginBottom: '20px' }}>
+        {tr('능력치는 여러 시즌의 VCT 기록을 사용합니다.','Ratings use multi-year VCT evidence.')}<br />
+        {tr('현재 시즌 폼은 별도로 반영되며 역할별 가중치가 OVR과 시뮬레이션 영향도를 결정합니다.','Current-season form is applied separately, and role-specific weights determine OVR and simulation impact.')}
+      </p>
       <div className="squadgrid">
-        {roster.map(pl => <PlayerCard pl={pl} isSub={false} key={pl.name} />)}
-        {(my.bench || []).map(pl => <PlayerCard pl={pl} isSub={true} key={pl.name} />)}
+        {roster.map(pl => <PlayerCard pl={pl} isSub={false} viewContext={viewContext} key={pl.name} />)}
+        {(my.bench || []).map(pl => <PlayerCard pl={pl} isSub={true} viewContext={viewContext} key={pl.name} />)}
       </div>
     </>
   );

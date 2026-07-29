@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "year": 2026,
+  "basis": "Regional participation in VCT 2026 Stage 1; Eternal Fire succeeds ULF Esports in the EMEA slot",
+  "leagues": {
+    "AMER": [
+      { "teamId": "11058", "name": "G2 Esports", "short": "G2" },
+      { "teamId": "120", "name": "100 Thieves", "short": "100T" },
+      { "teamId": "188", "name": "Cloud9", "short": "C9" },
+      { "teamId": "2", "name": "Sentinels", "short": "SEN" },
+      { "teamId": "2355", "name": "KRÜ Esports", "short": "KRU" },
+      { "teamId": "2359", "name": "LEVIATÁN", "short": "LEV" },
+      { "teamId": "2406", "name": "FURIA", "short": "FUR" },
+      { "teamId": "1034", "name": "NRG Esports", "short": "NRG" },
+      { "teamId": "427", "name": "Envy", "short": "NV" },
+      { "teamId": "5248", "name": "Evil Geniuses", "short": "EG" },
+      { "teamId": "6961", "name": "LOUD", "short": "LLL" },
+      { "teamId": "7386", "name": "MIBR", "short": "MBR" }
+    ],
+    "EMEA": [
+      { "teamId": "1001", "name": "Team Heretics", "short": "TH" },
+      { "teamId": "1184", "name": "FUT Esports", "short": "FUT" },
+      { "teamId": "12694", "name": "Gentle Mates", "short": "M8" },
+      { "teamId": "14419", "name": "GIANTX", "short": "GX" },
+      { "teamId": "2059", "name": "Team Vitality", "short": "VIT" },
+      { "teamId": "2593", "name": "FNATIC", "short": "FNC" },
+      { "teamId": "3478", "name": "PCIFIC Espor", "short": "PCF" },
+      { "teamId": "4915", "name": "Natus Vincere", "short": "NAVI" },
+      { "teamId": "6392", "name": "Eternal Fire", "short": "EF" },
+      { "teamId": "8877", "name": "Karmine Corp", "short": "KC" },
+      { "teamId": "397", "name": "BBL Esports", "short": "BBL" },
+      { "teamId": "474", "name": "Team Liquid", "short": "TL" }
+    ],
+    "PAC": [
+      { "teamId": "11060", "name": "Nongshim RedForce", "short": "NS" },
+      { "teamId": "11229", "name": "VARREL", "short": "VAR" },
+      { "teamId": "14", "name": "T1", "short": "T1" },
+      { "teamId": "17", "name": "Gen.G", "short": "GEN" },
+      { "teamId": "278", "name": "DetonatioN FocusMe", "short": "DFM" },
+      { "teamId": "4050", "name": "FULL SENSE", "short": "FS" },
+      { "teamId": "5448", "name": "ZETA DIVISION", "short": "ZETA" },
+      { "teamId": "6199", "name": "Team Secret", "short": "TS" },
+      { "teamId": "624", "name": "Paper Rex", "short": "PRX" },
+      { "teamId": "8185", "name": "DRX", "short": "DRX" },
+      { "teamId": "878", "name": "Rex Regum Qeon", "short": "RRQ" },
+      { "teamId": "918", "name": "Global Esports", "short": "GE" }
+    ],
+    "CN": [
+      { "teamId": "1119", "name": "All Gamers", "short": "AG" },
+      { "teamId": "1120", "name": "EDward Gaming", "short": "EDG" },
+      { "teamId": "11328", "name": "FunPlus Phoenix", "short": "FPX" },
+      { "teamId": "11981", "name": "Dragon Ranger Gaming", "short": "DRG" },
+      { "teamId": "12010", "name": "Bilibili Gaming", "short": "BLG" },
+      { "teamId": "12064", "name": "Nova Esports", "short": "NOVA" },
+      { "teamId": "12685", "name": "Trace Esports", "short": "TE" },
+      { "teamId": "13576", "name": "JDG Esports", "short": "JDG" },
+      { "teamId": "13581", "name": "Xi Lai Gaming", "short": "XLG" },
+      { "teamId": "13790", "name": "Wolves Esports", "short": "WOL" },
+      { "teamId": "14137", "name": "Titan Esports Club", "short": "TEC" },
+      { "teamId": "731", "name": "TYLOO", "short": "TYL" }
+    ]
+  },
+  "slotHistory": [
+    { "leagueId": "EMEA", "predecessorTeamId": "18019", "predecessorName": "ULF Esports", "successorTeamId": "6392", "successorName": "Eternal Fire", "transition": "Kickoff to Stage 1" }
+  ]
+}

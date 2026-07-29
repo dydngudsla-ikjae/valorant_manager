@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-29T05:32:30.932Z",
+  "format": "JSON Lines (one lossless normalized CSV row per line)",
+  "entityFiles": [
+    "data/entities/players.json",
+    "data/entities/teams.json",
+    "data/entities/competition.json",
+    "data/entities/taxonomy.json"
+  ],
+  "years": [
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+  ],
+  "validationReport": "validation-report.json",
+  "quarantineDirectory": "quarantine"
+}

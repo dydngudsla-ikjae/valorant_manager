@@ -9,11 +9,11 @@
   .vtile.ban .vmap{text-decoration:line-through}
   .vtile.pick{border-color:var(--def); box-shadow:0 0 0 1px var(--def) inset}
   .vtile.decider{border-color:var(--gold); box-shadow:0 0 0 1px var(--gold) inset}
-  .vtile .vmap{font-family:"Oswald"; font-size:19px; text-transform:uppercase; letter-spacing:.02em}
+  .vtile .vmap{font-family:"Rajdhani","Pretendard"; font-size:19px; text-transform:uppercase; letter-spacing:.02em}
   .vtile .vtag{font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; margin-top:3px}
   .vtile.pick .vtag{color:var(--def)} .vtile.decider .vtag{color:var(--gold)}
   .vtile .vsuit{font-size:10px; color:var(--muted); margin-top:6px}
   .vetoresult{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; justify-content:center}
-  .vres{font-size:12.5px; color:var(--muted); font-family:"IBM Plex Mono";
+  .vres{font-size:12.5px; color:var(--muted); font-family:"IBM Plex Mono Local","Pretendard";
     border:1px solid var(--line); border-radius:20px; padding:5px 12px}
-  .vres b{color:var(--text); font-family:"Oswald"; letter-spacing:.04em; margin-right:5px}
+  .vres b{color:var(--text); font-family:"Rajdhani","Pretendard"; letter-spacing:.04em; margin-right:5px}
