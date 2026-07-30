@@ -1,15 +1,20 @@
 /* map veto */
   .vetogrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px}
-  .vtile{background:var(--panel); border:1px solid var(--line); border-radius:11px;
-    padding:14px; text-align:left; transition:.15s; color:var(--text); position:relative}
+  .vtile{background-color:var(--panel); background-image:var(--map-splash); background-size:cover; background-position:center;
+    border:1px solid var(--line); border-radius:11px; min-height:126px; overflow:hidden;
+    padding:14px; text-align:left; transition:.15s; color:var(--text); position:relative; isolation:isolate}
+  .vtile .vshade{position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg,rgba(7,10,15,.16),rgba(7,10,15,.94) 84%)}
+  .vtile .vcontent{position:absolute; inset:auto 14px 13px; z-index:1}
   button.vtile{cursor:pointer}
   .vtile.live{border-color:var(--gold)}
   .vtile.live:hover{transform:translateY(-3px); border-color:var(--gold)}
-  .vtile.ban{opacity:.4; border-style:dashed}
+  .vtile.ban{border-style:dashed}
+  .vtile.ban .vshade{background:rgba(6,8,12,.8)}
+  .vtile.ban .vcontent{opacity:.58}
   .vtile.ban .vmap{text-decoration:line-through}
   .vtile.pick{border-color:var(--def); box-shadow:0 0 0 1px var(--def) inset}
   .vtile.decider{border-color:var(--gold); box-shadow:0 0 0 1px var(--gold) inset}
-  .vtile .vmap{font-family:"Rajdhani","Pretendard"; font-size:19px; text-transform:uppercase; letter-spacing:.02em}
+  .vtile .vmap{font-family:"Rajdhani","Pretendard"; font-size:21px; font-weight:700; text-shadow:0 2px 8px #000; text-transform:uppercase; letter-spacing:.02em}
   .vtile .vtag{font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; margin-top:3px}
   .vtile.pick .vtag{color:var(--def)} .vtile.decider .vtag{color:var(--gold)}
   .vtile .vsuit{font-size:10px; color:var(--muted); margin-top:6px}

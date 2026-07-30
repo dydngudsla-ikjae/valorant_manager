@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "defaultMatches": 100,
+  "bestOf": 1,
+  "seed": "vlm-validation-2026",
+  "thresholds": {
+    "minimumAverageRounds": 13,
+    "maximumAverageRounds": 26,
+    "minimumOvertimeRate": 0,
+    "maximumOvertimeRate": 0.25,
+    "minimumRating": 0.3,
+    "maximumRating": 2.0
+  },
+  "balanceTargets": {
+    "minimumAverageRounds": 18,
+    "maximumAverageRounds": 23,
+    "minimumUpsetRate": 0.12,
+    "maximumUpsetRate": 0.4
+  }
+}

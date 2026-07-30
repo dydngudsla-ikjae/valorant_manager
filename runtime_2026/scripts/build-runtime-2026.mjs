@@ -41,7 +41,7 @@ function findTeam(team) {
   const matches = teamEntities.filter(e => [e.name, ...(e.aliases || [])].some(n => wanted.has(norm(n))));
   if (matches.length === 1) return matches[0];
   if (matches.length > 1) {
-    const projectNames = new Set([...team.roster, ...(team.bench || [])].map(p => norm(p.name)));
+    const projectNames = new Set((team.registered || [...team.roster, ...(team.bench || [])]).map(p => norm(p.name)));
     const ranked = matches.map(entity => {
       const ids = Object.keys(rosters[String(entity.id)]?.players || {});
       const overlap = ids.filter(id => projectNames.has(norm(stats[2026][id]?.name || entityNames.get(id)))).length;
@@ -196,10 +196,10 @@ const output = { schemaVersion: 1, modelVersion: config.modelVersion, targetYear
 
 for (const [leagueId, league] of Object.entries(LEAGUES)) for (const team of league.teams) {
   output.report.teams++;
-  const rosterTeamId = team.roster[0]?.teamId || team.bench?.[0]?.teamId;
+  const rosterTeamId = team.registered?.[0]?.teamId || team.roster[0]?.teamId || team.bench?.[0]?.teamId;
   const entity = (rosterTeamId && teamEntities.find(t => String(t.id) === String(rosterTeamId))) || findTeam(team);
   if (!entity) output.report.unmatchedTeams.push({ leagueId, short: team.short, name: team.name });
-  for (const pl of [...team.roster, ...(team.bench || [])]) {
+  for (const pl of (team.registered || [...team.roster, ...(team.bench || [])])) {
     output.report.projectPlayers++;
     const key = `${leagueId}:${team.short}:${norm(pl.name)}`;
     const seededPlayerId = pl.playerId && years.some(y => stats[y][String(pl.playerId)]) ? String(pl.playerId) : null;
@@ -235,7 +235,7 @@ for (const [leagueId, league] of Object.entries(LEAGUES)) for (const team of lea
     const primaryRole = Object.entries(roles).sort((a,b)=>b[1].usageShare-a[1].usageShare||b[1].gameProficiency-a[1].gameProficiency)[0]?.[0] || currentRecord?.primaryRole || pl.role;
     output.players[key] = {
       playerId, name: currentRecord?.name || entityNames.get(playerId) || pl.name,
-      teamId: String(entity.id), teamName: entity.name, leagueId, rosterStatus: team.bench?.includes(pl) ? 'bench' : 'active', primaryRole,
+      teamId: String(entity.id), teamName: entity.name, leagueId, rosterStatus: 'registered', primaryRole,
       sample2026: currentRecord?.sample || { rounds: 0, maps: 0, reliability: 0 },
       baseAttributes: attrs.values, appliedAttributes: applied, season2026Attributes: current,
       attributeReliability: attrs.reliability, attributeContributions: attrs.contributions,

@@ -1,7 +1,8 @@
 /* MATCH SCREEN */
   .matchhead{text-align:center; margin-bottom:20px}
-  .matchhead .mvenue{font-family:"Rajdhani","Pretendard"; letter-spacing:.2em; color:var(--muted);
-    font-size:12px; text-transform:uppercase}
+  .matchhead .mvenue{font-family:"Rajdhani","Pretendard";font-weight:700;letter-spacing:.12em;color:#eef3f8;
+    font-size:clamp(18px,2.2vw,27px);line-height:1.15;text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,.7)}
+  .match-start-actions{width:min(1180px,100%);margin:14px auto 0}
   .scoreline{display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
     gap:16px; margin:16px 0}
   .side{display:flex; align-items:center; gap:12px}
@@ -9,6 +10,8 @@
   .side .sn{font-family:"Rajdhani","Pretendard"; font-size:clamp(20px,4vw,30px); text-transform:uppercase; letter-spacing:.02em}
   .side .crest{width:46px; height:46px; border-radius:10px; flex:none;
     display:grid; place-items:center; font-family:"Rajdhani","Pretendard"; font-weight:700; font-size:18px; color:#0b0e14}
+  .side .crest.matchcrest{background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(218,225,235,.88));border:1px solid color-mix(in srgb,var(--team-color) 45%,#dbe3ee);padding:7px;box-shadow:inset 0 0 14px rgba(255,255,255,.55)}
+  .side .crest.matchcrest img{display:block;width:100%;height:100%;object-fit:contain}
   .bigscore{font-family:"Rajdhani","Pretendard"; font-size:clamp(46px,11vw,86px); line-height:1;
     display:flex; align-items:center; gap:14px}
   .bigscore .colon{color:var(--muted)}
@@ -50,6 +53,9 @@
   .feed .abtag{color:#9bd2ff; font-size:11px}
   .feed .abtag.ult{color:var(--gold)}
   .feed .cltag{color:var(--gold); font-size:11px}
+  .feed .tactag{color:#9bd2ff; font-size:10px; border:1px solid rgba(84,184,255,.28); border-radius:3px; padding:1px 5px; margin-left:5px}
+  .feed .tradetag{color:var(--gold); font-size:10px; margin-left:3px}
+  .feed .ln.timeout{border-left:2px solid var(--gold); padding-left:8px; opacity:1}
   .feed .evtag{color:var(--muted); font-size:11px; border:1px solid #2a3547; border-radius:3px; padding:0 4px}
   .box td.rat{font-weight:700; font-family:"IBM Plex Mono Local","Pretendard"}
   .box td.rat.pos{color:var(--def)} .box td.rat.neg{color:var(--val)}
@@ -71,3 +77,27 @@
   .tlcell.away{background:rgba(35,224,168,.16); color:#7fecc9}
   .tlcell.pistol{border-color:var(--muted)}
   .tlcell .tln{opacity:.7} .tlcell .tlic{font-size:9px; color:var(--gold); line-height:1; min-height:9px}
+
+  .match-control-status{display:flex; justify-content:space-between; gap:12px; margin:0 2px 8px;
+    color:var(--muted); font-family:"IBM Plex Mono Local","Pretendard"; font-size:11px}
+  .match-controls{margin-top:0; display:grid; grid-template-columns:1.2fr 1.2fr .8fr 1fr}
+  .match-controls .btn{width:100%}
+  .mode-button.active{border-color:var(--def);color:var(--def);box-shadow:0 0 0 1px rgba(35,224,168,.25) inset;background:rgba(35,224,168,.06)}
+  .timeout-button{border-color:rgba(255,209,102,.55); color:var(--gold)}
+  .timeout-editor{margin-top:12px; padding:16px; border:1px solid rgba(255,209,102,.45); border-radius:12px;
+    background:linear-gradient(145deg,rgba(255,209,102,.07),rgba(13,18,25,.96))}
+  .timeout-editor-head{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:12px}
+  .timeout-editor-head>div{display:flex; flex-direction:column; gap:3px}
+  .timeout-editor-head b{font-family:"Rajdhani","Pretendard"; font-size:17px; letter-spacing:.08em; color:var(--gold)}
+  .timeout-editor-head span{font-size:10px; color:var(--muted)}
+  .timeout-cancel{width:auto!important; min-width:76px}
+  .timeout-presets{display:grid; grid-template-columns:repeat(4,1fr); gap:7px; margin-bottom:10px}
+  .timeout-preset{min-height:38px; border:1px solid var(--line); border-radius:7px; background:#0d1219;
+    color:var(--muted); font-family:"Rajdhani","Pretendard"; font-weight:700; letter-spacing:.05em}
+  .timeout-preset.on{border-color:var(--gold); color:var(--gold); background:rgba(255,209,102,.08)}
+  .timeout-controls{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+  .timeout-controls label{display:grid; gap:5px}.timeout-controls label span{font-size:10px; color:var(--muted)}
+  .timeout-controls select{min-height:38px; border:1px solid var(--line); border-radius:7px; background:#0d1219;
+    color:var(--text); padding:0 9px; font-family:"IBM Plex Mono Local","Pretendard"; font-size:11px}
+  .timeout-confirm{width:100%; margin-top:12px}
+  @media(max-width:720px){.match-controls,.timeout-controls{grid-template-columns:1fr}.timeout-presets{grid-template-columns:1fr 1fr}.match-control-status{flex-direction:column}}

@@ -18,6 +18,8 @@
   button{font-family:inherit; cursor:pointer; color:inherit}
   button:focus-visible, .pick:focus-visible{outline:2px solid var(--def); outline-offset:2px}
   .wrap{max-width:1040px; margin:0 auto; padding:0 18px}
+  .wrap.matchwide{max-width:1488px;padding-inline:24px}
+  @media(max-width:720px){.wrap.matchwide{padding-inline:12px}}
 
   /* top bar */
   header{position:sticky; top:0; z-index:20; background:rgba(11,14,20,.86);

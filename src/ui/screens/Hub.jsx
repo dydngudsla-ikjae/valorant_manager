@@ -9,6 +9,7 @@ import { tr, weekLabel } from '../../i18n.js';
 function StandingsTable() {
   const rows = sortedStandings();
   const myId = ST.teams[ST.myTeamIdx].id;
+  const qualificationPlaces=ST.competition?.qualificationPlaces||8;
   return (
     <table>
       <thead>
@@ -21,7 +22,7 @@ function StandingsTable() {
         {rows.map((tm, i) => {
           const s = ST.standings[tm.id];
           return (
-            <tr className={(i < 8 ? 'playoff ' : '') + (tm.id === myId ? 'me' : '')} key={tm.id}>
+            <tr className={(i < qualificationPlaces ? 'playoff ' : '') + (tm.id === myId ? 'me' : '')} key={tm.id}>
               <td className="rank">{i + 1}</td>
               <td className="tn">
                 <span className="dot" style={{ display: 'inline-block', background: tm.color, marginRight: '8px', verticalAlign: 'middle' }}></span>
@@ -86,6 +87,8 @@ export function Hub() {
           <h1 className="big" style={{ fontSize: 'clamp(26px,5vw,40px)' }}>{ST.seasonOver ? tr('시즌 종료','Season Complete') : tr('시즌 허브','Season Hub')}</h1>
         </div>
         <div className="btnrow" style={{ margin: 0, width: 'auto' }}>
+          <button className="btn ghost" style={{ width: 'auto' }} onClick={() => go('scTournament')}>{tr('대회 일정','Tournament')}</button>
+          <button className="btn ghost" style={{ width: 'auto' }} onClick={() => go('scMapLab')}>{tr('맵 진단','Map Lab')}</button>
           <button className="btn ghost" style={{ width: 'auto' }} onClick={() => go('scStats')}>{tr('대회 통계','Competition Stats')}</button>
           <button className="btn ghost" style={{ width: 'auto' }} onClick={() => go('scSquad')}>{tr('선수단','Squad')}</button>
           <button className="btn" style={{ width: 'auto' }} disabled={ST.seasonOver} onClick={() => startNextMatch()}>

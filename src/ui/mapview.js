@@ -2,8 +2,12 @@ import { buyFromCredits, initEcon } from '../core/economy.js';
 import { curGeo } from '../core/spatial.js';
 import { MATCH } from '../core/state.js';
 import { agImg } from '../data/agents.js';
-import { ASCENT_BG, MV } from '../data/geo/ascent.js';
+import { MV } from '../data/geo/ascent.js';
+import { mapAssets } from '../data/geo/maps.js';
 import { p } from '../data/leagues.js';
+import { abilityAssets, armorAsset, localizedAbilityName, weaponAsset, weaponLabel } from '../data/combat-assets.js';
+import { teamLogo } from '../data/team-logos.js';
+import { agentLabel, mapLabel, tacticLabel, tr } from '../i18n.js';
 import { ABFX, SKILL_R, TYPEKO, TYPESYM } from '../data/weapons.js';
 
 export function geoSVG(){ return `<svg class="mvmap" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -61,8 +65,12 @@ export function abbr(a){return (a||'').replace('/','').slice(0,2);}
 export function mvBuild(home,away,agBy){
   const field=document.getElementById('mvField'); if(!field)return;
   MV.nameIdx={}; MV.dots={}; MV.st={}; MV.agBy=agBy;
-  field.style.backgroundImage='url('+ASCENT_BG+')';
-  field.style.backgroundSize='100% 100%';
+  const mapName=(MATCH.mapPool&&MATCH.mapPool[MATCH.curMap])||'Ascent';
+  const series=document.getElementById('bSeries');if(series){series.innerHTML=MATCH.mapPool.map((map,index)=>{const isCurrent=index===MATCH.curMap,pick=MATCH.veto?.picks?.find(item=>item.map===map),team=pick?(pick.side==='home'?MATCH.home:MATCH.away):(MATCH.diagnostic&&isCurrent?MATCH.home:null),logo=teamLogo(team?.teamId||team?.id,team?.name),result=MATCH.mapResults[index];return `<span class="${isCurrent?'current':''}${result?' complete':''}">${mapLabel(map)}${logo?`<img src="${logo}" alt="${team.short}">`:'<b>◇</b>'}${result?`<em>${result.h}-${result.a}</em>`:''}</span>`;}).join('<i>›</i>');}
+  field.style.backgroundImage='url('+mapAssets(mapName).tactical+')';
+  field.dataset.map=mapName.toLowerCase();
+  field.style.backgroundSize='contain';
+  field.style.backgroundPosition='center';
   field.style.backgroundRepeat='no-repeat';
   field.innerHTML='';
   const mk=(side,team)=>team.roster.forEach((pl,i)=>{
@@ -75,9 +83,9 @@ export function mvBuild(home,away,agBy){
   mk('home',home); mk('away',away);
   const lg=document.getElementById('mvLegend');
   if(lg){ const keys=['smoke','molly','flash','recon','wall','trap','ult'];
-    lg.innerHTML=`<span class="lg"><span class="lgteam atk"></span>공격 유틸</span>`+
-      `<span class="lg"><span class="lgteam def"></span>수비 유틸</span>`+
-      keys.map(t=>`<span class="lg"><span class="lgsym">${TYPESYM[t]}</span>${TYPEKO[t]}</span>`).join(''); }
+    lg.innerHTML=`<span class="lg"><span class="lgteam atk"></span>${tr('공격 스킬','Attack utility')}</span>`+
+      `<span class="lg"><span class="lgteam def"></span>${tr('수비 스킬','Defense utility')}</span>`+
+      keys.map(t=>`<span class="lg"><span class="lgsym">${TYPESYM[t]}</span>${tr(TYPEKO[t],t.toUpperCase())}</span>`).join(''); }
 }
 
 export function mvSet(key,x,y,instant){ const s=MV.st[key]; if(!s)return; s.tx=x; s.ty=y; s.path=null; s.anchor={x,y}; s.nextW=0;
@@ -103,7 +111,19 @@ export function mvStartRAF(){
 }
 
 export function mvStopRAF(){ if(MV.raf&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(MV.raf); MV.raf=null;
-  if(MV.timer){clearInterval(MV.timer);MV.timer=null;} }
+  if(MV.timer){clearInterval(MV.timer);MV.timer=null;}MV.roundClock=null; }
+
+export function mvPauseRound(){
+  const clock=MV.roundClock;if(!clock||clock.paused)return;
+  clock.paused=true;clock.pauseStarted=typeof performance!=='undefined'?performance.now():Date.now();
+  if(MV.raf&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(MV.raf);MV.raf=null;
+}
+
+export function mvResumeRound(){
+  const clock=MV.roundClock;if(!clock||!clock.paused)return;
+  const now=typeof performance!=='undefined'?performance.now():Date.now();clock.pauseOffset+=Math.max(0,now-clock.pauseStarted);clock.paused=false;
+  if(typeof requestAnimationFrame==='function')MV.raf=requestAnimationFrame(clock.frame);
+}
 
 export function mvRenderAlive(atkAlive,defAlive,atkShort,defShort){
   const el=document.getElementById('mvAlive'); if(!el)return;
@@ -118,16 +138,34 @@ export function mvRenderCards(which,team,side,loadouts){
   el.innerHTML=team.roster.map((pl,i)=>{
     const b=MATCH.box[pl.name]||{k:0,d:0}; const lo=loadouts[i]||{weapon:'',shield:'none'};
     const dead=MV.st[which+i]&&MV.st[which+i].dead;
-    const shp=(sh=>{const n=sh==='heavy'?2:sh==='light'?1:0;return[0,1].map(j=>`<i class="${j<n?'on':''}"></i>`).join('');})(lo.shield);
+    const agent=MV.agBy?MV.agBy[pl.name]:'';
+    const agentAbilities=abilityAssets(agent),used=MV.usedAbilities||new Set();
+    const abilities=agentAbilities.filter(a=>a.slot!=='ultimate').map(a=>`<img class="${used.has(`${pl.name}:${a.name.en}`)?'used':''}" src="${a.src}" alt="" title="${localizedAbilityName(a)}">`).join('');
+    const ult=agentAbilities.find(a=>a.slot==='ultimate'),ultMax=7,ultPoints=Math.min(ultMax-1,(b.k||0)+Math.floor((MATCH.mapSimulation?.r||0)/3));
+    const weapon=weaponAsset(lo.weapon),armorValue=lo.shield==='heavy'?50:lo.shield==='light'?25:0;
     return `<div class="bcard ${which}${dead?' dead':''}">
-      <div class="pcag">${(function(a){return agImg(a)?`<img class="pcagimg" src="${agImg(a)}" alt="${a}">`:abbr(a);})(MV.agBy?MV.agBy[pl.name]:'')}</div>
-      <div class="pcname" title="${pl.name}">${pl.name}</div>
-      <div class="pchp"><i style="width:${dead?0:100}%"></i></div>
-      <div class="pcwep">${lo.weapon}</div>
-      <div class="pcbot"><span class="pcsh">${shp}</span><span class="pckd">${b.k}/${b.d}</span></div>
-      <div class="pccr">${lo.remaining!=null?('₵'+lo.remaining):''}</div>
+      <div class="pcag">${agImg(agent)?`<img class="pcagimg" src="${agImg(agent)}" alt="">`:abbr(agent)}</div>
+      <div class="pcmain"><div class="pcname" title="${pl.name}">${pl.name}</div><div class="pcvitals"><span class="pchealth">♥ ${dead?0:100}</span><span class="pcarmorvalue">◆ ${dead?0:armorValue}</span></div></div>
+      <div class="pcabilities">${abilities}${ult?`<span class="pcult" title="${localizedAbilityName(ult)}">${ultPoints}/${ultMax}</span>`:''}</div>
+      <div class="pcloadout">${weapon?`<img class="pcweaponimg" src="${weapon}" alt="">`:''}</div>
+      <div class="pcmeta"><span class="pckd">K/D ${b.k}/${b.d}</span><span class="pccr">${lo.remaining!=null?('₵ '+lo.remaining):''}</span></div>
     </div>`;
   }).join('');
+}
+
+function mvShowRoundBreak(rd,loadoutsHome,loadoutsAway){
+  const stage=document.querySelector('.viewerstage'),panel=document.getElementById('roundBreak');if(!stage||!panel)return;
+  const events=rd.spatial?.events||[],roundKills=new Map(),roundDeaths=new Map(),roundAssists=new Map();
+  events.filter(e=>e.type==='kill').forEach(e=>{roundKills.set(e.killer,(roundKills.get(e.killer)||0)+1);roundDeaths.set(e.victim,(roundDeaths.get(e.victim)||0)+1);if(e.assist)roundAssists.set(e.assist,(roundAssists.get(e.assist)||0)+1);});
+  const rows=(team,loadouts,side)=>team.roster.map((pl,i)=>({pl,i,k:(MATCH.box[pl.name]?.k||0)+(roundKills.get(pl.name)||0)})).sort((a,b)=>b.k-a.k||a.i-b.i).map(({pl,i,k})=>{const agent=MV.agBy?.[pl.name]||'',lo=loadouts[i]||{},base=MATCH.box[pl.name]||{k:0,d:0,a:0},allAbilities=abilityAssets(agent),ult=allAbilities.find(a=>a.slot==='ultimate'),armor=armorAsset(lo.shield);
+    const skills=allAbilities.filter(a=>a.slot!=='ultimate').map(a=>`<img class="${MV.usedAbilities?.has(`${pl.name}:${a.name.en}`)?'used':''}" src="${a.src}" alt="">`).join('');
+    return `<div class="rbplayer ${side}"><span class="rbspent">−₵ ${lo.spent??0}</span><span class="rbmoney">₵ ${lo.remaining??0}</span><div class="rbskills">${skills}</div>${armor?`<img class="rbarmor" src="${armor}" alt="">`:'<span class="rbarmor empty"></span>'}<img class="rbweapon" src="${weaponAsset(lo.weapon)}" alt="">${ult?`<img class="rbult" src="${ult.src}" alt="">`:'<span class="rbult"></span>'}<span class="rbstat">${k} / ${base.d+(roundDeaths.get(pl.name)||0)} / ${base.a+(roundAssists.get(pl.name)||0)}</span><div class="rbidentity"><b>${pl.name}</b><small>${agentLabel(agent)}</small></div><img class="rbagent" src="${agImg(agent)}" alt=""></div>`;}).join('');
+  const rounds=MATCH.mapSimulation?.rounds||[],roundByNumber=new Map(rounds.map(round=>[round.n,round])),slotCount=Math.max(24,...rounds.map(round=>round.n)),flowGrid=`grid-template-columns:52px repeat(12,24px) 54px repeat(${Math.max(12,slotCount-12)},24px)`;
+  const homeLogo=teamLogo(MATCH.home.teamId||MATCH.home.id,MATCH.home.name),awayLogo=teamLogo(MATCH.away.teamId||MATCH.away.id,MATCH.away.name);
+  const flowCells=render=>Array.from({length:slotCount},(_,index)=>{const n=index+1,cell=render(n,roundByNumber.get(n));return(n===13?'<i class="halftime"></i>':'')+cell;}).join('');
+  const flowRow=side=>flowCells((n,round)=>`<i class="${round?.winner===side?'won':''}">${round?.winner===side?'◆':''}</i>`);
+  panel.innerHTML=`<div class="rbflow"><div class="rbflownums" style="${flowGrid}"><b></b>${flowCells(n=>`<span>${n}</span>`)}</div><div class="rbflowrow home" style="${flowGrid}"><b>${homeLogo?`<img src="${homeLogo}" alt="">`:MATCH.home.short}</b>${flowRow('home')}</div><div class="rbflowrow away" style="${flowGrid}"><b>${awayLogo?`<img src="${awayLogo}" alt="">`:MATCH.away.short}</b>${flowRow('away')}</div></div><div class="rbteams"><section class="rbteam home">${rows(MATCH.home,loadoutsHome,'home')}</section><section class="rbteam away">${rows(MATCH.away,loadoutsAway,'away')}</section></div>`;
+  stage.classList.add('round-break');
 }
 
 export function mvKill(killerName,victimName){
@@ -199,6 +237,8 @@ export function mvPlayRound(rd,speed,onDone){
   const field=document.getElementById('mvField');
   if(!field){ onDone(); return; }
   mvStopRAF();
+  MV.usedAbilities=new Set();
+  const stage=document.querySelector('.viewerstage'),roundBreak=document.getElementById('roundBreak');if(stage)stage.classList.remove('round-break');if(roundBreak)roundBreak.innerHTML='';
   const fast=speed==='fast';
   if(!rd.spatial){ onDone(); return; }
   const atkTeamSide=rd.hSide==='atk'?'home':'away';
@@ -240,14 +280,18 @@ export function mvPlayRound(rd,speed,onDone){
   zone.style.width=gz.w+'%'; zone.style.height=gz.h+'%'; field.appendChild(zone);
 
   let atkAlive=5,defAlive=5; mvRenderAlive(atkAlive,defAlive,atkShort,defShort); refreshPanels();
-  const bcH=document.getElementById('bcH'), bcA=document.getElementById('bcA'), bSpike=document.getElementById('bSpike');
-  if(bcH){bcH.textContent=MATCH.home.short; bcH.style.background=MATCH.home.color;}
-  if(bcA){bcA.textContent=MATCH.away.short; bcA.style.background=MATCH.away.color;}
-  if(bSpike){bSpike.textContent=''; bSpike.className='bspike';}
+  const bcH=document.getElementById('bcH'),bcA=document.getElementById('bcA');
+  const setCrest=(element,team)=>{if(!element)return;const logo=teamLogo(team.teamId||team.id,team.name);element.style.setProperty('--team-color',team.color);element.innerHTML=logo?`<img src="${logo}" alt="">`:`<span>${team.short}</span>`;};
+  setCrest(bcH,MATCH.home);setCrest(bcA,MATCH.away);
+  const nameH=document.getElementById('bNameH'),nameA=document.getElementById('bNameA'),sideH=document.getElementById('bSideH'),sideA=document.getElementById('bSideA');
+  if(nameH)nameH.textContent=MATCH.home.short;if(nameA)nameA.textContent=MATCH.away.short;
+  if(sideH){sideH.textContent=rd.hSide.toUpperCase();sideH.className=rd.hSide;}if(sideA){sideA.textContent=rd.aSide.toUpperCase();sideA.className=rd.aSide;}
   const phase=document.getElementById('mvPhase');
-  const setPhase=(t,cls)=>{ if(phase){phase.className='mvphase '+(cls||''); phase.textContent=t;} };
+  const setPhase=(t,cls)=>{ if(phase){phase.className='mvcommentary '+(cls||''); phase.textContent=t;} };
   const timerEl=document.getElementById('rTimer');
-  setPhase('Buy · 수비 세팅 / 공격 바이','');
+  const playerSide=MATCH.playerSide||'home',playerIsAttacking=playerSide===atkTeamSide;
+  const visibleTactic=rd.tactics?(playerIsAttacking?`${tr('우리 팀 공격','Our attack')} · ${tacticLabel(rd.tactics.attack.type)}`:`${tr('우리 팀 수비','Our defense')} · ${tacticLabel(rd.tactics.defense.type)}`):tr('구매 · 라운드 준비','Buy · Round setup');
+  setPhase(visibleTactic,'');
   if(timerEl){ timerEl.textContent='0:30'; timerEl.classList.remove('spike'); }
   MV._planted=false; MV._plantAt=0;
 
@@ -266,55 +310,55 @@ export function mvPlayRound(rd,speed,onDone){
         kf.prepend(row); while(kf.children.length>5)kf.removeChild(kf.lastChild); } }
       const vk=MV.nameIdx[e.victim]; if(vk){ if(vk.side===atkTeamSide)atkAlive=Math.max(0,atkAlive-1); else defAlive=Math.max(0,defAlive-1); }
       mvRenderAlive(atkAlive,defAlive,atkShort,defShort); refreshPanels();
-      if(!firstBlood){ firstBlood=true; setPhase('First blood · '+e.killer,''); } else setPhase('교전 · '+atkAlive+'v'+defAlive,'');
+      if(!firstBlood){firstBlood=true;setPhase(tr('첫 킬','First blood')+' · '+e.killer,'');}else setPhase(tr('교전','Fight')+' · '+atkAlive+'v'+defAlive,'');
       if(rd.clutch){ const ck=MV.nameIdx[rd.clutch.player]; if(ck && MV.st[ck.side+ck.i] && !MV.st[ck.side+ck.i].dead){ const d=MV.dots[ck.side+ck.i]; if(d)d.classList.add('clutch'); } }
     } else if(e.type==='plantStart'){
-      setPhase(e.planter+' 설치 중...','atk');
+      setPhase(e.planter+' '+tr('설치 중…','planting…'),'atk');
       const el=document.createElement('div'); el.className='fx fx-trap atk'; el.style.left=e.x+'%'; el.style.top=e.y+'%'; el.innerHTML='<span class="fxsym">◆</span>';
       field.appendChild(el); setTimeout(()=>el.remove(), fast?300:3600);
     } else if(e.type==='spikeDrop'){
-      setPhase('스파이크 낙하 — 위치 노출','def');
+      setPhase(tr('스파이크 낙하 · 위치 노출','Spike dropped · location revealed'),'def');
       field.querySelectorAll('.mvspike.dropped').forEach(x=>x.remove());
       const el=document.createElement('div'); el.className='mvspike show dropped'; el.textContent='✸'; el.style.left=e.x+'%'; el.style.top=e.y+'%'; field.appendChild(el);
     } else if(e.type==='spikePickup'){
-      setPhase(e.by+' 스파이크 회수','atk');
+      setPhase(e.by+' '+tr('스파이크 회수','recovered the spike'),'atk');
       field.querySelectorAll('.mvspike.dropped').forEach(x=>x.remove());
     } else if(e.type==='defuseStart'){
-      setPhase(e.defuser+' 해체 중...','def');
+      setPhase(e.defuser+' '+tr('해체 중…','defusing…'),'def');
       const el=document.createElement('div'); el.className='fx fx-recon def'; el.style.left=e.x+'%'; el.style.top=e.y+'%'; el.innerHTML='<span class="fxsym">◈</span>';
       field.appendChild(el); setTimeout(()=>el.remove(), fast?300:3600);
     } else if(e.type==='defuseStop'){
-      setPhase('해체 중단','atk');
+      setPhase(tr('해체 중단','Defuse interrupted'),'atk');
     } else if(e.type==='plant'){
       MV._planted=true; MV._plantAt=Date.now(); field.querySelectorAll('.mvspike.dropped').forEach(x=>x.remove()); mvSpike(e.x,e.y,false);
-      if(bSpike){bSpike.textContent='◆ SPIKE '+rd.site; bSpike.className='bspike';}
-      setPhase('Spike planted · '+rd.site,'atk');
+      setPhase(tr('스파이크 설치','Spike planted')+' · '+rd.site,'atk');
     } else if(e.type==='defuse'){
-      mvSpike(e.x,e.y,true); if(bSpike){bSpike.textContent='◈ DEFUSED'; bSpike.className='bspike def';}
-      setPhase('Spike defused','def');
+      mvSpike(e.x,e.y,true);
+      setPhase(tr('스파이크 해체','Spike defused'),'def');
     } else if(e.type==='util'){
       const el=document.createElement('div'); el.className='fx fx-'+(e.kind==='flash'?'flash':'smoke')+' atk';
       el.style.left=e.x+'%'; el.style.top=e.y+'%'; el.innerHTML='<span class="fxsym">'+(TYPESYM[e.kind]||'')+'</span>';
       field.appendChild(el); setTimeout(()=>el.remove(), fast?300:(e.kind==='flash'?700:4600));
-      if(e.kind==='smoke') setPhase('진입 연막 — '+e.site+' 초크','atk');
+      if(e.kind==='smoke') setPhase(tr('진입 연막','Entry smoke')+' · '+e.site+' '+tr('초크','choke'),'atk');
     } else if(e.type==='recon'){
       const el=document.createElement('div'); el.className='fx fx-recon atk';
       el.style.left=e.x+'%'; el.style.top=e.y+'%'; el.innerHTML='<span class="fxsym">'+TYPESYM.recon+'</span>';
       field.appendChild(el); setTimeout(()=>el.remove(), fast?300:1100);
-      setPhase('정찰 — 약한 사이트 포착','def');
-    } else if(e.type==='ability'){ mvAbility(e.ab,rd); }
+      setPhase(tr('정찰 · 방어 위치 탐지','Recon · defender positions scanned'),'def');
+    } else if(e.type==='ability'){ MV.usedAbilities.add(`${e.ab.player}:${e.ab.name}`);mvAbility(e.ab,rd);refreshPanels(); }
   }
 
   const buyWall=fast?60:1800;
   const moveWall=fast?460:Math.max(5000,Math.min(14000,dur*850));
-  const holdWall=fast?60:800;
-  let t0=null, plantTe=-1;
+  const holdWall=fast?60:2100;
+  let t0=null,plantTe=-1;
   function firePlantClock(){}
   function frame(ts){
-    const now=(typeof ts==='number'?ts:0); if(t0==null)t0=now; const el=now-t0;
+    const clock=MV.roundClock;if(!clock||clock.paused)return;
+    const now=(typeof ts==='number'?ts:0);if(t0==null)t0=now;const el=now-t0-clock.pauseOffset;
     let te;
     if(el<buyWall){ te=0; }
-    else { te=Math.min(dur,(el-buyWall)/moveWall*dur); if(!firstBlood && el<buyWall+120) setPhase('Execute · '+rd.site+' 진입','atk'); }
+    else { te=Math.min(dur,(el-buyWall)/moveWall*dur); if(!firstBlood && el<buyWall+120) setPhase(playerIsAttacking?`${tacticLabel(rd.tactics?.attack?.type||'EXECUTE')} · ${rd.site} ${tr('진입','entry')}`:`${rd.site} ${tr('사이트 진입 감지','site contact')}`,'atk'); }
     Object.keys(walkers).forEach(key=>{ const s=MV.st[key]; const cone=cones[key];
       if(s.dead){ if(cone)cone.style.display='none'; return; }
       const p=posAt(walkers[key],te);
@@ -327,11 +371,14 @@ export function mvPlayRound(rd,speed,onDone){
     if(el < buyWall+moveWall){ MV.raf=requestAnimationFrame(frame); }
     else {
       while(ei<evs.length){ if(evs[ei].type==='plant'&&plantTe<0)plantTe=evs[ei].t; fireEvent(evs[ei]); ei++; }
-      setPhase((rd.winner===atkTeamSide?atkShort:defShort)+' win the round', rd.winner===atkTeamSide?'atk':'def');
-      if(timerEl&&!fast)timerEl.textContent='0:00'; if(bSpike&&!rd.plant)bSpike.textContent='';
+      setPhase((rd.winner===atkTeamSide?atkShort:defShort)+' '+tr('라운드 승리','wins the round'), rd.winner===atkTeamSide?'atk':'def');
+      if(timerEl&&!fast)timerEl.textContent='0:00';
+      const scoreH=document.getElementById('bScoreH'),scoreA=document.getElementById('bScoreA');if(scoreH)scoreH.textContent=rd.h;if(scoreA)scoreA.textContent=rd.a;
+      if(!fast)mvShowRoundBreak(rd,loadoutsHome,loadoutsAway);
       setTimeout(()=>{ mvStopRAF(); onDone(); }, holdWall);
     }
   }
+  MV.roundClock={paused:false,pauseStarted:0,pauseOffset:0,frame};
   MV.raf=requestAnimationFrame(frame);
 }
 

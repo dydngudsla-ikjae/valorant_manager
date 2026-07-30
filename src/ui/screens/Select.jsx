@@ -42,19 +42,19 @@ function PreviewAgentChip({ x, role }) {
   );
 }
 
-function PreviewPlayerCard({ pl, isSub }) {
+function PreviewPlayerCard({ pl }) {
   const mainRole=primaryRole(pl),flex=isFlex(pl);
   const ovr = playerOVR(pl);
   const portrait=playerImage(pl);
   return (
-    <div className={'pcard' + (isSub ? ' bench' : '')}>
+    <div className="pcard">
       <div className="prow">
         <div className={'playerportrait'+(portrait?'':' empty')}>{portrait?<img src={portrait} alt="" loading="lazy" />:<span>{pl.name.slice(0,1)}</span>}</div>
         <div className="playeridentity"><div className="pn"><span>{pl.name}</span></div></div>
         <div className="cardrole" style={{ color:ROLE[mainRole].c }}><img src={ROLE_IMAGES[mainRole]} alt="" /><span>{roleLabel(mainRole)}</span></div>
         <div className="povr" style={{ color: ovr >= 90 ? 'var(--gold)' : 'var(--text)' }}>{ovr}</div>
       </div>
-      <div className="cardbadges">{flex&&<span className="playerbadge flex">FLEX</span>}{isSub&&<span className="playerbadge substitute">SUB</span>}</div>
+      <div className="cardbadges">{flex&&<span className="playerbadge flex">FLEX</span>}</div>
       <div className="profrow">
         {PROF_ROLES.map(rr => {
           const b = profBand(pl.prof[rr]);
@@ -97,8 +97,7 @@ export function Select() {
   const league = LEAGUES[lk];
   const previewT = previewIdx !== null ? league.teams[previewIdx] : null;
   const roster = previewT
-    ? [...previewT.roster].sort((a, b) => playerOVR(b) - playerOVR(a))
-        .concat((previewT.bench || []).map(pl => ({ ...pl, _sub: true })))
+    ? [...(previewT.registered || [...previewT.roster, ...(previewT.bench || [])])].sort((a, b) => playerOVR(b) - playerOVR(a))
     : [];
 
   return (
@@ -130,7 +129,7 @@ export function Select() {
             </div>
             <p className="sub" style={{ margin: '2px 0 14px' }}>이 스쿼드로 시즌을 운영합니다. 선수 능력치·역할을 확인하고 <b>이 팀 선택</b>을 누르면 확정됩니다.</p>
             <div className="squadgrid">
-              {roster.map(pl => <PreviewPlayerCard pl={pl} isSub={!!pl._sub} key={pl.name} />)}
+              {roster.map(pl => <PreviewPlayerCard pl={pl} key={pl.name} />)}
             </div>
           </div>
         </div>

@@ -1,9 +1,26 @@
 import { playerOVR, seededPool } from './ratings.js';
 import { AGENTS, AGENT_ROLE } from '../data/agents.js';
 import { LEAGUES, primaryRole, secondaryRole } from '../data/leagues.js';
-import RUNTIME_2026 from '../data/player-runtime-2026.json';
+import RUNTIME_2026 from '../data/player-runtime-2026.json' with { type: 'json' };
 
 const norm=value=>String(value??'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'');
+const registeredPlayers=team=>team.registered||[...team.roster,...(team.bench||[])];
+
+export function selectAutomaticLineup(team){
+  const players=registeredPlayers(team);
+  if(players.length<5)throw new Error(`${team.name}: fewer than five registered players`);
+  let best=null,bestScore=-Infinity;
+  const roles=['DUE','INI','SEN','CON'];
+  for(let a=0;a<players.length-4;a++)for(let b=a+1;b<players.length-3;b++)for(let c=b+1;c<players.length-2;c++)for(let d=c+1;d<players.length-1;d++)for(let e=d+1;e<players.length;e++){
+    const lineup=[players[a],players[b],players[c],players[d],players[e]];
+    const covered=new Set(lineup.map(primaryRole));
+    const coverage=roles.reduce((sum,role)=>sum+(covered.has(role)?7:0),0);
+    const score=lineup.reduce((sum,player)=>sum+playerOVR(player),0)+coverage;
+    if(score>bestScore){bestScore=score;best=lineup;}
+  }
+  team.roster=best;
+  return best;
+}
 
 export function visiblePool(pl,n){ n=n||4; const pool=(pl.pool||[]).slice(); if(!pool.length)return [];
   const roleOf=x=>x.role||'?'; const prim=primaryRole(pl);
@@ -16,7 +33,7 @@ export function visiblePool(pl,n){ n=n||4; const pool=(pl.pool||[]).slice(); if(
 // 0-20 proficiency bands: [min, label, color]
 
 export function applyRealStats(){
-  Object.entries(LEAGUES).forEach(([leagueId,L])=>L.teams.forEach(t=>[...t.roster,...(t.bench||[])].forEach(pl=>{
+  Object.entries(LEAGUES).forEach(([leagueId,L])=>L.teams.forEach(t=>registeredPlayers(t).forEach(pl=>{
     const s=RUNTIME_2026.players[`${leagueId}:${t.short}:${norm(pl.name)}`]; if(!s)return;
     Object.assign(pl,s.legacy);
     pl.playerId=s.playerId; pl.teamId=s.teamId; pl.role=s.primaryRole||pl.role;
@@ -28,10 +45,11 @@ export function applyRealStats(){
     if(pl.pool.length)pl._realpool=true;
     pl._real=true;
   })));
+  Object.values(LEAGUES).forEach(league=>league.teams.forEach(selectAutomaticLineup));
 }
 
 export function buildAgentPools(){
-  Object.values(LEAGUES).forEach(L=>L.teams.forEach(t=>[...t.roster,...(t.bench||[])].forEach(pl=>{
+  Object.values(LEAGUES).forEach(L=>L.teams.forEach(t=>registeredPlayers(t).forEach(pl=>{
     if(pl._realpool)return;
     const ags=seededPool(pl.name, AGENTS[pl.role], 3);
     const base=Math.round(playerOVR(pl)/5); // ~12-20 on a 0-20 scale

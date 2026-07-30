@@ -1,0 +1,1064 @@
+{
+  "weapons": {
+    "Classic": {
+      "en": "Classic",
+      "ko": "클래식",
+      "src": "/img/combat/weapon-classic.png"
+    },
+    "Vandal": {
+      "en": "Vandal",
+      "ko": "밴달",
+      "src": "/img/combat/weapon-vandal.png"
+    },
+    "Bulldog": {
+      "en": "Bulldog",
+      "ko": "불독",
+      "src": "/img/combat/weapon-bulldog.png"
+    },
+    "Phantom": {
+      "en": "Phantom",
+      "ko": "팬텀",
+      "src": "/img/combat/weapon-phantom.png"
+    },
+    "Frenzy": {
+      "en": "Frenzy",
+      "ko": "프렌지",
+      "src": "/img/combat/weapon-frenzy.png"
+    },
+    "Ghost": {
+      "en": "Ghost",
+      "ko": "고스트",
+      "src": "/img/combat/weapon-ghost.png"
+    },
+    "Sheriff": {
+      "en": "Sheriff",
+      "ko": "셰리프",
+      "src": "/img/combat/weapon-sheriff.png"
+    },
+    "Operator": {
+      "en": "Operator",
+      "ko": "오퍼레이터",
+      "src": "/img/combat/weapon-operator.png"
+    },
+    "Marshal": {
+      "en": "Marshal",
+      "ko": "마샬",
+      "src": "/img/combat/weapon-marshal.png"
+    },
+    "Spectre": {
+      "en": "Spectre",
+      "ko": "스펙터",
+      "src": "/img/combat/weapon-spectre.png"
+    },
+    "Stinger": {
+      "en": "Stinger",
+      "ko": "스팅어",
+      "src": "/img/combat/weapon-stinger.png"
+    }
+  },
+  "armors": {
+    "light": {
+      "en": "Light Armor",
+      "ko": "경형 방어구",
+      "src": "/img/combat/armor-light.png"
+    },
+    "heavy": {
+      "en": "Heavy Armor",
+      "ko": "중형 방어구",
+      "src": "/img/combat/armor-heavy.png"
+    },
+    "none": {
+      "en": "Regen Shield",
+      "ko": "재생 보호막",
+      "src": "/img/combat/armor-none.png"
+    }
+  },
+  "abilities": {
+    "Gekko": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Wingman",
+          "ko": "지원봇"
+        },
+        "src": "/img/combat/ability-gekko-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Dizzy",
+          "ko": "기절봇"
+        },
+        "src": "/img/combat/ability-gekko-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Mosh Pit",
+          "ko": "폭파봇 지옥"
+        },
+        "src": "/img/combat/ability-gekko-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Thrash",
+          "ko": "요동봇"
+        },
+        "src": "/img/combat/ability-gekko-ultimate.png"
+      }
+    ],
+    "Fade": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Seize",
+          "ko": "포박"
+        },
+        "src": "/img/combat/ability-fade-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Haunt",
+          "ko": "귀체"
+        },
+        "src": "/img/combat/ability-fade-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Prowler",
+          "ko": "추적귀"
+        },
+        "src": "/img/combat/ability-fade-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Nightfall",
+          "ko": "황혼"
+        },
+        "src": "/img/combat/ability-fade-ultimate.png"
+      }
+    ],
+    "Breach": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Flashpoint",
+          "ko": "섬광 폭발"
+        },
+        "src": "/img/combat/ability-breach-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Fault Line",
+          "ko": "균열"
+        },
+        "src": "/img/combat/ability-breach-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Aftershock",
+          "ko": "여진"
+        },
+        "src": "/img/combat/ability-breach-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Rolling Thunder",
+          "ko": "지진 강타"
+        },
+        "src": "/img/combat/ability-breach-ultimate.png"
+      }
+    ],
+    "Deadlock": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Sonic Sensor",
+          "ko": "음향 센서"
+        },
+        "src": "/img/combat/ability-deadlock-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "GravNet",
+          "ko": "중력그물"
+        },
+        "src": "/img/combat/ability-deadlock-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Barrier Mesh",
+          "ko": "장벽망"
+        },
+        "src": "/img/combat/ability-deadlock-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Annihilation",
+          "ko": "소멸"
+        },
+        "src": "/img/combat/ability-deadlock-ultimate.png"
+      }
+    ],
+    "Tejo": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Special Delivery",
+          "ko": "특별 배송"
+        },
+        "src": "/img/combat/ability-tejo-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Guided Salvo",
+          "ko": "유도 일제 사격"
+        },
+        "src": "/img/combat/ability-tejo-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Stealth Drone",
+          "ko": "잠입 드론"
+        },
+        "src": "/img/combat/ability-tejo-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Armageddon",
+          "ko": "아마겟돈"
+        },
+        "src": "/img/combat/ability-tejo-ultimate.png"
+      }
+    ],
+    "Raze": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Blast Pack",
+          "ko": "폭발 팩"
+        },
+        "src": "/img/combat/ability-raze-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Paint Shells",
+          "ko": "페인트탄"
+        },
+        "src": "/img/combat/ability-raze-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Boom Bot",
+          "ko": "폭발 봇"
+        },
+        "src": "/img/combat/ability-raze-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Showstopper",
+          "ko": "대미 장식"
+        },
+        "src": "/img/combat/ability-raze-ultimate.png"
+      }
+    ],
+    "Chamber": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Headhunter",
+          "ko": "헤드헌터"
+        },
+        "src": "/img/combat/ability-chamber-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Rendezvous",
+          "ko": "랑데부"
+        },
+        "src": "/img/combat/ability-chamber-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Trademark",
+          "ko": "트레이드마크"
+        },
+        "src": "/img/combat/ability-chamber-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Tour De Force",
+          "ko": "역작"
+        },
+        "src": "/img/combat/ability-chamber-ultimate.png"
+      }
+    ],
+    "KAY/O": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "FLASH/drive",
+          "ko": "플래시/드라이브"
+        },
+        "src": "/img/combat/ability-kay-o-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "ZERO/point",
+          "ko": "제로/포인트"
+        },
+        "src": "/img/combat/ability-kay-o-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "FRAG/ment",
+          "ko": "파편/탄"
+        },
+        "src": "/img/combat/ability-kay-o-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "NULL/cmd",
+          "ko": "무력화/명령"
+        },
+        "src": "/img/combat/ability-kay-o-ultimate.png"
+      }
+    ],
+    "Skye": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Trailblazer",
+          "ko": "정찰자"
+        },
+        "src": "/img/combat/ability-skye-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Guiding Light",
+          "ko": "인도하는 빛"
+        },
+        "src": "/img/combat/ability-skye-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Regrowth",
+          "ko": "재생"
+        },
+        "src": "/img/combat/ability-skye-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Seekers",
+          "ko": "추적자"
+        },
+        "src": "/img/combat/ability-skye-ultimate.png"
+      }
+    ],
+    "Cypher": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Cyber Cage",
+          "ko": "사이버 감옥"
+        },
+        "src": "/img/combat/ability-cypher-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Spycam",
+          "ko": "스파이캠"
+        },
+        "src": "/img/combat/ability-cypher-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Trapwire",
+          "ko": "함정"
+        },
+        "src": "/img/combat/ability-cypher-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Neural Theft",
+          "ko": "신경 절도"
+        },
+        "src": "/img/combat/ability-cypher-ultimate.png"
+      }
+    ],
+    "Sova": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Shock Bolt",
+          "ko": "충격 화살"
+        },
+        "src": "/img/combat/ability-sova-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Recon Bolt",
+          "ko": "정찰용 화살"
+        },
+        "src": "/img/combat/ability-sova-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Owl Drone",
+          "ko": "올빼미 드론"
+        },
+        "src": "/img/combat/ability-sova-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Hunter's Fury",
+          "ko": "사냥꾼의 분노"
+        },
+        "src": "/img/combat/ability-sova-ultimate.png"
+      }
+    ],
+    "Miks": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Harmonize",
+          "ko": "화음"
+        },
+        "src": "/img/combat/ability-miks-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Waveform",
+          "ko": "웨이브폼"
+        },
+        "src": "/img/combat/ability-miks-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "M-pulse",
+          "ko": "M-파동"
+        },
+        "src": "/img/combat/ability-miks-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Bassquake",
+          "ko": "요동치는 베이스"
+        },
+        "src": "/img/combat/ability-miks-ultimate.png"
+      }
+    ],
+    "Killjoy": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "ALARMBOT",
+          "ko": "알람봇"
+        },
+        "src": "/img/combat/ability-killjoy-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "TURRET",
+          "ko": "포탑"
+        },
+        "src": "/img/combat/ability-killjoy-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Nanoswarm",
+          "ko": "나노스웜"
+        },
+        "src": "/img/combat/ability-killjoy-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Lockdown",
+          "ko": "봉쇄"
+        },
+        "src": "/img/combat/ability-killjoy-ultimate.png"
+      }
+    ],
+    "Harbor": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "High Tide",
+          "ko": "만조"
+        },
+        "src": "/img/combat/ability-harbor-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Cove",
+          "ko": "해만"
+        },
+        "src": "/img/combat/ability-harbor-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Storm Surge",
+          "ko": "폭풍 쇄도"
+        },
+        "src": "/img/combat/ability-harbor-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Reckoning",
+          "ko": "심판"
+        },
+        "src": "/img/combat/ability-harbor-ultimate.png"
+      }
+    ],
+    "Vyse": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Shear",
+          "ko": "가지치기"
+        },
+        "src": "/img/combat/ability-vyse-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Arc Rose",
+          "ko": "아크 장미"
+        },
+        "src": "/img/combat/ability-vyse-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Razorvine",
+          "ko": "면도날 덩굴"
+        },
+        "src": "/img/combat/ability-vyse-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Steel Garden",
+          "ko": "강철 정원"
+        },
+        "src": "/img/combat/ability-vyse-ultimate.png"
+      }
+    ],
+    "Viper": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Poison Cloud",
+          "ko": "독성 연기"
+        },
+        "src": "/img/combat/ability-viper-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Toxic Screen",
+          "ko": "독성 장막"
+        },
+        "src": "/img/combat/ability-viper-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Snake Bite",
+          "ko": "뱀 이빨"
+        },
+        "src": "/img/combat/ability-viper-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Viper's Pit",
+          "ko": "독사의 구덩이"
+        },
+        "src": "/img/combat/ability-viper-ultimate.png"
+      }
+    ],
+    "Phoenix": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Hot Hands",
+          "ko": "뜨거운 손"
+        },
+        "src": "/img/combat/ability-phoenix-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Curveball",
+          "ko": "커브볼"
+        },
+        "src": "/img/combat/ability-phoenix-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Blaze",
+          "ko": "불길"
+        },
+        "src": "/img/combat/ability-phoenix-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Run it Back",
+          "ko": "역습"
+        },
+        "src": "/img/combat/ability-phoenix-ultimate.png"
+      }
+    ],
+    "Veto": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Chokehold",
+          "ko": "목조르기"
+        },
+        "src": "/img/combat/ability-veto-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Interceptor",
+          "ko": "요격기"
+        },
+        "src": "/img/combat/ability-veto-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Crosscut",
+          "ko": "지름길"
+        },
+        "src": "/img/combat/ability-veto-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Evolution",
+          "ko": "진화"
+        },
+        "src": "/img/combat/ability-veto-ultimate.png"
+      }
+    ],
+    "Astra": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Nova Pulse",
+          "ko": "신성 파동"
+        },
+        "src": "/img/combat/ability-astra-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Nebula  / Dissipate",
+          "ko": "성운 / 소멸"
+        },
+        "src": "/img/combat/ability-astra-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Gravity Well",
+          "ko": "중력의 샘"
+        },
+        "src": "/img/combat/ability-astra-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Astral Form / Cosmic Divide",
+          "ko": "천상계 형상 / 우주 장벽"
+        },
+        "src": "/img/combat/ability-astra-ultimate.png"
+      }
+    ],
+    "Brimstone": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Incendiary",
+          "ko": "소이탄"
+        },
+        "src": "/img/combat/ability-brimstone-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Sky Smoke",
+          "ko": "공중 연막"
+        },
+        "src": "/img/combat/ability-brimstone-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Stim Beacon",
+          "ko": "자극제 신호기"
+        },
+        "src": "/img/combat/ability-brimstone-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Orbital Strike",
+          "ko": "궤도 일격"
+        },
+        "src": "/img/combat/ability-brimstone-ultimate.png"
+      }
+    ],
+    "Iso": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Undercut",
+          "ko": "약화"
+        },
+        "src": "/img/combat/ability-iso-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Double Tap",
+          "ko": "구슬 보호막"
+        },
+        "src": "/img/combat/ability-iso-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Contingency",
+          "ko": "대비책"
+        },
+        "src": "/img/combat/ability-iso-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Kill Contract",
+          "ko": "청부 계약"
+        },
+        "src": "/img/combat/ability-iso-ultimate.png"
+      }
+    ],
+    "Clove": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Meddle",
+          "ko": "간섭"
+        },
+        "src": "/img/combat/ability-clove-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Ruse",
+          "ko": "계략"
+        },
+        "src": "/img/combat/ability-clove-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Pick-me-up",
+          "ko": "활력 회복"
+        },
+        "src": "/img/combat/ability-clove-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Not Dead Yet",
+          "ko": "아직 안 죽었어"
+        },
+        "src": "/img/combat/ability-clove-ultimate.png"
+      }
+    ],
+    "Neon": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Relay Bolt",
+          "ko": "릴레이 볼트"
+        },
+        "src": "/img/combat/ability-neon-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "High Gear",
+          "ko": "고속 기어"
+        },
+        "src": "/img/combat/ability-neon-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Fast Lane",
+          "ko": "추월 차선"
+        },
+        "src": "/img/combat/ability-neon-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Overdrive",
+          "ko": "오버드라이브"
+        },
+        "src": "/img/combat/ability-neon-ultimate.png"
+      }
+    ],
+    "Yoru": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "BLINDSIDE",
+          "ko": "기습"
+        },
+        "src": "/img/combat/ability-yoru-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "GATECRASH",
+          "ko": "관문 충돌"
+        },
+        "src": "/img/combat/ability-yoru-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "FAKEOUT",
+          "ko": "기만"
+        },
+        "src": "/img/combat/ability-yoru-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "DIMENSIONAL DRIFT",
+          "ko": "차원 표류"
+        },
+        "src": "/img/combat/ability-yoru-ultimate.png"
+      }
+    ],
+    "Waylay": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Lightspeed",
+          "ko": "광속"
+        },
+        "src": "/img/combat/ability-waylay-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Refract",
+          "ko": "굴절"
+        },
+        "src": "/img/combat/ability-waylay-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Saturate",
+          "ko": "포화"
+        },
+        "src": "/img/combat/ability-waylay-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Convergent Paths",
+          "ko": "초점 교차"
+        },
+        "src": "/img/combat/ability-waylay-ultimate.png"
+      }
+    ],
+    "Sage": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Slow Orb",
+          "ko": "둔화 구슬"
+        },
+        "src": "/img/combat/ability-sage-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Healing Orb",
+          "ko": "회복 구슬"
+        },
+        "src": "/img/combat/ability-sage-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Barrier Orb",
+          "ko": "장벽 구슬"
+        },
+        "src": "/img/combat/ability-sage-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Resurrection",
+          "ko": "부활"
+        },
+        "src": "/img/combat/ability-sage-ultimate.png"
+      }
+    ],
+    "Reyna": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Devour",
+          "ko": "포식"
+        },
+        "src": "/img/combat/ability-reyna-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Dismiss",
+          "ko": "무시"
+        },
+        "src": "/img/combat/ability-reyna-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Leer",
+          "ko": "눈총"
+        },
+        "src": "/img/combat/ability-reyna-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Empress",
+          "ko": "여제"
+        },
+        "src": "/img/combat/ability-reyna-ultimate.png"
+      }
+    ],
+    "Omen": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Paranoia",
+          "ko": "피해망상"
+        },
+        "src": "/img/combat/ability-omen-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Dark Cover",
+          "ko": "어둠의 장막"
+        },
+        "src": "/img/combat/ability-omen-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Shrouded Step",
+          "ko": "어둠의 발자국"
+        },
+        "src": "/img/combat/ability-omen-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "From the Shadows",
+          "ko": "그림자 습격"
+        },
+        "src": "/img/combat/ability-omen-ultimate.png"
+      }
+    ],
+    "Jett": [
+      {
+        "slot": "ability1",
+        "name": {
+          "en": "Updraft",
+          "ko": "상승 기류"
+        },
+        "src": "/img/combat/ability-jett-ability1.png"
+      },
+      {
+        "slot": "ability2",
+        "name": {
+          "en": "Tailwind",
+          "ko": "순풍"
+        },
+        "src": "/img/combat/ability-jett-ability2.png"
+      },
+      {
+        "slot": "grenade",
+        "name": {
+          "en": "Cloudburst",
+          "ko": "연막 폭발"
+        },
+        "src": "/img/combat/ability-jett-grenade.png"
+      },
+      {
+        "slot": "ultimate",
+        "name": {
+          "en": "Blade Storm",
+          "ko": "칼날 폭풍"
+        },
+        "src": "/img/combat/ability-jett-ultimate.png"
+      }
+    ]
+  }
+}

@@ -8,7 +8,7 @@
 // ui/useStore.js); every mutation site that a screen depends on must call
 // bump() itself after mutating ST/MATCH in place.
 const savedLanguage = typeof window !== 'undefined' ? window.localStorage.getItem('vlm-language') : null;
-export const ST = { language:savedLanguage === 'en' ? 'en' : 'ko', league:null, myTeamIdx:null, teams:[], schedule:[], week:0, standings:{}, seasonOver:false, screen:'scSelect', previewLeague:null, previewTeamIdx:null, playerViewContext:null };
+export const ST = { language:savedLanguage === 'en' ? 'en' : 'ko', seed:'vlm-2026', matchBestOf:3, league:null, myTeamIdx:null, teams:[], schedule:[], week:0, standings:{},matchArchive:[],competition:null,seasonOver:false, screen:'scSelect', previewLeague:null, previewTeamIdx:null, playerViewContext:null };
 export let MATCH = null;
 
 let version = 0;

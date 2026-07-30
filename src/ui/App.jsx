@@ -13,6 +13,8 @@ import { Squad } from './screens/Squad.jsx';
 import { PlayerDetail } from './screens/PlayerDetail.jsx';
 import { Veto } from './screens/Veto.jsx';
 import { CompetitionStats } from './screens/CompetitionStats.jsx';
+import { MapLab } from './screens/MapLab.jsx';
+import { Tournament } from './screens/Tournament.jsx';
 import { tr } from '../i18n.js';
 
 // Never re-renders (no props, ever) even though it now lives inside the tree
@@ -34,7 +36,7 @@ export function App() {
     <>
       <Header />
       <section className="screen on">
-        <div className="wrap">
+        <div className={'wrap'+(screen==='scMatch'?' matchwide':'')}>
           {screen === 'scSelect' && (
             <>
               <div className="eyebrow">{tr('2026 시즌 · 커리어 모드', '2026 Season · Career Mode')}</div>
@@ -51,6 +53,8 @@ export function App() {
           {screen === 'scSquad' && <Squad />}
           {screen === 'scPlayer' && <PlayerDetail />}
           {screen === 'scStats' && <CompetitionStats />}
+          {screen === 'scMapLab' && <MapLab />}
+          {screen === 'scTournament' && <Tournament />}
           {screen === 'scVeto' && <Veto />}
           {screen === 'scDraft' && <Draft />}
           {screen === 'scMatch' && (

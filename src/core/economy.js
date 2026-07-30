@@ -1,5 +1,7 @@
 import { MV } from '../data/geo/ascent.js';
 import { SCOST, WCOST, WEAP } from '../data/weapons.js';
+import { random } from './rng.js';
+import { ECONOMY_MODEL } from './economy-model.js';
 
 export const BUYMOD={pistol:0, full:0, force:-3, eco:-6};
 
@@ -7,9 +9,28 @@ export const SIDEMOD={AGGRO:{atk:2,def:-1},CONTROL:{atk:1,def:1},LOCKDOWN:{atk:-
 
 export function decideBuy(credits,isPistol){
   if(isPistol) return 'pistol';
-  if(credits>=3900) return 'full';
-  if(credits>=2000) return (Math.random()<0.45?'force':'eco');
+  if(credits>=ECONOMY_MODEL.thresholds.full) return 'full';
+  if(credits>=ECONOMY_MODEL.thresholds.force) return (random()<ECONOMY_MODEL.thresholds.forceChance?'force':'eco');
   return 'eco';
+}
+
+export function createEconomyState(credits=ECONOMY_MODEL.startCredits){return {credits,lossStreak:0,lastBuy:'pistol'};}
+export function resetEconomyForRound(state,roundIndex){
+  if(roundIndex===0||roundIndex===12){state.credits=ECONOMY_MODEL.startCredits;state.lossStreak=0;}
+  else if(roundIndex>=24){state.credits=ECONOMY_MODEL.overtimeCredits;state.lossStreak=0;}
+  return state;
+}
+export function planBuy(state,isPistol){
+  const before=state.credits,buy=decideBuy(before,isPistol),spend=Math.min(before,ECONOMY_MODEL.buy[buy]);
+  state.credits-=spend;state.lastBuy=buy;
+  return {buy,before,spend,afterBuy:state.credits};
+}
+export function settleEconomy(state,{won,planted=false}={}){
+  const lossIncome=ECONOMY_MODEL.income.loss[Math.min(state.lossStreak,ECONOMY_MODEL.income.loss.length-1)];
+  const income=(won?ECONOMY_MODEL.income.win:lossIncome)+(planted?ECONOMY_MODEL.income.plant:0);
+  state.credits=Math.min(ECONOMY_MODEL.creditCap,state.credits+income);
+  state.lossStreak=won?0:Math.min(state.lossStreak+1,ECONOMY_MODEL.income.loss.length-1);
+  return {income,after:state.credits,lossStreak:state.lossStreak};
 }
 
 export function homeSideAt(r,homeStartAtk){

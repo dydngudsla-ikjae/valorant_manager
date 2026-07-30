@@ -1,0 +1,1421 @@
+{
+  "schemaVersion": 3,
+  "year": 2026,
+  "description": "2026 등록 선수단 수동 교정 파일. rosterPlayerIds는 팀에 등록된 전체 선수다. 고정 주전·벤치·기본 라인업은 없으며, 경기마다 등록 선수 중 5명을 선택한다.",
+  "instructions": [
+    "선수 이동·방출·영입을 확인한 뒤 rosterPlayerIds를 직접 수정한다.",
+    "rosterPlayers는 ID와 선수명을 눈으로 확인하기 위한 참고 목록이며 빌드에는 사용하지 않는다.",
+    "확인한 팀은 verificationMode를 manual_verified로 바꾸고 verifiedAt과 sources를 기록한다.",
+    "수정 후 npm run data:rosters, npm run data:runtime, npm run audit:rosters, npm run verify:runtime 순서로 실행한다."
+  ],
+  "teams": {
+    "AMER:G2": {
+      "teamName": "G2 Esports",
+      "rosterPlayerIds": ["2170", "3993", "7873", "15500", "3885"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "2170",
+          "name": "BABYBAY"
+        },
+        {
+          "playerId": "3993",
+          "name": "jawgemo"
+        },
+        {
+          "playerId": "7873",
+          "name": "leaf"
+        },
+        {
+          "playerId": "15500",
+          "name": "trent"
+        },
+        {
+          "playerId": "3885",
+          "name": "valyn"
+        }
+      ]
+    },
+    "AMER:100T": {
+      "teamName": "100 Thieves",
+      "rosterPlayerIds": ["601", "3880", "4147", "29893", "20140"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "601",
+          "name": "Asuna"
+        },
+        {
+          "playerId": "3880",
+          "name": "bang"
+        },
+        {
+          "playerId": "4147",
+          "name": "Cryocells"
+        },
+        {
+          "playerId": "29893",
+          "name": "Timotino"
+        },
+        {
+          "playerId": "20140",
+          "name": "Vora"
+        }
+      ]
+    },
+    "AMER:C9": {
+      "teamName": "Cloud9",
+      "rosterPlayerIds": ["7871", "729", "17433", "18796", "44842"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "7871",
+          "name": "Xeppaa"
+        },
+        {
+          "playerId": "729",
+          "name": "Zellsis"
+        },
+        {
+          "playerId": "17433",
+          "name": "v1c"
+        },
+        {
+          "playerId": "18796",
+          "name": "OXY"
+        },
+        {
+          "playerId": "44842",
+          "name": "Jackk"
+        }
+      ]
+    },
+    "AMER:SEN": {
+      "teamName": "Sentinels",
+      "rosterPlayerIds": ["5395", "1265", "8419", "4581", "34057"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "5395",
+          "name": "cortezia"
+        },
+        {
+          "playerId": "1265",
+          "name": "johnqt"
+        },
+        {
+          "playerId": "8419",
+          "name": "Reduxx"
+        },
+        {
+          "playerId": "4581",
+          "name": "JonahP"
+        },
+        {
+          "playerId": "34057",
+          "name": "Jerrwin"
+        }
+      ]
+    },
+    "AMER:KRU": {
+      "teamName": "KRÜ Esports",
+      "rosterPlayerIds": ["41135", "8447", "939", "727", "11921"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "41135",
+          "name": "Dantedeu5"
+        },
+        {
+          "playerId": "8447",
+          "name": "Less"
+        },
+        {
+          "playerId": "939",
+          "name": "mwzera"
+        },
+        {
+          "playerId": "727",
+          "name": "saadhak"
+        },
+        {
+          "playerId": "11921",
+          "name": "silentzz"
+        }
+      ]
+    },
+    "AMER:LEV": {
+      "teamName": "LEVIATÁN",
+      "rosterPlayerIds": ["21251", "8549", "21659", "21661", "29243"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "21251",
+          "name": "blowz"
+        },
+        {
+          "playerId": "8549",
+          "name": "kiNgg"
+        },
+        {
+          "playerId": "21659",
+          "name": "Sato"
+        },
+        {
+          "playerId": "21661",
+          "name": "spike"
+        },
+        {
+          "playerId": "29243",
+          "name": "Neon"
+        }
+      ]
+    },
+    "AMER:FUR": {
+      "teamName": "FURIA",
+      "rosterPlayerIds": ["48025", "5957", "796", "3722", "754"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "48025",
+          "name": "alym"
+        },
+        {
+          "playerId": "5957",
+          "name": "artzin"
+        },
+        {
+          "playerId": "796",
+          "name": "eeiu"
+        },
+        {
+          "playerId": "3722",
+          "name": "koalanoob"
+        },
+        {
+          "playerId": "754",
+          "name": "nerve"
+        }
+      ]
+    },
+    "AMER:NRG": {
+      "teamName": "NRG Esports",
+      "rosterPlayerIds": ["2172", "11225", "11494", "5132", "11118"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "2172",
+          "name": "brawk"
+        },
+        {
+          "playerId": "11225",
+          "name": "Ethan"
+        },
+        {
+          "playerId": "11494",
+          "name": "Keiko"
+        },
+        {
+          "playerId": "5132",
+          "name": "mada"
+        },
+        {
+          "playerId": "11118",
+          "name": "skuba"
+        }
+      ]
+    },
+    "AMER:NV": {
+      "teamName": "Envy",
+      "rosterPlayerIds": ["35302", "2462", "21778", "1129", "26171"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "35302",
+          "name": "Eggsterr"
+        },
+        {
+          "playerId": "2462",
+          "name": "keznit"
+        },
+        {
+          "playerId": "21778",
+          "name": "P0PPIN"
+        },
+        {
+          "playerId": "1129",
+          "name": "Rossy"
+        },
+        {
+          "playerId": "26171",
+          "name": "Demon1"
+        }
+      ]
+    },
+    "AMER:EG": {
+      "teamName": "Evil Geniuses",
+      "rosterPlayerIds": ["34400", "8873", "826", "2164", "14048"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "34400",
+          "name": "bao"
+        },
+        {
+          "playerId": "8873",
+          "name": "dgzin"
+        },
+        {
+          "playerId": "826",
+          "name": "supamen"
+        },
+        {
+          "playerId": "2164",
+          "name": "Paincakes"
+        },
+        {
+          "playerId": "14048",
+          "name": "zerona"
+        }
+      ]
+    },
+    "AMER:LLL": {
+      "teamName": "LOUD",
+      "rosterPlayerIds": ["6193", "10557", "28716", "3983", "29242"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "6193",
+          "name": "cauanzin"
+        },
+        {
+          "playerId": "10557",
+          "name": "Darker"
+        },
+        {
+          "playerId": "28716",
+          "name": "lukxo"
+        },
+        {
+          "playerId": "3983",
+          "name": "Virtyy"
+        },
+        {
+          "playerId": "29242",
+          "name": "erde"
+        }
+      ]
+    },
+    "AMER:MBR": {
+      "teamName": "MIBR",
+      "rosterPlayerIds": ["8480", "7603", "1818", "21668", "4004"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "8480",
+          "name": "aspas"
+        },
+        {
+          "playerId": "7603",
+          "name": "Mazino"
+        },
+        {
+          "playerId": "1818",
+          "name": "tex"
+        },
+        {
+          "playerId": "21668",
+          "name": "Verno"
+        },
+        {
+          "playerId": "4004",
+          "name": "zekken"
+        }
+      ]
+    },
+    "EMEA:TH": {
+      "teamName": "Team Heretics",
+      "rosterPlayerIds": ["29873", "1144", "10971", "21328", "23365"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "29873",
+          "name": "benjyfishy"
+        },
+        {
+          "playerId": "1144",
+          "name": "Boo"
+        },
+        {
+          "playerId": "10971",
+          "name": "RieNs"
+        },
+        {
+          "playerId": "21328",
+          "name": "Wo0t"
+        },
+        {
+          "playerId": "23365",
+          "name": "Koshmaras"
+        }
+      ]
+    },
+    "EMEA:FUT": {
+      "teamName": "FUT Esports",
+      "rosterPlayerIds": ["15735", "12793", "8369", "39357", "5568", "8044"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "15735",
+          "name": "KROSTALY"
+        },
+        {
+          "playerId": "12793",
+          "name": "xeus"
+        },
+        {
+          "playerId": "8369",
+          "name": "yetujey"
+        },
+        {
+          "playerId": "39357",
+          "name": "s0pp"
+        },
+        {
+          "playerId": "5568",
+          "name": "sociablEE"
+        },
+        {
+          "playerId": "8044",
+          "name": "MrFaliN"
+        }
+      ]
+    },
+    "EMEA:M8": {
+      "teamName": "Gentle Mates",
+      "rosterPlayerIds": ["18400", "8286", "10307", "23169", "565"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "18400",
+          "name": "bipo"
+        },
+        {
+          "playerId": "8286",
+          "name": "GLYPH"
+        },
+        {
+          "playerId": "10307",
+          "name": "marteen"
+        },
+        {
+          "playerId": "23169",
+          "name": "Minny"
+        },
+        {
+          "playerId": "565",
+          "name": "starxo"
+        }
+      ]
+    },
+    "EMEA:GX": {
+      "teamName": "GIANTX",
+      "rosterPlayerIds": ["11332", "4181", "6959", "5550", "34684"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "11332",
+          "name": "ara"
+        },
+        {
+          "playerId": "4181",
+          "name": "Cloud"
+        },
+        {
+          "playerId": "6959",
+          "name": "Flickless"
+        },
+        {
+          "playerId": "5550",
+          "name": "grubinho"
+        },
+        {
+          "playerId": "34684",
+          "name": "westside"
+        }
+      ]
+    },
+    "EMEA:VIT": {
+      "teamName": "Team Vitality",
+      "rosterPlayerIds": ["458", "5022", "9780", "5554", "33902"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "458",
+          "name": "Chronicle"
+        },
+        {
+          "playerId": "5022",
+          "name": "Derke"
+        },
+        {
+          "playerId": "9780",
+          "name": "Jamppi"
+        },
+        {
+          "playerId": "5554",
+          "name": "PROFEK"
+        },
+        {
+          "playerId": "33902",
+          "name": "Sayonara"
+        }
+      ]
+    },
+    "EMEA:FNC": {
+      "teamName": "FNATIC",
+      "rosterPlayerIds": ["9810", "438", "4", "9554", "12928"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "9810",
+          "name": "Alfajer"
+        },
+        {
+          "playerId": "438",
+          "name": "Boaster"
+        },
+        {
+          "playerId": "4",
+          "name": "crashies"
+        },
+        {
+          "playerId": "9554",
+          "name": "kaajak"
+        },
+        {
+          "playerId": "12928",
+          "name": "Veqaj"
+        }
+      ]
+    },
+    "EMEA:PCF": {
+      "teamName": "PCIFIC Espor",
+      "rosterPlayerIds": ["5292", "573", "28948", "7105", "8376"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "5292",
+          "name": "al0rante"
+        },
+        {
+          "playerId": "573",
+          "name": "cNed"
+        },
+        {
+          "playerId": "28948",
+          "name": "NINJA"
+        },
+        {
+          "playerId": "7105",
+          "name": "qpert"
+        },
+        {
+          "playerId": "8376",
+          "name": "seven"
+        }
+      ]
+    },
+    "EMEA:NAVI": {
+      "teamName": "Natus Vincere",
+      "rosterPlayerIds": ["4544", "29867", "18677", "15639", "384"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "4544",
+          "name": "Filu"
+        },
+        {
+          "playerId": "29867",
+          "name": "hiro"
+        },
+        {
+          "playerId": "18677",
+          "name": "Ruxic"
+        },
+        {
+          "playerId": "15639",
+          "name": "chloric"
+        },
+        {
+          "playerId": "384",
+          "name": "Shao"
+        }
+      ]
+    },
+    "EMEA:EF": {
+      "teamName": "Eternal Fire",
+      "rosterPlayerIds": ["40843", "49346", "41720", "10160", "12670"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "40843",
+          "name": "audaz"
+        },
+        {
+          "playerId": "49346",
+          "name": "echo"
+        },
+        {
+          "playerId": "41720",
+          "name": "Favian"
+        },
+        {
+          "playerId": "10160",
+          "name": "Izzy"
+        },
+        {
+          "playerId": "12670",
+          "name": "nekky"
+        }
+      ]
+    },
+    "EMEA:KC": {
+      "teamName": "Karmine Corp",
+      "rosterPlayerIds": ["5654", "16215", "20144", "2858", "36245"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "5654",
+          "name": "Avez"
+        },
+        {
+          "playerId": "16215",
+          "name": "dos9"
+        },
+        {
+          "playerId": "20144",
+          "name": "LewN"
+        },
+        {
+          "playerId": "2858",
+          "name": "SUYGETSU"
+        },
+        {
+          "playerId": "36245",
+          "name": "N4RRATE"
+        }
+      ]
+    },
+    "EMEA:BBL": {
+      "teamName": "BBL Esports",
+      "rosterPlayerIds": ["12795", "31305", "24344", "40935", "5565"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "12795",
+          "name": "Crewen"
+        },
+        {
+          "playerId": "31305",
+          "name": "Lar0k"
+        },
+        {
+          "playerId": "24344",
+          "name": "Loita"
+        },
+        {
+          "playerId": "40935",
+          "name": "lovers rock"
+        },
+        {
+          "playerId": "5565",
+          "name": "Rosé"
+        }
+      ]
+    },
+    "EMEA:TL": {
+      "teamName": "Team Liquid",
+      "rosterPlayerIds": ["14681", "18350", "457", "1885", "11134"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "14681",
+          "name": "kamo"
+        },
+        {
+          "playerId": "18350",
+          "name": "MiniBoo"
+        },
+        {
+          "playerId": "457",
+          "name": "nAts"
+        },
+        {
+          "playerId": "1885",
+          "name": "purp0"
+        },
+        {
+          "playerId": "11134",
+          "name": "Kicks"
+        }
+      ]
+    },
+    "PAC:NS": {
+      "teamName": "Nongshim RedForce",
+      "rosterPlayerIds": ["31827", "31828", "31829", "488", "42772"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "31827",
+          "name": "Dambi"
+        },
+        {
+          "playerId": "31828",
+          "name": "Francis"
+        },
+        {
+          "playerId": "31829",
+          "name": "Ivy"
+        },
+        {
+          "playerId": "488",
+          "name": "Rb"
+        },
+        {
+          "playerId": "42772",
+          "name": "Xross"
+        }
+      ]
+    },
+    "PAC:VAR": {
+      "teamName": "VARREL",
+      "rosterPlayerIds": ["2149", "4426", "34926", "42733", "37532", "11600"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "2149",
+          "name": "C1ndeR"
+        },
+        {
+          "playerId": "4426",
+          "name": "Klaus"
+        },
+        {
+          "playerId": "34926",
+          "name": "oonzmlp"
+        },
+        {
+          "playerId": "42733",
+          "name": "XuNa"
+        },
+        {
+          "playerId": "37532",
+          "name": "Zexy"
+        },
+        {
+          "playerId": "11600",
+          "name": "Foxy9"
+        }
+      ]
+    },
+    "PAC:T1": {
+      "teamName": "T1",
+      "rosterPlayerIds": ["804", "29833", "13039", "2489", "485"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "804",
+          "name": "BuZz"
+        },
+        {
+          "playerId": "29833",
+          "name": "iZu"
+        },
+        {
+          "playerId": "13039",
+          "name": "Meteor"
+        },
+        {
+          "playerId": "2489",
+          "name": "Munchkin"
+        },
+        {
+          "playerId": "485",
+          "name": "stax"
+        }
+      ]
+    },
+    "PAC:GEN": {
+      "teamName": "Gen.G",
+      "rosterPlayerIds": ["34974", "773", "9196", "25017", "51099", "62402"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "34974",
+          "name": "Karon"
+        },
+        {
+          "playerId": "773",
+          "name": "Lakia"
+        },
+        {
+          "playerId": "9196",
+          "name": "t3xture"
+        },
+        {
+          "playerId": "25017",
+          "name": "Ash"
+        },
+        {
+          "playerId": "51099",
+          "name": "ZynX"
+        },
+        {
+          "playerId": "62402",
+          "name": "KiTae"
+        }
+      ]
+    },
+    "PAC:DFM": {
+      "teamName": "DetonatioN FocusMe",
+      "rosterPlayerIds": ["13002", "29841", "6672", "21438", "29843"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "13002",
+          "name": "Akame"
+        },
+        {
+          "playerId": "29841",
+          "name": "Caedye"
+        },
+        {
+          "playerId": "6672",
+          "name": "Meiy"
+        },
+        {
+          "playerId": "21438",
+          "name": "SSeeS"
+        },
+        {
+          "playerId": "29843",
+          "name": "yatsuka"
+        }
+      ]
+    },
+    "PAC:FS": {
+      "teamName": "FULL SENSE",
+      "rosterPlayerIds": ["13788", "13784", "27254", "25255", "3977"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "13788",
+          "name": "JitBoyS"
+        },
+        {
+          "playerId": "13784",
+          "name": "Killua"
+        },
+        {
+          "playerId": "27254",
+          "name": "Leviathan"
+        },
+        {
+          "playerId": "25255",
+          "name": "primmie"
+        },
+        {
+          "playerId": "3977",
+          "name": "Crws"
+        }
+      ]
+    },
+    "PAC:ZETA": {
+      "teamName": "ZETA DIVISION",
+      "rosterPlayerIds": ["34776", "1960", "6668", "12990", "25221"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "34776",
+          "name": "Absol"
+        },
+        {
+          "playerId": "1960",
+          "name": "eKo"
+        },
+        {
+          "playerId": "6668",
+          "name": "SugarZ3ro"
+        },
+        {
+          "playerId": "12990",
+          "name": "SyouTa"
+        },
+        {
+          "playerId": "25221",
+          "name": "Xdll"
+        }
+      ]
+    },
+    "PAC:TS": {
+      "teamName": "Team Secret",
+      "rosterPlayerIds": ["4874", "2334", "7437", "4056", "46135"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "4874",
+          "name": "BerserX"
+        },
+        {
+          "playerId": "2334",
+          "name": "JessieVash"
+        },
+        {
+          "playerId": "7437",
+          "name": "kellyS"
+        },
+        {
+          "playerId": "4056",
+          "name": "Sylvan"
+        },
+        {
+          "playerId": "46135",
+          "name": "Zeus"
+        }
+      ]
+    },
+    "PAC:PRX": {
+      "teamName": "Paper Rex",
+      "rosterPlayerIds": ["9803", "9801", "8504", "7378", "17086"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "9803",
+          "name": "d4v41"
+        },
+        {
+          "playerId": "9801",
+          "name": "f0rsakeN"
+        },
+        {
+          "playerId": "8504",
+          "name": "invy"
+        },
+        {
+          "playerId": "7378",
+          "name": "Jinggg"
+        },
+        {
+          "playerId": "17086",
+          "name": "something"
+        }
+      ]
+    },
+    "PAC:DRX": {
+      "teamName": "DRX",
+      "rosterPlayerIds": ["4678", "1916", "28400", "4462", "51238"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "4678",
+          "name": "BeYN"
+        },
+        {
+          "playerId": "1916",
+          "name": "free1ng"
+        },
+        {
+          "playerId": "28400",
+          "name": "HYUNMIN"
+        },
+        {
+          "playerId": "4462",
+          "name": "MaKo"
+        },
+        {
+          "playerId": "51238",
+          "name": "yong"
+        }
+      ]
+    },
+    "PAC:RRQ": {
+      "teamName": "Rex Regum Qeon",
+      "rosterPlayerIds": ["1430", "24895", "4866", "8497", "4871"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "1430",
+          "name": "crazyguy"
+        },
+        {
+          "playerId": "24895",
+          "name": "Jemkin"
+        },
+        {
+          "playerId": "4866",
+          "name": "Kushy"
+        },
+        {
+          "playerId": "8497",
+          "name": "Monyet"
+        },
+        {
+          "playerId": "4871",
+          "name": "xffero"
+        }
+      ]
+    },
+    "PAC:GE": {
+      "teamName": "Global Esports",
+      "rosterPlayerIds": ["872", "5796", "13744", "4428", "7754"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "872",
+          "name": "Autumn"
+        },
+        {
+          "playerId": "5796",
+          "name": "Kr1stal"
+        },
+        {
+          "playerId": "13744",
+          "name": "PatMen"
+        },
+        {
+          "playerId": "4428",
+          "name": "UdoTan"
+        },
+        {
+          "playerId": "7754",
+          "name": "xavi8k"
+        }
+      ]
+    },
+    "CN:AG": {
+      "teamName": "All Gamers",
+      "rosterPlayerIds": ["21216", "58959", "46748", "25494", "52101"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "21216",
+          "name": "f4ngeer"
+        },
+        {
+          "playerId": "58959",
+          "name": "iamgrq"
+        },
+        {
+          "playerId": "46748",
+          "name": "K1ra"
+        },
+        {
+          "playerId": "25494",
+          "name": "Shr1mp"
+        },
+        {
+          "playerId": "52101",
+          "name": "Bai"
+        }
+      ]
+    },
+    "CN:EDG": {
+      "teamName": "EDward Gaming",
+      "rosterPlayerIds": ["15559", "3017", "4742", "3520", "51244"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "15559",
+          "name": "CHICHOO"
+        },
+        {
+          "playerId": "3017",
+          "name": "nobody"
+        },
+        {
+          "playerId": "4742",
+          "name": "Smoggy"
+        },
+        {
+          "playerId": "3520",
+          "name": "ZmjjKK"
+        },
+        {
+          "playerId": "51244",
+          "name": "Jieni7"
+        }
+      ]
+    },
+    "CN:FPX": {
+      "teamName": "FunPlus Phoenix",
+      "rosterPlayerIds": ["19530", "7857", "50025", "55823", "7987"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "19530",
+          "name": "AAAAY"
+        },
+        {
+          "playerId": "7857",
+          "name": "BerLIN"
+        },
+        {
+          "playerId": "50025",
+          "name": "Setrod"
+        },
+        {
+          "playerId": "55823",
+          "name": "Ben1Ley"
+        },
+        {
+          "playerId": "7987",
+          "name": "KovaQ"
+        }
+      ]
+    },
+    "CN:DRG": {
+      "teamName": "Dragon Ranger Gaming",
+      "rosterPlayerIds": ["4705", "11524", "31753", "3741", "3028"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "4705",
+          "name": "Flex1n"
+        },
+        {
+          "playerId": "11524",
+          "name": "Nicc"
+        },
+        {
+          "playerId": "31753",
+          "name": "SpiritZ1"
+        },
+        {
+          "playerId": "3741",
+          "name": "vo0kashu"
+        },
+        {
+          "playerId": "3028",
+          "name": "Life"
+        }
+      ]
+    },
+    "CN:BLG": {
+      "teamName": "Bilibili Gaming",
+      "rosterPlayerIds": ["10698", "48878", "4885", "4774", "56260"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "10698",
+          "name": "nephh"
+        },
+        {
+          "playerId": "48878",
+          "name": "rushia"
+        },
+        {
+          "playerId": "4885",
+          "name": "whzy"
+        },
+        {
+          "playerId": "4774",
+          "name": "Knight"
+        },
+        {
+          "playerId": "56260",
+          "name": "bud"
+        }
+      ]
+    },
+    "CN:NOVA": {
+      "teamName": "Nova Esports",
+      "rosterPlayerIds": ["46460", "34181", "41054", "43007", "45492", "39697"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "46460",
+          "name": "Ezeir"
+        },
+        {
+          "playerId": "34181",
+          "name": "GREEN"
+        },
+        {
+          "playerId": "41054",
+          "name": "GuanG"
+        },
+        {
+          "playerId": "43007",
+          "name": "qiutiaN"
+        },
+        {
+          "playerId": "45492",
+          "name": "swagzor"
+        },
+        {
+          "playerId": "39697",
+          "name": "CB"
+        }
+      ]
+    },
+    "CN:TE": {
+      "teamName": "Trace Esports",
+      "rosterPlayerIds": ["10821", "37494", "5011", "4770", "3045"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "10821",
+          "name": "deLb"
+        },
+        {
+          "playerId": "37494",
+          "name": "Kai"
+        },
+        {
+          "playerId": "5011",
+          "name": "Abo"
+        },
+        {
+          "playerId": "4770",
+          "name": "FengF"
+        },
+        {
+          "playerId": "3045",
+          "name": "LuoK1ng"
+        }
+      ]
+    },
+    "CN:JDG": {
+      "teamName": "JDG Esports",
+      "rosterPlayerIds": ["12365", "3519", "16924", "11218", "49476"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "12365",
+          "name": "coconut"
+        },
+        {
+          "playerId": "3519",
+          "name": "jkuro"
+        },
+        {
+          "playerId": "16924",
+          "name": "stew"
+        },
+        {
+          "playerId": "11218",
+          "name": "Yuicaw"
+        },
+        {
+          "playerId": "49476",
+          "name": "zhe"
+        }
+      ]
+    },
+    "CN:XLG": {
+      "teamName": "Xi Lai Gaming",
+      "rosterPlayerIds": ["37927", "37489", "11527", "22047", "24308"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "37927",
+          "name": "happywei"
+        },
+        {
+          "playerId": "37489",
+          "name": "Lysoar"
+        },
+        {
+          "playerId": "11527",
+          "name": "NoMan"
+        },
+        {
+          "playerId": "22047",
+          "name": "Rarga"
+        },
+        {
+          "playerId": "24308",
+          "name": "WsLeo"
+        }
+      ]
+    },
+    "CN:WOL": {
+      "teamName": "Wolves Esports",
+      "rosterPlayerIds": ["19292", "7849", "14125", "6022", "49973"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "19292",
+          "name": "jowa"
+        },
+        {
+          "playerId": "7849",
+          "name": "SiuFatBB"
+        },
+        {
+          "playerId": "14125",
+          "name": "Spring"
+        },
+        {
+          "playerId": "6022",
+          "name": "Yosemite"
+        },
+        {
+          "playerId": "49973",
+          "name": "glacier"
+        }
+      ]
+    },
+    "CN:TEC": {
+      "teamName": "Titan Esports Club",
+      "rosterPlayerIds": ["47629", "42235", "4720", "19677", "4881"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "47629",
+          "name": "Coco"
+        },
+        {
+          "playerId": "42235",
+          "name": "Dynamite"
+        },
+        {
+          "playerId": "4720",
+          "name": "Haodong"
+        },
+        {
+          "playerId": "19677",
+          "name": "lucas"
+        },
+        {
+          "playerId": "4881",
+          "name": "Spitfires"
+        }
+      ]
+    },
+    "CN:TYL": {
+      "teamName": "TYLOO",
+      "rosterPlayerIds": ["55085", "39485", "41739", "36685", "3049"],
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "rosterPlayers": [
+        {
+          "playerId": "55085",
+          "name": "Erv"
+        },
+        {
+          "playerId": "39485",
+          "name": "Scales"
+        },
+        {
+          "playerId": "41739",
+          "name": "slowly"
+        },
+        {
+          "playerId": "36685",
+          "name": "splash"
+        },
+        {
+          "playerId": "3049",
+          "name": "sword9"
+        }
+      ]
+    }
+  }
+}

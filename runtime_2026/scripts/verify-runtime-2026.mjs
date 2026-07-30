@@ -6,7 +6,7 @@ import { LEAGUES } from '../../src/data/leagues.js';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const data = JSON.parse(fs.readFileSync(path.join(root, 'src/data/player-runtime-2026.json'), 'utf8'));
 const errors = [];
-const expected = Object.values(LEAGUES).reduce((n, l) => n + l.teams.reduce((m, t) => m + t.roster.length + (t.bench?.length || 0), 0), 0);
+const expected = Object.values(LEAGUES).reduce((n, l) => n + l.teams.reduce((m, t) => m + (t.registered?.length || t.roster.length + (t.bench?.length || 0)), 0), 0);
 const inRange = (value, min, max) => Number.isFinite(value) && value >= min && value <= max;
 
 if (data.targetYear !== 2026) errors.push(`targetYear=${data.targetYear}`);

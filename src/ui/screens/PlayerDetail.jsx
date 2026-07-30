@@ -28,7 +28,8 @@ export function PlayerDetail() {
     ? LEAGUES[viewContext.previewLeague]?.teams?.[viewContext.previewTeamIdx]
     : ST.teams[ST.myTeamIdx];
   if (!my) return null;
-  const pl = [...my.roster, ...(my.bench || [])].find(x => x.name === ST._viewPlayer) || my.roster[0];
+  const players=my.registered || [...my.roster, ...(my.bench || [])];
+  const pl = players.find(x => x.name === ST._viewPlayer) || players[0];
   if (!pl) return null;
   const playerKey=pl.playerId||pl.name;
   const selectedRole=roleSelection?.playerKey===playerKey?roleSelection.role:pl.role;

@@ -28,19 +28,19 @@ function AgentChip({ x, role }) {
   );
 }
 
-function PlayerCard({ pl, isSub, viewContext }) {
+function PlayerCard({ pl, viewContext }) {
   const mainRole=primaryRole(pl),flex=isFlex(pl);
   const ovr = playerOVR(pl);
   const portrait=playerImage(pl);
   return (
-    <div className={'pcard clickable' + (isSub ? ' bench' : '')} onClick={() => openPlayer(pl.name,viewContext)}>
+    <div className="pcard clickable" onClick={() => openPlayer(pl.name,viewContext)}>
       <div className="prow">
         <div className={'playerportrait'+(portrait?'':' empty')}>{portrait?<img src={portrait} alt="" loading="lazy" />:<span>{pl.name.slice(0,1)}</span>}</div>
         <div className="playeridentity"><div className="pn"><span>{pl.name}</span></div></div>
         <div className="cardrole" style={{ color:ROLE[mainRole].c }}><img src={ROLE_IMAGES[mainRole]} alt="" /><span>{roleLabel(mainRole)}</span></div>
         <div className="povr" style={{ color: ovr >= 90 ? 'var(--gold)' : 'var(--text)' }}>{ovr}</div>
       </div>
-      <div className="cardbadges">{flex&&<span className="playerbadge flex">FLEX</span>}{isSub&&<span className="playerbadge substitute">SUB</span>}</div>
+      <div className="cardbadges">{flex&&<span className="playerbadge flex">FLEX</span>}</div>
       <div className="profrow">
         {PROF_ROLES.map(rr => {
           const b = profBand(pl.prof[rr]);
@@ -77,7 +77,7 @@ export function Squad({preview=false}) {
   const my = preview ? LEAGUES[previewLeague]?.teams?.[previewIdx] : ST.teams[ST.myTeamIdx];
   if (!my) return null;
   const viewContext=preview?{returnScreen:'scTeamPreview',previewLeague,previewTeamIdx:previewIdx}:{returnScreen:'scSquad'};
-  const roster = [...my.roster].sort((a, b) => playerOVR(b) - playerOVR(a));
+  const roster = [...(my.registered || [...my.roster, ...(my.bench || [])])].sort((a, b) => playerOVR(b) - playerOVR(a));
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '8px' }}>
@@ -97,8 +97,7 @@ export function Squad({preview=false}) {
         {tr('현재 시즌 폼은 별도로 반영되며 역할별 가중치가 OVR과 시뮬레이션 영향도를 결정합니다.','Current-season form is applied separately, and role-specific weights determine OVR and simulation impact.')}
       </p>
       <div className="squadgrid">
-        {roster.map(pl => <PlayerCard pl={pl} isSub={false} viewContext={viewContext} key={pl.name} />)}
-        {(my.bench || []).map(pl => <PlayerCard pl={pl} isSub={true} viewContext={viewContext} key={pl.name} />)}
+        {roster.map(pl => <PlayerCard pl={pl} viewContext={viewContext} key={pl.name} />)}
       </div>
     </>
   );

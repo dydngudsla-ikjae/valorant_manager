@@ -2,15 +2,22 @@
 // imperative broadcast HUD (mapview.js / MapView.jsx's #bScoreH, #bRound,
 // #mvBanner, #mapView nodes). Lives in ui/, not core/, because -- like
 // mapview.js -- it writes those DOM nodes directly; core/ stays DOM-free.
-import { autoAgentFor, buildCompChoice, draftComp, draftPair, mapSuitFor } from '../core/draft.js';
+import { autoAgentFor, buildCompChoice, buildCompForStance, draftComp, draftPair, mapSuitFor } from '../core/draft.js';
 import { buyLabel, initEcon } from '../core/economy.js';
 import { counterEdge } from '../core/ratings.js';
-import { agentMap, applyRoundStats, finalizeRatings, newStat, simOneMap, topKillerOfRound } from '../core/round-engine.js';
-import { firstUnplayedWeek, makeSchedule, pickMaps, simRestOfWeek, sortedStandings, teamObj } from '../core/season.js';
+import { agentMap, applyRoundStats, createMapSimulation, finalizeRatings, mapSimulationDone, mapSimulationResult, newStat, simOneMap, simulateNextRound, topKillerOfRound } from '../core/round-engine.js';
+import { createStandings, firstUnplayedWeek, makeSchedule, pickMaps, recordFixtureResult, simRestOfWeek, sortedStandings, teamObj } from '../core/season.js';
 import { MATCH, ST, bump, go, setMatch, toast } from '../core/state.js';
 import { MV } from '../data/geo/ascent.js';
 import { LEAGUES, MAPS } from '../data/leagues.js';
-import { mvBuild, mvPlayRound } from './mapview.js';
+import { selectAutomaticLineup } from '../core/roster.js';
+import { deriveSeed, withSeed } from '../core/rng.js';
+import { matchFormat, vetoOrder } from '../core/match-format.js';
+import { defaultPolicyForStance, normalizeTacticalPolicy } from '../core/tactics/tactical-policy.js';
+import { createTimeoutLedger, timeoutAvailability, useTacticalTimeout } from '../core/timeouts.js';
+import { createStageCompetition } from '../core/tournament.js';
+import { mvBuild, mvPauseRound, mvPlayRound, mvResumeRound } from './mapview.js';
+import { tr } from '../i18n.js';
 
 /* ============ SEASON SETUP ============ */
 
@@ -18,9 +25,10 @@ export function selectTeam(lk,idx){
   ST.league=lk;
   ST.teams=LEAGUES[lk].teams.map((t,i)=>({...t, id:i}));
   ST.myTeamIdx=idx;
-  ST.week=0; ST.seasonOver=false;
-  ST.standings={};
-  ST.teams.forEach(t=>ST.standings[t.id]={w:0,l:0,mapW:0,mapL:0,rd:0});
+  ST.week=0;ST.seasonOver=false;ST.matchArchive=[];
+  ST.competition=createStageCompetition({leagueId:lk,year:2026,qualificationPlaces:8});
+  ST.matchBestOf=3;
+  ST.standings=createStandings(ST.teams);
   ST.schedule=makeSchedule(ST.teams.length);
   ST.playerViewContext=null;
   go('scHub'); // Header (React) reads ST.teams/myTeamIdx via useStore()
@@ -42,28 +50,43 @@ export function startNextMatch(){
   openMatch(fx,wi);
 }
 
-export const DEV_ASCENT_BO1=true;
-
-export function openMatch(fx,wi){
+export function openMatch(fx,wi,bestOf=fx.bestOf||ST.matchBestOf||3){
   const home=teamObj(fx.home), away=teamObj(fx.away);
+  selectAutomaticLineup(home);
+  selectAutomaticLineup(away);
   const myId=ST.teams[ST.myTeamIdx].id;
+  const format=matchFormat(bestOf);
+  const seed=deriveSeed(ST.seed,ST.league,'week',wi,'fixture',fx.home,fx.away);
   setMatch({fx,wi,home,away,hMaps:0,aMaps:0,mapResults:[],
-    mapPool:pickMaps(3), curMap:0, box:{}, running:false, comps:[],
-    mapsToWin:2, roundsPlayed:0, feed:[], liveRound:{h:0,a:0},
+    seed,bestOf:format.bestOf,formatLabel:format.label,mapPool:withSeed(deriveSeed(seed,'maps'),()=>pickMaps(format.bestOf)), curMap:0, box:{}, running:false, comps:[],
+    mapsToWin:format.mapsToWin, roundsPlayed:0, feed:[], liveRound:{h:0,a:0},
     playerSide: fx.home===myId?'home':'away'});
-  if(DEV_ASCENT_BO1){ MATCH.mapPool=['Ascent']; MATCH.mapsToWin=1; }
   // init box stats
   [...home.roster,...away.roster].forEach(pl=>MATCH.box[pl.name]=newStat());
-  if(DEV_ASCENT_BO1){ startMapDraft(0); return; } // straight to agent draft on Ascent
   startVeto();
+}
+
+export function openMapLab({homeIndex,awayIndex,map,homeStartsAttack=true}){
+  if(homeIndex===awayIndex)throw new Error('Map Lab requires two different teams');
+  const home=ST.teams[homeIndex],away=ST.teams[awayIndex];
+  selectAutomaticLineup(home);selectAutomaticLineup(away);
+  const seed=deriveSeed(ST.seed,'map-lab',home.id,away.id,map,homeStartsAttack?'atk':'def');
+  const fx={home:home.id,away:away.id,played:false,diagnostic:true};
+  const comp=draftPair(home,away,map);
+  setMatch({diagnostic:true,fx,wi:0,home,away,hMaps:0,aMaps:0,mapResults:[],seed,bestOf:1,formatLabel:'MAP LAB',
+    mapPool:[map],curMap:0,box:{},running:false,comps:[comp],mapsToWin:1,roundsPlayed:0,feed:[],liveRound:{h:0,a:0},
+    playerSide:homeStartsAttack?'home':'away',homeStartAtkConfigured:homeStartsAttack});
+  [...home.roster,...away.roster].forEach(pl=>MATCH.box[pl.name]=newStat());
+  const mapView=typeof document!=='undefined'?document.getElementById('mapView'):null;
+  if(mapView)mapView.style.display='none';
+  go('scMatch');
+  paintMap(0,0);
 }
 
 /* ============ MAP VETO (coach bans/picks) ============ */
 
 export function startVeto(){
-  const order = MATCH.playerSide==='home'
-    ? [['home','ban'],['away','ban'],['home','pick'],['away','pick'],['home','ban'],['away','ban']]
-    : [['away','ban'],['home','ban'],['away','pick'],['home','pick'],['away','ban'],['home','ban']];
+  const order=vetoOrder(MATCH.bestOf,MATCH.playerSide);
   MATCH.veto={remaining:[...MAPS], picks:[], acts:[], order, step:0};
   go('scVeto');
   bump(); // Veto (React) reads MATCH.veto via useStore()
@@ -112,30 +135,116 @@ export function finalizeVeto(){
   const v=MATCH.veto;
   const decider=v.remaining[0];
   v.acts.push({side:'decider',act:'decider',map:decider});
-  MATCH.mapPool=[v.picks[0].map, v.picks[1].map, decider];
+  MATCH.mapPool=[...v.picks.map(pick=>pick.map),decider];
   bump();
 }
 
-export function vetoSkip(){ MATCH.mapPool=pickMaps(3); skipMatch(); }
+export function vetoSkip(){ MATCH.mapPool=withSeed(deriveSeed(MATCH.seed,'skip-maps'),()=>pickMaps(MATCH.bestOf)); skipMatch(); }
 // player drafts this map: opponent commits first (map-optimal), player gets last-pick info
 
 export function startMapDraft(mi){
   MATCH.curMap=mi;
-  MATCH.draftSel={stance:null, choice:{}};
+  MATCH.mapSimulation=null;
+  MATCH.draftSel={stance:null,choice:{},policy:null};
   const oppTeam = MATCH.playerSide==='home'?MATCH.away:MATCH.home;
   MATCH.pendingOpp = draftComp(oppTeam, MATCH.mapPool[mi], null);
   bump(); // Draft (React) reads MATCH.curMap/pendingOpp/draftSel via useStore()
   go('scDraft');
 }
 
-export function selectStance(mi,s){ MATCH.draftSel.stance=s; bump(); }
+function playerMatchSide(){return MATCH.playerSide||'home';}
+
+function scheduleMapStep(delay=0){
+  const playback=MATCH.playback;
+  if(!playback||playback.paused||!playback.betweenRounds||playback.scheduled)return;
+  playback.scheduled=true;
+  setTimeout(()=>{
+    if(!MATCH?.playback)return;
+    MATCH.playback.scheduled=false;
+    if(!MATCH.playback.paused&&MATCH.playback.betweenRounds&&MATCH.continueMap)MATCH.continueMap();
+  },delay);
+}
+
+export function pauseMap(){if(!MATCH?.running||!MATCH.playback)return;MATCH.playback.paused=true;mvPauseRound();bump();}
+
+export function resumeMap(){
+  if(!MATCH?.running||!MATCH.playback)return;
+  MATCH.playback.paused=false;MATCH.playback.stopAfterRound=false;mvResumeRound();bump();scheduleMapStep(80);
+}
+
+export function playOneRound(){
+  if(!MATCH?.running||!MATCH.playback)return;
+  if(!MATCH.playback.betweenRounds){
+    MATCH.playback.stopAfterRound=true;
+    if(MATCH.playback.paused){MATCH.playback.paused=false;mvResumeRound();}
+  }else{
+    MATCH.playback.paused=true;MATCH.playback.stopAfterRound=false;
+    if(MATCH.continueMap){MATCH.playback.betweenRounds=false;MATCH.continueMap();}
+  }
+  bump();
+}
+
+export function openTacticalTimeout(){
+  if(!MATCH?.running||!MATCH.playback?.betweenRounds||MATCH.timeoutEditor)return;
+  const side=playerMatchSide(),roundsPlayed=MATCH.mapSimulation?.r||0;
+  if(roundsPlayed<1||timeoutAvailability(MATCH.timeouts,side,roundsPlayed).remaining<=0)return;
+  MATCH.playback.paused=true;
+  MATCH.timeoutEditor={side,draft:{...normalizeTacticalPolicy(MATCH.comps[MATCH.curMap][side].tacticalPolicy,MATCH.comps[MATCH.curMap][side].stance)}};
+  bump();
+}
+
+export function updateTimeoutPolicy(field,value){
+  if(!MATCH?.timeoutEditor)return;
+  MATCH.timeoutEditor.draft={...MATCH.timeoutEditor.draft,[field]:value};bump();
+}
+
+export function cancelTacticalTimeout(){if(!MATCH?.timeoutEditor)return;MATCH.timeoutEditor=null;bump();}
+
+export function confirmTacticalTimeout(){
+  const editor=MATCH?.timeoutEditor;if(!editor)return;
+  const roundsPlayed=MATCH.mapSimulation?.r||0,comp=MATCH.comps[MATCH.curMap][editor.side];
+  const before=normalizeTacticalPolicy(comp.tacticalPolicy,comp.stance),after=normalizeTacticalPolicy(editor.draft,comp.stance);
+  const entry=useTacticalTimeout({ledger:MATCH.timeouts,side:editor.side,roundsPlayed,beforePolicy:before,afterPolicy:after,source:'user'});
+  if(!entry){MATCH.timeoutEditor=null;bump();return;}
+  comp.tacticalPolicy=after;
+  MATCH.timeoutEditor=null;
+  MATCH.feed=[{timeout:true,n:roundsPlayed,side:editor.side,teamShort:MATCH[editor.side].short,policy:after.preset},...MATCH.feed].slice(0,7);
+  bump();
+}
+
+function maybeUseAiTimeout(){
+  const state=MATCH.mapSimulation;if(!state||state.r<3)return;
+  const side=playerMatchSide()==='home'?'away':'home';
+  if(timeoutAvailability(MATCH.timeouts,side,state.r).remaining<=0)return;
+  const last=state.rounds.slice(-2);if(last.length<2||last.some(round=>round.winner===side))return;
+  const comp=MATCH.comps[MATCH.curMap][side],before=normalizeTacticalPolicy(comp.tacticalPolicy,comp.stance);
+  const scoreDiff=side==='home'?state.h-state.a:state.a-state.h;
+  const preset=scoreDiff<=-3?'ADAPTIVE':before.preset==='TEMPO'?'STRUCTURED':'TEMPO';
+  const after={...before,preset,risk:scoreDiff<=-4?'HIGH':before.risk};
+  const entry=useTacticalTimeout({ledger:MATCH.timeouts,side,roundsPlayed:state.r,beforePolicy:before,afterPolicy:after,source:'ai'});
+  if(!entry)return;
+  comp.tacticalPolicy=after;
+  MATCH.feed=[{timeout:true,n:state.r,side,teamShort:MATCH[side].short,policy:after.preset},...MATCH.feed].slice(0,7);
+}
+
+export function selectStance(mi,s){MATCH.draftSel.stance=s;MATCH.draftSel.policy=defaultPolicyForStance(s);bump();}
+
+export function selectTacticalPolicy(field,value){
+  if(!MATCH.draftSel.policy)MATCH.draftSel.policy=defaultPolicyForStance(MATCH.draftSel.stance||'BALANCED');
+  if(field==='preset')MATCH.draftSel.policy={...defaultPolicyForStance(MATCH.draftSel.stance||'BALANCED'),preset:value};
+  else MATCH.draftSel.policy={...MATCH.draftSel.policy,[field]:value};
+  bump();
+}
 
 export function selectAgent(mi,name,agent){ MATCH.draftSel.choice[name]=agent; bump(); }
 
 export function confirmDraft(mi){
   const me=ST.teams[ST.myTeamIdx]; const map=MATCH.mapPool[mi];
-  const choice={}; me.roster.forEach(pl=>choice[pl.name]=MATCH.draftSel.choice[pl.name]||autoAgentFor(pl,map));
+  const recommended=buildCompForStance(me,map,MATCH.draftSel.stance);
+  const recommendedByPlayer=Object.fromEntries(recommended.agents.map(agent=>[agent.name,agent.agent]));
+  const choice={}; me.roster.forEach(pl=>choice[pl.name]=MATCH.draftSel.choice[pl.name]||recommendedByPlayer[pl.name]||autoAgentFor(pl,map));
   const myComp=buildCompChoice(me,map,MATCH.draftSel.stance,choice);
+  myComp.tacticalPolicy={...MATCH.draftSel.policy};
   const opp=MATCH.pendingOpp;
   if(MATCH.playerSide==='home'){
     MATCH.comps[mi]={home:myComp, away:opp, edge:counterEdge(myComp.stance,opp.stance), mapName:map};
@@ -166,31 +275,44 @@ export function simCurrentMap(speed){
   MATCH.running=true;
   const home=MATCH.home, away=MATCH.away, cc=MATCH.comps[MATCH.curMap];
   if(MATCH.playerSide) MATCH.homeStartAtk = MATCH.playerSide==='home'; else MATCH.homeStartAtk=true;
-  const result=simOneMap(home,away,cc,MATCH.homeStartAtk);
-  MATCH.curResult=result;
+  const mapSeed=deriveSeed(MATCH.seed,'map',MATCH.curMap,MATCH.mapPool[MATCH.curMap]);
+  const mapState=withSeed(mapSeed,()=>createMapSimulation(home,away,cc,MATCH.homeStartAtk));
+  MATCH.mapSimulation=mapState;
+  MATCH.curResult=null;
+  MATCH.timeouts=createTimeoutLedger();
+  MATCH.timeoutEditor=null;
+  MATCH.playback={speed,paused:false,betweenRounds:true,scheduled:false};
   MATCH.feed=[];
   document.getElementById('mapView').style.display='block';
   mvBuild(home,away,agentMap(cc));
   initEcon(); MATCH.curEconHist=[];
   paintMap(0,0); // also bumps -- reflects running=true, cleared feed, reset pips
-  let idx=0;
   const step=()=>{
-    if(idx>=result.rounds.length){ document.getElementById('mvBanner').innerHTML=''; finishMap(result.h,result.a); return; }
-    const rd=result.rounds[idx]; idx++;
+    MATCH.playback.betweenRounds=false;
+    MATCH.continueMap=null;
+    if(mapSimulationDone(mapState)){
+      const result=mapSimulationResult(mapState);
+      result.seed=mapSeed;
+      MATCH.curResult=result;
+      document.getElementById('mvBanner').innerHTML='';
+      finishMap(result.h,result.a);
+      return;
+    }
+    const rd=simulateNextRound(mapState);
     if(rd.n===13) initEcon(); // side switch — economy resets at half
+    if(rd.economy)MV.econ={home:Array(5).fill(rd.economy.home.before),away:Array(5).fill(rd.economy.away.before)};
     // economy snapshot (pre-buy team credits) for the post-map graph
     if(MV.econ){ MATCH.curEconHist=MATCH.curEconHist||[];
       MATCH.curEconHist.push({n:rd.n, h:MV.econ.home.reduce((s,x)=>s+x,0), a:MV.econ.away.reduce((s,x)=>s+x,0)}); }
     // broadcast center: pre-round score + round number
-    const preH=idx>1?result.rounds[idx-2].h:0, preA=idx>1?result.rounds[idx-2].a:0;
+    const preH=rd.h-(rd.winner==='home'?1:0), preA=rd.a-(rd.winner==='away'?1:0);
     const bsh=document.getElementById('bScoreH'), bsa=document.getElementById('bScoreA'), brd=document.getElementById('bRound');
-    if(bsh)bsh.textContent=preH; if(bsa)bsa.textContent=preA; if(brd)brd.textContent='Round '+rd.n;
-    // banner: side switch / overtime / normal
-    const atkTeam = rd.hSide==='atk'?home:away;
+    if(bsh)bsh.textContent=preH;if(bsa)bsa.textContent=preA;if(brd)brd.textContent=tr('라운드 ','Round ')+rd.n;
+    // banner: only exceptional state changes; normal round/side data lives in the top HUD.
     const bnEl=document.getElementById('mvBanner');
-    if(rd.n===13) bnEl.innerHTML=`<span class="switchbanner">⇄ SIDE SWITCH · second half</span>`;
-    else if(rd.n>24) bnEl.innerHTML=`<span class="switchbanner">OVERTIME · Round ${rd.n}</span> · <b>${atkTeam.short}</b> attack <b>${rd.site}</b>`;
-    else bnEl.innerHTML=`Round ${rd.n} · <b class="atk">${atkTeam.short}</b> <span class="atk">attack</span> hitting <b>${rd.site}</b>${rd.isPistol?' · pistol':''}`;
+    if(rd.n===13)bnEl.innerHTML=`<span class="switchbanner">⇄ ${tr('진영 전환 · 후반전','SIDE SWITCH · SECOND HALF')}</span>`;
+    else if(rd.n>24)bnEl.innerHTML=`<span class="switchbanner">${tr('연장','OVERTIME')}</span>`;
+    else bnEl.innerHTML='';
     mvPlayRound(rd, speed, ()=>{
       applyRoundStats(MATCH.box, rd);
       const winTeam=rd.winner==='home'?home:away;
@@ -200,37 +322,31 @@ export function simCurrentMap(speed){
       const sideTag=winSide==='atk'?'ATK':'DEF';
       MATCH.feed=[{winner:rd.winner, n:rd.n, winSide, sideTag, teamShort:winTeam.short,
         isPistol:rd.isPistol, loserBuyLbl, fbKiller:rd.fb.killer,
+        myTactic:(MATCH.playerSide==='home'?rd.hSide:rd.aSide)==='atk'?rd.tactics?.attack?.type:rd.tactics?.defense?.type,
+        myRole:(MATCH.playerSide==='home'?rd.hSide:rd.aSide),targetSite:(MATCH.playerSide==='home'?rd.hSide:rd.aSide)==='atk'?rd.tactics?.attack?.targetSite:null,
+        trades:rd.tradeSummary?.completed||0,turningPoint:rd.phases?.turningPoint?.type||null,
         topKiller: tk?{name:tk.name,k:tk.k}:null,
         ability: rd.ability?{name:rd.ability.name,ult:rd.ability.ult}:null,
         clutch: rd.clutch?{player:rd.clutch.player,vs:rd.clutch.vs}:null,
         defuse:rd.defuse, plant:rd.plant, h:rd.h, a:rd.a}, ...MATCH.feed].slice(0,7);
       MATCH.liveRound={h:rd.h,a:rd.a};
       if(bsh)bsh.textContent=rd.h; if(bsa)bsa.textContent=rd.a;
-      // economy: carry remaining + income (win 3000 / loss 1900) + 200/kill + plant bonus
-      if(MV.econ&&MV.remaining){
-        const atkS=rd.hSide==='atk'?'home':'away';
-        const killsBy={home:{},away:{}};
-        rd.kills.forEach(k=>{const nk=MV.nameIdx[k.killer]; if(nk)killsBy[nk.side][nk.i]=(killsBy[nk.side][nk.i]||0)+1;});
-        ['home','away'].forEach(sd=>{
-          const won = (sd==='home')===(rd.winner==='home');
-          (sd==='home'?MATCH.home:MATCH.away).roster.forEach((pl,i)=>{
-            let add=won?3000:1900;
-            if(rd.plant && sd===atkS && !won) add+=600; // planted but lost
-            add+=(killsBy[sd][i]||0)*200;
-            MV.econ[sd][i]=Math.min(9000,(MV.remaining[sd][i]||0)+add);
-          });
-        });
-      }
+      if(rd.economy)MV.econ={home:Array(5).fill(rd.economy.home.after),away:Array(5).fill(rd.economy.away.after)};
+      MATCH.playback.betweenRounds=true;
+      if(MATCH.playback.stopAfterRound){MATCH.playback.paused=true;MATCH.playback.stopAfterRound=false;}
+      MATCH.continueMap=step;
+      maybeUseAiTimeout();
       bump(); // Match (React): feed line, pips, round number -- pip "pop" flash is Pips' own effect
-      step();
+      scheduleMapStep(speed==='fast'?40:220);
     });
   };
-  setTimeout(step, 220);
+  MATCH.continueMap=step;
+  scheduleMapStep(220);
 }
 
 export function finishMap(h,a){
   const hWon=h>a;
-  MATCH.mapResults[MATCH.curMap]={h,a,hWon,rounds:(MATCH.curResult?MATCH.curResult.rounds:[]),mapName:MATCH.mapPool[MATCH.curMap],econ:(MATCH.curEconHist||[]).slice()};
+  MATCH.mapResults[MATCH.curMap]={h,a,hWon,rounds:(MATCH.curResult?MATCH.curResult.rounds:[]),mapName:MATCH.mapPool[MATCH.curMap],econ:(MATCH.curEconHist||[]).slice(),timeouts:(MATCH.timeouts?.log||[]).slice()};
   MATCH.roundsPlayed=(MATCH.roundsPlayed||0)+(h+a);
   if(hWon)MATCH.hMaps++; else MATCH.aMaps++;
   MATCH.running=false;
@@ -244,13 +360,11 @@ export function finishMap(h,a){
 
 export function endMatch(){
   finalizeRatings(MATCH.box, MATCH.roundsPlayed||1);
+  if(MATCH.diagnostic){MATCH.fx.played=true;bump();return;}
   // record result into season
-  const fx=MATCH.fx; const r={hMaps:MATCH.hMaps,aMaps:MATCH.aMaps};
-  fx.played=true; fx.res=r;
-  const H=ST.standings[fx.home], A=ST.standings[fx.away];
-  H.mapW+=MATCH.hMaps; H.mapL+=MATCH.aMaps; A.mapW+=MATCH.aMaps; A.mapL+=MATCH.hMaps;
-  let rd=0; MATCH.mapResults.forEach(m=>{if(m)rd+=(m.h-m.a);}); H.rd+=rd; A.rd-=rd;
-  if(MATCH.hMaps>MATCH.aMaps){H.w++;A.l++;}else{A.w++;H.l++;}
+  const fx=MATCH.fx;
+  let rd=0;MATCH.mapResults.forEach(m=>{if(m)rd+=(m.h-m.a);});
+  recordFixtureResult(fx,{hMaps:MATCH.hMaps,aMaps:MATCH.aMaps,roundDifferential:rd,box:MATCH.box,mapResults:MATCH.mapResults,seed:MATCH.seed});
   // sim the rest of this week's other matches
   simRestOfWeek(MATCH.wi, fx);
   bump(); // Hub (React) reads ST.standings/ST.schedule/ST.seasonOver, Box+Match (React) read MATCH.fx.played, via useStore()
@@ -266,7 +380,9 @@ export function skipMatch(){
     const home=MATCH.home,away=MATCH.away;
     if(!MATCH.comps[MATCH.curMap])MATCH.comps[MATCH.curMap]=draftPair(home,away,MATCH.mapPool[MATCH.curMap]);
     const cc=MATCH.comps[MATCH.curMap];
-    const result=simOneMap(home,away,cc,homeStartAtk);
+    const mapSeed=deriveSeed(MATCH.seed,'map',MATCH.curMap,MATCH.mapPool[MATCH.curMap]);
+    const result=withSeed(mapSeed,()=>simOneMap(home,away,cc,homeStartAtk));
+    result.seed=mapSeed;
     result.rounds.forEach(rd=>applyRoundStats(MATCH.box,rd));
     MATCH.roundsPlayed=(MATCH.roundsPlayed||0)+(result.h+result.a);
     MATCH.mapResults[MATCH.curMap]={h:result.h,a:result.a,hWon:result.h>result.a,rounds:result.rounds,mapName:MATCH.mapPool[MATCH.curMap]};

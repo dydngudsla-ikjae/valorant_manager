@@ -1,0 +1,2593 @@
+{
+  "schemaVersion": 2,
+  "year": 2026,
+  "summary": {
+    "generatedAt": "2026-07-30T01:52:14.387Z",
+    "teams": 48,
+    "registeredPlayerSlots": 244,
+    "uniquePlayers": 244,
+    "duplicateRegistrations": 0,
+    "teamsWithIssues": 0,
+    "verifiedTeams": 0,
+    "teamsNeedingReview": 48
+  },
+  "duplicates": [],
+  "teams": [
+    {
+      "teamKey": "AMER:G2",
+      "leagueId": "AMER",
+      "teamId": "11058",
+      "teamName": "G2 Esports",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "2170",
+          "name": "BABYBAY",
+          "role": "SEN",
+          "rounds": 1299,
+          "maps": 62,
+          "matches": 24
+        },
+        {
+          "playerId": "3993",
+          "name": "jawgemo",
+          "role": "DUE",
+          "rounds": 1299,
+          "maps": 62,
+          "matches": 24
+        },
+        {
+          "playerId": "7873",
+          "name": "leaf",
+          "role": "CON",
+          "rounds": 1299,
+          "maps": 62,
+          "matches": 24
+        },
+        {
+          "playerId": "15500",
+          "name": "trent",
+          "role": "INI",
+          "rounds": 1299,
+          "maps": 62,
+          "matches": 24
+        },
+        {
+          "playerId": "3885",
+          "name": "valyn",
+          "role": "CON",
+          "rounds": 1299,
+          "maps": 62,
+          "matches": 24
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "AMER:100T",
+      "leagueId": "AMER",
+      "teamId": "120",
+      "teamName": "100 Thieves",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "601",
+          "name": "Asuna",
+          "role": "DUE",
+          "rounds": 880,
+          "maps": 41,
+          "matches": 17
+        },
+        {
+          "playerId": "3880",
+          "name": "bang",
+          "role": "CON",
+          "rounds": 880,
+          "maps": 41,
+          "matches": 17
+        },
+        {
+          "playerId": "4147",
+          "name": "Cryocells",
+          "role": "SEN",
+          "rounds": 880,
+          "maps": 41,
+          "matches": 17
+        },
+        {
+          "playerId": "29893",
+          "name": "Timotino",
+          "role": "DUE",
+          "rounds": 880,
+          "maps": 41,
+          "matches": 17
+        },
+        {
+          "playerId": "20140",
+          "name": "Vora",
+          "role": "INI",
+          "rounds": 880,
+          "maps": 41,
+          "matches": 17
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "AMER:C9",
+      "leagueId": "AMER",
+      "teamId": "188",
+      "teamName": "Cloud9",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "7871",
+          "name": "Xeppaa",
+          "role": "INI",
+          "rounds": 603,
+          "maps": 28,
+          "matches": 12
+        },
+        {
+          "playerId": "729",
+          "name": "Zellsis",
+          "role": "CON",
+          "rounds": 603,
+          "maps": 28,
+          "matches": 12
+        },
+        {
+          "playerId": "17433",
+          "name": "v1c",
+          "role": "CON",
+          "rounds": 562,
+          "maps": 26,
+          "matches": 11
+        },
+        {
+          "playerId": "18796",
+          "name": "OXY",
+          "role": "DUE",
+          "rounds": 483,
+          "maps": 23,
+          "matches": 10
+        },
+        {
+          "playerId": "44842",
+          "name": "Jackk",
+          "role": "INI",
+          "rounds": 100,
+          "maps": 5,
+          "matches": 2
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "AMER:SEN",
+      "leagueId": "AMER",
+      "teamId": "2",
+      "teamName": "Sentinels",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "5395",
+          "name": "cortezia",
+          "role": "CON",
+          "rounds": 464,
+          "maps": 20,
+          "matches": 9
+        },
+        {
+          "playerId": "1265",
+          "name": "johnqt",
+          "role": "CON",
+          "rounds": 464,
+          "maps": 20,
+          "matches": 9
+        },
+        {
+          "playerId": "8419",
+          "name": "Reduxx",
+          "role": "DUE",
+          "rounds": 464,
+          "maps": 20,
+          "matches": 9
+        },
+        {
+          "playerId": "4581",
+          "name": "JonahP",
+          "role": "INI",
+          "rounds": 274,
+          "maps": 12,
+          "matches": 5
+        },
+        {
+          "playerId": "34057",
+          "name": "Jerrwin",
+          "role": "DUE",
+          "rounds": 231,
+          "maps": 10,
+          "matches": 4
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "AMER:KRU",
+      "leagueId": "AMER",
+      "teamId": "2355",
+      "teamName": "KRÜ Esports",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "41135",
+          "name": "Dantedeu5",
+          "role": "DUE",
+          "rounds": 335,
+          "maps": 16,
+          "matches": 7
+        },
+        {
+          "playerId": "8447",
+          "name": "Less",
+          "role": "CON",
+          "rounds": 335,
+          "maps": 16,
+          "matches": 7
+        },
+        {
+          "playerId": "939",
+          "name": "mwzera",
+          "role": "INI",
+          "rounds": 335,
+          "maps": 16,
+          "matches": 7
+        },
+        {
+          "playerId": "727",
+          "name": "saadhak",
+          "role": "CON",
+          "rounds": 335,
+          "maps": 16,
+          "matches": 7
+        },
+        {
+          "playerId": "11921",
+          "name": "silentzz",
+          "role": "SEN",
+          "rounds": 335,
+          "maps": 16,
+          "matches": 7
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "AMER:LEV",
+      "leagueId": "AMER",
+      "teamId": "2359",
+      "teamName": "LEVIATÁN",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "21251",
+          "name": "blowz",
+          "role": "INI",
+          "rounds": 1225,
+          "maps": 60,
+          "matches": 22
+        },
+        {
+          "playerId": "8549",
+          "name": "kiNgg",
+          "role": "CON",
+          "rounds": 1225,
+          "maps": 60,
+          "matches": 22
+        },
+        {
+          "playerId": "21659",
+          "name": "Sato",
+          "role": "DUE",
+          "rounds": 1225,
+          "maps": 60,
+          "matches": 22
+        },
+        {
+          "playerId": "21661",
+          "name": "spike",
+          "role": "DUE",
+          "rounds": 1225,
+          "maps": 60,
+          "matches": 22
+        },
+        {
+          "playerId": "29243",
+          "name": "Neon",
+          "role": "SEN",
+          "rounds": 1121,
+          "maps": 55,
+          "matches": 20
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "AMER:FUR",
+      "leagueId": "AMER",
+      "teamId": "2406",
+      "teamName": "FURIA",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "48025",
+          "name": "alym",
+          "role": "DUE",
+          "rounds": 747,
+          "maps": 37,
+          "matches": 13
+        },
+        {
+          "playerId": "5957",
+          "name": "artzin",
+          "role": "SEN",
+          "rounds": 747,
+          "maps": 37,
+          "matches": 13
+        },
+        {
+          "playerId": "796",
+          "name": "eeiu",
+          "role": "INI",
+          "rounds": 747,
+          "maps": 37,
+          "matches": 13
+        },
+        {
+          "playerId": "3722",
+          "name": "koalanoob",
+          "role": "DUE",
+          "rounds": 747,
+          "maps": 37,
+          "matches": 13
+        },
+        {
+          "playerId": "754",
+          "name": "nerve",
+          "role": "CON",
+          "rounds": 747,
+          "maps": 37,
+          "matches": 13
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "AMER:NRG",
+      "leagueId": "AMER",
+      "teamId": "1034",
+      "teamName": "NRG Esports",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "2172",
+          "name": "brawk",
+          "role": "INI",
+          "rounds": 1381,
+          "maps": 65,
+          "matches": 25
+        },
+        {
+          "playerId": "11225",
+          "name": "Ethan",
+          "role": "INI",
+          "rounds": 1381,
+          "maps": 65,
+          "matches": 25
+        },
+        {
+          "playerId": "11494",
+          "name": "Keiko",
+          "role": "CON",
+          "rounds": 1381,
+          "maps": 65,
+          "matches": 25
+        },
+        {
+          "playerId": "5132",
+          "name": "mada",
+          "role": "DUE",
+          "rounds": 1381,
+          "maps": 65,
+          "matches": 25
+        },
+        {
+          "playerId": "11118",
+          "name": "skuba",
+          "role": "CON",
+          "rounds": 1381,
+          "maps": 65,
+          "matches": 25
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "AMER:NV",
+      "leagueId": "AMER",
+      "teamId": "427",
+      "teamName": "Envy",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "35302",
+          "name": "Eggsterr",
+          "role": "DUE",
+          "rounds": 535,
+          "maps": 25,
+          "matches": 10
+        },
+        {
+          "playerId": "2462",
+          "name": "keznit",
+          "role": "DUE",
+          "rounds": 535,
+          "maps": 25,
+          "matches": 10
+        },
+        {
+          "playerId": "21778",
+          "name": "P0PPIN",
+          "role": "INI",
+          "rounds": 535,
+          "maps": 25,
+          "matches": 10
+        },
+        {
+          "playerId": "1129",
+          "name": "Rossy",
+          "role": "CON",
+          "rounds": 535,
+          "maps": 25,
+          "matches": 10
+        },
+        {
+          "playerId": "26171",
+          "name": "Demon1",
+          "role": "SEN",
+          "rounds": 279,
+          "maps": 14,
+          "matches": 6
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "AMER:EG",
+      "leagueId": "AMER",
+      "teamId": "5248",
+      "teamName": "Evil Geniuses",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "34400",
+          "name": "bao",
+          "role": "SEN",
+          "rounds": 515,
+          "maps": 23,
+          "matches": 10
+        },
+        {
+          "playerId": "8873",
+          "name": "dgzin",
+          "role": "DUE",
+          "rounds": 515,
+          "maps": 23,
+          "matches": 10
+        },
+        {
+          "playerId": "826",
+          "name": "supamen",
+          "role": "CON",
+          "rounds": 515,
+          "maps": 23,
+          "matches": 10
+        },
+        {
+          "playerId": "2164",
+          "name": "Paincakes",
+          "role": "INI",
+          "rounds": 67,
+          "maps": 3,
+          "matches": 1
+        },
+        {
+          "playerId": "14048",
+          "name": "zerona",
+          "role": "CON",
+          "rounds": 67,
+          "maps": 3,
+          "matches": 1
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "AMER:LLL",
+      "leagueId": "AMER",
+      "teamId": "6961",
+      "teamName": "LOUD",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "6193",
+          "name": "cauanzin",
+          "role": "INI",
+          "rounds": 457,
+          "maps": 22,
+          "matches": 9
+        },
+        {
+          "playerId": "10557",
+          "name": "Darker",
+          "role": "CON",
+          "rounds": 457,
+          "maps": 22,
+          "matches": 9
+        },
+        {
+          "playerId": "28716",
+          "name": "lukxo",
+          "role": "SEN",
+          "rounds": 457,
+          "maps": 22,
+          "matches": 9
+        },
+        {
+          "playerId": "3983",
+          "name": "Virtyy",
+          "role": "DUE",
+          "rounds": 457,
+          "maps": 22,
+          "matches": 9
+        },
+        {
+          "playerId": "29242",
+          "name": "erde",
+          "role": "CON",
+          "rounds": 159,
+          "maps": 8,
+          "matches": 3
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "AMER:MBR",
+      "leagueId": "AMER",
+      "teamId": "7386",
+      "teamName": "MIBR",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "8480",
+          "name": "aspas",
+          "role": "DUE",
+          "rounds": 687,
+          "maps": 33,
+          "matches": 12
+        },
+        {
+          "playerId": "7603",
+          "name": "Mazino",
+          "role": "CON",
+          "rounds": 687,
+          "maps": 33,
+          "matches": 12
+        },
+        {
+          "playerId": "1818",
+          "name": "tex",
+          "role": "CON",
+          "rounds": 687,
+          "maps": 33,
+          "matches": 12
+        },
+        {
+          "playerId": "21668",
+          "name": "Verno",
+          "role": "INI",
+          "rounds": 687,
+          "maps": 33,
+          "matches": 12
+        },
+        {
+          "playerId": "4004",
+          "name": "zekken",
+          "role": "DUE",
+          "rounds": 687,
+          "maps": 33,
+          "matches": 12
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "EMEA:TH",
+      "leagueId": "EMEA",
+      "teamId": "1001",
+      "teamName": "Team Heretics",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "29873",
+          "name": "benjyfishy",
+          "role": "SEN",
+          "rounds": 1065,
+          "maps": 51,
+          "matches": 19
+        },
+        {
+          "playerId": "1144",
+          "name": "Boo",
+          "role": "CON",
+          "rounds": 1065,
+          "maps": 51,
+          "matches": 19
+        },
+        {
+          "playerId": "10971",
+          "name": "RieNs",
+          "role": "INI",
+          "rounds": 1065,
+          "maps": 51,
+          "matches": 19
+        },
+        {
+          "playerId": "21328",
+          "name": "Wo0t",
+          "role": "DUE",
+          "rounds": 1065,
+          "maps": 51,
+          "matches": 19
+        },
+        {
+          "playerId": "23365",
+          "name": "Koshmaras",
+          "role": "DUE",
+          "rounds": 714,
+          "maps": 34,
+          "matches": 12
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "EMEA:FUT",
+      "leagueId": "EMEA",
+      "teamId": "1184",
+      "teamName": "FUT Esports",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "15735",
+          "name": "KROSTALY",
+          "role": "INI",
+          "rounds": 1001,
+          "maps": 46,
+          "matches": 17
+        },
+        {
+          "playerId": "12793",
+          "name": "xeus",
+          "role": "DUE",
+          "rounds": 1001,
+          "maps": 46,
+          "matches": 17
+        },
+        {
+          "playerId": "8369",
+          "name": "yetujey",
+          "role": "SEN",
+          "rounds": 1001,
+          "maps": 46,
+          "matches": 17
+        },
+        {
+          "playerId": "39357",
+          "name": "s0pp",
+          "role": "DUE",
+          "rounds": 814,
+          "maps": 38,
+          "matches": 14
+        },
+        {
+          "playerId": "5568",
+          "name": "sociablEE",
+          "role": "CON",
+          "rounds": 814,
+          "maps": 38,
+          "matches": 14
+        },
+        {
+          "playerId": "8044",
+          "name": "MrFaliN",
+          "role": "CON",
+          "rounds": 187,
+          "maps": 8,
+          "matches": 3
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "EMEA:M8",
+      "leagueId": "EMEA",
+      "teamId": "12694",
+      "teamName": "Gentle Mates",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "18400",
+          "name": "bipo",
+          "role": "DUE",
+          "rounds": 907,
+          "maps": 42,
+          "matches": 16
+        },
+        {
+          "playerId": "8286",
+          "name": "GLYPH",
+          "role": "CON",
+          "rounds": 907,
+          "maps": 42,
+          "matches": 16
+        },
+        {
+          "playerId": "10307",
+          "name": "marteen",
+          "role": "DUE",
+          "rounds": 907,
+          "maps": 42,
+          "matches": 16
+        },
+        {
+          "playerId": "23169",
+          "name": "Minny",
+          "role": "CON",
+          "rounds": 907,
+          "maps": 42,
+          "matches": 16
+        },
+        {
+          "playerId": "565",
+          "name": "starxo",
+          "role": "INI",
+          "rounds": 907,
+          "maps": 42,
+          "matches": 16
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "EMEA:GX",
+      "leagueId": "EMEA",
+      "teamId": "14419",
+      "teamName": "GIANTX",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "11332",
+          "name": "ara",
+          "role": "DUE",
+          "rounds": 540,
+          "maps": 25,
+          "matches": 10
+        },
+        {
+          "playerId": "4181",
+          "name": "Cloud",
+          "role": "INI",
+          "rounds": 540,
+          "maps": 25,
+          "matches": 10
+        },
+        {
+          "playerId": "6959",
+          "name": "Flickless",
+          "role": "INI",
+          "rounds": 540,
+          "maps": 25,
+          "matches": 10
+        },
+        {
+          "playerId": "5550",
+          "name": "grubinho",
+          "role": "CON",
+          "rounds": 540,
+          "maps": 25,
+          "matches": 10
+        },
+        {
+          "playerId": "34684",
+          "name": "westside",
+          "role": "SEN",
+          "rounds": 540,
+          "maps": 25,
+          "matches": 10
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "EMEA:VIT",
+      "leagueId": "EMEA",
+      "teamId": "2059",
+      "teamName": "Team Vitality",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "458",
+          "name": "Chronicle",
+          "role": "SEN",
+          "rounds": 1074,
+          "maps": 52,
+          "matches": 21
+        },
+        {
+          "playerId": "5022",
+          "name": "Derke",
+          "role": "DUE",
+          "rounds": 1074,
+          "maps": 52,
+          "matches": 21
+        },
+        {
+          "playerId": "9780",
+          "name": "Jamppi",
+          "role": "INI",
+          "rounds": 1074,
+          "maps": 52,
+          "matches": 21
+        },
+        {
+          "playerId": "5554",
+          "name": "PROFEK",
+          "role": "CON",
+          "rounds": 1074,
+          "maps": 52,
+          "matches": 21
+        },
+        {
+          "playerId": "33902",
+          "name": "Sayonara",
+          "role": "DUE",
+          "rounds": 794,
+          "maps": 38,
+          "matches": 15
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "EMEA:FNC",
+      "leagueId": "EMEA",
+      "teamId": "2593",
+      "teamName": "FNATIC",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "9810",
+          "name": "Alfajer",
+          "role": "SEN",
+          "rounds": 838,
+          "maps": 37,
+          "matches": 14
+        },
+        {
+          "playerId": "438",
+          "name": "Boaster",
+          "role": "CON",
+          "rounds": 838,
+          "maps": 37,
+          "matches": 14
+        },
+        {
+          "playerId": "4",
+          "name": "crashies",
+          "role": "INI",
+          "rounds": 838,
+          "maps": 37,
+          "matches": 14
+        },
+        {
+          "playerId": "9554",
+          "name": "kaajak",
+          "role": "DUE",
+          "rounds": 838,
+          "maps": 37,
+          "matches": 14
+        },
+        {
+          "playerId": "12928",
+          "name": "Veqaj",
+          "role": "CON",
+          "rounds": 635,
+          "maps": 27,
+          "matches": 10
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "EMEA:PCF",
+      "leagueId": "EMEA",
+      "teamId": "3478",
+      "teamName": "PCIFIC Espor",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "5292",
+          "name": "al0rante",
+          "role": "CON",
+          "rounds": 430,
+          "maps": 20,
+          "matches": 8
+        },
+        {
+          "playerId": "573",
+          "name": "cNed",
+          "role": "DUE",
+          "rounds": 430,
+          "maps": 20,
+          "matches": 8
+        },
+        {
+          "playerId": "28948",
+          "name": "NINJA",
+          "role": "INI",
+          "rounds": 430,
+          "maps": 20,
+          "matches": 8
+        },
+        {
+          "playerId": "7105",
+          "name": "qpert",
+          "role": "CON",
+          "rounds": 430,
+          "maps": 20,
+          "matches": 8
+        },
+        {
+          "playerId": "8376",
+          "name": "seven",
+          "role": "DUE",
+          "rounds": 430,
+          "maps": 20,
+          "matches": 8
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "EMEA:NAVI",
+      "leagueId": "EMEA",
+      "teamId": "4915",
+      "teamName": "Natus Vincere",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "4544",
+          "name": "Filu",
+          "role": "DUE",
+          "rounds": 542,
+          "maps": 25,
+          "matches": 10
+        },
+        {
+          "playerId": "29867",
+          "name": "hiro",
+          "role": "INI",
+          "rounds": 542,
+          "maps": 25,
+          "matches": 10
+        },
+        {
+          "playerId": "18677",
+          "name": "Ruxic",
+          "role": "CON",
+          "rounds": 542,
+          "maps": 25,
+          "matches": 10
+        },
+        {
+          "playerId": "15639",
+          "name": "chloric",
+          "role": "INI",
+          "rounds": 281,
+          "maps": 13,
+          "matches": 5
+        },
+        {
+          "playerId": "384",
+          "name": "Shao",
+          "role": "CON",
+          "rounds": 261,
+          "maps": 12,
+          "matches": 5
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "EMEA:EF",
+      "leagueId": "EMEA",
+      "teamId": "6392",
+      "teamName": "Eternal Fire",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "40843",
+          "name": "audaz",
+          "role": "CON",
+          "rounds": 503,
+          "maps": 23,
+          "matches": 9
+        },
+        {
+          "playerId": "49346",
+          "name": "echo",
+          "role": "SEN",
+          "rounds": 503,
+          "maps": 23,
+          "matches": 9
+        },
+        {
+          "playerId": "41720",
+          "name": "Favian",
+          "role": "DUE",
+          "rounds": 503,
+          "maps": 23,
+          "matches": 9
+        },
+        {
+          "playerId": "10160",
+          "name": "Izzy",
+          "role": "DUE",
+          "rounds": 503,
+          "maps": 23,
+          "matches": 9
+        },
+        {
+          "playerId": "12670",
+          "name": "nekky",
+          "role": "INI",
+          "rounds": 503,
+          "maps": 23,
+          "matches": 9
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "EMEA:KC",
+      "leagueId": "EMEA",
+      "teamId": "8877",
+      "teamName": "Karmine Corp",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "5654",
+          "name": "Avez",
+          "role": "INI",
+          "rounds": 503,
+          "maps": 24,
+          "matches": 9
+        },
+        {
+          "playerId": "16215",
+          "name": "dos9",
+          "role": "CON",
+          "rounds": 503,
+          "maps": 24,
+          "matches": 9
+        },
+        {
+          "playerId": "20144",
+          "name": "LewN",
+          "role": "DUE",
+          "rounds": 503,
+          "maps": 24,
+          "matches": 9
+        },
+        {
+          "playerId": "2858",
+          "name": "SUYGETSU",
+          "role": "SEN",
+          "rounds": 503,
+          "maps": 24,
+          "matches": 9
+        },
+        {
+          "playerId": "36245",
+          "name": "N4RRATE",
+          "role": "INI",
+          "rounds": 273,
+          "maps": 13,
+          "matches": 5
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "EMEA:BBL",
+      "leagueId": "EMEA",
+      "teamId": "397",
+      "teamName": "BBL Esports",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "12795",
+          "name": "Crewen",
+          "role": "SEN",
+          "rounds": 730,
+          "maps": 34,
+          "matches": 13
+        },
+        {
+          "playerId": "31305",
+          "name": "Lar0k",
+          "role": "DUE",
+          "rounds": 730,
+          "maps": 34,
+          "matches": 13
+        },
+        {
+          "playerId": "24344",
+          "name": "Loita",
+          "role": "CON",
+          "rounds": 730,
+          "maps": 34,
+          "matches": 13
+        },
+        {
+          "playerId": "40935",
+          "name": "lovers rock",
+          "role": "DUE",
+          "rounds": 730,
+          "maps": 34,
+          "matches": 13
+        },
+        {
+          "playerId": "5565",
+          "name": "Rosé",
+          "role": "INI",
+          "rounds": 730,
+          "maps": 34,
+          "matches": 13
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "EMEA:TL",
+      "leagueId": "EMEA",
+      "teamId": "474",
+      "teamName": "Team Liquid",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "14681",
+          "name": "kamo",
+          "role": "DUE",
+          "rounds": 969,
+          "maps": 45,
+          "matches": 18
+        },
+        {
+          "playerId": "18350",
+          "name": "MiniBoo",
+          "role": "DUE",
+          "rounds": 969,
+          "maps": 45,
+          "matches": 18
+        },
+        {
+          "playerId": "457",
+          "name": "nAts",
+          "role": "CON",
+          "rounds": 969,
+          "maps": 45,
+          "matches": 18
+        },
+        {
+          "playerId": "1885",
+          "name": "purp0",
+          "role": "INI",
+          "rounds": 969,
+          "maps": 45,
+          "matches": 18
+        },
+        {
+          "playerId": "11134",
+          "name": "Kicks",
+          "role": "CON",
+          "rounds": 72,
+          "maps": 3,
+          "matches": 1
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "PAC:NS",
+      "leagueId": "PAC",
+      "teamId": "11060",
+      "teamName": "Nongshim RedForce",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "31827",
+          "name": "Dambi",
+          "role": "DUE",
+          "rounds": 840,
+          "maps": 39,
+          "matches": 14
+        },
+        {
+          "playerId": "31828",
+          "name": "Francis",
+          "role": "DUE",
+          "rounds": 840,
+          "maps": 39,
+          "matches": 14
+        },
+        {
+          "playerId": "31829",
+          "name": "Ivy",
+          "role": "CON",
+          "rounds": 840,
+          "maps": 39,
+          "matches": 14
+        },
+        {
+          "playerId": "488",
+          "name": "Rb",
+          "role": "CON",
+          "rounds": 840,
+          "maps": 39,
+          "matches": 14
+        },
+        {
+          "playerId": "42772",
+          "name": "Xross",
+          "role": "INI",
+          "rounds": 840,
+          "maps": 39,
+          "matches": 14
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "PAC:VAR",
+      "leagueId": "PAC",
+      "teamId": "11229",
+      "teamName": "VARREL",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "2149",
+          "name": "C1ndeR",
+          "role": "CON",
+          "rounds": 462,
+          "maps": 20,
+          "matches": 8
+        },
+        {
+          "playerId": "4426",
+          "name": "Klaus",
+          "role": "DUE",
+          "rounds": 462,
+          "maps": 20,
+          "matches": 8
+        },
+        {
+          "playerId": "34926",
+          "name": "oonzmlp",
+          "role": "CON",
+          "rounds": 462,
+          "maps": 20,
+          "matches": 8
+        },
+        {
+          "playerId": "42733",
+          "name": "XuNa",
+          "role": "INI",
+          "rounds": 462,
+          "maps": 20,
+          "matches": 8
+        },
+        {
+          "playerId": "37532",
+          "name": "Zexy",
+          "role": "DUE",
+          "rounds": 462,
+          "maps": 20,
+          "matches": 8
+        },
+        {
+          "playerId": "11600",
+          "name": "Foxy9",
+          "role": "CON",
+          "rounds": 0,
+          "maps": 0,
+          "matches": 0
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "PAC:T1",
+      "leagueId": "PAC",
+      "teamId": "14",
+      "teamName": "T1",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "804",
+          "name": "BuZz",
+          "role": "DUE",
+          "rounds": 881,
+          "maps": 41,
+          "matches": 17
+        },
+        {
+          "playerId": "29833",
+          "name": "iZu",
+          "role": "DUE",
+          "rounds": 881,
+          "maps": 41,
+          "matches": 17
+        },
+        {
+          "playerId": "13039",
+          "name": "Meteor",
+          "role": "CON",
+          "rounds": 881,
+          "maps": 41,
+          "matches": 17
+        },
+        {
+          "playerId": "2489",
+          "name": "Munchkin",
+          "role": "CON",
+          "rounds": 881,
+          "maps": 41,
+          "matches": 17
+        },
+        {
+          "playerId": "485",
+          "name": "stax",
+          "role": "INI",
+          "rounds": 881,
+          "maps": 41,
+          "matches": 17
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "PAC:GEN",
+      "leagueId": "PAC",
+      "teamId": "17",
+      "teamName": "Gen.G",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "34974",
+          "name": "Karon",
+          "role": "SEN",
+          "rounds": 548,
+          "maps": 24,
+          "matches": 9
+        },
+        {
+          "playerId": "773",
+          "name": "Lakia",
+          "role": "INI",
+          "rounds": 548,
+          "maps": 24,
+          "matches": 9
+        },
+        {
+          "playerId": "9196",
+          "name": "t3xture",
+          "role": "DUE",
+          "rounds": 548,
+          "maps": 24,
+          "matches": 9
+        },
+        {
+          "playerId": "25017",
+          "name": "Ash",
+          "role": "CON",
+          "rounds": 510,
+          "maps": 22,
+          "matches": 8
+        },
+        {
+          "playerId": "51099",
+          "name": "ZynX",
+          "role": "DUE",
+          "rounds": 405,
+          "maps": 18,
+          "matches": 7
+        },
+        {
+          "playerId": "62402",
+          "name": "KiTae",
+          "role": "CON",
+          "rounds": 143,
+          "maps": 6,
+          "matches": 2
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "PAC:DFM",
+      "leagueId": "PAC",
+      "teamId": "278",
+      "teamName": "DetonatioN FocusMe",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "13002",
+          "name": "Akame",
+          "role": "INI",
+          "rounds": 680,
+          "maps": 32,
+          "matches": 13
+        },
+        {
+          "playerId": "29841",
+          "name": "Caedye",
+          "role": "SEN",
+          "rounds": 680,
+          "maps": 32,
+          "matches": 13
+        },
+        {
+          "playerId": "6672",
+          "name": "Meiy",
+          "role": "DUE",
+          "rounds": 680,
+          "maps": 32,
+          "matches": 13
+        },
+        {
+          "playerId": "21438",
+          "name": "SSeeS",
+          "role": "CON",
+          "rounds": 680,
+          "maps": 32,
+          "matches": 13
+        },
+        {
+          "playerId": "29843",
+          "name": "yatsuka",
+          "role": "INI",
+          "rounds": 680,
+          "maps": 32,
+          "matches": 13
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "PAC:FS",
+      "leagueId": "PAC",
+      "teamId": "4050",
+      "teamName": "FULL SENSE",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "13788",
+          "name": "JitBoyS",
+          "role": "DUE",
+          "rounds": 779,
+          "maps": 38,
+          "matches": 16
+        },
+        {
+          "playerId": "13784",
+          "name": "Killua",
+          "role": "INI",
+          "rounds": 779,
+          "maps": 38,
+          "matches": 16
+        },
+        {
+          "playerId": "27254",
+          "name": "Leviathan",
+          "role": "CON",
+          "rounds": 779,
+          "maps": 38,
+          "matches": 16
+        },
+        {
+          "playerId": "25255",
+          "name": "primmie",
+          "role": "DUE",
+          "rounds": 779,
+          "maps": 38,
+          "matches": 16
+        },
+        {
+          "playerId": "3977",
+          "name": "Crws",
+          "role": "CON",
+          "rounds": 542,
+          "maps": 26,
+          "matches": 11
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "PAC:ZETA",
+      "leagueId": "PAC",
+      "teamId": "5448",
+      "teamName": "ZETA DIVISION",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "34776",
+          "name": "Absol",
+          "role": "DUE",
+          "rounds": 467,
+          "maps": 23,
+          "matches": 9
+        },
+        {
+          "playerId": "1960",
+          "name": "eKo",
+          "role": "DUE",
+          "rounds": 467,
+          "maps": 23,
+          "matches": 9
+        },
+        {
+          "playerId": "6668",
+          "name": "SugarZ3ro",
+          "role": "CON",
+          "rounds": 467,
+          "maps": 23,
+          "matches": 9
+        },
+        {
+          "playerId": "12990",
+          "name": "SyouTa",
+          "role": "CON",
+          "rounds": 467,
+          "maps": 23,
+          "matches": 9
+        },
+        {
+          "playerId": "25221",
+          "name": "Xdll",
+          "role": "INI",
+          "rounds": 467,
+          "maps": 23,
+          "matches": 9
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "PAC:TS",
+      "leagueId": "PAC",
+      "teamId": "6199",
+      "teamName": "Team Secret",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "4874",
+          "name": "BerserX",
+          "role": "SEN",
+          "rounds": 402,
+          "maps": 19,
+          "matches": 8
+        },
+        {
+          "playerId": "2334",
+          "name": "JessieVash",
+          "role": "INI",
+          "rounds": 402,
+          "maps": 19,
+          "matches": 8
+        },
+        {
+          "playerId": "7437",
+          "name": "kellyS",
+          "role": "CON",
+          "rounds": 402,
+          "maps": 19,
+          "matches": 8
+        },
+        {
+          "playerId": "4056",
+          "name": "Sylvan",
+          "role": "CON",
+          "rounds": 402,
+          "maps": 19,
+          "matches": 8
+        },
+        {
+          "playerId": "46135",
+          "name": "Zeus",
+          "role": "DUE",
+          "rounds": 128,
+          "maps": 6,
+          "matches": 2
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "PAC:PRX",
+      "leagueId": "PAC",
+      "teamId": "624",
+      "teamName": "Paper Rex",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "9803",
+          "name": "d4v41",
+          "role": "CON",
+          "rounds": 1740,
+          "maps": 83,
+          "matches": 29
+        },
+        {
+          "playerId": "9801",
+          "name": "f0rsakeN",
+          "role": "CON",
+          "rounds": 1740,
+          "maps": 83,
+          "matches": 29
+        },
+        {
+          "playerId": "8504",
+          "name": "invy",
+          "role": "INI",
+          "rounds": 1740,
+          "maps": 83,
+          "matches": 29
+        },
+        {
+          "playerId": "7378",
+          "name": "Jinggg",
+          "role": "DUE",
+          "rounds": 1740,
+          "maps": 83,
+          "matches": 29
+        },
+        {
+          "playerId": "17086",
+          "name": "something",
+          "role": "DUE",
+          "rounds": 1740,
+          "maps": 83,
+          "matches": 29
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "PAC:DRX",
+      "leagueId": "PAC",
+      "teamId": "8185",
+      "teamName": "DRX",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "4678",
+          "name": "BeYN",
+          "role": "INI",
+          "rounds": 774,
+          "maps": 36,
+          "matches": 14
+        },
+        {
+          "playerId": "1916",
+          "name": "free1ng",
+          "role": "DUE",
+          "rounds": 774,
+          "maps": 36,
+          "matches": 14
+        },
+        {
+          "playerId": "28400",
+          "name": "HYUNMIN",
+          "role": "DUE",
+          "rounds": 774,
+          "maps": 36,
+          "matches": 14
+        },
+        {
+          "playerId": "4462",
+          "name": "MaKo",
+          "role": "CON",
+          "rounds": 774,
+          "maps": 36,
+          "matches": 14
+        },
+        {
+          "playerId": "51238",
+          "name": "yong",
+          "role": "SEN",
+          "rounds": 393,
+          "maps": 18,
+          "matches": 7
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "PAC:RRQ",
+      "leagueId": "PAC",
+      "teamId": "878",
+      "teamName": "Rex Regum Qeon",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "1430",
+          "name": "crazyguy",
+          "role": "CON",
+          "rounds": 817,
+          "maps": 37,
+          "matches": 13
+        },
+        {
+          "playerId": "24895",
+          "name": "Jemkin",
+          "role": "DUE",
+          "rounds": 817,
+          "maps": 37,
+          "matches": 13
+        },
+        {
+          "playerId": "4866",
+          "name": "Kushy",
+          "role": "INI",
+          "rounds": 817,
+          "maps": 37,
+          "matches": 13
+        },
+        {
+          "playerId": "8497",
+          "name": "Monyet",
+          "role": "DUE",
+          "rounds": 817,
+          "maps": 37,
+          "matches": 13
+        },
+        {
+          "playerId": "4871",
+          "name": "xffero",
+          "role": "CON",
+          "rounds": 817,
+          "maps": 37,
+          "matches": 13
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "PAC:GE",
+      "leagueId": "PAC",
+      "teamId": "918",
+      "teamName": "Global Esports",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "872",
+          "name": "Autumn",
+          "role": "DUE",
+          "rounds": 989,
+          "maps": 46,
+          "matches": 18
+        },
+        {
+          "playerId": "5796",
+          "name": "Kr1stal",
+          "role": "INI",
+          "rounds": 989,
+          "maps": 46,
+          "matches": 18
+        },
+        {
+          "playerId": "13744",
+          "name": "PatMen",
+          "role": "CON",
+          "rounds": 989,
+          "maps": 46,
+          "matches": 18
+        },
+        {
+          "playerId": "4428",
+          "name": "UdoTan",
+          "role": "DUE",
+          "rounds": 989,
+          "maps": 46,
+          "matches": 18
+        },
+        {
+          "playerId": "7754",
+          "name": "xavi8k",
+          "role": "CON",
+          "rounds": 989,
+          "maps": 46,
+          "matches": 18
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "CN:AG",
+      "leagueId": "CN",
+      "teamId": "1119",
+      "teamName": "All Gamers",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "21216",
+          "name": "f4ngeer",
+          "role": "DUE",
+          "rounds": 939,
+          "maps": 46,
+          "matches": 17
+        },
+        {
+          "playerId": "58959",
+          "name": "iamgrq",
+          "role": "CON",
+          "rounds": 939,
+          "maps": 46,
+          "matches": 17
+        },
+        {
+          "playerId": "46748",
+          "name": "K1ra",
+          "role": "CON",
+          "rounds": 939,
+          "maps": 46,
+          "matches": 17
+        },
+        {
+          "playerId": "25494",
+          "name": "Shr1mp",
+          "role": "INI",
+          "rounds": 939,
+          "maps": 46,
+          "matches": 17
+        },
+        {
+          "playerId": "52101",
+          "name": "Bai",
+          "role": "DUE",
+          "rounds": 124,
+          "maps": 6,
+          "matches": 2
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "CN:EDG",
+      "leagueId": "CN",
+      "teamId": "1120",
+      "teamName": "EDward Gaming",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "15559",
+          "name": "CHICHOO",
+          "role": "CON",
+          "rounds": 1295,
+          "maps": 63,
+          "matches": 23
+        },
+        {
+          "playerId": "3017",
+          "name": "nobody",
+          "role": "INI",
+          "rounds": 1295,
+          "maps": 63,
+          "matches": 23
+        },
+        {
+          "playerId": "4742",
+          "name": "Smoggy",
+          "role": "CON",
+          "rounds": 1295,
+          "maps": 63,
+          "matches": 23
+        },
+        {
+          "playerId": "3520",
+          "name": "ZmjjKK",
+          "role": "DUE",
+          "rounds": 1295,
+          "maps": 63,
+          "matches": 23
+        },
+        {
+          "playerId": "51244",
+          "name": "Jieni7",
+          "role": "CON",
+          "rounds": 814,
+          "maps": 39,
+          "matches": 14
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "CN:FPX",
+      "leagueId": "CN",
+      "teamId": "11328",
+      "teamName": "FunPlus Phoenix",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "19530",
+          "name": "AAAAY",
+          "role": "SEN",
+          "rounds": 403,
+          "maps": 20,
+          "matches": 8
+        },
+        {
+          "playerId": "7857",
+          "name": "BerLIN",
+          "role": "CON",
+          "rounds": 403,
+          "maps": 20,
+          "matches": 8
+        },
+        {
+          "playerId": "50025",
+          "name": "Setrod",
+          "role": "DUE",
+          "rounds": 403,
+          "maps": 20,
+          "matches": 8
+        },
+        {
+          "playerId": "55823",
+          "name": "Ben1Ley",
+          "role": "DUE",
+          "rounds": 262,
+          "maps": 13,
+          "matches": 5
+        },
+        {
+          "playerId": "7987",
+          "name": "KovaQ",
+          "role": "INI",
+          "rounds": 262,
+          "maps": 13,
+          "matches": 5
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "CN:DRG",
+      "leagueId": "CN",
+      "teamId": "11981",
+      "teamName": "Dragon Ranger Gaming",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "4705",
+          "name": "Flex1n",
+          "role": "CON",
+          "rounds": 969,
+          "maps": 48,
+          "matches": 18
+        },
+        {
+          "playerId": "11524",
+          "name": "Nicc",
+          "role": "INI",
+          "rounds": 969,
+          "maps": 48,
+          "matches": 18
+        },
+        {
+          "playerId": "31753",
+          "name": "SpiritZ1",
+          "role": "DUE",
+          "rounds": 969,
+          "maps": 48,
+          "matches": 18
+        },
+        {
+          "playerId": "3741",
+          "name": "vo0kashu",
+          "role": "SEN",
+          "rounds": 969,
+          "maps": 48,
+          "matches": 18
+        },
+        {
+          "playerId": "3028",
+          "name": "Life",
+          "role": "DUE",
+          "rounds": 678,
+          "maps": 34,
+          "matches": 13
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "CN:BLG",
+      "leagueId": "CN",
+      "teamId": "12010",
+      "teamName": "Bilibili Gaming",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "10698",
+          "name": "nephh",
+          "role": "CON",
+          "rounds": 693,
+          "maps": 33,
+          "matches": 12
+        },
+        {
+          "playerId": "48878",
+          "name": "rushia",
+          "role": "CON",
+          "rounds": 693,
+          "maps": 33,
+          "matches": 12
+        },
+        {
+          "playerId": "4885",
+          "name": "whzy",
+          "role": "DUE",
+          "rounds": 693,
+          "maps": 33,
+          "matches": 12
+        },
+        {
+          "playerId": "4774",
+          "name": "Knight",
+          "role": "INI",
+          "rounds": 492,
+          "maps": 24,
+          "matches": 10
+        },
+        {
+          "playerId": "56260",
+          "name": "bud",
+          "role": "INI",
+          "rounds": 435,
+          "maps": 20,
+          "matches": 7
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "CN:NOVA",
+      "leagueId": "CN",
+      "teamId": "12064",
+      "teamName": "Nova Esports",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "46460",
+          "name": "Ezeir",
+          "role": "CON",
+          "rounds": 355,
+          "maps": 17,
+          "matches": 8
+        },
+        {
+          "playerId": "34181",
+          "name": "GREEN",
+          "role": "CON",
+          "rounds": 355,
+          "maps": 17,
+          "matches": 8
+        },
+        {
+          "playerId": "41054",
+          "name": "GuanG",
+          "role": "DUE",
+          "rounds": 355,
+          "maps": 17,
+          "matches": 8
+        },
+        {
+          "playerId": "43007",
+          "name": "qiutiaN",
+          "role": "INI",
+          "rounds": 207,
+          "maps": 10,
+          "matches": 5
+        },
+        {
+          "playerId": "45492",
+          "name": "swagzor",
+          "role": "DUE",
+          "rounds": 207,
+          "maps": 10,
+          "matches": 5
+        },
+        {
+          "playerId": "39697",
+          "name": "CB",
+          "role": "DUE",
+          "rounds": 0,
+          "maps": 0,
+          "matches": 0
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "CN:TE",
+      "leagueId": "CN",
+      "teamId": "12685",
+      "teamName": "Trace Esports",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "10821",
+          "name": "deLb",
+          "role": "CON",
+          "rounds": 684,
+          "maps": 32,
+          "matches": 13
+        },
+        {
+          "playerId": "37494",
+          "name": "Kai",
+          "role": "DUE",
+          "rounds": 684,
+          "maps": 32,
+          "matches": 13
+        },
+        {
+          "playerId": "5011",
+          "name": "Abo",
+          "role": "CON",
+          "rounds": 406,
+          "maps": 19,
+          "matches": 8
+        },
+        {
+          "playerId": "4770",
+          "name": "FengF",
+          "role": "INI",
+          "rounds": 278,
+          "maps": 13,
+          "matches": 5
+        },
+        {
+          "playerId": "3045",
+          "name": "LuoK1ng",
+          "role": "CON",
+          "rounds": 278,
+          "maps": 13,
+          "matches": 5
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "CN:JDG",
+      "leagueId": "CN",
+      "teamId": "13576",
+      "teamName": "JDG Esports",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "12365",
+          "name": "coconut",
+          "role": "INI",
+          "rounds": 795,
+          "maps": 39,
+          "matches": 15
+        },
+        {
+          "playerId": "3519",
+          "name": "jkuro",
+          "role": "CON",
+          "rounds": 795,
+          "maps": 39,
+          "matches": 15
+        },
+        {
+          "playerId": "16924",
+          "name": "stew",
+          "role": "DUE",
+          "rounds": 795,
+          "maps": 39,
+          "matches": 15
+        },
+        {
+          "playerId": "11218",
+          "name": "Yuicaw",
+          "role": "DUE",
+          "rounds": 795,
+          "maps": 39,
+          "matches": 15
+        },
+        {
+          "playerId": "49476",
+          "name": "zhe",
+          "role": "DUE",
+          "rounds": 795,
+          "maps": 39,
+          "matches": 15
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "CN:XLG",
+      "leagueId": "CN",
+      "teamId": "13581",
+      "teamName": "Xi Lai Gaming",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "37927",
+          "name": "happywei",
+          "role": "CON",
+          "rounds": 1336,
+          "maps": 65,
+          "matches": 23
+        },
+        {
+          "playerId": "37489",
+          "name": "Lysoar",
+          "role": "CON",
+          "rounds": 1336,
+          "maps": 65,
+          "matches": 23
+        },
+        {
+          "playerId": "11527",
+          "name": "NoMan",
+          "role": "DUE",
+          "rounds": 1336,
+          "maps": 65,
+          "matches": 23
+        },
+        {
+          "playerId": "22047",
+          "name": "Rarga",
+          "role": "DUE",
+          "rounds": 1336,
+          "maps": 65,
+          "matches": 23
+        },
+        {
+          "playerId": "24308",
+          "name": "WsLeo",
+          "role": "INI",
+          "rounds": 1336,
+          "maps": 65,
+          "matches": 23
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "CN:WOL",
+      "leagueId": "CN",
+      "teamId": "13790",
+      "teamName": "Wolves Esports",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "19292",
+          "name": "jowa",
+          "role": "CON",
+          "rounds": 540,
+          "maps": 26,
+          "matches": 10
+        },
+        {
+          "playerId": "7849",
+          "name": "SiuFatBB",
+          "role": "INI",
+          "rounds": 540,
+          "maps": 26,
+          "matches": 10
+        },
+        {
+          "playerId": "14125",
+          "name": "Spring",
+          "role": "DUE",
+          "rounds": 540,
+          "maps": 26,
+          "matches": 10
+        },
+        {
+          "playerId": "6022",
+          "name": "Yosemite",
+          "role": "SEN",
+          "rounds": 540,
+          "maps": 26,
+          "matches": 10
+        },
+        {
+          "playerId": "49973",
+          "name": "glacier",
+          "role": "DUE",
+          "rounds": 253,
+          "maps": 12,
+          "matches": 5
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "CN:TEC",
+      "leagueId": "CN",
+      "teamId": "14137",
+      "teamName": "Titan Esports Club",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "47629",
+          "name": "Coco",
+          "role": "CON",
+          "rounds": 680,
+          "maps": 31,
+          "matches": 12
+        },
+        {
+          "playerId": "42235",
+          "name": "Dynamite",
+          "role": "DUE",
+          "rounds": 680,
+          "maps": 31,
+          "matches": 12
+        },
+        {
+          "playerId": "4720",
+          "name": "Haodong",
+          "role": "CON",
+          "rounds": 680,
+          "maps": 31,
+          "matches": 12
+        },
+        {
+          "playerId": "19677",
+          "name": "lucas",
+          "role": "INI",
+          "rounds": 680,
+          "maps": 31,
+          "matches": 12
+        },
+        {
+          "playerId": "4881",
+          "name": "Spitfires",
+          "role": "DUE",
+          "rounds": 425,
+          "maps": 19,
+          "matches": 8
+        }
+      ],
+      "issues": []
+    },
+    {
+      "teamKey": "CN:TYL",
+      "leagueId": "CN",
+      "teamId": "731",
+      "teamName": "TYLOO",
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "registered": [
+        {
+          "playerId": "55085",
+          "name": "Erv",
+          "role": "CON",
+          "rounds": 865,
+          "maps": 41,
+          "matches": 16
+        },
+        {
+          "playerId": "39485",
+          "name": "Scales",
+          "role": "CON",
+          "rounds": 865,
+          "maps": 41,
+          "matches": 16
+        },
+        {
+          "playerId": "41739",
+          "name": "slowly",
+          "role": "CON",
+          "rounds": 865,
+          "maps": 41,
+          "matches": 16
+        },
+        {
+          "playerId": "36685",
+          "name": "splash",
+          "role": "DUE",
+          "rounds": 865,
+          "maps": 41,
+          "matches": 16
+        },
+        {
+          "playerId": "3049",
+          "name": "sword9",
+          "role": "INI",
+          "rounds": 865,
+          "maps": 41,
+          "matches": 16
+        }
+      ],
+      "issues": []
+    }
+  ]
+}

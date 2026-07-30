@@ -11,8 +11,14 @@ const players = read('vct_json/data/entities/players.json').players;
 const stats = read('stat_json/data/players/2026.json').players;
 const model = read('stat_json/config/rating-model.json');
 const runtimeConfig = read('runtime_2026/config.json');
+const rosterOverrides = read('runtime_2026/roster-overrides-2026.json');
 const playerNames = new Map(players.map(p => [String(p.id), p.name]));
 const norm = value => String(value ?? '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+const allObservedByPlayer = new Map();
+for (const roster of Object.values(source)) for (const [playerId, record] of Object.entries(roster.players || {})) {
+  const current = allObservedByPlayer.get(playerId);
+  if (!current || (record.rounds || 0) > (current.rounds || 0)) allObservedByPlayer.set(playerId, record);
+}
 
 function resolveTeam(team) {
   const wanted = new Set([team.name, team.short].map(norm));
@@ -42,7 +48,7 @@ function inferRole(playerId, record) {
   return Object.entries(roleRounds).sort((a, b) => b[1] - a[1])[0][0];
 }
 
-const output = { schemaVersion: 1, year: 2026, source: 'profile_json/data/rosters/2026.json', activeRule: 'top_5_by_observed_rounds', teams: {} };
+const output = { schemaVersion: 3, year: 2026, source: 'profile_json/data/rosters/2026.json', selectionModel: 'matchday_five_from_registered_roster', teams: {} };
 for (const [leagueId, league] of Object.entries(LEAGUES)) for (const team of league.teams) {
   const overrideId = runtimeConfig.teamIdOverrides?.[`${leagueId}:${team.short}`];
   const configuredId = team.teamId || overrideId;
@@ -56,11 +62,34 @@ for (const [leagueId, league] of Object.entries(LEAGUES)) for (const team of lea
     maps: record.maps?.length || 0,
     matches: record.matches?.length || 0
   })).sort((a, b) => b.rounds - a.rounds || b.maps - a.maps || a.name.localeCompare(b.name));
-  output.teams[`${leagueId}:${team.short}`] = {
+  const teamKey = `${leagueId}:${team.short}`;
+  const override = rosterOverrides.teams?.[teamKey];
+  let registered = observed;
+  if (override) {
+    const rosterIds = (override.rosterPlayerIds || [...(override.activePlayerIds || []), ...(override.benchPlayerIds || [])]).map(String);
+    if (rosterIds.length < 5) throw new Error(`${teamKey}: rosterPlayerIds must contain at least 5 IDs`);
+    const ids = rosterIds;
+    if (new Set(ids).size !== ids.length) throw new Error(`${teamKey}: duplicate player ID in override`);
+    const byId = new Map(observed.map(p => [String(p.playerId), p]));
+    const resolvePlayer = playerId => {
+      if (byId.has(playerId)) return byId.get(playerId);
+      const record = allObservedByPlayer.get(playerId) || {};
+      const name = runtimeConfig.displayNameOverrides?.[playerId] || stats[playerId]?.name || playerNames.get(playerId);
+      if (!name) throw new Error(`${teamKey}: unknown override player ID ${playerId}`);
+      return { playerId, name, role: inferRole(playerId, record), rounds: 0, maps: 0, matches: 0 };
+    };
+    registered = rosterIds.map(resolvePlayer);
+  }
+  output.teams[teamKey] = {
     teamId: String(entity.id), teamName: entity.name,
-    active: observed.slice(0, 5), bench: observed.slice(5)
+    rosterSource: override ? 'manual_override' : 'top_5_by_observed_rounds',
+    verificationMode: override?.verificationMode || 'unverified_observation',
+    verifiedAt: override?.verifiedAt || null,
+    sources: override?.sources || [],
+    selectionModel: 'matchday_five_from_registered_roster',
+    registered
   };
 }
 
 fs.writeFileSync(path.join(root, 'src/data/game-rosters-2026.json'), JSON.stringify(output, null, 2) + '\n');
-console.log(JSON.stringify({ teams: Object.keys(output.teams).length, active: Object.values(output.teams).reduce((s, t) => s + t.active.length, 0), bench: Object.values(output.teams).reduce((s, t) => s + t.bench.length, 0) }, null, 2));
+console.log(JSON.stringify({ teams: Object.keys(output.teams).length, registered: Object.values(output.teams).reduce((s, t) => s + t.registered.length, 0) }, null, 2));

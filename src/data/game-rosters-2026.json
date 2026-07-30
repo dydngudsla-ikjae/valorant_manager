@@ -1,13 +1,18 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 3,
   "year": 2026,
   "source": "profile_json/data/rosters/2026.json",
-  "activeRule": "top_5_by_observed_rounds",
+  "selectionModel": "matchday_five_from_registered_roster",
   "teams": {
     "AMER:G2": {
       "teamId": "11058",
       "teamName": "G2 Esports",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "2170",
           "name": "BABYBAY",
@@ -48,13 +53,17 @@
           "maps": 62,
           "matches": 24
         }
-      ],
-      "bench": []
+      ]
     },
     "AMER:100T": {
       "teamId": "120",
       "teamName": "100 Thieves",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "601",
           "name": "Asuna",
@@ -95,13 +104,17 @@
           "maps": 41,
           "matches": 17
         }
-      ],
-      "bench": []
+      ]
     },
     "AMER:C9": {
       "teamId": "188",
       "teamName": "Cloud9",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "7871",
           "name": "Xeppaa",
@@ -127,30 +140,12 @@
           "matches": 11
         },
         {
-          "playerId": "7716",
-          "name": "penny",
-          "role": "DUE",
-          "rounds": 503,
-          "maps": 23,
-          "matches": 10
-        },
-        {
           "playerId": "18796",
           "name": "OXY",
           "role": "DUE",
           "rounds": 483,
           "maps": 23,
           "matches": 10
-        }
-      ],
-      "bench": [
-        {
-          "playerId": "26171",
-          "name": "Demon1",
-          "role": "SEN",
-          "rounds": 120,
-          "maps": 5,
-          "matches": 2
         },
         {
           "playerId": "44842",
@@ -159,21 +154,18 @@
           "rounds": 100,
           "maps": 5,
           "matches": 2
-        },
-        {
-          "playerId": "39021",
-          "name": "Notexxd",
-          "role": "CON",
-          "rounds": 41,
-          "maps": 2,
-          "matches": 1
         }
       ]
     },
     "AMER:SEN": {
       "teamId": "2",
       "teamName": "Sentinels",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "5395",
           "name": "cortezia",
@@ -214,38 +206,17 @@
           "maps": 10,
           "matches": 4
         }
-      ],
-      "bench": [
-        {
-          "playerId": "30470",
-          "name": "Kyu",
-          "role": "INI",
-          "rounds": 190,
-          "maps": 8,
-          "matches": 4
-        },
-        {
-          "playerId": "36245",
-          "name": "N4RRATE",
-          "role": "INI",
-          "rounds": 190,
-          "maps": 8,
-          "matches": 4
-        },
-        {
-          "playerId": "261",
-          "name": "Victor",
-          "role": "DUE",
-          "rounds": 43,
-          "maps": 2,
-          "matches": 1
-        }
       ]
     },
     "AMER:KRU": {
       "teamId": "2355",
       "teamName": "KRÜ Esports",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "41135",
           "name": "Dantedeu5",
@@ -286,54 +257,17 @@
           "maps": 16,
           "matches": 7
         }
-      ],
-      "bench": [
-        {
-          "playerId": "38857",
-          "name": "benG",
-          "role": "CON",
-          "rounds": 164,
-          "maps": 8,
-          "matches": 3
-        },
-        {
-          "playerId": "3980",
-          "name": "Governor",
-          "role": "INI",
-          "rounds": 164,
-          "maps": 8,
-          "matches": 3
-        },
-        {
-          "playerId": "9063",
-          "name": "infiltrator",
-          "role": "DUE",
-          "rounds": 164,
-          "maps": 8,
-          "matches": 3
-        },
-        {
-          "playerId": "36169",
-          "name": "mta",
-          "role": "DUE",
-          "rounds": 164,
-          "maps": 8,
-          "matches": 3
-        },
-        {
-          "playerId": "1294",
-          "name": "NagZ",
-          "role": "CON",
-          "rounds": 164,
-          "maps": 8,
-          "matches": 3
-        }
       ]
     },
     "AMER:LEV": {
       "teamId": "2359",
       "teamName": "LEVIATÁN",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "21251",
           "name": "blowz",
@@ -374,22 +308,17 @@
           "maps": 55,
           "matches": 20
         }
-      ],
-      "bench": [
-        {
-          "playerId": "13823",
-          "name": "PxS",
-          "role": "CON",
-          "rounds": 104,
-          "maps": 5,
-          "matches": 2
-        }
       ]
     },
     "AMER:FUR": {
       "teamId": "2406",
       "teamName": "FURIA",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "48025",
           "name": "alym",
@@ -430,13 +359,17 @@
           "maps": 37,
           "matches": 13
         }
-      ],
-      "bench": []
+      ]
     },
     "AMER:NRG": {
       "teamId": "1034",
       "teamName": "NRG Esports",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "2172",
           "name": "brawk",
@@ -477,13 +410,17 @@
           "maps": 65,
           "matches": 25
         }
-      ],
-      "bench": []
+      ]
     },
     "AMER:NV": {
       "teamId": "427",
       "teamName": "Envy",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "35302",
           "name": "Eggsterr",
@@ -524,22 +461,17 @@
           "maps": 14,
           "matches": 6
         }
-      ],
-      "bench": [
-        {
-          "playerId": "53",
-          "name": "BabyJ",
-          "role": "CON",
-          "rounds": 256,
-          "maps": 11,
-          "matches": 4
-        }
       ]
     },
     "AMER:EG": {
       "teamId": "5248",
       "teamName": "Evil Geniuses",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "34400",
           "name": "bao",
@@ -565,24 +497,6 @@
           "matches": 10
         },
         {
-          "playerId": "619",
-          "name": "C0M",
-          "role": "INI",
-          "rounds": 448,
-          "maps": 20,
-          "matches": 9
-        },
-        {
-          "playerId": "8373",
-          "name": "Okeanos",
-          "role": "DUE",
-          "rounds": 448,
-          "maps": 20,
-          "matches": 9
-        }
-      ],
-      "bench": [
-        {
           "playerId": "2164",
           "name": "Paincakes",
           "role": "INI",
@@ -603,7 +517,12 @@
     "AMER:LLL": {
       "teamId": "6961",
       "teamName": "LOUD",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "6193",
           "name": "cauanzin",
@@ -644,30 +563,17 @@
           "maps": 8,
           "matches": 3
         }
-      ],
-      "bench": [
-        {
-          "playerId": "5203",
-          "name": "Bati",
-          "role": "CON",
-          "rounds": 152,
-          "maps": 7,
-          "matches": 3
-        },
-        {
-          "playerId": "683",
-          "name": "pANcada",
-          "role": "CON",
-          "rounds": 146,
-          "maps": 7,
-          "matches": 3
-        }
       ]
     },
     "AMER:MBR": {
       "teamId": "7386",
       "teamName": "MIBR",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "8480",
           "name": "aspas",
@@ -708,13 +614,17 @@
           "maps": 33,
           "matches": 12
         }
-      ],
-      "bench": []
+      ]
     },
     "EMEA:TH": {
       "teamId": "1001",
       "teamName": "Team Heretics",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "29873",
           "name": "benjyfishy",
@@ -755,22 +665,17 @@
           "maps": 34,
           "matches": 12
         }
-      ],
-      "bench": [
-        {
-          "playerId": "40591",
-          "name": "ComeBack",
-          "role": "DUE",
-          "rounds": 351,
-          "maps": 17,
-          "matches": 7
-        }
       ]
     },
     "EMEA:FUT": {
       "teamId": "1184",
       "teamName": "FUT Esports",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "15735",
           "name": "KROSTALY",
@@ -810,16 +715,6 @@
           "rounds": 814,
           "maps": 38,
           "matches": 14
-        }
-      ],
-      "bench": [
-        {
-          "playerId": "10114",
-          "name": "baha",
-          "role": "CON",
-          "rounds": 187,
-          "maps": 8,
-          "matches": 3
         },
         {
           "playerId": "8044",
@@ -834,7 +729,12 @@
     "EMEA:M8": {
       "teamId": "12694",
       "teamName": "Gentle Mates",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "18400",
           "name": "bipo",
@@ -875,13 +775,17 @@
           "maps": 42,
           "matches": 16
         }
-      ],
-      "bench": []
+      ]
     },
     "EMEA:GX": {
       "teamId": "14419",
       "teamName": "GIANTX",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "11332",
           "name": "ara",
@@ -922,13 +826,17 @@
           "maps": 25,
           "matches": 10
         }
-      ],
-      "bench": []
+      ]
     },
     "EMEA:VIT": {
       "teamId": "2059",
       "teamName": "Team Vitality",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "458",
           "name": "Chronicle",
@@ -969,22 +877,17 @@
           "maps": 38,
           "matches": 15
         }
-      ],
-      "bench": [
-        {
-          "playerId": "4521",
-          "name": "UNFAKE",
-          "role": "INI",
-          "rounds": 280,
-          "maps": 14,
-          "matches": 6
-        }
       ]
     },
     "EMEA:FNC": {
       "teamId": "2593",
       "teamName": "FNATIC",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "9810",
           "name": "Alfajer",
@@ -1025,30 +928,17 @@
           "maps": 27,
           "matches": 10
         }
-      ],
-      "bench": [
-        {
-          "playerId": "13258",
-          "name": "CyvOph",
-          "role": "DUE",
-          "rounds": 145,
-          "maps": 7,
-          "matches": 3
-        },
-        {
-          "playerId": "195",
-          "name": "Desmo",
-          "role": "INI",
-          "rounds": 58,
-          "maps": 3,
-          "matches": 1
-        }
       ]
     },
     "EMEA:PCF": {
       "teamId": "3478",
       "teamName": "PCIFIC Espor",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "5292",
           "name": "al0rante",
@@ -1089,13 +979,17 @@
           "maps": 20,
           "matches": 8
         }
-      ],
-      "bench": []
+      ]
     },
     "EMEA:NAVI": {
       "teamId": "4915",
       "teamName": "Natus Vincere",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "4544",
           "name": "Filu",
@@ -1136,38 +1030,17 @@
           "maps": 12,
           "matches": 5
         }
-      ],
-      "bench": [
-        {
-          "playerId": "5568",
-          "name": "sociablEE",
-          "role": "CON",
-          "rounds": 261,
-          "maps": 12,
-          "matches": 5
-        },
-        {
-          "playerId": "40591",
-          "name": "ComeBack",
-          "role": "DUE",
-          "rounds": 152,
-          "maps": 7,
-          "matches": 3
-        },
-        {
-          "playerId": "37925",
-          "name": "Kolosha",
-          "role": "DUE",
-          "rounds": 129,
-          "maps": 6,
-          "matches": 2
-        }
       ]
     },
     "EMEA:EF": {
       "teamId": "6392",
       "teamName": "Eternal Fire",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "40843",
           "name": "audaz",
@@ -1208,13 +1081,17 @@
           "maps": 23,
           "matches": 9
         }
-      ],
-      "bench": []
+      ]
     },
     "EMEA:KC": {
       "teamId": "8877",
       "teamName": "Karmine Corp",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "5654",
           "name": "Avez",
@@ -1255,22 +1132,17 @@
           "maps": 13,
           "matches": 5
         }
-      ],
-      "bench": [
-        {
-          "playerId": "1428",
-          "name": "sheydos",
-          "role": "INI",
-          "rounds": 230,
-          "maps": 11,
-          "matches": 4
-        }
       ]
     },
     "EMEA:BBL": {
       "teamId": "397",
       "teamName": "BBL Esports",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "12795",
           "name": "Crewen",
@@ -1311,13 +1183,17 @@
           "maps": 34,
           "matches": 13
         }
-      ],
-      "bench": []
+      ]
     },
     "EMEA:TL": {
       "teamId": "474",
       "teamName": "Team Liquid",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "14681",
           "name": "kamo",
@@ -1351,16 +1227,6 @@
           "matches": 18
         },
         {
-          "playerId": "24628",
-          "name": "wayne",
-          "role": "CON",
-          "rounds": 897,
-          "maps": 42,
-          "matches": 17
-        }
-      ],
-      "bench": [
-        {
           "playerId": "11134",
           "name": "Kicks",
           "role": "CON",
@@ -1373,7 +1239,12 @@
     "PAC:NS": {
       "teamId": "11060",
       "teamName": "Nongshim RedForce",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "31827",
           "name": "Dambi",
@@ -1414,13 +1285,17 @@
           "maps": 39,
           "matches": 14
         }
-      ],
-      "bench": []
+      ]
     },
     "PAC:VAR": {
       "teamId": "11229",
       "teamName": "VARREL",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "2149",
           "name": "C1ndeR",
@@ -1460,14 +1335,26 @@
           "rounds": 462,
           "maps": 20,
           "matches": 8
+        },
+        {
+          "playerId": "11600",
+          "name": "Foxy9",
+          "role": "CON",
+          "rounds": 0,
+          "maps": 0,
+          "matches": 0
         }
-      ],
-      "bench": []
+      ]
     },
     "PAC:T1": {
       "teamId": "14",
       "teamName": "T1",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "804",
           "name": "BuZz",
@@ -1508,13 +1395,17 @@
           "maps": 41,
           "matches": 17
         }
-      ],
-      "bench": []
+      ]
     },
     "PAC:GEN": {
       "teamId": "17",
       "teamName": "Gen.G",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "34974",
           "name": "Karon",
@@ -1554,9 +1445,7 @@
           "rounds": 405,
           "maps": 18,
           "matches": 7
-        }
-      ],
-      "bench": [
+        },
         {
           "playerId": "62402",
           "name": "KiTae",
@@ -1564,21 +1453,18 @@
           "rounds": 143,
           "maps": 6,
           "matches": 2
-        },
-        {
-          "playerId": "11600",
-          "name": "Foxy9",
-          "role": "CON",
-          "rounds": 38,
-          "maps": 2,
-          "matches": 1
         }
       ]
     },
     "PAC:DFM": {
       "teamId": "278",
       "teamName": "DetonatioN FocusMe",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "13002",
           "name": "Akame",
@@ -1619,13 +1505,17 @@
           "maps": 32,
           "matches": 13
         }
-      ],
-      "bench": []
+      ]
     },
     "PAC:FS": {
       "teamId": "4050",
       "teamName": "FULL SENSE",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "13788",
           "name": "JitBoyS",
@@ -1666,22 +1556,17 @@
           "maps": 26,
           "matches": 11
         }
-      ],
-      "bench": [
-        {
-          "playerId": "42901",
-          "name": "thyy",
-          "role": "DUE",
-          "rounds": 237,
-          "maps": 12,
-          "matches": 5
-        }
       ]
     },
     "PAC:ZETA": {
       "teamId": "5448",
       "teamName": "ZETA DIVISION",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "34776",
           "name": "Absol",
@@ -1722,13 +1607,17 @@
           "maps": 23,
           "matches": 9
         }
-      ],
-      "bench": []
+      ]
     },
     "PAC:TS": {
       "teamId": "6199",
       "teamName": "Team Secret",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "4874",
           "name": "BerserX",
@@ -1762,24 +1651,6 @@
           "matches": 8
         },
         {
-          "playerId": "48439",
-          "name": "Rimuru",
-          "role": "DUE",
-          "rounds": 141,
-          "maps": 6,
-          "matches": 3
-        }
-      ],
-      "bench": [
-        {
-          "playerId": "29839",
-          "name": "TenTen",
-          "role": "DUE",
-          "rounds": 133,
-          "maps": 7,
-          "matches": 3
-        },
-        {
           "playerId": "46135",
           "name": "Zeus",
           "role": "DUE",
@@ -1792,7 +1663,12 @@
     "PAC:PRX": {
       "teamId": "624",
       "teamName": "Paper Rex",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "9803",
           "name": "d4v41",
@@ -1833,13 +1709,17 @@
           "maps": 83,
           "matches": 29
         }
-      ],
-      "bench": []
+      ]
     },
     "PAC:DRX": {
       "teamId": "8185",
       "teamName": "DRX",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "4678",
           "name": "BeYN",
@@ -1880,22 +1760,17 @@
           "maps": 18,
           "matches": 7
         }
-      ],
-      "bench": [
-        {
-          "playerId": "17049",
-          "name": "Hermes",
-          "role": "DUE",
-          "rounds": 381,
-          "maps": 18,
-          "matches": 7
-        }
       ]
     },
     "PAC:RRQ": {
       "teamId": "878",
       "teamName": "Rex Regum Qeon",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "1430",
           "name": "crazyguy",
@@ -1936,13 +1811,17 @@
           "maps": 37,
           "matches": 13
         }
-      ],
-      "bench": []
+      ]
     },
     "PAC:GE": {
       "teamId": "918",
       "teamName": "Global Esports",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "872",
           "name": "Autumn",
@@ -1983,13 +1862,17 @@
           "maps": 46,
           "matches": 18
         }
-      ],
-      "bench": []
+      ]
     },
     "CN:AG": {
       "teamId": "1119",
       "teamName": "All Gamers",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "21216",
           "name": "f4ngeer",
@@ -2023,37 +1906,11 @@
           "matches": 17
         },
         {
-          "playerId": "55038",
-          "name": "Au1",
-          "role": "CON",
-          "rounds": 416,
-          "maps": 20,
-          "matches": 7
-        }
-      ],
-      "bench": [
-        {
-          "playerId": "46040",
-          "name": "Youze",
-          "role": "DUE",
-          "rounds": 293,
-          "maps": 15,
-          "matches": 6
-        },
-        {
           "playerId": "52101",
           "name": "Bai",
           "role": "DUE",
           "rounds": 124,
           "maps": 6,
-          "matches": 2
-        },
-        {
-          "playerId": "3031",
-          "name": "Septem7",
-          "role": "CON",
-          "rounds": 106,
-          "maps": 5,
           "matches": 2
         }
       ]
@@ -2061,7 +1918,12 @@
     "CN:EDG": {
       "teamId": "1120",
       "teamName": "EDward Gaming",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "15559",
           "name": "CHICHOO",
@@ -2102,22 +1964,17 @@
           "maps": 39,
           "matches": 14
         }
-      ],
-      "bench": [
-        {
-          "playerId": "39697",
-          "name": "CB",
-          "role": "DUE",
-          "rounds": 481,
-          "maps": 24,
-          "matches": 9
-        }
       ]
     },
     "CN:FPX": {
       "teamId": "11328",
       "teamName": "FunPlus Phoenix",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "19530",
           "name": "AAAAY",
@@ -2158,30 +2015,17 @@
           "maps": 13,
           "matches": 5
         }
-      ],
-      "bench": [
-        {
-          "playerId": "3028",
-          "name": "Life",
-          "role": "DUE",
-          "rounds": 141,
-          "maps": 7,
-          "matches": 3
-        },
-        {
-          "playerId": "4382",
-          "name": "sScary",
-          "role": "CON",
-          "rounds": 141,
-          "maps": 7,
-          "matches": 3
-        }
       ]
     },
     "CN:DRG": {
       "teamId": "11981",
       "teamName": "Dragon Ranger Gaming",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "4705",
           "name": "Flex1n",
@@ -2222,22 +2066,17 @@
           "maps": 34,
           "matches": 13
         }
-      ],
-      "bench": [
-        {
-          "playerId": "52904",
-          "name": "Akeman",
-          "role": "DUE",
-          "rounds": 291,
-          "maps": 14,
-          "matches": 5
-        }
       ]
     },
     "CN:BLG": {
       "teamId": "12010",
       "teamName": "Bilibili Gaming",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "10698",
           "name": "nephh",
@@ -2278,30 +2117,17 @@
           "maps": 20,
           "matches": 7
         }
-      ],
-      "bench": [
-        {
-          "playerId": "62947",
-          "name": "yilai",
-          "role": "DUE",
-          "rounds": 258,
-          "maps": 13,
-          "matches": 5
-        },
-        {
-          "playerId": "3021",
-          "name": "Biank",
-          "role": "INI",
-          "rounds": 201,
-          "maps": 9,
-          "matches": 2
-        }
       ]
     },
     "CN:NOVA": {
       "teamId": "12064",
       "teamName": "Nova Esports",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "46460",
           "name": "Ezeir",
@@ -2341,31 +2167,26 @@
           "rounds": 207,
           "maps": 10,
           "matches": 5
-        }
-      ],
-      "bench": [
-        {
-          "playerId": "4712",
-          "name": "heybay",
-          "role": "INI",
-          "rounds": 148,
-          "maps": 7,
-          "matches": 3
         },
         {
-          "playerId": "36670",
-          "name": "OBONE",
-          "role": "CON",
-          "rounds": 148,
-          "maps": 7,
-          "matches": 3
+          "playerId": "39697",
+          "name": "CB",
+          "role": "DUE",
+          "rounds": 0,
+          "maps": 0,
+          "matches": 0
         }
       ]
     },
     "CN:TE": {
       "teamId": "12685",
       "teamName": "Trace Esports",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "10821",
           "name": "deLb",
@@ -2383,14 +2204,6 @@
           "matches": 13
         },
         {
-          "playerId": "36415",
-          "name": "Viva",
-          "role": "INI",
-          "rounds": 684,
-          "maps": 32,
-          "matches": 13
-        },
-        {
           "playerId": "5011",
           "name": "Abo",
           "role": "CON",
@@ -2398,16 +2211,6 @@
           "maps": 19,
           "matches": 8
         },
-        {
-          "playerId": "54487",
-          "name": "Xlele",
-          "role": "DUE",
-          "rounds": 406,
-          "maps": 19,
-          "matches": 8
-        }
-      ],
-      "bench": [
         {
           "playerId": "4770",
           "name": "FengF",
@@ -2429,7 +2232,12 @@
     "CN:JDG": {
       "teamId": "13576",
       "teamName": "JDG Esports",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "12365",
           "name": "coconut",
@@ -2470,13 +2278,17 @@
           "maps": 39,
           "matches": 15
         }
-      ],
-      "bench": []
+      ]
     },
     "CN:XLG": {
       "teamId": "13581",
       "teamName": "Xi Lai Gaming",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "37927",
           "name": "happywei",
@@ -2517,13 +2329,17 @@
           "maps": 65,
           "matches": 23
         }
-      ],
-      "bench": []
+      ]
     },
     "CN:WOL": {
       "teamId": "13790",
       "teamName": "Wolves Esports",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "19292",
           "name": "jowa",
@@ -2557,16 +2373,6 @@
           "matches": 10
         },
         {
-          "playerId": "43007",
-          "name": "qiutiaN",
-          "role": "INI",
-          "rounds": 287,
-          "maps": 14,
-          "matches": 5
-        }
-      ],
-      "bench": [
-        {
           "playerId": "49973",
           "name": "glacier",
           "role": "DUE",
@@ -2579,7 +2385,12 @@
     "CN:TEC": {
       "teamId": "14137",
       "teamName": "Titan Esports Club",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "47629",
           "name": "Coco",
@@ -2620,22 +2431,17 @@
           "maps": 19,
           "matches": 8
         }
-      ],
-      "bench": [
-        {
-          "playerId": "5011",
-          "name": "Abo",
-          "role": "CON",
-          "rounds": 255,
-          "maps": 12,
-          "matches": 4
-        }
       ]
     },
     "CN:TYL": {
       "teamId": "731",
       "teamName": "TYLOO",
-      "active": [
+      "rosterSource": "manual_override",
+      "verificationMode": "manual_review_required",
+      "verifiedAt": null,
+      "sources": [],
+      "selectionModel": "matchday_five_from_registered_roster",
+      "registered": [
         {
           "playerId": "55085",
           "name": "Erv",
@@ -2676,8 +2482,7 @@
           "maps": 41,
           "matches": 16
         }
-      ],
-      "bench": []
+      ]
     }
   }
 }

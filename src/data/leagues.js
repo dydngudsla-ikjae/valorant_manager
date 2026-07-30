@@ -106,8 +106,11 @@ Object.entries(LEAGUES).forEach(([leagueId,league])=>league.teams.forEach(team=>
   const source=GAME_ROSTERS_2026.teams[`${leagueId}:${team.short}`];
   if(!source)return;
   const make=x=>Object.assign(p(x.name,x.role,60,60,60,60,60),{playerId:x.playerId,teamId:source.teamId,observedRounds2026:x.rounds});
-  team.roster=source.active.map(make);
-  team.bench=source.bench.map(make);
+  const registered=source.registered || [...(source.active||[]),...(source.bench||[])];
+  team.registered=registered.map(make);
+  team.roster=[];
+  team.bench=[];
+  team.selectionModel=source.selectionModel || 'matchday_five_from_registered_roster';
 }));
 
 /* ---- ratings ---- */

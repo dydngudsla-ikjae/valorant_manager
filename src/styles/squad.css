@@ -7,7 +7,6 @@
   .sphead .spname{font-family:"Rajdhani","Pretendard"; font-size:26px; margin:2px 0 0}
   .spright{display:flex; align-items:center; gap:14px}
   .pcard.clickable{cursor:pointer; transition:border-color .15s, transform .15s}
-  .pcard.bench{opacity:.82; border-style:dashed}
   .subtag{font-family:"IBM Plex Mono Local","Pretendard"; font-size:9px; color:var(--bg); background:var(--muted); padding:1px 5px; border-radius:4px; vertical-align:middle; margin-left:4px; letter-spacing:.05em}
   .pcard.clickable:hover{border-color:var(--val); transform:translateY(-2px)}
   .profrow{display:flex; gap:6px; margin:2px 0 12px}
@@ -102,7 +101,6 @@
   .cardbadges{min-height:19px; display:flex; align-items:flex-start; gap:6px; margin-bottom:0}
   .playerbadge{min-width:42px; height:19px; display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; padding:0 7px; border:1px solid; border-radius:4px; font:700 9px "IBM Plex Mono Local","Pretendard"; line-height:1; letter-spacing:.06em}
   .playerbadge.flex{border-color:#9b7cff; color:#b9a5ff; background:rgba(120,86,220,.12)}
-  .playerbadge.substitute{border-color:#667385; color:#c2cad5; background:rgba(102,115,133,.14)}
   .stat{display:grid; grid-template-columns:64px 1fr 30px; align-items:center; gap:9px; margin:7px 0}
   .stat label{font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em}
   .stat .track{height:6px; background:#0d1219; border-radius:3px; overflow:hidden}

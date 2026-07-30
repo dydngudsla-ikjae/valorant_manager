@@ -1,21 +1,34 @@
 import { MATCH } from './state.js';
-import { GEO_ASCENT, MAPGEO } from '../data/geo/ascent.js';
+import { GEO_ASCENT, MAPGEO, mapGeo } from '../data/geo/maps.js';
 import { p } from '../data/leagues.js';
-import NAVGRID from '../data/geo/ascent-navgrid.json';
+import ASCENT_NAV from '../data/geo/ascent-navgrid.json' with { type: 'json' };
+import BIND_NAV from '../data/geo/bind-navgrid.json' with { type: 'json' };
+import HAVEN_NAV from '../data/geo/haven-navgrid.json' with { type: 'json' };
+import SPLIT_NAV from '../data/geo/split-navgrid.json' with { type: 'json' };
+import LOTUS_NAV from '../data/geo/lotus-navgrid.json' with { type: 'json' };
+import SUNSET_NAV from '../data/geo/sunset-navgrid.json' with { type: 'json' };
+import ICEBOX_NAV from '../data/geo/icebox-navgrid.json' with { type: 'json' };
+import { random } from './rng.js';
+import { currentRoundPhase, phaseTacticalEdge, summarizeRoundPhases } from './phases/round-phases.js';
+import { createTradeWindow, duelSupportContext, supportModifier } from './trades/trade-system.js';
 
-export function curGeo(){ return (MATCH&&MATCH.mapPool&&MAPGEO[MATCH.mapPool[MATCH.curMap]])||GEO_ASCENT; }
+const NAVGRIDS={Ascent:ASCENT_NAV,Bind:BIND_NAV,Haven:HAVEN_NAV,Split:SPLIT_NAV,Lotus:LOTUS_NAV,Sunset:SUNSET_NAV,Icebox:ICEBOX_NAV};
+let activeMapName=null;
+function currentMapName(){return activeMapName||(MATCH&&MATCH.mapPool&&MATCH.mapPool[MATCH.curMap])||'Ascent';}
+function curNav(){return NAVGRIDS[currentMapName()]||ASCENT_NAV;}
+export function curGeo(){return MAPGEO[currentMapName()]||GEO_ASCENT;}
 /* ===== NAV GRID (walkable mask from the real map): pathfinding + line-of-sight ===== */
 
-export function navOpenCell(cx,cy){ if(cx<0||cy<0||cx>=NAVGRID.w||cy>=NAVGRID.h)return false; return NAVGRID.cells[cy*NAVGRID.w+cx]==='1'; }
+export function navOpenCell(cx,cy){const grid=curNav();if(cx<0||cy<0||cx>=grid.w||cy>=grid.h)return false;return grid.cells[cy*grid.w+cx]==='1';}
 
-export function navToCell(x,y){ return [Math.max(0,Math.min(NAVGRID.w-1,Math.floor(x/100*NAVGRID.w))), Math.max(0,Math.min(NAVGRID.h-1,Math.floor(y/100*NAVGRID.h)))]; }
+export function navToCell(x,y){const grid=curNav();return[Math.max(0,Math.min(grid.w-1,Math.floor(x/100*grid.w))),Math.max(0,Math.min(grid.h-1,Math.floor(y/100*grid.h)))];}
 
-export function navCellPct(cx,cy){ return {x:(cx+0.5)/NAVGRID.w*100, y:(cy+0.5)/NAVGRID.h*100}; }
+export function navCellPct(cx,cy){const grid=curNav();return{x:(cx+0.5)/grid.w*100,y:(cy+0.5)/grid.h*100};}
 
-export function navOpenNear(cx,cy){ if(navOpenCell(cx,cy))return[cx,cy]; const seen=new Set([cx+','+cy]); let q=[[cx,cy]];
+export function navOpenNear(cx,cy){const grid=curNav();if(navOpenCell(cx,cy))return[cx,cy]; const seen=new Set([cx+','+cy]); let q=[[cx,cy]];
   const dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[1,1],[-1,1],[1,-1]];
   while(q.length){ const [x,y]=q.shift(); for(const [dx,dy] of dirs){ const nx=x+dx,ny=y+dy,k=nx+','+ny;
-    if(nx<0||ny<0||nx>=NAVGRID.w||ny>=NAVGRID.h||seen.has(k))continue; if(navOpenCell(nx,ny))return[nx,ny]; seen.add(k); q.push([nx,ny]); } }
+    if(nx<0||ny<0||nx>=grid.w||ny>=grid.h||seen.has(k))continue; if(navOpenCell(nx,ny))return[nx,ny]; seen.add(k); q.push([nx,ny]); } }
   return [cx,cy]; }
 
 export function navLOS(a,b){ // true if sightline a->b is clear; tolerates thin (1-cell) props, blocked by real walls
@@ -30,10 +43,10 @@ export function navLOS(a,b){ // true if sightline a->b is clear; tolerates thin 
 export const _navCache={};
 
 export function navPath(ax,ay,bx,by){ // A* on the grid, returns list of {x,y} in % (cached)
-  const key=ax.toFixed(1)+','+ay.toFixed(1)+'>'+bx.toFixed(1)+','+by.toFixed(1);
+  const key=currentMapName()+':'+ax.toFixed(1)+','+ay.toFixed(1)+'>'+bx.toFixed(1)+','+by.toFixed(1);
   if(_navCache[key])return _navCache[key];
   const a=navOpenNear(...navToCell(ax,ay)), b=navOpenNear(...navToCell(bx,by));
-  const W=NAVGRID.w,ok=(x,y)=>navOpenCell(x,y);
+  const ok=(x,y)=>navOpenCell(x,y);
   const hn=(x,y)=>Math.abs(x-b[0])+Math.abs(y-b[1]);
   const g={}, came={}, sk=a[0]+','+a[1]; g[sk]=0;
   const pq=[[hn(a[0],a[1]),a[0],a[1]]];
@@ -63,37 +76,46 @@ export const SP_TUNE={ holdBonus:3.0, execBonus:1.2, peekPenalty:1.0, gapMul:1.0
 
 export const SP_SETUPS=[{A:2,mid:1,B:2,w:6},{A:2,mid:0,B:3,w:2},{A:3,mid:0,B:2,w:2},{A:1,mid:1,B:3,w:1},{A:3,mid:1,B:1,w:1},{A:2,mid:2,B:1,w:1},{A:1,mid:2,B:2,w:1}];
 
-export function spPickSetup(){ const tot=SP_SETUPS.reduce((s,x)=>s+x.w,0); let r=Math.random()*tot; for(const s of SP_SETUPS){ if((r-=s.w)<=0)return s; } return SP_SETUPS[0]; }
+export function spPickSetup(siteNames=['A','B']){
+  if(siteNames.length===2){const tot=SP_SETUPS.reduce((s,x)=>s+x.w,0);let r=random()*tot;for(const s of SP_SETUPS){if((r-=s.w)<=0)return s;}return SP_SETUPS[0];}
+  const setup=Object.fromEntries(siteNames.map(s=>[s,1]));setup.mid=1;
+  setup[siteNames[Math.floor(random()*siteNames.length)]]+=1;
+  return setup;
+}
 // home/away rosters; opts:{atkTeamKey,defTeamKey,teamGap,ratingOf,reconStrength,utilStrength,isPistol}
 
 export function spatialRound(home,away,opts){
-  const G=GEO_ASCENT;
-  const {atkTeamKey,defTeamKey,teamGap,ratingOf,reconStrength=0.5,utilStrength=0.5,isPistol=false}=opts;
+  activeMapName=opts.mapName||currentMapName();
+  const G=mapGeo(activeMapName);
+  const {atkTeamKey,defTeamKey,teamGap,ratingOf,reconStrength=0.5,utilStrength=0.5,teamplay={home:60,away:60},objective={home:{},away:{}},isPistol=false,tacticalPlan=null}=opts;
   const atkTeam=atkTeamKey==='home'?home:away, defTeam=defTeamKey==='home'?home:away;
-  const TICK=0.1,MAXT=100,SPEED=5.5,SIGHT=16;
-  const setup=opts.setup||spPickSetup(); const perSite={A:setup.A,B:setup.B,mid:setup.mid};
-  const effA=perSite.A+perSite.mid*0.5, effB=perSite.B+perSite.mid*0.5;
-  const weaker=effA<effB?'A':(effB<effA?'B':(Math.random()<0.5?'A':'B'));
+  const TICK=0.1,MAXT=100,SPEED=tacticalPlan?4.6+tacticalPlan.attack.pace*1.7:5.5,SIGHT=16;
+  const setup=opts.setup||tacticalPlan?.defense?.setup||spPickSetup(G.siteNames);const perSite={...setup};
+  const siteStrength=Object.fromEntries(G.siteNames.map(s=>[s,(perSite[s]||0)+(perSite.mid||0)/G.siteNames.length]));
+  const minStrength=Math.min(...Object.values(siteStrength));
+  const weakSites=G.siteNames.filter(s=>siteStrength[s]===minStrength);
+  const weaker=weakSites[Math.floor(random()*weakSites.length)];
   const infoP=SP_TUNE.reconBase+SP_TUNE.reconGain*reconStrength;
-  const hasInfo=Math.random()<infoP;
-  const site=opts.forceSite||(hasInfo?weaker:(Math.random()<0.5?'A':'B'));
+  const hasInfo=random()<infoP;
+  const site=opts.forceSite||tacticalPlan?.attack?.targetSite||(hasInfo?weaker:G.siteNames[Math.floor(random()*G.siteNames.length)]);
   const mk=(team,key,idx)=>({name:team.roster[idx].name,side:key,idx,alive:true,x:0,y:0,path:null,seg:0,r:ratingOf(team.roster[idx],key),startDelay:0,zone:null,track:[],deathT:null,role:null,carrier:false,face:0,hold:null,joined:false});
   const atk=atkTeam.roster.map((_,i)=>mk(atkTeam,atkTeamKey,i));
   const def=defTeam.roster.map((_,i)=>mk(defTeam,defTeamKey,i));
   const snap=p=>{const c=navOpenNear(...navToCell(p.x,p.y));return navCellPct(c[0],c[1]);};
   // defenders spawn at defender spawn and DEPLOY out to (slightly randomized) holds
   const dsp=snap(G.pts.defSpawn);
-  const jit=p=>snap({x:p.x+(Math.random()*6-3),y:p.y+(Math.random()*6-3)});
-  const aH=G.siteHolds('A').map(jit),bH=G.siteHolds('B').map(jit),mH=G.midHolds().map(jit); let di=0;
-  const deploy=(u,hold,zone)=>{ const s2=snap({x:dsp.x+(Math.random()*8-4),y:dsp.y+(Math.random()*4-2)}); u.x=s2.x;u.y=s2.y; u.zone=zone; u.hold=hold; u.path=navRouteThrough([{x:u.x,y:u.y},hold]); u.seg=0; u.startDelay=Math.random()*0.3; u.face=Math.atan2(hold.y-u.y,hold.x-u.x)*180/Math.PI; };
-  for(let k=0;k<perSite.A;k++){ deploy(def[di++],aH[k%aH.length],'A'); }
-  for(let k=0;k<perSite.mid;k++){ deploy(def[di++],mH[k%mH.length],'mid'); }
-  for(let k=0;k<perSite.B;k++){ deploy(def[di++],bH[k%bH.length],'B'); }
+  const jit=p=>snap({x:p.x+(random()*6-3),y:p.y+(random()*6-3)});
+  const holdBySite=Object.fromEntries(G.siteNames.map(s=>[s,G.siteHolds(s).map(jit)]));const mH=G.midHolds().map(jit);let di=0;
+  const deploy=(u,hold,zone)=>{ const s2=snap({x:dsp.x+(random()*8-4),y:dsp.y+(random()*4-2)}); u.x=s2.x;u.y=s2.y; u.zone=zone; u.hold=hold; u.path=navRouteThrough([{x:u.x,y:u.y},hold]); u.seg=0; u.startDelay=random()*0.3; u.face=Math.atan2(hold.y-u.y,hold.x-u.x)*180/Math.PI; };
+  for(const s of G.siteNames){for(let k=0;k<(perSite[s]||0)&&di<def.length;k++){const holds=holdBySite[s];deploy(def[di++],holds[k%holds.length],s);}}
+  for(let k=0;k<(perSite.mid||0)&&di<def.length;k++){deploy(def[di++],mH[k%mH.length],'mid');}
+  while(di<def.length){const s=G.siteNames[di%G.siteNames.length],holds=holdBySite[s];deploy(def[di++],holds[0],s);}
   const spawnC=snap(G.atkSpawn[1]);
-  const other=site==='A'?'B':'A';
+  const alternatives=G.siteNames.filter(s=>s!==site);
+  const other=tacticalPlan?.attack?.fakeSite||alternatives[Math.floor(random()*alternatives.length)];
   // attacker formation: main+mid commit to the target, a lurk works the other side (cut backups / take empty)
   const FORMS=[{lurk:1,mid:1,main:3,w:4},{lurk:1,mid:0,main:4,w:2},{lurk:0,mid:2,main:3,w:2},{lurk:1,mid:2,main:2,w:2},{lurk:2,mid:1,main:2,w:1}];
-  const form=(()=>{const tot=FORMS.reduce((s,x)=>s+x.w,0);let r=Math.random()*tot;for(const f of FORMS){if((r-=f.w)<=0)return f;}return FORMS[0];})();
+  const form=tacticalPlan?.attack?.formation||(()=>{const tot=FORMS.reduce((s,x)=>s+x.w,0);let r=random()*tot;for(const f of FORMS){if((r-=f.w)<=0)return f;}return FORMS[0];})();
   const mainPath=navRouteThrough([spawnC].concat(G.routeMain(site)));
   const midPath =navRouteThrough([spawnC].concat(G.routeMid(site)));
   const lurkPath=navRouteThrough([spawnC].concat(G.routeMain(other)));
@@ -103,9 +125,10 @@ export function spatialRound(home,away,opts){
   for(let k=0;k<form.lurk&&ai<5;k++){const u=atk[ai++];u.role='lurk';u.path=lurkPath.slice();}
   while(ai<5){const u=atk[ai++];u.role='main';u.path=mainPath.slice();}
   atk.forEach((u,i)=>{const p=snap(G.atkSpawn[i]);u.x=p.x;u.y=p.y;u.seg=0;u.startDelay=i*0.4+(u.role==='lurk'?0.8:0);});
-  const mains=atk.filter(u=>u.role==='main'); let spikeCarrier=(mains[mains.length-1]||atk[0]); spikeCarrier.carrier=true;
+  const mains=atk.filter(u=>u.role==='main');
+  let spikeCarrier=([...mains].sort((a,b)=>(objective[atkTeamKey]?.[b.name]||50)-(objective[atkTeamKey]?.[a.name]||50))[0]||atk[0]); spikeCarrier.carrier=true;
   const pzc=G.plantZone(site); const plantAtSite=snap({x:pzc.x,y:pzc.y});
-  const events=[]; let planted=false,plantT=-1,defused=false,contact=false,utilAt=-1;
+  const events=tacticalPlan?[{t:0,type:'tactic',attack:tacticalPlan.attack.type,defense:tacticalPlan.defense.type,site}]:[]; let planted=false,plantT=-1,defused=false,contact=false,utilAt=-1;
   let spikeDropped=null, planting=-1, retriever=null; const PLANT_TIME=4, DEFUSE_TIME=4, SPIKE_TIME=22; let defusing=-1, defuserName=null;
   const aliveAtk=()=>atk.filter(u=>u.alive), aliveDef=()=>def.filter(u=>u.alive);
   if(hasInfo) events.push({t:1.0,type:'recon',x:plantAtSite.x,y:plantAtSite.y,site});
@@ -113,7 +136,7 @@ export function spatialRound(home,away,opts){
     const w=u.path[u.seg],d=sdist(u,w),step=SPEED*TICK; if(d>0.001)u.face=Math.atan2(w.y-u.y,w.x-u.x)*180/Math.PI;
     if(d<=step){u.x=w.x;u.y=w.y;u.seg++;} else {u.x+=(w.x-u.x)/d*step;u.y+=(w.y-u.y)/d*step;} }
   function utilActive(t){ return utilAt>=0&&(t-utilAt)<SP_TUNE.utilWindow; }
-  let fb=null, clutchWho=null, clutchVs=0;
+  let fb=null, clutchWho=null, clutchVs=0;const tradeWindows=[];
   function tryDuel(t){
     let best=null,bd=SIGHT; aliveAtk().forEach(A=>aliveDef().forEach(D=>{ if(!navLOS(A,D))return; const d=sdist(A,D); if(d<bd){bd=d;best=[A,D];}}));
     if(!best)return; contact=true; const [A,D]=best;
@@ -122,18 +145,33 @@ export function spatialRound(home,away,opts){
     let holdD=dHold?SP_TUNE.holdBonus:0; if(utilActive(t)&&!planted) holdD*=(1-SP_TUNE.utilSuppress*utilStrength);
     const holdA=aHold?SP_TUNE.holdBonus:0;
     const execTerm=planted?0:SP_TUNE.execBonus;
-    const teamAdj=(atkTeamKey==='home'?teamGap:-teamGap)*SP_TUNE.gapMul;
+    const teamAdj=(atkTeamKey==='home'?teamGap:-teamGap)*SP_TUNE.gapMul+(tacticalPlan?.edge||0);
     const scale=isPistol?(SP_TUNE.scale*1.7):SP_TUNE.scale;
-    const exponent=((A.r-D.r)+teamAdj+execTerm+holdA-holdD)/scale;
-    const atkWins=Math.random()<1/(1+Math.pow(10,-exponent));
+    const opening=!fb,atkClutch=aliveAtk().length===1,defClutch=aliveDef().length===1;
+    const units=atk.concat(def),support=duelSupportContext({attacker:A,defender:D,units,windows:tradeWindows,time:t,lineOfSight:navLOS});
+    const phase=currentRoundPhase({contact,firstBlood:!!fb,planted,retakeStarted:planted&&aliveDef().some(unit=>sdist(unit,plantAtSite)<20)});
+    const aRating=ratingOf(atkTeam.roster[A.idx],A.side,{opening,attacking:true,clutch:atkClutch})+supportModifier(support.attacker);
+    const dRating=ratingOf(defTeam.roster[D.idx],D.side,{opening,attacking:false,clutch:defClutch})+supportModifier(support.defender);
+    const phaseEdge=phaseTacticalEdge(phase,tacticalPlan);
+    const exponent=((aRating-dRating)+teamAdj+phaseEdge+execTerm+holdA-holdD)/scale;
+    const atkWins=random()<1/(1+Math.pow(10,-exponent));
     const winner=atkWins?A:D, loser=atkWins?D:A;
+    const winnerSupport=atkWins?support.attacker:support.defender,loserSupport=atkWins?support.defender:support.attacker;
+    const tradeWindow=winnerSupport.trade&&winnerSupport.trade.target===loser.name?winnerSupport.trade:null;
+    if(tradeWindow)tradeWindow.consumed=true;
+    const assistUnit=winnerSupport.supporters?.slice().sort((x,y)=>sdist(x,loser)-sdist(y,loser))[0]||null;
     loser.alive=false; loser.path=null; loser.deathT=t;
     if(loser===spikeCarrier){ spikeDropped={x:loser.x,y:loser.y}; spikeCarrier=null; planting=-1;
       events.push({t,type:'spikeDrop',x:loser.x,y:loser.y});
       aliveDef().forEach(u=>{u.path=navRouteThrough([{x:u.x,y:u.y},spikeDropped]);u.seg=0;}); }
-    const assist=Math.random()<.32?(function(){const mates=(winner.side===atkTeamKey?aliveAtk():aliveDef()).filter(u=>u!==winner); return mates.length?mates[Math.floor(Math.random()*mates.length)].name:null;})():null;
+    const assist=assistUnit&&random()<Math.max(.25,Math.min(.8,(teamplay[winner.side]||60)/100))?assistUnit.name:null;
     if(!fb)fb={killer:winner.name,victim:loser.name,side:winner.side};
-    events.push({t,type:'kill',killer:winner.name,victim:loser.name,side:winner.side,x:loser.x,y:loser.y,fb:events.filter(e=>e.type==='kill').length===0,assist});
+    const nextTrade=createTradeWindow({loser,winner,time:t,units,lineOfSight:navLOS,teamplay:teamplay[loser.side]||60});
+    if(nextTrade)tradeWindows.push(nextTrade);
+    const retaliationDamage=Math.max(0,Math.min(100,Math.round(52-Math.min(4,Math.abs(exponent))*7+(loserSupport.crossfire?8:0)-(winnerSupport.crossfire?6:0))));
+    events.push({t,type:'kill',killer:winner.name,victim:loser.name,side:winner.side,x:loser.x,y:loser.y,fb:events.filter(e=>e.type==='kill').length===0,assist,
+      damage:150,retaliationDamage,
+      phase,tradeAttempt:!!(support.attacker.trade||support.defender.trade),traded:!!tradeWindow,tradeOf:tradeWindow?.victim||null,crossfire:!!winnerSupport.crossfire,isolated:!!loserSupport.isolated});
     if(!clutchWho){ if(aliveAtk().length===1&&aliveDef().length>=2){clutchWho=aliveAtk()[0];clutchVs=aliveDef().length;}
       else if(aliveDef().length===1&&aliveAtk().length>=2){clutchWho=aliveDef()[0];clutchVs=aliveAtk().length;} }
   }
@@ -201,8 +239,10 @@ export function spatialRound(home,away,opts){
       if(!last||last.t<tt) u.track.push({t:+tt.toFixed(2),x:+u.x.toFixed(2),y:+u.y.toFixed(2),f:Math.round(u.face)}); });
     const units=atk.concat(def).map(u=>({side:u.side,idx:u.idx,name:u.name,track:u.track,deathT:u.deathT,role:(u.side===atkTeamKey?'atk':'def')}));
     let clutch=null; if(clutchWho&&clutchWho.side===winnerKey)clutch={player:clutchWho.name,side:winnerKey,vs:clutchVs};
+    const phaseSummary=summarizeRoundPhases({events,duration:t,winner:winnerKey,atkKey:atkTeamKey,defKey:defTeamKey,tacticalPlan,planted,defused});
     return { winner:winnerKey, site, setup:perSite, hadInfo:hasInfo, hitWeaker:(site===weaker),
       planted, defused, duration:t, events, units, fb, clutch,
+      phaseSummary,tradeSummary:{windows:tradeWindows.length,attempts:events.filter(e=>e.type==='kill'&&e.tradeAttempt).length,completed:events.filter(e=>e.type==='kill'&&e.traded).length,crossfireKills:events.filter(e=>e.type==='kill'&&e.crossfire).length},
       kills:events.filter(e=>e.type==='kill'),
       plantEv:events.find(e=>e.type==='plant')||null, defuseEv:events.find(e=>e.type==='defuse')||null,
       reconEv:events.find(e=>e.type==='recon')||null, utilEvs:events.filter(e=>e.type==='util') }; }

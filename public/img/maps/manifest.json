@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "maps": {
+    "Ascent": {
+      "id": "ascent",
+      "uuid": "7eaecc1b-4337-bbf6-6ab9-04b8f06b3319",
+      "tactical": "/img/maps/ascent.png",
+      "listView": "/img/maps/ascent-listview.webp",
+      "splash": "/img/maps/ascent-splash.webp"
+    },
+    "Bind": {
+      "id": "bind",
+      "uuid": "2c9d57ec-4431-9c5e-2939-8f9ef6dd5cba",
+      "tactical": "/img/maps/bind.png",
+      "listView": "/img/maps/bind-listview.webp",
+      "splash": "/img/maps/bind-splash.webp"
+    },
+    "Haven": {
+      "id": "haven",
+      "uuid": "2bee0dc9-4ffe-519b-1cbd-7fbe763a6047",
+      "tactical": "/img/maps/haven.png",
+      "listView": "/img/maps/haven-listview.webp",
+      "splash": "/img/maps/haven-splash.webp"
+    },
+    "Split": {
+      "id": "split",
+      "uuid": "d960549e-485c-e861-8d71-aa9d1aed12a2",
+      "tactical": "/img/maps/split.png",
+      "listView": "/img/maps/split-listview.webp",
+      "splash": "/img/maps/split-splash.webp"
+    },
+    "Lotus": {
+      "id": "lotus",
+      "uuid": "2fe4ed3a-450a-948b-6d6b-e89a78e680a9",
+      "tactical": "/img/maps/lotus.png",
+      "listView": "/img/maps/lotus-listview.webp",
+      "splash": "/img/maps/lotus-splash.webp"
+    },
+    "Sunset": {
+      "id": "sunset",
+      "uuid": "92584fbe-486a-b1b2-9faa-39b0f486b498",
+      "tactical": "/img/maps/sunset.png",
+      "listView": "/img/maps/sunset-listview.webp",
+      "splash": "/img/maps/sunset-splash.webp"
+    },
+    "Icebox": {
+      "id": "icebox",
+      "uuid": "e2ad5c54-4114-a870-9641-8ea21279579a",
+      "tactical": "/img/maps/icebox.png",
+      "listView": "/img/maps/icebox-listview.webp",
+      "splash": "/img/maps/icebox-splash.webp"
+    }
+  }
+}
