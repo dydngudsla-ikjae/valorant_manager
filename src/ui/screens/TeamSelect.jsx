@@ -24,7 +24,7 @@ function TeamCard({team,leagueId,teamIdx,selected,onSelect}){
       <div className={'tname'+nameClass} title={team.name}><span>{team.name}</span></div><div className="tregion">{LEAGUES[leagueId].name}</div>
       <div className="mini">{MINI_AXES.map(axis=>{const value=Math.round(teamAxis(team,axis));const color=axis==='firepower'?'var(--val)':axis==='tactical'?'var(--ini)':'var(--def)';return <div className="m" title={attributeLabel(axis)} key={axis}><i style={{width:value+'%',background:color}}></i></div>;})}</div>
     </button>
-    <button className="teamdetail" onClick={()=>openTeam(leagueId,teamIdx)} aria-label={`View ${team.name} squad`} title="View squad">↗</button>
+    <button className="teamdetail" onClick={()=>openTeam(leagueId,teamIdx)} aria-label={tr(`${team.name} 선수단 보기`,`View ${team.name} squad`)} title={tr('선수단 보기','View squad')}>↗</button>
   </div>;
 }
 

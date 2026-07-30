@@ -11,6 +11,7 @@
     "data:runtime": "node .\\runtime_2026\\scripts\\build-runtime-2026.mjs",
     "data:history": "node .\\history_json\\scripts\\build-player-history.mjs",
     "assets:team-logos": "node .\\scripts\\download-team-logos.mjs",
+    "assets:player-photos": "node .\\scripts\\download-player-photos.mjs",
     "assets:role-icons": "node .\\scripts\\normalize-role-icons.mjs",
     "verify:runtime": "node .\\runtime_2026\\scripts\\verify-runtime-2026.mjs"
   },

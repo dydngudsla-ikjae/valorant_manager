@@ -5,6 +5,7 @@ import { matchupRead } from '../../core/draft.js';
 import { ARCH, MAPDATA } from '../../data/agents.js';
 import { LEAGUES } from '../../data/leagues.js';
 import { DEV_ASCENT_BO1, backToHub, simCurrentMap, skipMatch } from '../match-flow.js';
+import { tr, weekLabel } from '../../i18n.js';
 
 function MapChips() {
   return (
@@ -30,7 +31,7 @@ function DraftPanel() {
   const favor = MAPDATA[cc.mapName] ? ARCH[MAPDATA[cc.mapName].favor].name : '';
   return (
     <div className="draftpanel">
-      <div className="drafthd"><span>Draft</span><span className="mapfav">{cc.mapName} favors {favor}</span></div>
+      <div className="drafthd"><span>{tr('드래프트','Draft')}</span><span className="mapfav">{cc.mapName} · {tr('유리','favors')} {favor}</span></div>
       <div className="draftrow">
         <div className="dside">
           <div className="dstance h">{ARCH[cc.home.stance].name}<em>{ARCH[cc.home.stance].blurb}</em></div>
@@ -72,7 +73,7 @@ function Pips() {
 
   return (
     <div className="rounds">
-      <div className="rlabel"><span>{MATCH.home.short}</span><span>Round {h + a}</span><span>{MATCH.away.short}</span></div>
+      <div className="rlabel"><span>{MATCH.home.short}</span><span>{tr('라운드','Round')} {h + a}</span><span>{MATCH.away.short}</span></div>
       <div className="pips">
         <div className="pipwrap" ref={homeRef}>
           {Array.from({ length: need }, (_, i) => <div className={'pip' + (i < h ? ' home' : '')} key={i} />)}
@@ -92,7 +93,7 @@ export function MatchHead() {
   return (
     <>
       <div className="matchhead">
-        <div className="mvenue">{LEAGUES[ST.league].name} · Week {MATCH.wi + 1} · {DEV_ASCENT_BO1 ? 'Ascent (Bo1)' : 'Best of 3'}</div>
+        <div className="mvenue">{LEAGUES[ST.league].name} · {weekLabel(MATCH.wi + 1)} · {DEV_ASCENT_BO1 ? 'Ascent (Bo1)' : 'Best of 3'}</div>
         <div className="scoreline">
           <div className="side home">
             <div className="crest" style={{ background: MATCH.home.color, fontSize: '13px' }}>{MATCH.home.short}</div>
@@ -153,16 +154,16 @@ export function MatchButtons() {
 
   if (phase === 'end') {
     const won = (MATCH.fx.home === myId && MATCH.hMaps > MATCH.aMaps) || (MATCH.fx.away === myId && MATCH.aMaps > MATCH.hMaps);
-    return <div className="btnrow"><button className={'btn' + (won ? ' gold' : '')} onClick={() => backToHub()}>{won ? 'Great win — Continue' : 'Continue'}</button></div>;
+    return <div className="btnrow"><button className={'btn' + (won ? ' gold' : '')} onClick={() => backToHub()}>{won ? tr('멋진 승리 — 계속','Great win — Continue') : tr('계속','Continue')}</button></div>;
   }
   if (phase === 'running') {
-    return <div className="btnrow"><button className="btn" disabled>Playing…</button></div>;
+    return <div className="btnrow"><button className="btn" disabled>{tr('경기 진행 중…','Playing…')}</button></div>;
   }
   return (
     <div className="btnrow">
-      <button className="btn" onClick={() => simCurrentMap('normal')}>▶ Watch · {MATCH.mapPool[MATCH.curMap]}</button>
-      <button className="btn ghost" style={{ width: 'auto' }} onClick={() => simCurrentMap('fast')}>⏩ Fast</button>
-      <button className="btn ghost" style={{ width: 'auto' }} onClick={() => skipMatch()}>⏭ Skip</button>
+      <button className="btn" onClick={() => simCurrentMap('normal')}>▶ {tr('관전','Watch')} · {MATCH.mapPool[MATCH.curMap]}</button>
+      <button className="btn ghost" style={{ width: 'auto' }} onClick={() => simCurrentMap('fast')}>⏩ {tr('빠르게','Fast')}</button>
+      <button className="btn ghost" style={{ width: 'auto' }} onClick={() => skipMatch()}>⏭ {tr('건너뛰기','Skip')}</button>
     </div>
   );
 }

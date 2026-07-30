@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useStore } from '../useStore.js';
 import { MATCH } from '../../core/state.js';
 import { agentMap, matchMVP } from '../../core/round-engine.js';
+import { tr } from '../../i18n.js';
 
 function EconGraph({ mr }) {
   const W = 460, H = 70, pad = 4, max = 45000, n = mr.econ.length;
@@ -10,7 +11,7 @@ function EconGraph({ mr }) {
   const line = key => mr.econ.map((e, i) => `${i ? 'L' : 'M'}${xf(i).toFixed(1)},${yf(e[key]).toFixed(1)}`).join(' ');
   return (
     <div className="econgraph">
-      <div className="eghd">{mr.mapName} · team credits by round</div>
+      <div className="eghd">{mr.mapName} · {tr('라운드별 팀 크레딧','team credits by round')}</div>
       <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
         <path d={line('h')} fill="none" stroke="var(--val)" strokeWidth="2" />
         <path d={line('a')} fill="none" stroke="var(--def)" strokeWidth="2" />
@@ -65,7 +66,7 @@ export function Box() {
             <table>
               <thead>
                 <tr>
-                  <th>Player</th><th title="Impact rating">RAT</th><th>ACS</th><th>K</th><th>D</th><th>A</th>
+                  <th>{tr('선수','Player')}</th><th title={tr('영향력 레이팅','Impact rating')}>RAT</th><th>ACS</th><th>K</th><th>D</th><th>A</th>
                   <th title="First bloods" className="hide">FB</th><th title="First deaths" className="hide">FD</th>
                   <th title="Clutches">CL</th><th title="Utility plays" className="hide">UT</th>
                 </tr>
@@ -90,7 +91,7 @@ export function Box() {
       </div>
       <div className="timeline">
         <div className="tlmvp">
-          <span className="mvplbl">Player of the match</span>
+          <span className="mvplbl">{tr('경기 최우수 선수','Player of the match')}</span>
           <span className="mvpname">★ {mvpName}</span>
           <span className="mvpline">{mvpStat.rating.toFixed(2)} rating · {mvpStat.k}/{mvpStat.d}/{mvpStat.a} · {mvpStat.fb} FB{mvpStat.cl ? ` · ${mvpStat.cl} clutch` : ''}</span>
         </div>

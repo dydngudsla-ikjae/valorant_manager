@@ -1,277 +1,179 @@
-# VLM 분리 계획 (valorant-league-manager.html → Vite + React)
+# VALORANT League Manager 개발 계획
 
-> 다음 세션에서 이 파일을 읽고 다음 미완료 Phase부터 순서대로 실행.
-> **각 Phase 끝마다 `npm run dev`로 앱이 그대로 동작하는지 확인 후 커밋. 안 돌면 다음으로 넘어가지 말 것.**
+이 문서는 현재 프로젝트 상태를 기준으로 한 향후 개발 계획이다. 기존 UI 리팩터링 기록은 제거했으며, 앞으로는 데이터 기반 시뮬레이션의 정확성·재현성·확장성을 우선한다.
 
-**진행 상황 (2026-07-29 기준): Phase 0~4 완료. 다음은 Phase 5.**
-- Phase 0: Vite 스캐폴딩 (커밋 `0fe16ca`)
-- Phase 1: 인라인 데이터 4종 추출 — AGENT_IMG/STATS_BY_NAME/ASCENT_BG/NAVGRID (커밋 `ce6d7b0`)
-- (부수) 에이전트 아이콘을 `images/Characters/_small` 원본에서 64px로 리사이즈해 교체 (커밋 `42acc37`)
-- Phase 2: CSS 9분할 (커밋 `279bc81`)
-- Phase 3a: `main.js`(163개 top-level 선언)를 `data/`(4) + `core/`(7) + `core/state.js` + `ui/mapview.js` + `legacy.js`로 분리 (커밋 `9543db8`). `tools/split-main.mjs`가 DOM 접근 여부를 grep으로 실측해 분류함 — 섹션 주석만 믿지 않음. 맵 비토 함수들은 겉보기엔 독립적이지만 서로 순환 호출하다 `renderVeto()`의 DOM 조작으로 귀결돼 전부 `legacy.js`로 감(`mapSuitFor`만 순수). `MATCH` 재할당은 `openMatch()` 단 한 곳뿐이라 `setMatch()`로 우회. `core/round-engine.js`↔`core/season.js` 순환 import 있음 — 오가는 심볼이 전부 `function` 선언(호이스팅)이라 안전 확인 완료.
-- Phase 4 step 1: React 툴링 셋업 (커밋 `188b3d4`). `@vitejs/plugin-react`는 최신(6.x)이 vite 8을 요구해서 vite 5와 호환되는 5.2.0으로 고정.
-- Phase 4 step 2: Squad + PlayerDetail 화면 이관. **이후 화면 이관에도 반복할 패턴:**
-  - React 루트는 `main.jsx`에서 **부팅 시 한 번만** 마운트 (화면 전환마다 마운트/언마운트 안 함). `useStore()`(→`bump()`)로 재렌더링.
-  - 화면이 의존하는 상태를 바꾸는 지점에 `bump()` 추가 (예: `selectTeam()`이 `ST.myTeamIdx`를 바꾸므로 거기에 추가). `go()`에서 해당 화면의 수동 `renderXxx()` 호출은 제거.
-  - 마운트 대상은 화면마다 다르게 판단: 헤더 텍스트를 **다른 화면의 함수가** 채우고 있으면(예: `squadRegion`/`squadTitle`은 `renderHub()`가 설정) 그 부분은 안 건드리고 진짜 동적인 하위 요소(`#squadGrid`)만 React가 소유. 반대로 화면 전체가 한 함수 소유면(`renderPlayer()` → `#scPlayer`) `index.html`을 살짝 고쳐 단일 마운트 지점(`#playerRoot`) 하나로 합침.
-  - `ST.myTeamIdx`/`ST._viewPlayer`가 아직 없을 때(부팅 직후, 팀 선택 전) 컴포넌트가 크래시하지 않도록 최상단에서 `if(!my) return null;` 가드 필수 — 화면이 안 보여도 React는 마운트 시점에 즉시 렌더링을 시도함.
-  - `agIcon()`(HTML 문자열 반환)은 legacy.js 전용. React 컴포넌트는 `agImg()`(경로만 반환)로 직접 `<img>` JSX를 그림.
-- Phase 4 step 3: Hub 화면 이관. `renderHub()`가 자기 화면(standings/schedule) 말고도 Squad의 `squadRegion`/`squadTitle`까지 채우고 있었던 부분은, Hub를 걷어내는 김에 **Squad가 이미 갖고 있는 데이터(`ST.teams[myTeamIdx]`, `LEAGUES[ST.league]`)로 Squad.jsx가 직접 그리도록 옮겨** 임시 크로스-화면 의존을 해소함(→ `#squadRoot` 단일 마운트로 Squad도 전체 화면 소유 전환). `renderHub`/`renderStandings`/`renderSchedule` 3개 함수 전부 삭제. 대신 `bump()`를 `endMatch()`(스탠딩 갱신 직후)와 `startNextMatch()`의 bye-week 분기(`simRestOfWeek` 직후)에 추가 — 이 두 곳이 Hub가 읽는 상태(`ST.standings`/`ST.schedule`/`ST.seasonOver`)를 실제로 바꾸는 지점이었음. `go()`의 `if(id==='scHub')renderHub()` 특례도 제거(이제 Hub가 상시 마운트돼 스스로 재렌더링).
-- Phase 4 step 4: Select 화면 이관. 이 화면은 팀 확정 전까지만 존재하고(`go('scSelect')`로 되돌아오는 곳이 코드 어디에도 없음) `ST`를 전혀 읽지 않으므로, **다른 이관 화면들과 달리 `useStore()`/`bump()` 불필요** — 현재 리그 탭(`lk`)과 미리보기 중인 팀(`previewIdx`)은 순수 컴포넌트 로컬 `useState`로 충분. `scrollIntoView`는 `useEffect(() => {...}, [previewIdx])`로 이식(원본은 클릭마다 무조건 스크롤했지만, 같은 카드를 연속 클릭해도 `previewIdx`가 안 바뀌면 재스크롤 안 함 — 사소한 차이, 회귀 아님). `buildSelect`/`renderTeams`/`previewTeam` 3개 함수 삭제, `main.js`의 부팅 시 `buildSelect()` 호출도 제거(React가 마운트 시 알아서 첫 리그를 그림). 이 함수들만 쓰던 `playerOVR`/`teamAxis`/`teamOVR`/`agIcon`/`visiblePool`/`displayRole`/`profBand`/`roleColor`/`roleFull` import를 legacy.js에서 제거(전부 다른 화면에도 안 쓰여 완전히 죽은 참조였음 확인 후 정리 — legacy.js 전체를 정리한 게 아니라 이번 삭제로 죽은 것만 제거).
-- Phase 4 step 5: Box 화면(박스스코어+타임라인) 이관. 이 화면은 `scMatch` 전체가 아니라 그 안의 `#boxWrap`+`#timelineWrap` 두 블록만 해당(나머지 `scMatch` 오케스트레이션은 8번). 두 블록은 항상 같이 켜지므로(둘 다 `endMatch()` 직후에만 표시) `#boxRoot` 하나로 합쳐 `Box.jsx`가 함께 그림. **표시 여부를 별도 플래그 없이 `MATCH.fx.played`로 파생** — `endMatch()`가 `fx.played=true`를 세팅하는 바로 그 시점에만 참이 되고, 이미 있던 `bump()` 한 번(step 3에서 추가)이 Box도 같이 깨움. 탭 상태(`side: 'home'|'away'`)는 컴포넌트 로컬 `useState`로 교체 — 기존 `setBoxSide()`/모듈 전역 `let boxSide`와 `window.setBoxSide` 노출 전부 제거. `openMatch()`/`skipMatch()`에 있던 `document.getElementById('boxWrap').style.display='none'` 수동 리셋 2곳도 삭제(React가 `MATCH.fx.played`로 알아서 숨김 — 새 매치 시작 시 `fx.played`는 항상 false). `showBox`/`renderBox`/`renderTimeline` 3개 함수 전부 삭제, `matchMVP` import도 legacy.js에서 죽어서 제거.
-- Phase 4 step 6: Veto 화면 이관. `scVeto` 전체를 `#vetoRoot` 단일 마운트로. 기존엔 `stepVeto`/`applyVeto`/`finalizeVeto`가 매 상태 변화마다 `renderVeto([done])`를 직접 호출했는데, 전부 `bump()`로 교체하고 `renderVeto` 자체(및 그 안에서만 쓰던 DOM 생성 로직)는 삭제. `done`(비토 완료 여부)도 별도 플래그 없이 `v.step >= v.order.length`로 파생 — `renderVeto(true)` 호출 지점이 정확히 그 조건이 참인 순간이었음. AI 턴 진행용 `setTimeout(...,550)`은 그대로 유지(엔진 타이밍 로직이라 이관 대상 아님), 다만 이제 그 콜백(`aiVetoAct`→`applyVeto`)이 부르는 `bump()`가 UI를 깨움. 타일은 `canClick&&!a`일 때만 `button`, 아니면 `div`로 렌더(원본 `document.createElement(cond?'button':'div')`와 동일 효과) — JSX에서 `const Tag = cond ? 'button' : 'div'; <Tag>` 패턴으로 재현. `vetoSkip`/`startMapDraft`의 `window` 노출도 제거(마지막 inline onclick 소비처였음, 이제 Veto.jsx가 직접 import). **주의: `DEV_ASCENT_BO1=true`면 이 화면을 건너뛰므로, 검증 시엔 일시적으로 `false`로 바꿔 전체 밴/픽 플로우를 확인한 뒤 반드시 `true`로 되돌릴 것** (안 그러면 이후 매치 검증이 매번 비토를 거쳐야 해서 느려짐).
-- Phase 4 step 7: Draft 화면 이관. `scDraft` 전체를 `#draftRoot` 단일 마운트로. `renderDraftScreen(mi)` 삭제 — `startMapDraft`(진입), `selectStance`, `selectAgent` 3곳의 호출을 전부 `bump()`로 교체. `mi`(맵 인덱스)는 `MATCH.curMap`과 항상 같은 값이라 Draft.jsx는 prop 없이 `MATCH.curMap`을 직접 읽고, `selectStance(mi,s)`/`selectAgent(mi,name,agent)`/`confirmDraft(mi)` 호출부에만 그 값을 넘김(함수 시그니처 자체는 그대로 둠 — `confirmDraft`는 여전히 `mi`를 실제로 씀). `confirmDraft` 본문(맵 칩 갱신·`go('scMatch')`·매치 버튼 렌더)은 그대로 legacy.js에 남음 — Match 화면 오케스트레이션(8번) 영역이라 이번 스텝 범위 밖. `selectAgent`/`confirmDraft`의 `window` 노출 제거(마지막 inline onclick 소비처였음). 이 화면만 쓰던 `stanceSuit`/`buildCompForStance`/`ROLE` import를 legacy.js에서 제거(죽은 참조 확인 후 정리 — `counterEdge`/`buildCompChoice`/`autoAgentFor`/`ARCH`/`MAPDATA`는 `confirmDraft`·`renderDraft`(8번 몫)에서 계속 씀).
-- Phase 4 step 8: Match 화면(오케스트레이션) 이관 — **`#mapView`는 절대 건드리지 않음.** `scMatch`의 나머지(헤더/스코어/맵칩/드래프트 요약/라운드 핍/피드/버튼)를 React로 옮기되, 라운드-바이-라운드 애니메이션을 도는 `#mapView`(브로드캐스트 HUD·SVG 필드·킬피드)는 여전히 순수 명령형(9번 몫)이라 **같은 React 트리 안에 두면 위험** — Match 쪽이 라운드마다 `bump()`로 재렌더링되는데, 그 서브트리 안에 `#mapView`를 자식으로 두면 React 재조정(reconciliation)이 `mvBuild`/`mvPlayRound`가 직접 꽂아넣은 DOM(필드 SVG, 킬피드 줄 등)을 다음 렌더에서 지워버릴 수 있음. 그래서 `#mapView`를 **형제로 분리**해 `#matchHeadRoot`(헤더+맵칩+드래프트 요약+라운드 핍, `MatchHead`) / `#mapView`(그대로) / `#matchFeedRoot`(피드, `MatchFeed`) / `#boxRoot`(기존, 5번) / `#matchBtnsRoot`(버튼, `MatchButtons`) 5개를 나란히 마운트 — 한 화면에 React 루트 여러 개 + 순수 DOM 섬 하나가 공존(이미 `#boxRoot`가 그 전례).
-  - 피드는 `feed.prepend(ln)` + `while(children.length>7)` DOM 조작이었던 것을, `MATCH.feed`(최신이 앞) 구조화 배열 + `.slice(0,7)`로 교체하고 `FeedRow` 컴포넌트가 그림.
-  - 라운드 핍/라운드 번호는 `MATCH.liveRound={h,a}`라는 새 필드로 파생(단순히 `feed[0]`에서 유도하면 안 됨 — `paintMap(0,0)`이 새 맵 시작 시 0-0으로 리셋하는 타이밍이 `feed` 클리어 타이밍과 다르기 때문에 별도 상태 필요). 핍 "pop" 애니메이션(새로 채워진 핍이 잠깐 커지는 효과)은 `Pips` 컴포넌트 자체의 `useEffect`(`liveRound` 변화 감지 + `feed[0].winner`로 어느 쪽이 이겼는지 판단)로 재구현 — 레거시의 `document.querySelectorAll('#pipsHome .pip.home')` 직접 조작 코드는 삭제.
-  - 매치 버튼의 phase는 `renderMatchButtons(phase)` 인자로 넘기던 것을 `MATCH.fx.played ? 'end' : MATCH.running ? 'running' : 'start'`로 파생. **`'nextmap'` 분기는 삭제** — 호출부 3곳(`confirmDraft`/`simCurrentMap`/`endMatch`) 어디도 그 값을 넘긴 적이 없어 원래도 도달 불가능한 죽은 분기였음(Bo3 다음 맵은 버튼이 아니라 `startMapDraft()`로 바로 드래프트 화면행).
-  - `openMatch`/`finishMap`/`skipMatch`의 스코어·맵칩 DOM 직접 쓰기 전부 삭제 — 뒤이어 어차피 `paintMap`/`startMapDraft`/`endMatch` 중 하나가 `bump()`를 부르므로 별도 bump 불필요(동기 코드라 화면엔 최종 상태만 반영됨).
-  - **step 5에서 놓친 버그를 여기서 발견해 수정**: 삭제됐어야 할 `boxSide`/`renderBox`를 참조하는 고아 `setBoxSide` 함수가 파일 맨 끝(go/toast 옆)에 남아 있었음 — 아무 데서도 안 불렸으니 안 터졌을 뿐, 호출됐다면 `ReferenceError`. 지금 삭제.
-  - 이 스텝을 끝으로 **레거시 innerHTML 템플릿에 남아있던 `onclick="..."` 문자열이 코드베이스 전체에서 0개**가 됨 → `main.jsx`의 임시 `Object.assign(window, {...})` 노출 블록(Phase 0부터 있던 것)이 전부 죽은 코드가 되어 통째로 제거. 원래 10번 스텝 몫으로 예정했던 정리인데 8번에서 이미 끝남 — 10번엔 `go()`→화면 상태 전환·`legacy.js` 삭제만 남음.
-- Phase 4 step 9: `MapView.jsx` — `#mapView`(방송 HUD + 탑다운 필드 + 킬피드)를 감싸는 얇은 래퍼. `ui/mapview.js` 내부(mvBuild/mvPlayRound 등)는 한 글자도 안 건드림 — 지금까지 `index.html`에 정적 마크업으로 박혀 있던 `#mapView` 블록을 그대로 JSX로 옮겨 `#mapViewRoot`에 마운트했을 뿐. 이 컴포넌트는 어떤 store도 구독하지 않아 부팅 시 **딱 한 번**만 렌더링되므로, `mvBuild`가 `#mvField`/`#mvLegend`에 꽂는 `innerHTML`이나 `legacy.js`가 `#mapView`에 직접 쓰는 `style.display` 토글을 React가 다음 렌더에서 지워버릴 위험이 없다(리렌더 자체가 없으므로). `useEffect` 클린업에서 `mvStopRAF()`를 호출하도록만 추가 — 지금은 이 루트가 부팅 후 언마운트되는 일이 없어 죽은 코드지만, 10번에서 `go()`를 `screen` state로 바꾸면 화면 전환이 마운트/언마운트가 될 수 있어 그때를 대비한 안전장치. 헤드리스 Chromium(Playwright)으로 팀 선택→허브→드래프트→매치→시뮬레이션 전 구간 검증: `mvBuild`가 만든 10개 도트·에이전트 아이콘·사이트콘·브로드캐스트 카드·킬피드·라운드 핍 전부 정상 렌더, `skipMatch()` 경로도 `#mapView` 숨김+박스스코어 렌더 정상, 콘솔 에러 0건. (검증 중 발견: 헤드리스 환경에서 라운드 애니메이션이 15라운드쯤에서 멈추는 현상이 있으나, 리팩터 이전 커밋(`87e613f`)에서도 동일하게 재현돼 이번 변경과 무관한 기존 이슈로 확인 — 조치 안 함.)
-- Phase 4 step 10 (최종 통합): `go(id)`가 하던 `querySelectorAll('.screen')`/`classList` 토글을 걷어내고 `core/state.js`에 `ST.screen`(초기값 `'scSelect'`) + `go(screen){ ST.screen=screen; bump(); }`로 대체 — 화면 전환도 이제 그냥 상태 변경. `go()`가 하던 `window.scrollTo` 부수효과는 `core/`가 DOM에 안 닿는다는 원칙을 지키기 위해 새 `ui/App.jsx`의 `useEffect(()=>{...}, [ST.screen])`로 옮김. 같은 이유로 `toast()`도 `core/state.js`에 `toastState={msg,id}` + `bump()`만 하는 순수 상태 세터로 옮기고, 실제 표시/자동 숨김 타이머는 새 `ui/Toast.jsx`가 담당(`id`로 "표시 중에 새 토스트"와 "같은 토스트로 재렌더"를 구분).
-  - **루트 통합**: 화면마다 따로 있던 `createRoot(...).render(<Screen/>)` 11개를 걷어내고 `src/ui/App.jsx` 하나가 `ST.screen` 값에 따라 해당 화면만 조건부 렌더링. `index.html`도 8개 `<section id="scXxx">` + 11개 `#xxxRoot` 마운트 지점을 `<div id="root"></div>` 하나로 축소, `main.jsx`는 `createRoot(root).render(<App/>)` 한 줄. `.screen.on`에 걸려 있던 페이드인 애니메이션은 화면이 실제로 mount/unmount되므로 그대로 유지(교체된 화면마다 `<section className="screen on">`을 새로 그림).
-  - **`MapView`만 예외 — `memo()`로 감쌈**: `App`이 `useStore()`로 매 `bump()`마다 리렌더되는데, `MapView`를 그냥 자식으로 두면 `bump()`마다 `MapView()` 함수 본문이 다시 호출돼 하드코딩된 `style={{display:'none'}}` JSX가 `simCurrentMap`/`skipMatch`가 직접 써넣은 `style.display='block'`을 매번 지워버림(리액트는 매 렌더마다 style 객체의 각 prop을 DOM에 재적용함, 내용이 "같아 보여도" 얕은 비교를 안 함). `const StableMapView = memo(MapView)`로 감싸 props 없는 이 컴포넌트는 부모가 리렌더돼도 절대 재실행되지 않게 함 — 이게 8/9번에서 각각 별도 루트로 분리했던 진짜 이유(재조정 위험)를 하나의 트리 안에서도 유지하는 방법.
-  - **`legacy.js` 삭제, 내용은 `ui/match-flow.js`로**: 화면 전환용 `go()`/`toast()`를 뺀 나머지(전부 액션 핸들러: `selectTeam`/`startNextMatch`/veto 6종/draft 4종/`simCurrentMap`/`finishMap`/`endMatch`/`skipMatch`/`backToHub`/`showChampCheck`)는 `core/`가 아니라 `ui/match-flow.js`로 옮김 — `mapview.js`처럼 브로드캐스트 HUD DOM(`#bScoreH`/`#bRound`/`#mvBanner`/`#mapView`)에 직접 쓰기 때문에 "DOM 접근 0"인 `core/`엔 안 맞음. 옮기며 죽은 참조 2개 정리: `legacy.js`가 갖고 있던 `applyRealStats`/`buildAgentPools`(둘 다 `main.jsx` 부팅 시퀀스 전용, 여기선 미사용) import와 `data/leagues.js`의 `p` import.
-  - **`selectTeam()`의 `teamBadge` DOM 코드 삭제**: `document.getElementById('teamBadge').style.display='flex'` 등 3줄은 새 `ui/Header.jsx`(`ST.teams[ST.myTeamIdx]`를 `useStore()`로 구독, 있으면 `.myteam` 렌더)로 대체 — Squad/Hub 등과 똑같은 패턴이라 특별 취급 불필요해짐.
-  - 각 화면의 `import { go } from '../../legacy.js'` 7곳을 `import { go } from '../../core/state.js'`로, 액션 함수 import는 `'../../legacy.js'` → `'../match-flow.js'`로 갱신.
-  - 헤드리스 Chromium으로 회귀 검증: 팀 선택(헤더 배지 반영 확인)→허브→드래프트→매치→스킵→박스스코어→허브 복귀(순위표 갱신 확인)→스쿼드→선수 상세→스쿼드 복귀, 콘솔 에러 0건. `DEV_ASCENT_BO1=false`로 잠시 바꿔 비토 플로우도 별도 검증(6단계 밴/픽 전부 클릭 가능·decider 계산 정상) 후 `true`로 원복. **검증 중 발견(조치 안 함)**: 비토를 거쳐 맵 3장이 정해진 드래프트 화면에서 `opp.agents.map(...key={a.agent})`(`Draft.jsx` 상대 코멘트 라인)가 같은 에이전트를 두 번 키로 써서 React 중복 키 경고가 뜸 — `DEV_ASCENT_BO1=true`(기본값)라 평소엔 이 경로를 안 타서 지금까지 안 드러났던 7번 스텝 때부터의 기존 결함. 렌더는 깨지지 않고 경고만 뜸 — 별도 세션에서 `core/draft.js`의 팀 컴프 생성(같은 에이전트 중복 배정 허용 여부)부터 확인 필요.
+## 현재 준비 상태
 
-**Phase 4 완료.** 인라인 `onclick` 23개 → 0개, `legacy.js` 삭제, React 단일 루트(`App.jsx`) + `ui/mapview.js`(명령형 유지) 두 갈래로 최종 정리됨.
+- 2021~2026 VCT CSV 원본을 ID 기반 JSON/JSONL로 변환하는 파이프라인이 있다.
+- 선수·팀·맵·요원·대회 프로필과 11개 선수 능력치가 생성된다.
+- 2026 국제 리그 48팀과 프로젝트 선수 289명이 런타임 데이터에 연결된다.
+- 선수 역할 숙련도, 요원 숙련도, 맵 숙련도, 성향, 신뢰도와 연도별 기록이 보존된다.
+- 팀 선택, 팀/선수 상세, 대회 통계, 비토, 드래프트, 경기 화면과 시즌 진행 UI가 있다.
+- 원본 9,277,579행, 프로필, 능력치와 런타임 매칭 검증은 모두 통과한다.
 
-**확정 사항: React로 이관한다.** 따라서 `ui/` 렌더 코드를 바닐라 모듈로 정리하는 단계는 건너뛴다
-(어차피 버릴 코드를 정리하는 낭비 ~670줄). 엔진만 뽑아내고 바로 React로 간다.
+## 시뮬레이션 전에 해결할 문제
 
----
+### 1. 2026 로스터 소유권 확정
 
-## 0. 현황 실측
+출전 기록은 계약 상태가 아니므로 같은 선수가 두 팀에 남는 사례가 있다. 게임 시작 시점의 소속팀을 하나로 확정하고 수동 오버라이드 파일로 관리한다.
 
-| 항목 | 값 |
-|---|---|
-| `valorant-league-manager.html` | 2564줄 / 645KB |
-| `<style>` | L10–569 (약 560줄) |
-| `<body>` 마크업 | L571–767 (약 197줄, 8개 `.screen` 섹션) |
-| `<script>` | L768–2562 (약 1795줄) |
-| `images/` | **515MB** (Characters 87, Maps 70, Weapons 68, Abilities 118 + `PublicContentCatalog.json` 14MB) |
-| `stats/` | **1.3GB** (vct_2021~2026 × {agents, ids, matches, players_stats} CSV) |
-| 인라인 이벤트 핸들러 | body 4개 + JS 템플릿 문자열 19개 = **23개** |
-| `stats/` · `images/` 참조 | **0건** — 현재 코드는 두 폴더를 전혀 안 씀 |
+현재 확인된 중복 ID:
 
-### 645KB 중 실제 코드는 ~200KB뿐
+- Demon1: Cloud9 벤치 / ENVY 주전
+- N4RRATE: Sentinels 벤치 / Karmine Corp 주전
+- ComeBack: Team Heretics 벤치 / NAVI 벤치
+- sociablEE: FUT Esports 주전 / NAVI 벤치
+- Life: FunPlus Phoenix 벤치 / Dragon Ranger Gaming 주전
+- qiutiaN: Nova Esports 주전 / Wolves Esports 주전
+- Abo: Trace Esports 주전 / Titan Esports Club 벤치
 
-나머지 ~445KB는 소스에 박힌 데이터 덩어리:
+완료 조건:
 
-| 위치 | 심볼 | 크기 |
-|---|---|---|
-| L949 | `AGENT_IMG` (에이전트 아이콘 base64) | **235KB** |
-| L952 | `STATS_BY_NAME` (선수 실능력치 JSON) | **184KB** |
-| L1683 | `ASCENT_BG` (맵 배경 base64) | **40KB** |
-| L1684 | `NAVGRID.cells` (160×119 워크 마스크 문자열) | **19KB** |
+- 한 시점에 한 선수 ID가 한 팀에만 소속된다.
+- 주전 240명과 벤치 명단이 검증된다.
+- 자동 빌드 이후에도 수동 소속 수정이 유지된다.
 
-→ **이 4개만 빼내도 소스가 200KB로 줄어 편집 가능한 크기가 됨.** Phase 1에서 최우선 처리.
+### 2. 재현 가능한 난수 시스템
 
-### JS 1795줄의 성격별 분류
+현재 직접 사용하는 `Math.random()`을 seed 기반 난수 생성기로 교체한다.
 
-| 덩어리 | 분량 | React 이관 시 운명 |
-|---|---|---|
-| `data/` + `core/` — 엔진·순수 로직 | ~800줄 | **그대로 재사용.** 손대지 않음 |
-| `mapview` — RAF 루프·SVG 애니메이션 | ~314줄 | **명령형 유지.** ref + useEffect로 감싸기만 함 |
-| `screen-*` — innerHTML 렌더 7화면 | ~670줄 | **React로 재작성.** 이것만 버려짐 |
+완료 조건:
 
----
+- 같은 seed와 입력은 같은 경기 결과를 만든다.
+- 경기, 맵, 라운드 seed를 분리해 저장한다.
+- 버그 신고 시 seed만으로 경기를 재현할 수 있다.
+- 빠른 시뮬레이션과 중계 시뮬레이션이 같은 결과를 공유한다.
 
-## 1. 이전 대화에서 바로잡은 것
+### 3. 능력치별 경기 영향 정의
 
-### "브라우저에서 CSV 파싱" — 이 규모에선 불가
-`stats/`는 1.3GB. `vct_2025/matches/kills.csv` 하나가 13MB다. 브라우저에 fetch로 던지면 탭이 죽는다.
-→ **Node 빌드 스크립트로 미리 집계해 작은 JSON으로 굽는다.** 브라우저는 결과만 읽는다.
-→ 원본 `stats/`·`images/` (합 1.8GB)는 **git에 올리지 않는다.**
+11개 능력치를 OVR 안에 단순히 섞지 않고 구체적인 사건에 연결한다.
 
-### React 이관은 Phase 3a 직후 — 단, 엔진 추출은 반드시 먼저
-엔진(`core/`)이 DOM에서 분리돼 있어야 React 컴포넌트가 그걸 그냥 호출할 수 있다.
-엔진 추출 없이 React부터 시작하면 로직과 렌더를 동시에 재작성하게 되어 버그 추적이 불가능해진다.
+- `firepower`: 순수 교전 승률과 화력
+- `combatEfficiency`: 피해 대비 킬 전환, 생존 가치, 안정적인 교환
+- `entry`: 첫 교전 참여·성공, 공간 진입
+- `positioning`: 유리한 교전 형성, 생존, 수비 배치
+- `teamplay`: 트레이드, 어시스트, 합류 속도
+- `tactical`: 정보 활용, 사이트 선택, 대응과 유틸 타이밍
+- `clutch`: 수적 열세와 라운드 후반 판단
+- `explosiveness`: 멀티킬, 연속 교전, 고점 발생
+- `consistency`: 경기·맵별 변동 폭
+- `adaptability`: 맵·요원·역할 변경 페널티 완화
+- `pressure`: 중요한 라운드와 시리즈 후반 성능
 
----
+완료 조건:
 
-## 2. 목표 디렉터리 구조
+- 각 능력치가 최소 한 개 이상의 독립 계산에 직접 사용된다.
+- 능력치 변화가 어떤 경기 지표를 바꾸는지 자동 테스트로 확인한다.
+- 같은 OVR이라도 능력치 구성에 따라 경기 양상이 달라진다.
 
-```
-vlm/
-  index.html                    # <head> + body 마크업(8 screen) + <script type="module" src="/src/main.jsx">
-  package.json
-  vite.config.js
-  .gitignore                    # images/ stats/ node_modules dist   ← 1.8GB 원본 커밋 금지
+### 4. 역할·요원·맵 숙련도 연결
 
-  src/
-    main.jsx                    # boot + React 루트 마운트
-    legacy.js                   # ⚠️ 임시. 미이관 렌더 코드 전부. React로 옮기며 줄어들다 최종 삭제
-    styles/                     # Phase 2 결과 (plain CSS, React에서 그대로 import)
-      base.css                  # :root 변수, reset, header, .wrap, .btn   (L10–55)
-      select.css                # 리그 탭 + 팀 그리드 + 프리뷰              (L56–78)
-      hub.css                   # 허브 + 스케줄                             (L79–125)
-      squad.css                 # 스쿼드 + 선수 카드                        (L126–167)
-      match.css                 # 매치 화면 + 라운드 트래커 + 타임라인      (L168–241)
-      mapview.css               # 탑다운 맵 + 방송 HUD                      (L242–440)
-      box.css                   # 박스스코어                                (L441–467)
-      draft.css                 # 드래프트 패널/화면 + 컴프 에디터          (L468–528, 549–568)
-      veto.css                  # 맵 비토                                   (L529–548)
-    data/                       # 순수 상수. 의존성 없음
-      leagues.js                # ROLE, MAPS, p(), 역할 헬퍼, PROFBANDS, LEAGUES  (L774–858)
-      agents.js                 # AGENTS, AGENT_KITS, KIT_DEFAULT, ARCH, BEATS, MAPDATA, AGENT_ROLE (L869–942, 964)
-      weapons.js                # WEAP, WCOST, SCOST, ABFX, TYPESYM, TYPEKO, SKILL_R (L1948–2018)
-      player-stats.json         # ← L952 STATS_BY_NAME 추출 (184KB)
-      geo/
-        ascent.js               # MV, GEO_ASCENT, MAPGEO            (L1681, 1685–1713)
-        ascent-navgrid.json     # ← L1684 NAVGRID.cells 추출 (19KB)
-    core/                       # 엔진. DOM 접근 0. React가 그대로 호출
-      state.js                  # ST, MATCH + subscribe/bump  ← §4 참고
-      ratings.js                # playerOVR, teamOVR, teamAxis, kitOf, compKitScore, counterEdge, seededPool (L860–864, 907–947)
-      roster.js                 # applyRealStats, buildAgentPools, visiblePool  (L796–804, 953–973)
-      draft.js                  # roleCounts, stanceSuit, mapFit, pickAgents, draftComp, buildComp*, draftPair, matchupRead (L974–1039)
-      season.js                 # makeSchedule, sortedStandings, firstUnplayedWeek, simRestOfWeek, quickSim, endMatch
-      veto.js                   # mapSuitFor, startVeto, stepVeto, aiVetoAct, playerVeto, applyVeto, finalizeVeto (L1325–1378)
-      economy.js                # BUYMOD, SIDEMOD, decideBuy, buyFromCredits, initEcon, loadoutFor, buyLabel (L1558–1573, 1954–1980)
-      round-engine.js           # rand5, agentMap, pickByKit, applyKills, applyRoundStats, freshBox, finalizeRatings, simOneMap (L1574–1679)
-      spatial.js                # sdist, SP_TUNE, SP_SETUPS, nav*, navPath, navLOS, spatialRound (L1714–1903)
-    ui/
-      mapview.js                # ⭐ 명령형 영구 보존. geoSVG, mv* 전부 (L1904–1947, 2016–2287)
-      useStore.js               # Phase 4. useSyncExternalStore 훅
-      MapView.jsx               # Phase 4. mapview.js를 감싸는 얇은 래퍼
-      screens/                  # Phase 4. Squad → Hub → Select → Box → Veto → Draft → Match 순
-  public/
-    img/
-      agents/<slug>.png         # AGENT_IMG 대체 (~25장, images/Characters에서 추출)
-      maps/ascent.png           # ASCENT_BG 대체
-  tools/
-    extract-inline.mjs          # (Phase 1 1회용) HTML에서 base64/JSON 덩어리 추출
-    build-assets.mjs            # images/ → public/img/ 필요분만 복사 (PublicContentCatalog.json으로 이름→UUID 매핑)
-    build-stats.mjs             # (Phase 5) stats/**/*.csv → src/data/derived/*.json 집계
-```
+- 선택 요원의 실제 역할을 기준으로 포지션 숙련도 페널티를 적용한다.
+- 요원 숙련도, 최근 사용, 준비도와 데이터 신뢰도를 경기 성능에 반영한다.
+- 맵 숙련도를 팀 전력과 선수 퍼포먼스에 반영한다.
+- `tendencies`를 진입 빈도, 오퍼레이터 선호, 공격성, 오브젝트 담당 등에 연결한다.
+- 낮은 표본은 능력치를 낮추는 대신 불확실성과 변동성으로 처리한다.
 
-> 줄 번호는 원본 HTML 기준 **앵커**다. 정확한 경계는 이관 시 직접 확인할 것.
+### 5. 합법적인 요원 조합 생성기
 
----
+현재 선수별 독립 선택 방식을 팀 단위 최적화로 교체한다.
 
-## 3. 실행 순서
+완료 조건:
 
-### Phase 0 — 스캐폴딩 (동작 변화 0)
-1. `git init` + `.gitignore` — **`images/`, `stats/` 반드시 제외** (1.8GB)
-2. `npm create vite@latest . -- --template vanilla` 후 불필요 파일 정리
-   *(React 플러그인은 Phase 4에서 추가. 지금 넣으면 검증만 복잡해짐)*
-3. 원본을 `valorant-league-manager.html.bak`으로 보존
-4. `index.html` = 원본 `<head>`(단 `<style>` 제외) + `<body>` 마크업 + `<script type="module" src="/src/main.js">`
-5. `src/main.js` = 원본 `<script>` 내용 **통째로** 붙여넣기 (아직 안 쪼갬)
-6. `src/styles/all.css` = 원본 `<style>` 통째로, `main.js`에서 `import './styles/all.css'`
-7. body 인라인 `onclick` 4개(`go`, `startNextMatch`)용으로 `main.js` 끝에 임시 `Object.assign(window, {...})`
-8. ✅ **검증: 팀 선택 → 매치 1경기 완주**
+- 한 팀에서 같은 요원을 중복 선택하지 않는다.
+- 맵별 필수 기능과 역할 균형을 평가한다.
+- 개인 숙련도와 팀 조합 가치를 함께 최적화한다.
+- AI와 사용자가 동일한 조합 평가식을 사용한다.
+- 불가능하거나 매우 부자연스러운 조합에는 명확한 페널티가 있다.
 
-### Phase 1 — 뚱뚱한 데이터 추출 (효과 최대 · 위험 최소)
-`tools/extract-inline.mjs`로 자동화 권장. 이 Phase 후 645KB → ~200KB.
+### 6. 빠른 경기 엔진 우선 구현
 
-9. **`STATS_BY_NAME`** (L952) → `src/data/player-stats.json` **−184KB**
-10. **`ASCENT_BG`** (L1683) → base64 디코드 → `public/img/maps/ascent.png`, 상수는 `'/img/maps/ascent.png'` **−40KB**
-11. **`NAVGRID.cells`** (L1684) → `src/data/geo/ascent-navgrid.json` **−19KB**
-12. **`AGENT_IMG`** (L949) → 각 base64를 `public/img/agents/<slug>.png`로 디코드 저장. `agImg()`를 경로 생성기로 교체:
-    ```js
-    const slug = a => a.toLowerCase().replace(/\//g,'').replace(/[^a-z0-9]/g,'');
-    function agImg(a){ return a ? `/img/agents/${slug(a)}.png` : ''; }
-    ```
-    ⚠️ 슬러그는 **기존 `AGENT_IMG` 키를 정답으로 삼을 것** (`kay/o` → `kayo` 등) **−235KB**
-13. ✅ **검증: 에이전트 아이콘 · 맵 배경 · 선수 능력치가 Phase 0과 픽셀 동일**
+공간 애니메이션과 분리된 순수 데이터 시뮬레이터를 먼저 만든다.
 
-### Phase 2 — CSS 분리
-14. `all.css`를 §2 구조표의 줄 범위대로 9개 파일로 절단
-15. `src/styles/index.css`에서 `@import`로 묶고 `main.js`는 이것만 import
-16. ⚠️ **CSS Modules 쓰지 말 것.** 전 클래스명을 바꿔야 해서 React 이관과 충돌한다. plain CSS 유지 — React에서 `className`으로 그대로 쓴다.
-17. ✅ **검증: 8개 화면 육안 비교**
+완료 조건:
 
-### Phase 3a — 엔진만 추출 (`ui/`는 건드리지 않음)
-의존성 없는 리프부터. 매 파일 이동 후 dev 서버 확인.
+- DOM 없이 수천 경기를 실행할 수 있다.
+- Bo1, Bo3, Bo5와 연장전을 지원한다.
+- 맵 비토, 진영, 조합, 경제, 선수 컨디션을 입력으로 받는다.
+- 라운드 로그, 박스스코어와 Rating을 출력한다.
+- 시즌 백그라운드 경기와 사용자 경기가 같은 핵심 엔진을 사용한다.
 
-18. `data/*` — 순수 상수. 가장 먼저.
-19. `core/ratings.js`, `core/economy.js`, `core/spatial.js` — 순수 함수, 부작용 없음
-20. **`core/state.js`** ← *가장 조심할 곳.* §4 설계대로 `subscribe`/`bump` 포함해 작성
-21. `core/roster.js`, `core/draft.js`, `core/veto.js`, `core/round-engine.js`, `core/season.js`
-22. **`ui/mapview.js`** — 명령형 그대로 추출. 여긴 React 가도 안 버리므로 지금 제대로 뽑아둘 것
-23. 남은 렌더 코드(~670줄) 전부 → **`src/legacy.js` 한 덩어리로.** 정리하지 말 것. 곧 지운다.
-24. `src/main.js` = import + boot 3줄:
-    ```js
-    applyRealStats(); buildAgentPools(); buildSelect();
-    ```
-25. ✅ **검증: 전 화면 + 매치 완주 + 박스스코어 + 시즌 종료까지**
+### 7. 맵 시스템 정리
 
-### Phase 4 — React 이관 (화면 단위, 앱은 계속 동작)
+현재 상세 공간 엔진은 Ascent 지형과 내비게이션 데이터만 갖고 있다.
 
-**한 세션에 한 단계씩만 진행. 끝나면 커밋하고 아래 체크박스에 표시한 뒤 멈춘다.**
-다음 세션(또는 다음 지시)에서 첫 번째 미체크 항목부터 이어간다.
+단기 계획:
 
-- [x] **1. 셋업** — `npm i react react-dom` + `@vitejs/plugin-react`, `main.js` → `main.jsx`, `src/ui/useStore.js` 작성 (§4의 `useSyncExternalStore` 훅)
-- [x] **2. Squad 화면** — ~58줄. 가장 단순, `ST` 읽기만 함. 패턴 확립용
-- [x] **3. Hub 화면** — ~63줄. 순위표 + 일정 테이블
-- [x] **4. Select 화면** — ~75줄. 팀 선택
-- [x] **5. Box 화면** — ~63줄. 박스스코어 + 타임라인
-- [x] **6. Veto 화면** — ~38줄. 맵 비토
-- [x] **7. Draft 화면** — ~136줄. **React 이득이 가장 큰 화면** (폼·상태 복잡)
-- [x] **8. Match 화면** — ~240줄. 오케스트레이션, 가장 까다로움
-- [x] **9. MapView.jsx** — `mapview.js`를 `useRef`+`useEffect`로 감싸는 래퍼만. **내부 명령형 코드는 손대지 않음**
-- [x] **10. 최종 통합** — 루트를 하나로 합치고 `go()`를 `screen` state로 대체, `legacy.js` 삭제, 임시 `window` 노출 제거, 인라인 `onclick` 23개 제거, 전 기능 회귀 테스트
+- 모든 맵의 결과 계산은 빠른 경기 엔진에서 처리한다.
+- Ascent만 상세 공간 중계를 지원한다.
+- 미지원 맵은 데이터 기반 타임라인 중계를 사용한다.
 
-각 화면 단계마다: React 컴포넌트 작성 → 해당 `.screen` 섹션에 독립 React 루트 마운트 → `legacy.js`에서 그 화면 코드 삭제 → 헤드리스 Chrome으로 검증 → 커밋.
+장기 계획:
 
-**마운트 전략**: 앱이 화면 단위(`.screen` 섹션, 한 번에 하나만 표시)라 섹션마다 독립 React 루트를 붙일 수 있다. 미이관 화면은 계속 `legacy.js`가 그린다. `go()`는 이관 도중엔 그대로 `.on` 클래스를 토글한다 (10번 단계에서만 교체).
+- 맵별 지형, 스폰, 사이트, 주요 진입로와 내비게이션 그리드를 추가한다.
+- 맵별 공격·수비 구조와 조합 메타를 분리한다.
 
-### Phase 5 — 실제 스탯 파이프라인 (1.3GB)
-지금 코드가 `stats/`를 전혀 안 쓰므로 **이건 이관이 아니라 신규 기능이다.**
-React 완료 후에 하는 게 맞다 — 바닐라로 만들었다가 다시 포팅하는 낭비를 피한다.
+### 8. 경제 시스템 고도화
 
-32. `tools/build-stats.mjs` — Node에서 CSV **스트리밍** 파싱(`csv-parse`), 필요한 집계만 추출
-33. 출력은 `src/data/derived/`에 **작은 JSON** (목표: 파일당 100KB 이하)
-    - 예: 팀별 맵 승률, 에이전트 픽률, 선수 시즌 요약
-34. `package.json`에 `"prebuild": "node tools/build-stats.mjs"` 등록
-35. 하드코딩된 `LEAGUES` / `player-stats.json`을 실데이터 기반으로 점진 교체
+- 선수별 크레딧, 생존 총기와 드롭을 추적한다.
+- 실제 연패 보너스, 설치 보너스, 세이브와 강제 구매를 구현한다.
+- 오퍼레이터 운용과 무기별 교전 특성을 반영한다.
+- 팀의 경제 판단과 전술 성향을 연결한다.
+- 화면에 보이는 경제와 승부 계산의 경제를 하나의 상태로 통합한다.
 
----
+### 9. 경기 맥락과 시즌 시스템
 
-## 4. 상태 브리지 설계 (Phase 3a에서 미리 넣을 것)
+- 홈/원정 대신 VCT에 맞는 진영 선택과 시드 이점을 정의한다.
+- 중요 라운드, 탈락 경기, 플레이오프와 결승 압박을 모델링한다.
+- 폼, 피로, 사기, 부상, 성장과 노쇠는 실제 데이터 능력치와 분리된 게임 상태로 설계한다.
+- 로스터 변경, 벤치, 영입, 계약과 시즌 간 승강을 이후 단계에서 추가한다.
 
-React 화면과 바닐라 `legacy.js`가 **같은 `ST`를 공유하며 공존**하는 기간이 있다.
-그래서 `state.js`는 Phase 3a 때부터 구독 메커니즘을 갖고 있어야 한다.
+### 10. 자동 검증과 밸런싱
 
-```js
-// src/core/state.js
-export const ST = { league:null, myTeamIdx:null, teams:[], schedule:[],
-                    week:0, standings:{}, seasonOver:false };
-export let MATCH = null;
+필수 검증 도구:
 
-let version = 0;
-const subs = new Set();
+- 동일 seed 재현 테스트
+- 요원 중복·로스터 중복 검사
+- 능력치 민감도 테스트
+- 팀별 수천 경기 Monte Carlo 승률
+- 진영별 승률과 맵별 평균 라운드 수
+- 선수 K/D, KAST, ADR, FK/FD, Rating 분포
+- 강팀과 약팀의 격차 및 업셋 비율
+- 극단적인 능력치·숙련도 입력에 대한 경계값 검사
 
-export function subscribe(fn){ subs.add(fn); return () => subs.delete(fn); }
-export function getVersion(){ return version; }
-export function bump(){ version++; subs.forEach(f => f()); }   // 상태 변경 후 호출
-export function setMatch(m){ MATCH = m; bump(); }
-```
+밸런스 기준은 특정 선수를 억지로 실제 순위에 맞추는 것이 아니라, 데이터로 설명되는 팀·선수 차이가 합리적인 장기 분포로 나타나는지 확인하는 것이다.
 
-```js
-// src/ui/useStore.js  (Phase 4)
-import { useSyncExternalStore } from 'react';
-import { subscribe, getVersion } from '../core/state.js';
-export function useStore(){ return useSyncExternalStore(subscribe, getVersion); }
-```
+## 권장 구현 순서
 
-`ST`는 **제자리 변형(in-place mutation)** 되므로 참조 비교가 안 통한다. 그래서 `version` 카운터가 필요하다.
+1. 로스터 중복과 소속 오버라이드 해결
+2. seed 기반 RNG와 경기 결과 직렬화
+3. 순수 빠른 경기 엔진 인터페이스 정의
+4. 11개 능력치의 사건별 계산 구현
+5. 역할·요원·맵 숙련도 및 성향 연결
+6. 팀 단위 요원 조합 생성기 구현
+7. 경제와 라운드 상태 고도화
+8. 대량 시뮬레이션 검증기 작성
+9. `DEV_ASCENT_BO1` 제거 및 비토·Bo3 활성화
+10. 검증된 결과를 타임라인과 공간 중계에 연결
+11. 맵별 공간 데이터 확장
+12. 장기 시즌·이적·성장 시스템 구현
 
-⚠️ **`legacy.js`의 액션 핸들러는 `ST`를 직접 변형하면서 `bump()`를 부르지 않는다.**
-React 화면이 의존하는 값을 바꾸는 지점(23개 onclick 핸들러 끝)에 `bump()`를 넣어라. 거칠지만 충분하다.
+## 당장 하지 않을 일
 
----
+- 데이터 근거 없이 리더십·프로 의식·잠재력 같은 주관적 능력치를 자동 생성하지 않는다.
+- UI에 보이는 OVR만 맞추기 위해 전체 능력치를 일괄 상향하지 않는다.
+- 모든 맵 공간 데이터를 한 번에 만들지 않는다.
+- 표본이 적은 선수를 임의의 유명세나 인상으로 자동 보정하지 않는다.
+- 실제 결과 한 시즌을 그대로 복제하는 것을 시뮬레이션 성공으로 간주하지 않는다.
 
-## 5. 사전에 알아둘 함정
+## 완료 기준
 
-- **`ST` 재할당 금지** — ES 모듈에서 import된 바인딩은 재할당 불가. 기존 코드에 `ST = {...}` 가 있으면 `Object.assign(ST, {...})`로 바꿀 것. `MATCH`는 `setMatch()` 경유.
-- **`kay/o` 슬러그** — 에이전트 이름에 `/`가 있어 파일명 슬러그화 필요. 기존 `AGENT_IMG` 키가 정답.
-- **`DEV_ASCENT_BO1`** (L1296) — 맵 비토를 건너뛰고 Ascent Bo1만 도는 개발용 플래그. 이관 중엔 `true`로 두면 매치 검증이 빠르다. **완료 후 원래 값 복구 확인.**
-- **`_navCache`** (L1731) — 모듈 스코프 캐시. 분리 후에도 단일 인스턴스여야 함.
-- **`mapview.js`를 React로 재작성하지 말 것** — `requestAnimationFrame` 루프 + SVG 직접 조작이다. React 앱에서도 이런 애니메이션은 명령형으로 두고 `useEffect` 안에서 돌리는 게 정석이다. `MapView.jsx`는 마운트/언마운트와 props 전달만 담당하는 얇은 래퍼여야 한다.
-- **`images/PublicContentCatalog.json` 14MB** — 빌드 스크립트(Node)에서만 읽는다. **절대 `src/`에서 import 금지.**
-- **`legacy.js`를 정리하고 싶은 충동을 참을 것** — Phase 4에서 통째로 지워진다.
+첫 번째 시뮬레이션 개발 단계는 다음을 만족하면 완료한다.
+
+- 48팀의 로스터 소유권 오류가 없다.
+- 모든 경기가 seed로 재현된다.
+- Bo3 전체를 UI 없이 실행할 수 있다.
+- 모든 능력치와 주요 숙련도 데이터가 경기 계산에 사용된다.
+- 중복 없는 요원 조합과 실제에 가까운 경제 흐름을 만든다.
+- 10,000경기 이상 자동 검증 결과가 보고서로 저장된다.
+- 사용자 경기, 백그라운드 경기와 중계 화면이 같은 경기 결과를 사용한다.

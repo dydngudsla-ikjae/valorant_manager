@@ -17,7 +17,7 @@ const PROFICIENCY_LABELS = {
   '가능함': ['가능함', 'Competent'], '불가능': ['불가능', 'Unfamiliar'],
 };
 
-export const roleLabel = role => (ROLE_LABELS[role] || [role, role])[ST.language === 'en' ? 1 : 0];
+export const roleLabel = role => (ROLE_LABELS[role] || [role, role])[ST.language === 'en' ? 1 : 0].toUpperCase();
 export const attributeLabel = key => (ATTRIBUTE_LABELS[key] || [key, key])[ST.language === 'en' ? 1 : 0];
 export const proficiencyLabel = label => (PROFICIENCY_LABELS[label] || [label, label])[ST.language === 'en' ? 1 : 0];
 export const weekLabel = number => tr(`${number}주차`, `Week ${number}`);

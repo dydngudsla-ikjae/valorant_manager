@@ -7,6 +7,7 @@ import { LEAGUES, ROLE, isFlex, primaryRole, profBand } from '../../data/leagues
 import { selectTeam } from '../match-flow.js';
 import { attributeLabel, roleLabel, tr } from '../../i18n.js';
 import { teamLogo } from '../../data/team-logos.js';
+import { playerImage } from '../../data/player-images.js';
 
 const PROF_ROLES = ['DUE', 'INI', 'SEN', 'CON'];
 const ROLE_IMAGES = { DUE:'/img/roles/duelist.png', INI:'/img/roles/initiator.png', SEN:'/img/roles/sentinel.png', CON:'/img/roles/controller.png' };
@@ -30,14 +31,13 @@ function AgentChip({ x, role }) {
 function PlayerCard({ pl, isSub, viewContext }) {
   const mainRole=primaryRole(pl),flex=isFlex(pl);
   const ovr = playerOVR(pl);
+  const portrait=playerImage(pl);
   return (
     <div className={'pcard clickable' + (isSub ? ' bench' : '')} onClick={() => openPlayer(pl.name,viewContext)}>
       <div className="prow">
-        <div className="roleunit">
-          <div className="rolechip roleiconchip" style={{ '--role-color':ROLE[mainRole].c }}><img src={ROLE_IMAGES[mainRole]} alt="" /></div>
-          <span className="rolecaption">{roleLabel(mainRole)}</span>
-        </div>
+        <div className={'playerportrait'+(portrait?'':' empty')}>{portrait?<img src={portrait} alt="" loading="lazy" />:<span>{pl.name.slice(0,1)}</span>}</div>
         <div className="playeridentity"><div className="pn"><span>{pl.name}</span></div></div>
+        <div className="cardrole" style={{ color:ROLE[mainRole].c }}><img src={ROLE_IMAGES[mainRole]} alt="" /><span>{roleLabel(mainRole)}</span></div>
         <div className="povr" style={{ color: ovr >= 90 ? 'var(--gold)' : 'var(--text)' }}>{ovr}</div>
       </div>
       <div className="cardbadges">{flex&&<span className="playerbadge flex">FLEX</span>}{isSub&&<span className="playerbadge substitute">SUB</span>}</div>
@@ -55,7 +55,7 @@ function PlayerCard({ pl, isSub, viewContext }) {
         const v = playerAttribute(pl,k);
         const col = v >= 90 ? 'var(--gold)' : v >= 82 ? 'var(--def)' : 'var(--ini)';
         return (
-          <div className="stat" key={k}>
+          <div className="stat card-attribute-row" key={k}>
             <label>{attributeLabel(k)}</label>
             <div className="track"><i style={{ width: v + '%', background: col }}></i></div>
             <span className="v">{v}</span>
@@ -66,7 +66,7 @@ function PlayerCard({ pl, isSub, viewContext }) {
         <span className="poollbl">{tr('요원폭','Agent pool')}</span>
         {visiblePool(pl, 4).map(x => <AgentChip x={x} role={pl.role} key={x.agent} />)}
       </div>
-      <div className="cardhint">상세 보기 →</div>
+      <div className="cardhint">{tr('상세 보기','View details')} →</div>
     </div>
   );
 }

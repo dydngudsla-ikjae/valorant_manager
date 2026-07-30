@@ -6,6 +6,7 @@ import { AGENTS, agImg } from '../../data/agents.js';
 import { LEAGUES, PROFBANDS, ROLE, profBand } from '../../data/leagues.js';
 import { attributeLabel, proficiencyLabel, roleLabel, tr } from '../../i18n.js';
 import { PlayerHistory } from './PlayerHistory.jsx';
+import { playerImage } from '../../data/player-images.js';
 
 const PROF_ROLES = ['DUE', 'INI', 'SEN', 'CON'];
 const ROLE_IMAGES = { DUE:'/img/roles/duelist.png', INI:'/img/roles/initiator.png', SEN:'/img/roles/sentinel.png', CON:'/img/roles/controller.png' };
@@ -32,6 +33,7 @@ export function PlayerDetail() {
   const playerKey=pl.playerId||pl.name;
   const selectedRole=roleSelection?.playerKey===playerKey?roleSelection.role:pl.role;
   const ovr=playerRoleOVR(pl,selectedRole);
+  const portrait=playerImage(pl);
   const masteryByAgent=new Map((pl.pool || []).map(x => [x.agent,x]));
   const poolsByRole=PROF_ROLES.map(role => ({
     role,
@@ -40,8 +42,9 @@ export function PlayerDetail() {
 
   return (
     <>
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '18px' }}>
-        <div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '18px' }}>
+        <div className="playerdetailidentity">
+          <div className={'playerdetailportrait'+(portrait?'':' empty')}>{portrait?<img src={portrait} alt="" />:<span>{pl.name.slice(0,1)}</span>}</div>
           <h1 className="big" style={{ fontSize: 'clamp(26px,5vw,40px)' }}>{pl.name}</h1>
         </div>
         <div className="btnrow" style={{ margin: 0, width: 'auto' }}>
@@ -54,14 +57,14 @@ export function PlayerDetail() {
         </div>
       </div>
       <div className="pdgrid">
-        <div className="panel">
+        <div className="panel attribute-panel">
           <div className="ph">{tr('능력치','Attributes')}</div>
           <div className="pbody">
             {ATTRIBUTE_DEFS.map(([k, lbl]) => {
               const v = playerAttribute(pl,k);
               const col = v >= 90 ? 'var(--gold)' : v >= 82 ? 'var(--def)' : 'var(--ini)';
               return (
-                <div className="stat" key={k}>
+                <div className="stat attribute-row" key={k}>
                   <label title={tr(`신뢰도 ${Math.round((pl.attributeReliability?.[k]||0)*100)}%`,`Reliability ${Math.round((pl.attributeReliability?.[k]||0)*100)}%`)}>{attributeLabel(k)}</label>
                   <div className="track"><i style={{ width: v + '%', background: col }}></i></div>
                   <span className="v">{v}</span>
@@ -70,13 +73,13 @@ export function PlayerDetail() {
             })}
           </div>
         </div>
-        <div className="panel">
+        <div className="panel role-panel">
           <div className="ph roleph">
             <span>{tr('포지션 숙련도','Position ratings')}</span>
             <small>{tr('(역할을 선택하세요)','(Select a role)')}</small>
           </div>
           <div className="pbody">
-            <div className="proflegend">
+            <div className="proflegend rolelegend">
               {PROFBANDS.map(b => (
                 <span key={b[1]}><em style={{ background: b[2] }}></em>{proficiencyLabel(b[1])}</span>
               ))}

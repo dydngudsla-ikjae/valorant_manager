@@ -4,9 +4,10 @@ import { mapSuitFor } from '../../core/draft.js';
 import { ARCH, MAPDATA } from '../../data/agents.js';
 import { MAPS } from '../../data/leagues.js';
 import { playerVeto, startMapDraft, vetoSkip } from '../match-flow.js';
+import { tr, weekLabel } from '../../i18n.js';
 
 function sideLabel(side) {
-  return side === MATCH.playerSide ? 'you' : (side === 'home' ? MATCH.home.short : MATCH.away.short);
+  return side === MATCH.playerSide ? tr('내 팀','you') : (side === 'home' ? MATCH.home.short : MATCH.away.short);
 }
 
 function VetoTile({ map, acted: a, clickable }) {
@@ -23,7 +24,7 @@ function VetoTile({ map, acted: a, clickable }) {
     <Tag className={'vtile' + (a ? ' ' + a.act : '') + (clickable ? ' live' : '')} onClick={clickable ? () => playerVeto(map) : undefined}>
       <div className="vmap">{map}</div>
       <div className="vtag">{tag}</div>
-      {!a && <div className="vsuit">roster fit {suit >= 2 ? '★★' : suit >= 1 ? '★' : '·'}</div>}
+      {!a && <div className="vsuit">{tr('선수단 적합도','roster fit')} {suit >= 2 ? '★★' : suit >= 1 ? '★' : '·'}</div>}
     </Tag>
   );
 }
@@ -36,12 +37,13 @@ export function Veto() {
 
   let prompt;
   if (done) {
-    prompt = 'Veto complete — 3 maps set';
+    prompt = tr('베토 완료 — 3개 맵 확정','Veto complete — 3 maps set');
   } else {
     const [side, act] = v.order[v.step];
     const mine = side === MATCH.playerSide;
-    const who = mine ? 'Your' : `${side === 'home' ? MATCH.home.short : MATCH.away.short}'s`;
-    prompt = `${who} turn — ${act.toUpperCase()} a map`;
+    const team = side === 'home' ? MATCH.home.short : MATCH.away.short;
+    const action = act === 'pick' ? tr('선택','PICK') : tr('제외','BAN');
+    prompt = mine ? tr(`내 팀 차례 — 맵 ${action}`,`Your turn — ${action} a map`) : tr(`${team} 차례 — 맵 ${action}`,`${team}'s turn — ${action} a map`);
   }
 
   const actedBy = {};
@@ -49,14 +51,14 @@ export function Veto() {
   const canClick = !done && v.order[v.step][0] === MATCH.playerSide;
 
   const order = [
-    ...v.picks.map((p, i) => ({ label: `Map ${i + 1}`, map: p.map })),
-    ...(done ? [{ label: 'Decider', map: MATCH.mapPool[2] }] : []),
+    ...v.picks.map((p, i) => ({ label: `${tr('맵','Map')} ${i + 1}`, map: p.map })),
+    ...(done ? [{ label: tr('결정 맵','Decider'), map: MATCH.mapPool[2] }] : []),
   ];
 
   return (
     <>
       <div className="matchhead">
-        <div className="mvenue">{MATCH.home.short} vs {MATCH.away.short} · Week {MATCH.wi + 1} · Map Veto</div>
+        <div className="mvenue">{MATCH.home.short} vs {MATCH.away.short} · {weekLabel(MATCH.wi + 1)} · {tr('맵 베토','Map Veto')}</div>
         <div className="mapname">{prompt}</div>
       </div>
       <div className="vetogrid">
@@ -72,8 +74,8 @@ export function Veto() {
       </div>
       <div className="btnrow">
         {done
-          ? <button className="btn" onClick={() => startMapDraft(0)}>To the draft →</button>
-          : <button className="btn ghost" onClick={() => vetoSkip()}>Auto-veto &amp; skip match</button>}
+          ? <button className="btn" onClick={() => startMapDraft(0)}>{tr('드래프트로','To the draft')} →</button>
+          : <button className="btn ghost" onClick={() => vetoSkip()}>{tr('자동 베토 후 경기 건너뛰기','Auto-veto & skip match')}</button>}
       </div>
     </>
   );

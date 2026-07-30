@@ -21,12 +21,11 @@ function StandingsTable() {
         {rows.map((tm, i) => {
           const s = ST.standings[tm.id];
           return (
-            <tr className={tm.id === myId ? 'me' : ''} key={tm.id}>
+            <tr className={(i < 8 ? 'playoff ' : '') + (tm.id === myId ? 'me' : '')} key={tm.id}>
               <td className="rank">{i + 1}</td>
               <td className="tn">
                 <span className="dot" style={{ display: 'inline-block', background: tm.color, marginRight: '8px', verticalAlign: 'middle' }}></span>
                 {tm.name}
-                {i < 8 && <span className="qbadge">PO</span>}
               </td>
               <td className="wl"><b>{s.w}</b>-{s.l}</td>
               <td className="hide mono">{s.mapW}-{s.mapL}</td>
@@ -64,7 +63,7 @@ function ScheduleList() {
           return (
             <div className={'fxrow' + (f.played ? ' done' : '') + (isNext ? ' next' : '')} key={f.wi}>
               <span className="wk">{weekLabel(f.wi + 1)}</span>
-              <span className="teams">{tr('상대','vs')} <b>{nameById(opp)}</b></span>
+              <span className="teams">vs <b>{nameById(opp)}</b></span>
               {resNode}
             </div>
           );
@@ -97,6 +96,7 @@ export function Hub() {
       <div className="hublayout">
         <div className="panel">
           <div className="ph">{tr('순위','Standings')} <span className="rl">{L.name}</span></div>
+          <div className="standingslegend"><i></i><span>{tr('플레이오프 진출권','Playoff qualification')}</span></div>
           <div style={{ overflowX: 'auto' }}><StandingsTable /></div>
         </div>
         <div className="panel hidesmall">

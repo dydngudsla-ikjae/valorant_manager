@@ -50,3 +50,9 @@
   html[lang="ko"] .eyebrow{letter-spacing:.08em}
   html[lang="ko"] h1.big{line-height:1.08; letter-spacing:-.025em; text-transform:none}
   html[lang="ko"] .ph, html[lang="ko"] thead th{letter-spacing:.03em; text-transform:none}
+  @media(max-width:620px){
+    .bar{height:auto; min-height:58px; flex-wrap:wrap; padding-block:8px}
+    .bar .spacer{display:none}
+    .langswitch{margin-left:auto; margin-right:0}
+    .myteam{width:100%; justify-content:flex-end}
+  }
