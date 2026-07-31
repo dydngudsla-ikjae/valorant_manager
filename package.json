@@ -17,6 +17,7 @@
     "assets:role-icons": "node .\\scripts\\normalize-role-icons.mjs",
     "assets:maps": "node .\\scripts\\build-map-assets.mjs",
     "assets:combat": "node .\\scripts\\build-combat-assets.mjs",
+    "assets:agents": "node .\\scripts\\build-agent-assets.mjs",
     "verify:runtime": "node .\\runtime_2026\\scripts\\verify-runtime-2026.mjs",
     "verify:rng": "node .\\runtime_2026\\scripts\\verify-seeded-simulation.mjs",
     "verify:incremental": "node .\\runtime_2026\\scripts\\verify-incremental-map.mjs",
@@ -33,7 +34,9 @@
     "verify:formats": "node .\\runtime_2026\\scripts\\verify-match-formats.mjs",
     "verify:maps": "node .\\runtime_2026\\scripts\\verify-map-engine.mjs",
     "verify:tactics": "node .\\runtime_2026\\scripts\\verify-tactics-engine.mjs",
-    "verify:phases": "node .\\runtime_2026\\scripts\\verify-round-phases.mjs"
+    "verify:phases": "node .\\runtime_2026\\scripts\\verify-round-phases.mjs",
+    "verify:abilities": "node .\\runtime_2026\\scripts\\verify-ability-engine.mjs",
+    "verify:agents": "node .\\runtime_2026\\scripts\\verify-agent-loop.mjs"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.2.0",

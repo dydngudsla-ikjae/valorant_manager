@@ -1,6 +1,6 @@
 import { memo, useEffect } from 'react';
 import { useStore } from './useStore.js';
-import { ST } from '../core/state.js';
+import { ST, go } from '../core/state.js';
 import { Header } from './Header.jsx';
 import { Toast } from './Toast.jsx';
 import { MapView } from './MapView.jsx';
@@ -45,6 +45,9 @@ export function App() {
                 {tr('4개 국제 리그 중 한 팀을 선택하세요.', 'Pick a club from one of the four international leagues.')}<br />
                 {tr('선수단과 경기 전략을 운영하면 서버가 매 라운드의 결과를 시뮬레이션합니다.', 'You run the roster and the game plan — the server decides the rest, round by round.')}
               </p>
+              <div className="main-diagnostic-entry">
+                <button className="btn ghost" onClick={() => go('scMapLab')}>{tr('맵 진단실','Map Lab')}</button>
+              </div>
               <TeamSelect />
             </>
           )}

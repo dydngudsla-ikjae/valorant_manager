@@ -1,0 +1,21 @@
+import { AGENT_KITS } from '../../src/data/agents.js';
+import { agentAbilityDefinitions } from '../../src/data/abilities.js';
+import { abilitySnapshot, createAbilityState, planRoundAbilities, prepareAbilityBuy, settleAbilityRound } from '../../src/core/ability-system.js';
+import manifest from '../../public/img/combat/manifest.json' with {type:'json'};
+import { createAbilityObjects } from '../../src/core/ability-objects.js';
+
+const roster=(prefix,roles)=>roles.map((role,index)=>({name:`${prefix}${index}`,role,attributes:{firepower:65}}));
+const home={roster:roster('H',['DUE','INI','SEN','CON','INI'])},away={roster:roster('A',['DUE','INI','SEN','CON','SEN'])};
+const agents=['Jett','Sova','Killjoy','Omen','Breach','Raze','Fade','Cypher','Viper','Sage'];
+const agBy=Object.fromEntries([...home.roster,...away.roster].map((p,i)=>[p.name,agents[i]]));
+const state=createAbilityState(home,away,agBy),econ={players:home.roster.map(p=>({name:p.name,credits:4000}))},loadouts=home.roster.map(()=>({spent:0,remaining:4000}));
+const purchases=prepareAbilityBuy(state,home,'home',agBy,econ,loadouts,'full');
+const plan=planRoundAbilities(state,{home,away,agBy,atkSide:'home',scoreDiff:-5});
+settleAbilityRound(state,{kills:[{killer:'H0'},{killer:'H0'}],planter:'H1'});
+const snapshot=abilitySnapshot(state),defs=agentAbilityDefinitions('Jett','DUE');
+const checks={allAgentsHaveFour:Object.values(AGENT_KITS).every(kit=>kit.ab.length===4),definitions:defs.length===4,freeSignature:defs[2].signature&&defs[2].cost===0,purchases:purchases.length>0,plannedUses:plan.uses.length>0,ultGain:snapshot.H0.ultPoints===2&&snapshot.H1.ultPoints===1,creditsSpent:econ.players.some(p=>p.credits<4000)};
+checks.jettRules=defs.find(d=>d.name==='Blade Storm')?.ultCost===8&&defs.find(d=>d.name==='Tailwind')?.recharge?.count===2;
+checks.verifiedSet=['Jett','Sova','Killjoy','Omen'].every((agent,index)=>agentAbilityDefinitions(agent,['DUE','INI','SEN','CON'][index]).every(def=>def.verified));
+checks.localizedNames=Object.values(manifest.abilities).flat().every(ability=>ability.name.en&&ability.name.ko);
+checks.mapObjects=createAbilityObjects([{player:'H0',side:'home',name:'Turret',mechanic:'turret_anchor',edge:.5}],{sitePoint:{x:20,y:20},chokePoint:{x:30,y:30},attackSide:'away'}).some(object=>object.hp===100&&object.destructible);
+console.log(JSON.stringify(checks,null,2));if(Object.values(checks).some(v=>!v))process.exit(1);

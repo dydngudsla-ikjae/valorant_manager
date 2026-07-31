@@ -83,6 +83,7 @@
   .match-controls{margin-top:0; display:grid; grid-template-columns:1.2fr 1.2fr .8fr 1fr}
   .match-controls .btn{width:100%}
   .mode-button.active{border-color:var(--def);color:var(--def);box-shadow:0 0 0 1px rgba(35,224,168,.25) inset;background:rgba(35,224,168,.06)}
+  .speed-buttons{display:inline-flex;gap:3px}.speed-buttons .btn{width:auto;min-width:42px;padding-inline:10px}.speed-buttons .btn.active{border-color:var(--gold);color:var(--gold);background:rgba(255,209,102,.08)}
   .timeout-button{border-color:rgba(255,209,102,.55); color:var(--gold)}
   .timeout-editor{margin-top:12px; padding:16px; border:1px solid rgba(255,209,102,.45); border-radius:12px;
     background:linear-gradient(145deg,rgba(255,209,102,.07),rgba(13,18,25,.96))}

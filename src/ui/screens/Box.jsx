@@ -3,6 +3,7 @@ import { useStore } from '../useStore.js';
 import { MATCH } from '../../core/state.js';
 import { agentMap, matchMVP } from '../../core/round-engine.js';
 import { agentLabel, mapLabel, tr } from '../../i18n.js';
+import { abilityNameLabel } from '../../data/combat-assets.js';
 
 function EconGraph({ mr }) {
   const W = 460, H = 70, pad = 4, max = 45000, n = mr.econ.length;
@@ -29,7 +30,7 @@ function TimelineMap({ mr }) {
           const icons = (rd.defuse ? '◈' : rd.plant ? '✸' : '') + (rd.clutch ? '★' : '');
           const winnerShort = rd.winner === 'home' ? MATCH.home.short : MATCH.away.short;
           const title = `R${rd.n} ${(rd.winner === 'home' ? rd.hSide : rd.aSide).toUpperCase()} ${winnerShort} win`
-            + ` · FB ${rd.fb.killer}` + (rd.ability ? ` · ${rd.ability.name}` : '')
+            + ` · FB ${rd.fb.killer}` + (rd.ability ? ` · ${abilityNameLabel(rd.ability.name)}` : '')
             + (rd.plant ? (rd.defuse ? ' · defused' : ' · planted') : '')
             + (rd.clutch ? ` · ${rd.clutch.player} 1v${rd.clutch.vs}` : '');
           return (

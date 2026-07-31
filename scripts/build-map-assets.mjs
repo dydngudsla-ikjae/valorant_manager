@@ -32,8 +32,8 @@ for (const [name, uuid] of Object.entries(maps)) {
   await sharp(path.join(SOURCE, `${uuid}_listview.png`)).resize(912,200,{fit:'cover'}).webp({quality:82}).toFile(path.join(TARGET,files.listView));
   await sharp(path.join(SOURCE, `${uuid}_splash.png`)).resize(1600,900,{fit:'cover',position:'centre',withoutEnlargement:true}).webp({quality:82}).toFile(path.join(TARGET,files.splash));
 
-  // The official tactical PNG uses transparency outside walkable map space.
-  // Downsample alpha to a stable 160x160 mask used by pathfinding and LOS.
+  // Transparency is outside the map; near-white outlines are solid walls.
+  // Excluding both keeps pathfinding and semantic overlays inside floor space.
   const { data, info } = await sharp(path.join(SOURCE, `${uuid}.png`))
     .ensureAlpha()
     .resize(160, 160, { fit: 'fill', kernel: 'nearest' })
@@ -41,7 +41,9 @@ for (const [name, uuid] of Object.entries(maps)) {
     .toBuffer({ resolveWithObject: true });
   let cells = '';
   for (let i = 0; i < info.width * info.height; i += 1) {
-    cells += data[i * info.channels + 3] >= 32 ? '1' : '0';
+    const offset=i*info.channels,r=data[offset],g=data[offset+1],b=data[offset+2],a=data[offset+3];
+    const wallOutline=r>=185&&g>=185&&b>=185;
+    cells += a>=32&&!wallOutline ? '1' : '0';
   }
   await writeFile(path.join(GEO, `${slug}-navgrid.json`), `${JSON.stringify({ w: 160, h: 160, cells })}\n`);
   manifest.maps[name] = {

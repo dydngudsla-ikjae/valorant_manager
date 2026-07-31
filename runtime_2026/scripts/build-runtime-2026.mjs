@@ -154,6 +154,21 @@ function blendTendencies(playerId) {
   return out;
 }
 
+function combatProfile(playerId) {
+  const observations=years.flatMap(year=>{
+    const record=statRecord(playerId,year);
+    const input=record?.attributes?.combatEfficiency?.evidence?.inputs?.find(item=>item.feature==='headshotRate');
+    const weight=(config.attributeYearWeights.default[year]||0)*Math.min(record?.sample?.rounds||0,config.evidenceCaps.attributeRounds);
+    return Number.isFinite(input?.raw)&&weight>0?[{year,value:input.raw,rounds:record.sample.rounds,weight}]:[];
+  });
+  const total=observations.reduce((sum,item)=>sum+item.weight,0);
+  return {
+    headshotRate:round(total?observations.reduce((sum,item)=>sum+item.value*item.weight,0)/total:.24,4),
+    reliability:round(Math.min(1,observations.reduce((sum,item)=>sum+item.rounds,0)/600),3),
+    contributions:observations.map(({year,rounds})=>({year,rounds}))
+  };
+}
+
 function buildRoleProficiencies(playerId) {
   const usage = {};
   for (const year of years) {
@@ -240,6 +255,7 @@ for (const [leagueId, league] of Object.entries(LEAGUES)) for (const team of lea
       baseAttributes: attrs.values, appliedAttributes: applied, season2026Attributes: current,
       attributeReliability: attrs.reliability, attributeContributions: attrs.contributions,
       form: { adjustment: formAdjustment, byAttribute: formByAttribute }, tendencies: blendTendencies(playerId),
+      combatProfile: combatProfile(playerId),
       roleMastery: roles,
       mapMastery: maps, agentMastery, legacy: deriveLegacy(applied)
     };

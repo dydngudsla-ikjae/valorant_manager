@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "modelVersion": "vct-runtime-2026-1.0.0",
   "targetYear": 2026,
-  "generatedAt": "2026-07-30T01:52:12.993Z",
+  "generatedAt": "2026-07-30T23:46:42.214Z",
   "players": {
     "AMER:G2:babybay": {
       "playerId": "2170",
@@ -337,6 +337,28 @@
         "objectiveDuty": 57,
         "agentSpecialization": 61,
         "roleFlexibility": 67
+      },
+      "combatProfile": {
+        "headshotRate": 0.2112,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2335
+          },
+          {
+            "year": 2022,
+            "rounds": 1532
+          },
+          {
+            "year": 2025,
+            "rounds": 341
+          },
+          {
+            "year": 2026,
+            "rounds": 1299
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -957,6 +979,36 @@
         "objectiveDuty": 60,
         "agentSpecialization": 71,
         "roleFlexibility": 37
+      },
+      "combatProfile": {
+        "headshotRate": 0.224,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 494
+          },
+          {
+            "year": 2022,
+            "rounds": 1654
+          },
+          {
+            "year": 2023,
+            "rounds": 1659
+          },
+          {
+            "year": 2024,
+            "rounds": 632
+          },
+          {
+            "year": 2025,
+            "rounds": 2162
+          },
+          {
+            "year": 2026,
+            "rounds": 1299
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -1582,6 +1634,32 @@
         "objectiveDuty": 57,
         "agentSpecialization": 58,
         "roleFlexibility": 74
+      },
+      "combatProfile": {
+        "headshotRate": 0.2422,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 994
+          },
+          {
+            "year": 2023,
+            "rounds": 912
+          },
+          {
+            "year": 2024,
+            "rounds": 1816
+          },
+          {
+            "year": 2025,
+            "rounds": 1821
+          },
+          {
+            "year": 2026,
+            "rounds": 1299
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -2247,6 +2325,32 @@
         "agentSpecialization": 70,
         "roleFlexibility": 33
       },
+      "combatProfile": {
+        "headshotRate": 0.2944,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 86
+          },
+          {
+            "year": 2022,
+            "rounds": 1469
+          },
+          {
+            "year": 2024,
+            "rounds": 1816
+          },
+          {
+            "year": 2025,
+            "rounds": 2162
+          },
+          {
+            "year": 2026,
+            "rounds": 1299
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -2822,6 +2926,32 @@
         "objectiveDuty": 68,
         "agentSpecialization": 69,
         "roleFlexibility": 28
+      },
+      "combatProfile": {
+        "headshotRate": 0.2525,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 832
+          },
+          {
+            "year": 2022,
+            "rounds": 1469
+          },
+          {
+            "year": 2024,
+            "rounds": 1816
+          },
+          {
+            "year": 2025,
+            "rounds": 2162
+          },
+          {
+            "year": 2026,
+            "rounds": 1299
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -3426,6 +3556,36 @@
         "objectiveDuty": 71,
         "agentSpecialization": 51,
         "roleFlexibility": 75
+      },
+      "combatProfile": {
+        "headshotRate": 0.2199,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2665
+          },
+          {
+            "year": 2022,
+            "rounds": 1740
+          },
+          {
+            "year": 2023,
+            "rounds": 752
+          },
+          {
+            "year": 2024,
+            "rounds": 1176
+          },
+          {
+            "year": 2025,
+            "rounds": 950
+          },
+          {
+            "year": 2026,
+            "rounds": 880
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -4107,6 +4267,36 @@
         "agentSpecialization": 67,
         "roleFlexibility": 31
       },
+      "combatProfile": {
+        "headshotRate": 0.3435,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1335
+          },
+          {
+            "year": 2022,
+            "rounds": 2230
+          },
+          {
+            "year": 2023,
+            "rounds": 752
+          },
+          {
+            "year": 2024,
+            "rounds": 1176
+          },
+          {
+            "year": 2025,
+            "rounds": 1749
+          },
+          {
+            "year": 2026,
+            "rounds": 880
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 99,
@@ -4727,6 +4917,36 @@
         "agentSpecialization": 49,
         "roleFlexibility": 70
       },
+      "combatProfile": {
+        "headshotRate": 0.2712,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 581
+          },
+          {
+            "year": 2022,
+            "rounds": 1657
+          },
+          {
+            "year": 2023,
+            "rounds": 752
+          },
+          {
+            "year": 2024,
+            "rounds": 1176
+          },
+          {
+            "year": 2025,
+            "rounds": 950
+          },
+          {
+            "year": 2026,
+            "rounds": 880
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 40,
@@ -5154,6 +5374,16 @@
         "agentSpecialization": 58,
         "roleFlexibility": 32
       },
+      "combatProfile": {
+        "headshotRate": 0.28,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 880
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 90,
@@ -5510,6 +5740,20 @@
         "objectiveDuty": 75,
         "agentSpecialization": 54,
         "roleFlexibility": 32
+      },
+      "combatProfile": {
+        "headshotRate": 0.2798,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 177
+          },
+          {
+            "year": 2026,
+            "rounds": 880
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -6087,6 +6331,36 @@
         "objectiveDuty": 67,
         "agentSpecialization": 49,
         "roleFlexibility": 71
+      },
+      "combatProfile": {
+        "headshotRate": 0.255,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 931
+          },
+          {
+            "year": 2022,
+            "rounds": 994
+          },
+          {
+            "year": 2023,
+            "rounds": 912
+          },
+          {
+            "year": 2024,
+            "rounds": 822
+          },
+          {
+            "year": 2025,
+            "rounds": 961
+          },
+          {
+            "year": 2026,
+            "rounds": 603
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -6768,6 +7042,36 @@
         "agentSpecialization": 51,
         "roleFlexibility": 78
       },
+      "combatProfile": {
+        "headshotRate": 0.2107,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1805
+          },
+          {
+            "year": 2022,
+            "rounds": 1285
+          },
+          {
+            "year": 2023,
+            "rounds": 912
+          },
+          {
+            "year": 2024,
+            "rounds": 1720
+          },
+          {
+            "year": 2025,
+            "rounds": 1749
+          },
+          {
+            "year": 2026,
+            "rounds": 603
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 99,
@@ -7271,6 +7575,24 @@
         "objectiveDuty": 66,
         "agentSpecialization": 67,
         "roleFlexibility": 41
+      },
+      "combatProfile": {
+        "headshotRate": 0.3,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 1010
+          },
+          {
+            "year": 2025,
+            "rounds": 961
+          },
+          {
+            "year": 2026,
+            "rounds": 562
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -7815,6 +8137,32 @@
         "agentSpecialization": 56,
         "roleFlexibility": 40
       },
+      "combatProfile": {
+        "headshotRate": 0.2807,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 33
+          },
+          {
+            "year": 2022,
+            "rounds": 152
+          },
+          {
+            "year": 2024,
+            "rounds": 822
+          },
+          {
+            "year": 2025,
+            "rounds": 961
+          },
+          {
+            "year": 2026,
+            "rounds": 483
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -8138,6 +8486,16 @@
         "objectiveDuty": 65,
         "agentSpecialization": 66,
         "roleFlexibility": 52
+      },
+      "combatProfile": {
+        "headshotRate": 0.3,
+        "reliability": 0.167,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 100
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -8515,6 +8873,24 @@
         "objectiveDuty": 59,
         "agentSpecialization": 53,
         "roleFlexibility": 65
+      },
+      "combatProfile": {
+        "headshotRate": 0.3385,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 276
+          },
+          {
+            "year": 2025,
+            "rounds": 1516
+          },
+          {
+            "year": 2026,
+            "rounds": 464
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -9071,6 +9447,32 @@
         "agentSpecialization": 47,
         "roleFlexibility": 71
       },
+      "combatProfile": {
+        "headshotRate": 0.2602,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 145
+          },
+          {
+            "year": 2022,
+            "rounds": 1403
+          },
+          {
+            "year": 2024,
+            "rounds": 1720
+          },
+          {
+            "year": 2025,
+            "rounds": 1749
+          },
+          {
+            "year": 2026,
+            "rounds": 464
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 20,
@@ -9508,6 +9910,16 @@
         "objectiveDuty": 59,
         "agentSpecialization": 51,
         "roleFlexibility": 64
+      },
+      "combatProfile": {
+        "headshotRate": 0.3,
+        "reliability": 0.773,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 464
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -10031,6 +10443,32 @@
         "agentSpecialization": 55,
         "roleFlexibility": 69
       },
+      "combatProfile": {
+        "headshotRate": 0.2365,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 987
+          },
+          {
+            "year": 2022,
+            "rounds": 1469
+          },
+          {
+            "year": 2024,
+            "rounds": 1816
+          },
+          {
+            "year": 2025,
+            "rounds": 2162
+          },
+          {
+            "year": 2026,
+            "rounds": 274
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -10408,6 +10846,16 @@
         "agentSpecialization": 74,
         "roleFlexibility": 45
       },
+      "combatProfile": {
+        "headshotRate": 0.18,
+        "reliability": 0.385,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 231
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 55,
@@ -10702,6 +11150,20 @@
         "objectiveDuty": 53,
         "agentSpecialization": 71,
         "roleFlexibility": 41
+      },
+      "combatProfile": {
+        "headshotRate": 0.2544,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 334
+          },
+          {
+            "year": 2026,
+            "rounds": 335
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -11240,6 +11702,36 @@
         "objectiveDuty": 55,
         "agentSpecialization": 68,
         "roleFlexibility": 65
+      },
+      "combatProfile": {
+        "headshotRate": 0.3029,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 685
+          },
+          {
+            "year": 2022,
+            "rounds": 1636
+          },
+          {
+            "year": 2023,
+            "rounds": 1618
+          },
+          {
+            "year": 2024,
+            "rounds": 1081
+          },
+          {
+            "year": 2025,
+            "rounds": 1050
+          },
+          {
+            "year": 2026,
+            "rounds": 335
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -11844,6 +12336,36 @@
         "objectiveDuty": 63,
         "agentSpecialization": 65,
         "roleFlexibility": 51
+      },
+      "combatProfile": {
+        "headshotRate": 0.2122,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1606
+          },
+          {
+            "year": 2022,
+            "rounds": 1313
+          },
+          {
+            "year": 2023,
+            "rounds": 828
+          },
+          {
+            "year": 2024,
+            "rounds": 555
+          },
+          {
+            "year": 2025,
+            "rounds": 80
+          },
+          {
+            "year": 2026,
+            "rounds": 335
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -12475,6 +12997,36 @@
         "agentSpecialization": 43,
         "roleFlexibility": 73
       },
+      "combatProfile": {
+        "headshotRate": 0.2547,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1637
+          },
+          {
+            "year": 2022,
+            "rounds": 1636
+          },
+          {
+            "year": 2023,
+            "rounds": 1618
+          },
+          {
+            "year": 2024,
+            "rounds": 1081
+          },
+          {
+            "year": 2025,
+            "rounds": 933
+          },
+          {
+            "year": 2026,
+            "rounds": 335
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 85,
@@ -13089,6 +13641,28 @@
         "agentSpecialization": 53,
         "roleFlexibility": 71
       },
+      "combatProfile": {
+        "headshotRate": 0.3359,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 370
+          },
+          {
+            "year": 2022,
+            "rounds": 560
+          },
+          {
+            "year": 2025,
+            "rounds": 555
+          },
+          {
+            "year": 2026,
+            "rounds": 335
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 65,
@@ -13432,6 +14006,16 @@
         "objectiveDuty": 85,
         "agentSpecialization": 58,
         "roleFlexibility": 30
+      },
+      "combatProfile": {
+        "headshotRate": 0.31,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 1225
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -13999,6 +14583,36 @@
         "agentSpecialization": 49,
         "roleFlexibility": 60
       },
+      "combatProfile": {
+        "headshotRate": 0.287,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1556
+          },
+          {
+            "year": 2022,
+            "rounds": 1507
+          },
+          {
+            "year": 2023,
+            "rounds": 987
+          },
+          {
+            "year": 2024,
+            "rounds": 1778
+          },
+          {
+            "year": 2025,
+            "rounds": 840
+          },
+          {
+            "year": 2026,
+            "rounds": 1225
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 70,
@@ -14448,6 +15062,20 @@
         "agentSpecialization": 64,
         "roleFlexibility": 44
       },
+      "combatProfile": {
+        "headshotRate": 0.3254,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 463
+          },
+          {
+            "year": 2026,
+            "rounds": 1225
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -14844,6 +15472,20 @@
         "agentSpecialization": 77,
         "roleFlexibility": 66
       },
+      "combatProfile": {
+        "headshotRate": 0.2534,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 252
+          },
+          {
+            "year": 2026,
+            "rounds": 1225
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 40,
@@ -15172,6 +15814,16 @@
         "agentSpecialization": 53,
         "roleFlexibility": 84
       },
+      "combatProfile": {
+        "headshotRate": 0.27,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 1121
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 70,
@@ -15493,6 +16145,16 @@
         "objectiveDuty": 51,
         "agentSpecialization": 69,
         "roleFlexibility": 40
+      },
+      "combatProfile": {
+        "headshotRate": 0.25,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 747
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -15931,6 +16593,28 @@
         "objectiveDuty": 74,
         "agentSpecialization": 42,
         "roleFlexibility": 78
+      },
+      "combatProfile": {
+        "headshotRate": 0.2479,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 332
+          },
+          {
+            "year": 2024,
+            "rounds": 699
+          },
+          {
+            "year": 2025,
+            "rounds": 1516
+          },
+          {
+            "year": 2026,
+            "rounds": 747
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -16579,6 +17263,32 @@
         "agentSpecialization": 64,
         "roleFlexibility": 32
       },
+      "combatProfile": {
+        "headshotRate": 0.3092,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1838
+          },
+          {
+            "year": 2022,
+            "rounds": 1336
+          },
+          {
+            "year": 2024,
+            "rounds": 1176
+          },
+          {
+            "year": 2025,
+            "rounds": 950
+          },
+          {
+            "year": 2026,
+            "rounds": 747
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -17062,6 +17772,28 @@
         "agentSpecialization": 53,
         "roleFlexibility": 67
       },
+      "combatProfile": {
+        "headshotRate": 0.2271,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 916
+          },
+          {
+            "year": 2022,
+            "rounds": 1403
+          },
+          {
+            "year": 2025,
+            "rounds": 551
+          },
+          {
+            "year": 2026,
+            "rounds": 747
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 90,
@@ -17494,6 +18226,24 @@
         "objectiveDuty": 66,
         "agentSpecialization": 67,
         "roleFlexibility": 51
+      },
+      "combatProfile": {
+        "headshotRate": 0.26,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 169
+          },
+          {
+            "year": 2022,
+            "rounds": 742
+          },
+          {
+            "year": 2026,
+            "rounds": 747
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -17955,6 +18705,28 @@
         "objectiveDuty": 73,
         "agentSpecialization": 73,
         "roleFlexibility": 65
+      },
+      "combatProfile": {
+        "headshotRate": 0.2022,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 882
+          },
+          {
+            "year": 2022,
+            "rounds": 1403
+          },
+          {
+            "year": 2025,
+            "rounds": 1220
+          },
+          {
+            "year": 2026,
+            "rounds": 1381
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -18571,6 +19343,36 @@
         "agentSpecialization": 43,
         "roleFlexibility": 64
       },
+      "combatProfile": {
+        "headshotRate": 0.2327,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2234
+          },
+          {
+            "year": 2022,
+            "rounds": 734
+          },
+          {
+            "year": 2023,
+            "rounds": 1659
+          },
+          {
+            "year": 2024,
+            "rounds": 632
+          },
+          {
+            "year": 2025,
+            "rounds": 1403
+          },
+          {
+            "year": 2026,
+            "rounds": 1381
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -19175,6 +19977,32 @@
         "agentSpecialization": 50,
         "roleFlexibility": 73
       },
+      "combatProfile": {
+        "headshotRate": 0.3572,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 78
+          },
+          {
+            "year": 2022,
+            "rounds": 165
+          },
+          {
+            "year": 2024,
+            "rounds": 683
+          },
+          {
+            "year": 2025,
+            "rounds": 1985
+          },
+          {
+            "year": 2026,
+            "rounds": 1381
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -19767,6 +20595,28 @@
         "agentSpecialization": 53,
         "roleFlexibility": 42
       },
+      "combatProfile": {
+        "headshotRate": 0.2704,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1203
+          },
+          {
+            "year": 2022,
+            "rounds": 1847
+          },
+          {
+            "year": 2025,
+            "rounds": 1403
+          },
+          {
+            "year": 2026,
+            "rounds": 1381
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -20293,6 +21143,28 @@
         "agentSpecialization": 69,
         "roleFlexibility": 64
       },
+      "combatProfile": {
+        "headshotRate": 0.2692,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 559
+          },
+          {
+            "year": 2022,
+            "rounds": 1438
+          },
+          {
+            "year": 2025,
+            "rounds": 945
+          },
+          {
+            "year": 2026,
+            "rounds": 1381
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 95,
@@ -20632,6 +21504,16 @@
         "objectiveDuty": 56,
         "agentSpecialization": 69,
         "roleFlexibility": 66
+      },
+      "combatProfile": {
+        "headshotRate": 0.28,
+        "reliability": 0.892,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 535
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -21208,6 +22090,36 @@
         "agentSpecialization": 50,
         "roleFlexibility": 46
       },
+      "combatProfile": {
+        "headshotRate": 0.2488,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1758
+          },
+          {
+            "year": 2022,
+            "rounds": 1513
+          },
+          {
+            "year": 2023,
+            "rounds": 873
+          },
+          {
+            "year": 2024,
+            "rounds": 1178
+          },
+          {
+            "year": 2025,
+            "rounds": 903
+          },
+          {
+            "year": 2026,
+            "rounds": 535
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 30,
@@ -21579,6 +22491,16 @@
         "objectiveDuty": 77,
         "agentSpecialization": 67,
         "roleFlexibility": 37
+      },
+      "combatProfile": {
+        "headshotRate": 0.25,
+        "reliability": 0.892,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 535
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -22074,6 +22996,32 @@
         "objectiveDuty": 65,
         "agentSpecialization": 59,
         "roleFlexibility": 64
+      },
+      "combatProfile": {
+        "headshotRate": 0.2724,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 786
+          },
+          {
+            "year": 2022,
+            "rounds": 1308
+          },
+          {
+            "year": 2024,
+            "rounds": 933
+          },
+          {
+            "year": 2025,
+            "rounds": 229
+          },
+          {
+            "year": 2026,
+            "rounds": 535
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -22591,6 +23539,28 @@
         "agentSpecialization": 56,
         "roleFlexibility": 72
       },
+      "combatProfile": {
+        "headshotRate": 0.3867,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 1502
+          },
+          {
+            "year": 2024,
+            "rounds": 417
+          },
+          {
+            "year": 2025,
+            "rounds": 475
+          },
+          {
+            "year": 2026,
+            "rounds": 399
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 65,
@@ -22941,6 +23911,16 @@
         "objectiveDuty": 63,
         "agentSpecialization": 55,
         "roleFlexibility": 67
+      },
+      "combatProfile": {
+        "headshotRate": 0.32,
+        "reliability": 0.858,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 515
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -23477,6 +24457,32 @@
         "objectiveDuty": 57,
         "agentSpecialization": 60,
         "roleFlexibility": 42
+      },
+      "combatProfile": {
+        "headshotRate": 0.2983,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 834
+          },
+          {
+            "year": 2022,
+            "rounds": 857
+          },
+          {
+            "year": 2023,
+            "rounds": 828
+          },
+          {
+            "year": 2025,
+            "rounds": 511
+          },
+          {
+            "year": 2026,
+            "rounds": 515
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -24032,6 +25038,32 @@
         "agentSpecialization": 64,
         "roleFlexibility": 34
       },
+      "combatProfile": {
+        "headshotRate": 0.3693,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1244
+          },
+          {
+            "year": 2022,
+            "rounds": 1944
+          },
+          {
+            "year": 2024,
+            "rounds": 632
+          },
+          {
+            "year": 2025,
+            "rounds": 818
+          },
+          {
+            "year": 2026,
+            "rounds": 515
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 99,
@@ -24441,6 +25473,24 @@
         "agentSpecialization": 72,
         "roleFlexibility": 61
       },
+      "combatProfile": {
+        "headshotRate": 0.2812,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 818
+          },
+          {
+            "year": 2022,
+            "rounds": 1141
+          },
+          {
+            "year": 2026,
+            "rounds": 67
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 20,
@@ -24744,6 +25794,20 @@
         "objectiveDuty": 59,
         "agentSpecialization": 63,
         "roleFlexibility": 60
+      },
+      "combatProfile": {
+        "headshotRate": 0.2695,
+        "reliability": 0.167,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 33
+          },
+          {
+            "year": 2026,
+            "rounds": 67
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -25209,6 +26273,32 @@
         "agentSpecialization": 59,
         "roleFlexibility": 39
       },
+      "combatProfile": {
+        "headshotRate": 0.2489,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 1578
+          },
+          {
+            "year": 2023,
+            "rounds": 1618
+          },
+          {
+            "year": 2024,
+            "rounds": 1081
+          },
+          {
+            "year": 2025,
+            "rounds": 787
+          },
+          {
+            "year": 2026,
+            "rounds": 457
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -25671,6 +26761,24 @@
         "agentSpecialization": 43,
         "roleFlexibility": 81
       },
+      "combatProfile": {
+        "headshotRate": 0.2514,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 170
+          },
+          {
+            "year": 2022,
+            "rounds": 533
+          },
+          {
+            "year": 2026,
+            "rounds": 457
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 35,
@@ -26047,6 +27155,20 @@
         "objectiveDuty": 52,
         "agentSpecialization": 50,
         "roleFlexibility": 65
+      },
+      "combatProfile": {
+        "headshotRate": 0.3082,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 479
+          },
+          {
+            "year": 2026,
+            "rounds": 457
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -26483,6 +27605,24 @@
         "agentSpecialization": 62,
         "roleFlexibility": 40
       },
+      "combatProfile": {
+        "headshotRate": 0.2332,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 609
+          },
+          {
+            "year": 2025,
+            "rounds": 276
+          },
+          {
+            "year": 2026,
+            "rounds": 457
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 90,
@@ -26795,6 +27935,16 @@
         "objectiveDuty": 60,
         "agentSpecialization": 60,
         "roleFlexibility": 59
+      },
+      "combatProfile": {
+        "headshotRate": 0.26,
+        "reliability": 0.265,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 159
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -27325,6 +28475,36 @@
         "objectiveDuty": 55,
         "agentSpecialization": 65,
         "roleFlexibility": 30
+      },
+      "combatProfile": {
+        "headshotRate": 0.2686,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1215
+          },
+          {
+            "year": 2022,
+            "rounds": 1636
+          },
+          {
+            "year": 2023,
+            "rounds": 1618
+          },
+          {
+            "year": 2024,
+            "rounds": 1778
+          },
+          {
+            "year": 2025,
+            "rounds": 1516
+          },
+          {
+            "year": 2026,
+            "rounds": 687
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -27919,6 +29099,36 @@
         "objectiveDuty": 77,
         "agentSpecialization": 41,
         "roleFlexibility": 64
+      },
+      "combatProfile": {
+        "headshotRate": 0.2588,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2077
+          },
+          {
+            "year": 2022,
+            "rounds": 1571
+          },
+          {
+            "year": 2023,
+            "rounds": 987
+          },
+          {
+            "year": 2024,
+            "rounds": 1778
+          },
+          {
+            "year": 2025,
+            "rounds": 903
+          },
+          {
+            "year": 2026,
+            "rounds": 687
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -28556,6 +29766,32 @@
         "agentSpecialization": 49,
         "roleFlexibility": 63
       },
+      "combatProfile": {
+        "headshotRate": 0.3318,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1385
+          },
+          {
+            "year": 2022,
+            "rounds": 1336
+          },
+          {
+            "year": 2024,
+            "rounds": 1778
+          },
+          {
+            "year": 2025,
+            "rounds": 840
+          },
+          {
+            "year": 2026,
+            "rounds": 687
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 25,
@@ -28982,6 +30218,20 @@
         "objectiveDuty": 73,
         "agentSpecialization": 61,
         "roleFlexibility": 39
+      },
+      "combatProfile": {
+        "headshotRate": 0.2839,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 1326
+          },
+          {
+            "year": 2026,
+            "rounds": 687
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -29577,6 +30827,36 @@
         "agentSpecialization": 53,
         "roleFlexibility": 46
       },
+      "combatProfile": {
+        "headshotRate": 0.2475,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1238
+          },
+          {
+            "year": 2022,
+            "rounds": 1657
+          },
+          {
+            "year": 2023,
+            "rounds": 681
+          },
+          {
+            "year": 2024,
+            "rounds": 1720
+          },
+          {
+            "year": 2025,
+            "rounds": 1749
+          },
+          {
+            "year": 2026,
+            "rounds": 687
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 45,
@@ -30113,6 +31393,28 @@
         "objectiveDuty": 60,
         "agentSpecialization": 60,
         "roleFlexibility": 61
+      },
+      "combatProfile": {
+        "headshotRate": 0.35,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 63
+          },
+          {
+            "year": 2024,
+            "rounds": 2367
+          },
+          {
+            "year": 2025,
+            "rounds": 1307
+          },
+          {
+            "year": 2026,
+            "rounds": 1065
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -30740,6 +32042,36 @@
         "agentSpecialization": 66,
         "roleFlexibility": 46
       },
+      "combatProfile": {
+        "headshotRate": 0.3317,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1223
+          },
+          {
+            "year": 2022,
+            "rounds": 1500
+          },
+          {
+            "year": 2023,
+            "rounds": 551
+          },
+          {
+            "year": 2024,
+            "rounds": 2367
+          },
+          {
+            "year": 2025,
+            "rounds": 1307
+          },
+          {
+            "year": 2026,
+            "rounds": 1065
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 99,
@@ -31322,6 +32654,32 @@
         "agentSpecialization": 63,
         "roleFlexibility": 34
       },
+      "combatProfile": {
+        "headshotRate": 0.366,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 846
+          },
+          {
+            "year": 2022,
+            "rounds": 1057
+          },
+          {
+            "year": 2024,
+            "rounds": 2367
+          },
+          {
+            "year": 2025,
+            "rounds": 1307
+          },
+          {
+            "year": 2026,
+            "rounds": 1065
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 20,
@@ -31792,6 +33150,24 @@
         "objectiveDuty": 62,
         "agentSpecialization": 37,
         "roleFlexibility": 76
+      },
+      "combatProfile": {
+        "headshotRate": 0.3112,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2024,
+            "rounds": 1869
+          },
+          {
+            "year": 2025,
+            "rounds": 1307
+          },
+          {
+            "year": 2026,
+            "rounds": 1065
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -32303,6 +33679,20 @@
         "agentSpecialization": 85,
         "roleFlexibility": 46
       },
+      "combatProfile": {
+        "headshotRate": 0.1907,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 132
+          },
+          {
+            "year": 2026,
+            "rounds": 714
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 20,
@@ -32591,6 +33981,16 @@
         "objectiveDuty": 83,
         "agentSpecialization": 52,
         "roleFlexibility": 31
+      },
+      "combatProfile": {
+        "headshotRate": 0.3,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 1001
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -33004,6 +34404,24 @@
         "objectiveDuty": 51,
         "agentSpecialization": 44,
         "roleFlexibility": 43
+      },
+      "combatProfile": {
+        "headshotRate": 0.3719,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 75
+          },
+          {
+            "year": 2025,
+            "rounds": 862
+          },
+          {
+            "year": 2026,
+            "rounds": 1001
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -33467,6 +34885,24 @@
         "agentSpecialization": 62,
         "roleFlexibility": 69
       },
+      "combatProfile": {
+        "headshotRate": 0.2664,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2024,
+            "rounds": 1325
+          },
+          {
+            "year": 2025,
+            "rounds": 862
+          },
+          {
+            "year": 2026,
+            "rounds": 1001
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 80,
@@ -33827,6 +35263,16 @@
         "objectiveDuty": 49,
         "agentSpecialization": 76,
         "roleFlexibility": 45
+      },
+      "combatProfile": {
+        "headshotRate": 0.25,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 814
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -34276,6 +35722,28 @@
         "objectiveDuty": 61,
         "agentSpecialization": 56,
         "roleFlexibility": 75
+      },
+      "combatProfile": {
+        "headshotRate": 0.263,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1692
+          },
+          {
+            "year": 2022,
+            "rounds": 482
+          },
+          {
+            "year": 2025,
+            "rounds": 1255
+          },
+          {
+            "year": 2026,
+            "rounds": 1075
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -34957,6 +36425,36 @@
         "agentSpecialization": 43,
         "roleFlexibility": 58
       },
+      "combatProfile": {
+        "headshotRate": 0.2521,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1080
+          },
+          {
+            "year": 2022,
+            "rounds": 609
+          },
+          {
+            "year": 2023,
+            "rounds": 1134
+          },
+          {
+            "year": 2024,
+            "rounds": 1325
+          },
+          {
+            "year": 2025,
+            "rounds": 862
+          },
+          {
+            "year": 2026,
+            "rounds": 187
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -35451,6 +36949,24 @@
         "agentSpecialization": 66,
         "roleFlexibility": 32
       },
+      "combatProfile": {
+        "headshotRate": 0.2407,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 41
+          },
+          {
+            "year": 2022,
+            "rounds": 150
+          },
+          {
+            "year": 2026,
+            "rounds": 907
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 90,
@@ -35808,6 +37324,20 @@
         "objectiveDuty": 68,
         "agentSpecialization": 78,
         "roleFlexibility": 32
+      },
+      "combatProfile": {
+        "headshotRate": 0.2303,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 253
+          },
+          {
+            "year": 2026,
+            "rounds": 907
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -36331,6 +37861,32 @@
         "agentSpecialization": 72,
         "roleFlexibility": 50
       },
+      "combatProfile": {
+        "headshotRate": 0.307,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 270
+          },
+          {
+            "year": 2022,
+            "rounds": 365
+          },
+          {
+            "year": 2024,
+            "rounds": 1205
+          },
+          {
+            "year": 2025,
+            "rounds": 933
+          },
+          {
+            "year": 2026,
+            "rounds": 907
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -36796,6 +38352,24 @@
         "objectiveDuty": 61,
         "agentSpecialization": 51,
         "roleFlexibility": 72
+      },
+      "combatProfile": {
+        "headshotRate": 0.36,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 61
+          },
+          {
+            "year": 2025,
+            "rounds": 783
+          },
+          {
+            "year": 2026,
+            "rounds": 907
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -37361,6 +38935,32 @@
         "agentSpecialization": 69,
         "roleFlexibility": 43
       },
+      "combatProfile": {
+        "headshotRate": 0.2454,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2404
+          },
+          {
+            "year": 2022,
+            "rounds": 775
+          },
+          {
+            "year": 2023,
+            "rounds": 731
+          },
+          {
+            "year": 2024,
+            "rounds": 740
+          },
+          {
+            "year": 2026,
+            "rounds": 907
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -37848,6 +39448,24 @@
         "objectiveDuty": 55,
         "agentSpecialization": 59,
         "roleFlexibility": 33
+      },
+      "combatProfile": {
+        "headshotRate": 0.278,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 198
+          },
+          {
+            "year": 2025,
+            "rounds": 992
+          },
+          {
+            "year": 2026,
+            "rounds": 540
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -38427,6 +40045,36 @@
         "agentSpecialization": 57,
         "roleFlexibility": 38
       },
+      "combatProfile": {
+        "headshotRate": 0.2837,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 186
+          },
+          {
+            "year": 2022,
+            "rounds": 1334
+          },
+          {
+            "year": 2023,
+            "rounds": 973
+          },
+          {
+            "year": 2024,
+            "rounds": 662
+          },
+          {
+            "year": 2025,
+            "rounds": 1321
+          },
+          {
+            "year": 2026,
+            "rounds": 540
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -38932,6 +40580,28 @@
         "objectiveDuty": 70,
         "agentSpecialization": 52,
         "roleFlexibility": 68
+      },
+      "combatProfile": {
+        "headshotRate": 0.274,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 185
+          },
+          {
+            "year": 2022,
+            "rounds": 127
+          },
+          {
+            "year": 2025,
+            "rounds": 992
+          },
+          {
+            "year": 2026,
+            "rounds": 540
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -39503,6 +41173,32 @@
         "agentSpecialization": 69,
         "roleFlexibility": 33
       },
+      "combatProfile": {
+        "headshotRate": 0.2992,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1041
+          },
+          {
+            "year": 2022,
+            "rounds": 427
+          },
+          {
+            "year": 2024,
+            "rounds": 740
+          },
+          {
+            "year": 2025,
+            "rounds": 1233
+          },
+          {
+            "year": 2026,
+            "rounds": 540
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 20,
@@ -39896,6 +41592,20 @@
         "objectiveDuty": 52,
         "agentSpecialization": 62,
         "roleFlexibility": 61
+      },
+      "combatProfile": {
+        "headshotRate": 0.4179,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 1321
+          },
+          {
+            "year": 2026,
+            "rounds": 540
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -40565,6 +42275,36 @@
         "objectiveDuty": 62,
         "agentSpecialization": 56,
         "roleFlexibility": 76
+      },
+      "combatProfile": {
+        "headshotRate": 0.2526,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2401
+          },
+          {
+            "year": 2022,
+            "rounds": 1135
+          },
+          {
+            "year": 2023,
+            "rounds": 1357
+          },
+          {
+            "year": 2024,
+            "rounds": 1591
+          },
+          {
+            "year": 2025,
+            "rounds": 2024
+          },
+          {
+            "year": 2026,
+            "rounds": 1074
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -41268,6 +43008,36 @@
         "agentSpecialization": 58,
         "roleFlexibility": 31
       },
+      "combatProfile": {
+        "headshotRate": 0.2511,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2672
+          },
+          {
+            "year": 2022,
+            "rounds": 1397
+          },
+          {
+            "year": 2023,
+            "rounds": 1357
+          },
+          {
+            "year": 2024,
+            "rounds": 1591
+          },
+          {
+            "year": 2025,
+            "rounds": 1050
+          },
+          {
+            "year": 2026,
+            "rounds": 1074
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 20,
@@ -41904,6 +43674,36 @@
         "agentSpecialization": 42,
         "roleFlexibility": 52
       },
+      "combatProfile": {
+        "headshotRate": 0.2801,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2420
+          },
+          {
+            "year": 2022,
+            "rounds": 1637
+          },
+          {
+            "year": 2023,
+            "rounds": 1112
+          },
+          {
+            "year": 2024,
+            "rounds": 683
+          },
+          {
+            "year": 2025,
+            "rounds": 1255
+          },
+          {
+            "year": 2026,
+            "rounds": 1074
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -42425,6 +44225,24 @@
         "agentSpecialization": 67,
         "roleFlexibility": 31
       },
+      "combatProfile": {
+        "headshotRate": 0.2687,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 250
+          },
+          {
+            "year": 2025,
+            "rounds": 1255
+          },
+          {
+            "year": 2026,
+            "rounds": 1074
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 99,
@@ -42754,6 +44572,16 @@
         "objectiveDuty": 66,
         "agentSpecialization": 44,
         "roleFlexibility": 82
+      },
+      "combatProfile": {
+        "headshotRate": 0.29,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 794
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -43334,6 +45162,36 @@
         "objectiveDuty": 61,
         "agentSpecialization": 47,
         "roleFlexibility": 75
+      },
+      "combatProfile": {
+        "headshotRate": 0.3332,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 393
+          },
+          {
+            "year": 2022,
+            "rounds": 2028
+          },
+          {
+            "year": 2023,
+            "rounds": 1252
+          },
+          {
+            "year": 2024,
+            "rounds": 1591
+          },
+          {
+            "year": 2025,
+            "rounds": 1962
+          },
+          {
+            "year": 2026,
+            "rounds": 838
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -44037,6 +45895,36 @@
         "agentSpecialization": 61,
         "roleFlexibility": 31
       },
+      "combatProfile": {
+        "headshotRate": 0.2636,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2670
+          },
+          {
+            "year": 2022,
+            "rounds": 1482
+          },
+          {
+            "year": 2023,
+            "rounds": 1357
+          },
+          {
+            "year": 2024,
+            "rounds": 1591
+          },
+          {
+            "year": 2025,
+            "rounds": 2024
+          },
+          {
+            "year": 2026,
+            "rounds": 838
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 25,
@@ -44662,6 +46550,36 @@
         "agentSpecialization": 64,
         "roleFlexibility": 33
       },
+      "combatProfile": {
+        "headshotRate": 0.3125,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2760
+          },
+          {
+            "year": 2022,
+            "rounds": 2340
+          },
+          {
+            "year": 2023,
+            "rounds": 1458
+          },
+          {
+            "year": 2024,
+            "rounds": 632
+          },
+          {
+            "year": 2025,
+            "rounds": 2024
+          },
+          {
+            "year": 2026,
+            "rounds": 838
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -45189,6 +47107,28 @@
         "agentSpecialization": 60,
         "roleFlexibility": 34
       },
+      "combatProfile": {
+        "headshotRate": 0.3349,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 234
+          },
+          {
+            "year": 2022,
+            "rounds": 139
+          },
+          {
+            "year": 2025,
+            "rounds": 2024
+          },
+          {
+            "year": 2026,
+            "rounds": 838
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 20,
@@ -45690,6 +47630,28 @@
         "agentSpecialization": 70,
         "roleFlexibility": 62
       },
+      "combatProfile": {
+        "headshotRate": 0.3202,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 78
+          },
+          {
+            "year": 2022,
+            "rounds": 32
+          },
+          {
+            "year": 2025,
+            "rounds": 306
+          },
+          {
+            "year": 2026,
+            "rounds": 635
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 80,
@@ -46111,6 +48073,24 @@
         "objectiveDuty": 55,
         "agentSpecialization": 65,
         "roleFlexibility": 62
+      },
+      "combatProfile": {
+        "headshotRate": 0.4389,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1220
+          },
+          {
+            "year": 2022,
+            "rounds": 228
+          },
+          {
+            "year": 2026,
+            "rounds": 430
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -46698,6 +48678,36 @@
         "agentSpecialization": 61,
         "roleFlexibility": 53
       },
+      "combatProfile": {
+        "headshotRate": 0.2867,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2404
+          },
+          {
+            "year": 2022,
+            "rounds": 775
+          },
+          {
+            "year": 2023,
+            "rounds": 1335
+          },
+          {
+            "year": 2024,
+            "rounds": 1325
+          },
+          {
+            "year": 2025,
+            "rounds": 247
+          },
+          {
+            "year": 2026,
+            "rounds": 430
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -47063,6 +49073,16 @@
         "objectiveDuty": 65,
         "agentSpecialization": 67,
         "roleFlexibility": 39
+      },
+      "combatProfile": {
+        "headshotRate": 0.3,
+        "reliability": 0.717,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 430
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -47438,6 +49458,24 @@
         "agentSpecialization": 64,
         "roleFlexibility": 39
       },
+      "combatProfile": {
+        "headshotRate": 0.3089,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 323
+          },
+          {
+            "year": 2022,
+            "rounds": 177
+          },
+          {
+            "year": 2026,
+            "rounds": 430
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 70,
@@ -47732,6 +49770,16 @@
         "objectiveDuty": 62,
         "agentSpecialization": 48,
         "roleFlexibility": 77
+      },
+      "combatProfile": {
+        "headshotRate": 0.25,
+        "reliability": 0.717,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 430
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -48181,6 +50229,28 @@
         "objectiveDuty": 61,
         "agentSpecialization": 53,
         "roleFlexibility": 65
+      },
+      "combatProfile": {
+        "headshotRate": 0.2854,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 564
+          },
+          {
+            "year": 2022,
+            "rounds": 136
+          },
+          {
+            "year": 2025,
+            "rounds": 634
+          },
+          {
+            "year": 2026,
+            "rounds": 542
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -48652,6 +50722,24 @@
         "objectiveDuty": 61,
         "agentSpecialization": 53,
         "roleFlexibility": 68
+      },
+      "combatProfile": {
+        "headshotRate": 0.3218,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2024,
+            "rounds": 732
+          },
+          {
+            "year": 2025,
+            "rounds": 1023
+          },
+          {
+            "year": 2026,
+            "rounds": 542
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -49191,6 +51279,28 @@
         "agentSpecialization": 63,
         "roleFlexibility": 39
       },
+      "combatProfile": {
+        "headshotRate": 0.2855,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 77
+          },
+          {
+            "year": 2022,
+            "rounds": 268
+          },
+          {
+            "year": 2025,
+            "rounds": 1023
+          },
+          {
+            "year": 2026,
+            "rounds": 542
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 20,
@@ -49574,6 +51684,20 @@
         "objectiveDuty": 73,
         "agentSpecialization": 60,
         "roleFlexibility": 53
+      },
+      "combatProfile": {
+        "headshotRate": 0.21,
+        "reliability": 0.92,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 271
+          },
+          {
+            "year": 2026,
+            "rounds": 281
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -50160,6 +52284,36 @@
         "agentSpecialization": 40,
         "roleFlexibility": 68
       },
+      "combatProfile": {
+        "headshotRate": 0.3251,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1445
+          },
+          {
+            "year": 2022,
+            "rounds": 2443
+          },
+          {
+            "year": 2023,
+            "rounds": 1335
+          },
+          {
+            "year": 2024,
+            "rounds": 760
+          },
+          {
+            "year": 2025,
+            "rounds": 1023
+          },
+          {
+            "year": 2026,
+            "rounds": 261
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 95,
@@ -50576,6 +52730,16 @@
         "agentSpecialization": 56,
         "roleFlexibility": 35
       },
+      "combatProfile": {
+        "headshotRate": 0.37,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 678
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 85,
@@ -50862,6 +53026,16 @@
         "agentSpecialization": 65,
         "roleFlexibility": 65
       },
+      "combatProfile": {
+        "headshotRate": 0.34,
+        "reliability": 0.838,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 503
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 55,
@@ -51128,6 +53302,16 @@
         "objectiveDuty": 66,
         "agentSpecialization": 50,
         "roleFlexibility": 72
+      },
+      "combatProfile": {
+        "headshotRate": 0.3,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 678
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -51588,6 +53772,24 @@
         "agentSpecialization": 79,
         "roleFlexibility": 37
       },
+      "combatProfile": {
+        "headshotRate": 0.2484,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2330
+          },
+          {
+            "year": 2022,
+            "rounds": 693
+          },
+          {
+            "year": 2026,
+            "rounds": 503
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 20,
@@ -51981,6 +54183,24 @@
         "objectiveDuty": 72,
         "agentSpecialization": 62,
         "roleFlexibility": 42
+      },
+      "combatProfile": {
+        "headshotRate": 0.2706,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 283
+          },
+          {
+            "year": 2022,
+            "rounds": 153
+          },
+          {
+            "year": 2026,
+            "rounds": 678
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -52474,6 +54694,28 @@
         "objectiveDuty": 69,
         "agentSpecialization": 41,
         "roleFlexibility": 68
+      },
+      "combatProfile": {
+        "headshotRate": 0.3292,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1427
+          },
+          {
+            "year": 2022,
+            "rounds": 358
+          },
+          {
+            "year": 2025,
+            "rounds": 933
+          },
+          {
+            "year": 2026,
+            "rounds": 503
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -53024,6 +55266,28 @@
         "agentSpecialization": 66,
         "roleFlexibility": 47
       },
+      "combatProfile": {
+        "headshotRate": 0.2893,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 60
+          },
+          {
+            "year": 2022,
+            "rounds": 82
+          },
+          {
+            "year": 2025,
+            "rounds": 702
+          },
+          {
+            "year": 2026,
+            "rounds": 503
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 20,
@@ -53401,6 +55665,20 @@
         "objectiveDuty": 53,
         "agentSpecialization": 55,
         "roleFlexibility": 34
+      },
+      "combatProfile": {
+        "headshotRate": 0.3377,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 1255
+          },
+          {
+            "year": 2026,
+            "rounds": 503
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -54029,6 +56307,36 @@
         "agentSpecialization": 60,
         "roleFlexibility": 50
       },
+      "combatProfile": {
+        "headshotRate": 0.3766,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1783
+          },
+          {
+            "year": 2022,
+            "rounds": 2229
+          },
+          {
+            "year": 2023,
+            "rounds": 1335
+          },
+          {
+            "year": 2024,
+            "rounds": 760
+          },
+          {
+            "year": 2025,
+            "rounds": 933
+          },
+          {
+            "year": 2026,
+            "rounds": 503
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 95,
@@ -54499,6 +56807,24 @@
         "objectiveDuty": 72,
         "agentSpecialization": 57,
         "roleFlexibility": 60
+      },
+      "combatProfile": {
+        "headshotRate": 0.2551,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2024,
+            "rounds": 1205
+          },
+          {
+            "year": 2025,
+            "rounds": 1749
+          },
+          {
+            "year": 2026,
+            "rounds": 463
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -55005,6 +57331,24 @@
         "agentSpecialization": 74,
         "roleFlexibility": 62
       },
+      "combatProfile": {
+        "headshotRate": 0.3691,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 75
+          },
+          {
+            "year": 2022,
+            "rounds": 138
+          },
+          {
+            "year": 2026,
+            "rounds": 730
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 20,
@@ -55316,6 +57660,16 @@
         "objectiveDuty": 62,
         "agentSpecialization": 55,
         "roleFlexibility": 61
+      },
+      "combatProfile": {
+        "headshotRate": 0.29,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 730
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -55639,6 +57993,16 @@
         "agentSpecialization": 74,
         "roleFlexibility": 34
       },
+      "combatProfile": {
+        "headshotRate": 0.36,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 730
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 90,
@@ -55918,6 +58282,16 @@
         "objectiveDuty": 57,
         "agentSpecialization": 69,
         "roleFlexibility": 34
+      },
+      "combatProfile": {
+        "headshotRate": 0.21,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 730
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -56264,6 +58638,20 @@
         "objectiveDuty": 79,
         "agentSpecialization": 79,
         "roleFlexibility": 34
+      },
+      "combatProfile": {
+        "headshotRate": 0.2797,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 476
+          },
+          {
+            "year": 2026,
+            "rounds": 730
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -56726,6 +59114,28 @@
         "objectiveDuty": 62,
         "agentSpecialization": 42,
         "roleFlexibility": 55
+      },
+      "combatProfile": {
+        "headshotRate": 0.3114,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 40
+          },
+          {
+            "year": 2024,
+            "rounds": 740
+          },
+          {
+            "year": 2025,
+            "rounds": 1985
+          },
+          {
+            "year": 2026,
+            "rounds": 969
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -57330,6 +59740,32 @@
         "objectiveDuty": 56,
         "agentSpecialization": 67,
         "roleFlexibility": 34
+      },
+      "combatProfile": {
+        "headshotRate": 0.3222,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 102
+          },
+          {
+            "year": 2022,
+            "rounds": 287
+          },
+          {
+            "year": 2024,
+            "rounds": 1875
+          },
+          {
+            "year": 2025,
+            "rounds": 1307
+          },
+          {
+            "year": 2026,
+            "rounds": 969
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -57957,6 +60393,36 @@
         "agentSpecialization": 62,
         "roleFlexibility": 69
       },
+      "combatProfile": {
+        "headshotRate": 0.2698,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2401
+          },
+          {
+            "year": 2022,
+            "rounds": 1135
+          },
+          {
+            "year": 2023,
+            "rounds": 1112
+          },
+          {
+            "year": 2024,
+            "rounds": 683
+          },
+          {
+            "year": 2025,
+            "rounds": 1909
+          },
+          {
+            "year": 2026,
+            "rounds": 969
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 99,
@@ -58527,6 +60993,32 @@
         "agentSpecialization": 48,
         "roleFlexibility": 54
       },
+      "combatProfile": {
+        "headshotRate": 0.4082,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 798
+          },
+          {
+            "year": 2022,
+            "rounds": 343
+          },
+          {
+            "year": 2024,
+            "rounds": 538
+          },
+          {
+            "year": 2025,
+            "rounds": 393
+          },
+          {
+            "year": 2026,
+            "rounds": 969
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 90,
@@ -59076,6 +61568,28 @@
         "agentSpecialization": 50,
         "roleFlexibility": 58
       },
+      "combatProfile": {
+        "headshotRate": 0.2556,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 325
+          },
+          {
+            "year": 2024,
+            "rounds": 1293
+          },
+          {
+            "year": 2025,
+            "rounds": 1050
+          },
+          {
+            "year": 2026,
+            "rounds": 72
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 95,
@@ -59503,6 +62017,20 @@
         "agentSpecialization": 78,
         "roleFlexibility": 32
       },
+      "combatProfile": {
+        "headshotRate": 0.2249,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 1052
+          },
+          {
+            "year": 2026,
+            "rounds": 840
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -59866,6 +62394,20 @@
         "objectiveDuty": 70,
         "agentSpecialization": 54,
         "roleFlexibility": 57
+      },
+      "combatProfile": {
+        "headshotRate": 0.24,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 1052
+          },
+          {
+            "year": 2026,
+            "rounds": 840
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -60305,6 +62847,20 @@
         "objectiveDuty": 56,
         "agentSpecialization": 53,
         "roleFlexibility": 73
+      },
+      "combatProfile": {
+        "headshotRate": 0.3205,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 1052
+          },
+          {
+            "year": 2026,
+            "rounds": 840
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -60970,6 +63526,36 @@
         "agentSpecialization": 55,
         "roleFlexibility": 59
       },
+      "combatProfile": {
+        "headshotRate": 0.2689,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1656
+          },
+          {
+            "year": 2022,
+            "rounds": 1834
+          },
+          {
+            "year": 2023,
+            "rounds": 1521
+          },
+          {
+            "year": 2024,
+            "rounds": 826
+          },
+          {
+            "year": 2025,
+            "rounds": 931
+          },
+          {
+            "year": 2026,
+            "rounds": 840
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 90,
@@ -61408,6 +63994,16 @@
         "agentSpecialization": 64,
         "roleFlexibility": 33
       },
+      "combatProfile": {
+        "headshotRate": 0.27,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 840
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 85,
@@ -61809,6 +64405,24 @@
         "agentSpecialization": 56,
         "roleFlexibility": 47
       },
+      "combatProfile": {
+        "headshotRate": 0.296,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1327
+          },
+          {
+            "year": 2022,
+            "rounds": 358
+          },
+          {
+            "year": 2026,
+            "rounds": 462
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 20,
@@ -62130,6 +64744,16 @@
         "objectiveDuty": 54,
         "agentSpecialization": 42,
         "roleFlexibility": 76
+      },
+      "combatProfile": {
+        "headshotRate": 0.34,
+        "reliability": 0.77,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 462
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -62463,6 +65087,16 @@
         "agentSpecialization": 47,
         "roleFlexibility": 81
       },
+      "combatProfile": {
+        "headshotRate": 0.32,
+        "reliability": 0.77,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 462
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 50,
@@ -62795,6 +65429,16 @@
         "agentSpecialization": 56,
         "roleFlexibility": 46
       },
+      "combatProfile": {
+        "headshotRate": 0.33,
+        "reliability": 0.77,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 462
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 75,
@@ -63084,6 +65728,16 @@
         "objectiveDuty": 53,
         "agentSpecialization": 50,
         "roleFlexibility": 38
+      },
+      "combatProfile": {
+        "headshotRate": 0.28,
+        "reliability": 0.77,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 462
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -63645,6 +66299,36 @@
         "objectiveDuty": 63,
         "agentSpecialization": 60,
         "roleFlexibility": 57
+      },
+      "combatProfile": {
+        "headshotRate": 0.327,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 247
+          },
+          {
+            "year": 2022,
+            "rounds": 578
+          },
+          {
+            "year": 2023,
+            "rounds": 551
+          },
+          {
+            "year": 2024,
+            "rounds": 1333
+          },
+          {
+            "year": 2025,
+            "rounds": 1224
+          },
+          {
+            "year": 2026,
+            "rounds": 38
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -64326,6 +67010,36 @@
         "agentSpecialization": 59,
         "roleFlexibility": 41
       },
+      "combatProfile": {
+        "headshotRate": 0.2224,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1543
+          },
+          {
+            "year": 2022,
+            "rounds": 1834
+          },
+          {
+            "year": 2023,
+            "rounds": 1485
+          },
+          {
+            "year": 2024,
+            "rounds": 1333
+          },
+          {
+            "year": 2025,
+            "rounds": 1904
+          },
+          {
+            "year": 2026,
+            "rounds": 881
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -64818,6 +67532,24 @@
         "objectiveDuty": 62,
         "agentSpecialization": 46,
         "roleFlexibility": 89
+      },
+      "combatProfile": {
+        "headshotRate": 0.2866,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2024,
+            "rounds": 1065
+          },
+          {
+            "year": 2025,
+            "rounds": 1904
+          },
+          {
+            "year": 2026,
+            "rounds": 881
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -65521,6 +68253,36 @@
         "agentSpecialization": 52,
         "roleFlexibility": 75
       },
+      "combatProfile": {
+        "headshotRate": 0.3094,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 608
+          },
+          {
+            "year": 2022,
+            "rounds": 1244
+          },
+          {
+            "year": 2023,
+            "rounds": 891
+          },
+          {
+            "year": 2024,
+            "rounds": 2405
+          },
+          {
+            "year": 2025,
+            "rounds": 1904
+          },
+          {
+            "year": 2026,
+            "rounds": 881
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -66223,6 +68985,36 @@
         "agentSpecialization": 64,
         "roleFlexibility": 53
       },
+      "combatProfile": {
+        "headshotRate": 0.2218,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1656
+          },
+          {
+            "year": 2022,
+            "rounds": 520
+          },
+          {
+            "year": 2023,
+            "rounds": 1103
+          },
+          {
+            "year": 2024,
+            "rounds": 2405
+          },
+          {
+            "year": 2025,
+            "rounds": 1336
+          },
+          {
+            "year": 2026,
+            "rounds": 881
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 95,
@@ -66892,6 +69684,36 @@
         "agentSpecialization": 53,
         "roleFlexibility": 31
       },
+      "combatProfile": {
+        "headshotRate": 0.291,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1732
+          },
+          {
+            "year": 2022,
+            "rounds": 1834
+          },
+          {
+            "year": 2023,
+            "rounds": 1521
+          },
+          {
+            "year": 2024,
+            "rounds": 773
+          },
+          {
+            "year": 2025,
+            "rounds": 1904
+          },
+          {
+            "year": 2026,
+            "rounds": 881
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -67351,6 +70173,24 @@
         "objectiveDuty": 62,
         "agentSpecialization": 72,
         "roleFlexibility": 40
+      },
+      "combatProfile": {
+        "headshotRate": 0.3171,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2024,
+            "rounds": 2405
+          },
+          {
+            "year": 2025,
+            "rounds": 1336
+          },
+          {
+            "year": 2026,
+            "rounds": 548
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -67900,6 +70740,28 @@
         "objectiveDuty": 77,
         "agentSpecialization": 50,
         "roleFlexibility": 34
+      },
+      "combatProfile": {
+        "headshotRate": 0.2523,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1520
+          },
+          {
+            "year": 2022,
+            "rounds": 721
+          },
+          {
+            "year": 2024,
+            "rounds": 2405
+          },
+          {
+            "year": 2026,
+            "rounds": 548
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -68520,6 +71382,36 @@
         "agentSpecialization": 58,
         "roleFlexibility": 37
       },
+      "combatProfile": {
+        "headshotRate": 0.2617,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1932
+          },
+          {
+            "year": 2022,
+            "rounds": 1267
+          },
+          {
+            "year": 2023,
+            "rounds": 542
+          },
+          {
+            "year": 2024,
+            "rounds": 2405
+          },
+          {
+            "year": 2025,
+            "rounds": 1336
+          },
+          {
+            "year": 2026,
+            "rounds": 548
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 20,
@@ -68991,6 +71883,24 @@
         "agentSpecialization": 57,
         "roleFlexibility": 46
       },
+      "combatProfile": {
+        "headshotRate": 0.2982,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 293
+          },
+          {
+            "year": 2025,
+            "rounds": 1032
+          },
+          {
+            "year": 2026,
+            "rounds": 510
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 50,
@@ -69342,6 +72252,16 @@
         "agentSpecialization": 64,
         "roleFlexibility": 60
       },
+      "combatProfile": {
+        "headshotRate": 0.32,
+        "reliability": 0.675,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 405
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 30,
@@ -69629,6 +72549,16 @@
         "objectiveDuty": 57,
         "agentSpecialization": 65,
         "roleFlexibility": 49
+      },
+      "combatProfile": {
+        "headshotRate": 0.3,
+        "reliability": 0.238,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 143
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -69984,6 +72914,24 @@
         "objectiveDuty": 71,
         "agentSpecialization": 45,
         "roleFlexibility": 77
+      },
+      "combatProfile": {
+        "headshotRate": 0.2916,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 410
+          },
+          {
+            "year": 2025,
+            "rounds": 679
+          },
+          {
+            "year": 2026,
+            "rounds": 680
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -70356,6 +73304,16 @@
         "objectiveDuty": 55,
         "agentSpecialization": 38,
         "roleFlexibility": 81
+      },
+      "combatProfile": {
+        "headshotRate": 0.31,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 680
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -70915,6 +73873,32 @@
         "agentSpecialization": 50,
         "roleFlexibility": 37
       },
+      "combatProfile": {
+        "headshotRate": 0.2812,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1354
+          },
+          {
+            "year": 2022,
+            "rounds": 1207
+          },
+          {
+            "year": 2024,
+            "rounds": 620
+          },
+          {
+            "year": 2025,
+            "rounds": 679
+          },
+          {
+            "year": 2026,
+            "rounds": 680
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 20,
@@ -71430,6 +74414,28 @@
         "agentSpecialization": 63,
         "roleFlexibility": 47
       },
+      "combatProfile": {
+        "headshotRate": 0.2755,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 302
+          },
+          {
+            "year": 2024,
+            "rounds": 620
+          },
+          {
+            "year": 2025,
+            "rounds": 274
+          },
+          {
+            "year": 2026,
+            "rounds": 680
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 55,
@@ -71780,6 +74786,16 @@
         "objectiveDuty": 73,
         "agentSpecialization": 50,
         "roleFlexibility": 84
+      },
+      "combatProfile": {
+        "headshotRate": 0.35,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 680
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -72416,6 +75432,36 @@
         "agentSpecialization": 52,
         "roleFlexibility": 66
       },
+      "combatProfile": {
+        "headshotRate": 0.3337,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 572
+          },
+          {
+            "year": 2022,
+            "rounds": 1162
+          },
+          {
+            "year": 2023,
+            "rounds": 596
+          },
+          {
+            "year": 2024,
+            "rounds": 944
+          },
+          {
+            "year": 2025,
+            "rounds": 1107
+          },
+          {
+            "year": 2026,
+            "rounds": 779
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 95,
@@ -73008,6 +76054,28 @@
         "agentSpecialization": 59,
         "roleFlexibility": 47
       },
+      "combatProfile": {
+        "headshotRate": 0.3655,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 439
+          },
+          {
+            "year": 2022,
+            "rounds": 1302
+          },
+          {
+            "year": 2025,
+            "rounds": 890
+          },
+          {
+            "year": 2026,
+            "rounds": 779
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 30,
@@ -73434,6 +76502,20 @@
         "objectiveDuty": 63,
         "agentSpecialization": 63,
         "roleFlexibility": 62
+      },
+      "combatProfile": {
+        "headshotRate": 0.3981,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 292
+          },
+          {
+            "year": 2026,
+            "rounds": 779
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -73901,6 +76983,28 @@
         "objectiveDuty": 64,
         "agentSpecialization": 44,
         "roleFlexibility": 57
+      },
+      "combatProfile": {
+        "headshotRate": 0.3487,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 76
+          },
+          {
+            "year": 2024,
+            "rounds": 203
+          },
+          {
+            "year": 2025,
+            "rounds": 1107
+          },
+          {
+            "year": 2026,
+            "rounds": 779
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -74549,6 +77653,36 @@
         "agentSpecialization": 39,
         "roleFlexibility": 70
       },
+      "combatProfile": {
+        "headshotRate": 0.2445,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1854
+          },
+          {
+            "year": 2022,
+            "rounds": 2093
+          },
+          {
+            "year": 2023,
+            "rounds": 700
+          },
+          {
+            "year": 2024,
+            "rounds": 944
+          },
+          {
+            "year": 2025,
+            "rounds": 1107
+          },
+          {
+            "year": 2026,
+            "rounds": 542
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 95,
@@ -74976,6 +78110,16 @@
         "objectiveDuty": 52,
         "agentSpecialization": 66,
         "roleFlexibility": 38
+      },
+      "combatProfile": {
+        "headshotRate": 0.2,
+        "reliability": 0.778,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 467
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -75410,6 +78554,28 @@
         "objectiveDuty": 65,
         "agentSpecialization": 61,
         "roleFlexibility": 61
+      },
+      "combatProfile": {
+        "headshotRate": 0.2396,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1526
+          },
+          {
+            "year": 2022,
+            "rounds": 891
+          },
+          {
+            "year": 2023,
+            "rounds": 334
+          },
+          {
+            "year": 2026,
+            "rounds": 467
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -76030,6 +79196,36 @@
         "agentSpecialization": 73,
         "roleFlexibility": 35
       },
+      "combatProfile": {
+        "headshotRate": 0.3051,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1354
+          },
+          {
+            "year": 2022,
+            "rounds": 1292
+          },
+          {
+            "year": 2023,
+            "rounds": 938
+          },
+          {
+            "year": 2024,
+            "rounds": 795
+          },
+          {
+            "year": 2025,
+            "rounds": 576
+          },
+          {
+            "year": 2026,
+            "rounds": 467
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 99,
@@ -76510,6 +79706,28 @@
         "agentSpecialization": 57,
         "roleFlexibility": 68
       },
+      "combatProfile": {
+        "headshotRate": 0.3735,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 348
+          },
+          {
+            "year": 2022,
+            "rounds": 625
+          },
+          {
+            "year": 2025,
+            "rounds": 338
+          },
+          {
+            "year": 2026,
+            "rounds": 467
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 70,
@@ -76953,6 +80171,24 @@
         "objectiveDuty": 69,
         "agentSpecialization": 44,
         "roleFlexibility": 64
+      },
+      "combatProfile": {
+        "headshotRate": 0.3276,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 669
+          },
+          {
+            "year": 2025,
+            "rounds": 576
+          },
+          {
+            "year": 2026,
+            "rounds": 467
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -77468,6 +80704,28 @@
         "objectiveDuty": 57,
         "agentSpecialization": 58,
         "roleFlexibility": 60
+      },
+      "combatProfile": {
+        "headshotRate": 0.2368,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1900
+          },
+          {
+            "year": 2022,
+            "rounds": 2013
+          },
+          {
+            "year": 2025,
+            "rounds": 702
+          },
+          {
+            "year": 2026,
+            "rounds": 402
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -78077,6 +81335,36 @@
         "agentSpecialization": 65,
         "roleFlexibility": 53
       },
+      "combatProfile": {
+        "headshotRate": 0.2849,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1631
+          },
+          {
+            "year": 2022,
+            "rounds": 1732
+          },
+          {
+            "year": 2023,
+            "rounds": 962
+          },
+          {
+            "year": 2024,
+            "rounds": 897
+          },
+          {
+            "year": 2025,
+            "rounds": 443
+          },
+          {
+            "year": 2026,
+            "rounds": 402
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -78586,6 +81874,28 @@
         "objectiveDuty": 65,
         "agentSpecialization": 50,
         "roleFlexibility": 74
+      },
+      "combatProfile": {
+        "headshotRate": 0.2329,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 646
+          },
+          {
+            "year": 2022,
+            "rounds": 1071
+          },
+          {
+            "year": 2025,
+            "rounds": 619
+          },
+          {
+            "year": 2026,
+            "rounds": 402
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -79190,6 +82500,32 @@
         "agentSpecialization": 61,
         "roleFlexibility": 36
       },
+      "combatProfile": {
+        "headshotRate": 0.2733,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1344
+          },
+          {
+            "year": 2022,
+            "rounds": 1529
+          },
+          {
+            "year": 2023,
+            "rounds": 557
+          },
+          {
+            "year": 2025,
+            "rounds": 972
+          },
+          {
+            "year": 2026,
+            "rounds": 402
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 60,
@@ -79533,6 +82869,16 @@
         "objectiveDuty": 60,
         "agentSpecialization": 69,
         "roleFlexibility": 50
+      },
+      "combatProfile": {
+        "headshotRate": 0.23,
+        "reliability": 0.213,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 128
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -80042,6 +83388,36 @@
         "objectiveDuty": 62,
         "agentSpecialization": 57,
         "roleFlexibility": 74
+      },
+      "combatProfile": {
+        "headshotRate": 0.2789,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2689
+          },
+          {
+            "year": 2022,
+            "rounds": 1987
+          },
+          {
+            "year": 2023,
+            "rounds": 1332
+          },
+          {
+            "year": 2024,
+            "rounds": 1798
+          },
+          {
+            "year": 2025,
+            "rounds": 1821
+          },
+          {
+            "year": 2026,
+            "rounds": 1740
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -80744,6 +84120,36 @@
         "objectiveDuty": 64,
         "agentSpecialization": 56,
         "roleFlexibility": 81
+      },
+      "combatProfile": {
+        "headshotRate": 0.2944,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 2689
+          },
+          {
+            "year": 2022,
+            "rounds": 1987
+          },
+          {
+            "year": 2023,
+            "rounds": 1352
+          },
+          {
+            "year": 2024,
+            "rounds": 1798
+          },
+          {
+            "year": 2025,
+            "rounds": 1821
+          },
+          {
+            "year": 2026,
+            "rounds": 1740
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -81513,6 +84919,36 @@
         "agentSpecialization": 50,
         "roleFlexibility": 47
       },
+      "combatProfile": {
+        "headshotRate": 0.3106,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1274
+          },
+          {
+            "year": 2022,
+            "rounds": 1225
+          },
+          {
+            "year": 2023,
+            "rounds": 945
+          },
+          {
+            "year": 2024,
+            "rounds": 897
+          },
+          {
+            "year": 2025,
+            "rounds": 638
+          },
+          {
+            "year": 2026,
+            "rounds": 1740
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -82171,6 +85607,36 @@
         "agentSpecialization": 66,
         "roleFlexibility": 71
       },
+      "combatProfile": {
+        "headshotRate": 0.2413,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1748
+          },
+          {
+            "year": 2022,
+            "rounds": 1987
+          },
+          {
+            "year": 2023,
+            "rounds": 1334
+          },
+          {
+            "year": 2024,
+            "rounds": 1241
+          },
+          {
+            "year": 2025,
+            "rounds": 1821
+          },
+          {
+            "year": 2026,
+            "rounds": 1740
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -82807,6 +86273,36 @@
         "agentSpecialization": 60,
         "roleFlexibility": 60
       },
+      "combatProfile": {
+        "headshotRate": 0.2622,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 487
+          },
+          {
+            "year": 2022,
+            "rounds": 613
+          },
+          {
+            "year": 2023,
+            "rounds": 849
+          },
+          {
+            "year": 2024,
+            "rounds": 1798
+          },
+          {
+            "year": 2025,
+            "rounds": 1821
+          },
+          {
+            "year": 2026,
+            "rounds": 1740
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -83411,6 +86907,32 @@
         "agentSpecialization": 46,
         "roleFlexibility": 52
       },
+      "combatProfile": {
+        "headshotRate": 0.2737,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 555
+          },
+          {
+            "year": 2022,
+            "rounds": 278
+          },
+          {
+            "year": 2024,
+            "rounds": 1200
+          },
+          {
+            "year": 2025,
+            "rounds": 1368
+          },
+          {
+            "year": 2026,
+            "rounds": 774
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 25,
@@ -83860,6 +87382,20 @@
         "agentSpecialization": 54,
         "roleFlexibility": 87
       },
+      "combatProfile": {
+        "headshotRate": 0.3003,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 1740
+          },
+          {
+            "year": 2026,
+            "rounds": 774
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 90,
@@ -84297,6 +87833,20 @@
         "objectiveDuty": 50,
         "agentSpecialization": 40,
         "roleFlexibility": 30
+      },
+      "combatProfile": {
+        "headshotRate": 0.3103,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 1740
+          },
+          {
+            "year": 2026,
+            "rounds": 774
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -84904,6 +88454,36 @@
         "agentSpecialization": 67,
         "roleFlexibility": 30
       },
+      "combatProfile": {
+        "headshotRate": 0.2783,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1721
+          },
+          {
+            "year": 2022,
+            "rounds": 1834
+          },
+          {
+            "year": 2023,
+            "rounds": 1521
+          },
+          {
+            "year": 2024,
+            "rounds": 1333
+          },
+          {
+            "year": 2025,
+            "rounds": 1740
+          },
+          {
+            "year": 2026,
+            "rounds": 774
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 20,
@@ -85242,6 +88822,16 @@
         "objectiveDuty": 52,
         "agentSpecialization": 55,
         "roleFlexibility": 52
+      },
+      "combatProfile": {
+        "headshotRate": 0.29,
+        "reliability": 0.655,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 393
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -85740,6 +89330,32 @@
         "objectiveDuty": 70,
         "agentSpecialization": 48,
         "roleFlexibility": 67
+      },
+      "combatProfile": {
+        "headshotRate": 0.273,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 788
+          },
+          {
+            "year": 2022,
+            "rounds": 314
+          },
+          {
+            "year": 2024,
+            "rounds": 358
+          },
+          {
+            "year": 2025,
+            "rounds": 1506
+          },
+          {
+            "year": 2026,
+            "rounds": 817
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -86300,6 +89916,28 @@
         "agentSpecialization": 56,
         "roleFlexibility": 52
       },
+      "combatProfile": {
+        "headshotRate": 0.3214,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 847
+          },
+          {
+            "year": 2024,
+            "rounds": 708
+          },
+          {
+            "year": 2025,
+            "rounds": 1775
+          },
+          {
+            "year": 2026,
+            "rounds": 817
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 35,
@@ -86858,6 +90496,28 @@
         "objectiveDuty": 79,
         "agentSpecialization": 60,
         "roleFlexibility": 45
+      },
+      "combatProfile": {
+        "headshotRate": 0.3281,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 842
+          },
+          {
+            "year": 2022,
+            "rounds": 1380
+          },
+          {
+            "year": 2025,
+            "rounds": 1775
+          },
+          {
+            "year": 2026,
+            "rounds": 817
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -87506,6 +91166,36 @@
         "agentSpecialization": 65,
         "roleFlexibility": 62
       },
+      "combatProfile": {
+        "headshotRate": 0.2797,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 478
+          },
+          {
+            "year": 2022,
+            "rounds": 1743
+          },
+          {
+            "year": 2023,
+            "rounds": 562
+          },
+          {
+            "year": 2024,
+            "rounds": 885
+          },
+          {
+            "year": 2025,
+            "rounds": 1775
+          },
+          {
+            "year": 2026,
+            "rounds": 817
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -88144,6 +91834,36 @@
         "agentSpecialization": 56,
         "roleFlexibility": 65
       },
+      "combatProfile": {
+        "headshotRate": 0.2908,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1935
+          },
+          {
+            "year": 2022,
+            "rounds": 2013
+          },
+          {
+            "year": 2023,
+            "rounds": 645
+          },
+          {
+            "year": 2024,
+            "rounds": 708
+          },
+          {
+            "year": 2025,
+            "rounds": 1775
+          },
+          {
+            "year": 2026,
+            "rounds": 817
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 50,
@@ -88647,6 +92367,24 @@
         "objectiveDuty": 49,
         "agentSpecialization": 39,
         "roleFlexibility": 84
+      },
+      "combatProfile": {
+        "headshotRate": 0.3218,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2024,
+            "rounds": 1673
+          },
+          {
+            "year": 2025,
+            "rounds": 704
+          },
+          {
+            "year": 2026,
+            "rounds": 989
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -89235,6 +92973,28 @@
         "agentSpecialization": 51,
         "roleFlexibility": 63
       },
+      "combatProfile": {
+        "headshotRate": 0.2726,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 336
+          },
+          {
+            "year": 2022,
+            "rounds": 669
+          },
+          {
+            "year": 2025,
+            "rounds": 604
+          },
+          {
+            "year": 2026,
+            "rounds": 989
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 20,
@@ -89754,6 +93514,28 @@
         "objectiveDuty": 73,
         "agentSpecialization": 59,
         "roleFlexibility": 69
+      },
+      "combatProfile": {
+        "headshotRate": 0.3209,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 161
+          },
+          {
+            "year": 2022,
+            "rounds": 241
+          },
+          {
+            "year": 2025,
+            "rounds": 1557
+          },
+          {
+            "year": 2026,
+            "rounds": 989
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -90325,6 +94107,28 @@
         "agentSpecialization": 53,
         "roleFlexibility": 66
       },
+      "combatProfile": {
+        "headshotRate": 0.2889,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 762
+          },
+          {
+            "year": 2022,
+            "rounds": 445
+          },
+          {
+            "year": 2025,
+            "rounds": 604
+          },
+          {
+            "year": 2026,
+            "rounds": 989
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 20,
@@ -90801,6 +94605,24 @@
         "agentSpecialization": 57,
         "roleFlexibility": 78
       },
+      "combatProfile": {
+        "headshotRate": 0.2283,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 590
+          },
+          {
+            "year": 2022,
+            "rounds": 993
+          },
+          {
+            "year": 2026,
+            "rounds": 989
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 20,
@@ -91145,6 +94967,16 @@
         "agentSpecialization": 66,
         "roleFlexibility": 51
       },
+      "combatProfile": {
+        "headshotRate": 0.33,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 939
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 40,
@@ -91445,6 +95277,16 @@
         "objectiveDuty": 39,
         "agentSpecialization": 60,
         "roleFlexibility": 64
+      },
+      "combatProfile": {
+        "headshotRate": 0.24,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 939
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -91801,6 +95643,20 @@
         "objectiveDuty": 41,
         "agentSpecialization": 46,
         "roleFlexibility": 77
+      },
+      "combatProfile": {
+        "headshotRate": 0.2677,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 742
+          },
+          {
+            "year": 2026,
+            "rounds": 939
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -92218,6 +96074,20 @@
         "agentSpecialization": 59,
         "roleFlexibility": 36
       },
+      "combatProfile": {
+        "headshotRate": 0.2766,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 594
+          },
+          {
+            "year": 2026,
+            "rounds": 939
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -92597,6 +96467,20 @@
         "objectiveDuty": 52,
         "agentSpecialization": 63,
         "roleFlexibility": 57
+      },
+      "combatProfile": {
+        "headshotRate": 0.2275,
+        "reliability": 0.377,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 102
+          },
+          {
+            "year": 2026,
+            "rounds": 124
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -93072,6 +96956,32 @@
         "objectiveDuty": 42,
         "agentSpecialization": 50,
         "roleFlexibility": 66
+      },
+      "combatProfile": {
+        "headshotRate": 0.2844,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 307
+          },
+          {
+            "year": 2023,
+            "rounds": 1002
+          },
+          {
+            "year": 2024,
+            "rounds": 1824
+          },
+          {
+            "year": 2025,
+            "rounds": 1736
+          },
+          {
+            "year": 2026,
+            "rounds": 1295
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -93610,6 +97520,28 @@
         "objectiveDuty": 55,
         "agentSpecialization": 53,
         "roleFlexibility": 37
+      },
+      "combatProfile": {
+        "headshotRate": 0.3045,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 1002
+          },
+          {
+            "year": 2024,
+            "rounds": 1824
+          },
+          {
+            "year": 2025,
+            "rounds": 1736
+          },
+          {
+            "year": 2026,
+            "rounds": 1295
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -94186,6 +98118,32 @@
         "objectiveDuty": 44,
         "agentSpecialization": 48,
         "roleFlexibility": 64
+      },
+      "combatProfile": {
+        "headshotRate": 0.3075,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 63
+          },
+          {
+            "year": 2023,
+            "rounds": 1002
+          },
+          {
+            "year": 2024,
+            "rounds": 1824
+          },
+          {
+            "year": 2025,
+            "rounds": 1736
+          },
+          {
+            "year": 2026,
+            "rounds": 1295
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -94900,6 +98858,36 @@
         "agentSpecialization": 49,
         "roleFlexibility": 43
       },
+      "combatProfile": {
+        "headshotRate": 0.2357,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 528
+          },
+          {
+            "year": 2022,
+            "rounds": 307
+          },
+          {
+            "year": 2023,
+            "rounds": 1002
+          },
+          {
+            "year": 2024,
+            "rounds": 1824
+          },
+          {
+            "year": 2025,
+            "rounds": 1736
+          },
+          {
+            "year": 2026,
+            "rounds": 1295
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -95348,6 +99336,20 @@
         "objectiveDuty": 43,
         "agentSpecialization": 39,
         "roleFlexibility": 86
+      },
+      "combatProfile": {
+        "headshotRate": 0.2741,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 904
+          },
+          {
+            "year": 2026,
+            "rounds": 814
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -95885,6 +99887,28 @@
         "objectiveDuty": 42,
         "agentSpecialization": 55,
         "roleFlexibility": 53
+      },
+      "combatProfile": {
+        "headshotRate": 0.3776,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 484
+          },
+          {
+            "year": 2024,
+            "rounds": 1673
+          },
+          {
+            "year": 2025,
+            "rounds": 727
+          },
+          {
+            "year": 2026,
+            "rounds": 403
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -96479,6 +100503,32 @@
         "agentSpecialization": 53,
         "roleFlexibility": 59
       },
+      "combatProfile": {
+        "headshotRate": 0.305,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 1641
+          },
+          {
+            "year": 2023,
+            "rounds": 484
+          },
+          {
+            "year": 2024,
+            "rounds": 1673
+          },
+          {
+            "year": 2025,
+            "rounds": 479
+          },
+          {
+            "year": 2026,
+            "rounds": 403
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 85,
@@ -96852,6 +100902,16 @@
         "agentSpecialization": 71,
         "roleFlexibility": 63
       },
+      "combatProfile": {
+        "headshotRate": 0.28,
+        "reliability": 0.672,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 403
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 30,
@@ -97127,6 +101187,16 @@
         "objectiveDuty": 46,
         "agentSpecialization": 75,
         "roleFlexibility": 44
+      },
+      "combatProfile": {
+        "headshotRate": 0.26,
+        "reliability": 0.437,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 262
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -97455,6 +101525,24 @@
         "objectiveDuty": 52,
         "agentSpecialization": 60,
         "roleFlexibility": 57
+      },
+      "combatProfile": {
+        "headshotRate": 0.3002,
+        "reliability": 0.973,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 67
+          },
+          {
+            "year": 2025,
+            "rounds": 255
+          },
+          {
+            "year": 2026,
+            "rounds": 262
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -97931,6 +102019,28 @@
         "objectiveDuty": 38,
         "agentSpecialization": 72,
         "roleFlexibility": 31
+      },
+      "combatProfile": {
+        "headshotRate": 0.2713,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 388
+          },
+          {
+            "year": 2024,
+            "rounds": 1061
+          },
+          {
+            "year": 2025,
+            "rounds": 1368
+          },
+          {
+            "year": 2026,
+            "rounds": 969
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -98473,6 +102583,32 @@
         "agentSpecialization": 62,
         "roleFlexibility": 31
       },
+      "combatProfile": {
+        "headshotRate": 0.3169,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 188
+          },
+          {
+            "year": 2023,
+            "rounds": 325
+          },
+          {
+            "year": 2024,
+            "rounds": 978
+          },
+          {
+            "year": 2025,
+            "rounds": 1368
+          },
+          {
+            "year": 2026,
+            "rounds": 969
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 20,
@@ -98910,6 +103046,20 @@
         "objectiveDuty": 36,
         "agentSpecialization": 76,
         "roleFlexibility": 47
+      },
+      "combatProfile": {
+        "headshotRate": 0.329,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 1368
+          },
+          {
+            "year": 2026,
+            "rounds": 969
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -99476,6 +103626,32 @@
         "objectiveDuty": 36,
         "agentSpecialization": 73,
         "roleFlexibility": 60
+      },
+      "combatProfile": {
+        "headshotRate": 0.3074,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 819
+          },
+          {
+            "year": 2022,
+            "rounds": 776
+          },
+          {
+            "year": 2024,
+            "rounds": 978
+          },
+          {
+            "year": 2025,
+            "rounds": 1270
+          },
+          {
+            "year": 2026,
+            "rounds": 969
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -100058,6 +104234,32 @@
         "agentSpecialization": 64,
         "roleFlexibility": 44
       },
+      "combatProfile": {
+        "headshotRate": 0.3438,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 244
+          },
+          {
+            "year": 2023,
+            "rounds": 267
+          },
+          {
+            "year": 2024,
+            "rounds": 1673
+          },
+          {
+            "year": 2025,
+            "rounds": 727
+          },
+          {
+            "year": 2026,
+            "rounds": 819
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -100635,6 +104837,32 @@
         "agentSpecialization": 48,
         "roleFlexibility": 64
       },
+      "combatProfile": {
+        "headshotRate": 0.2362,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 109
+          },
+          {
+            "year": 2022,
+            "rounds": 676
+          },
+          {
+            "year": 2024,
+            "rounds": 448
+          },
+          {
+            "year": 2025,
+            "rounds": 1657
+          },
+          {
+            "year": 2026,
+            "rounds": 693
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 20,
@@ -101083,6 +105311,20 @@
         "objectiveDuty": 41,
         "agentSpecialization": 63,
         "roleFlexibility": 42
+      },
+      "combatProfile": {
+        "headshotRate": 0.24,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 1657
+          },
+          {
+            "year": 2026,
+            "rounds": 693
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -101601,6 +105843,28 @@
         "agentSpecialization": 60,
         "roleFlexibility": 35
       },
+      "combatProfile": {
+        "headshotRate": 0.2562,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 585
+          },
+          {
+            "year": 2024,
+            "rounds": 954
+          },
+          {
+            "year": 2025,
+            "rounds": 1657
+          },
+          {
+            "year": 2026,
+            "rounds": 693
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 99,
@@ -102113,6 +106377,28 @@
         "agentSpecialization": 54,
         "roleFlexibility": 46
       },
+      "combatProfile": {
+        "headshotRate": 0.2565,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 585
+          },
+          {
+            "year": 2024,
+            "rounds": 954
+          },
+          {
+            "year": 2025,
+            "rounds": 1657
+          },
+          {
+            "year": 2026,
+            "rounds": 492
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 99,
@@ -102518,6 +106804,16 @@
         "agentSpecialization": 66,
         "roleFlexibility": 67
       },
+      "combatProfile": {
+        "headshotRate": 0.29,
+        "reliability": 0.725,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 435
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 30,
@@ -102916,6 +107212,24 @@
         "agentSpecialization": 54,
         "roleFlexibility": 52
       },
+      "combatProfile": {
+        "headshotRate": 0.2412,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2024,
+            "rounds": 230
+          },
+          {
+            "year": 2025,
+            "rounds": 788
+          },
+          {
+            "year": 2026,
+            "rounds": 355
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 95,
@@ -103255,6 +107569,16 @@
         "objectiveDuty": 44,
         "agentSpecialization": 57,
         "roleFlexibility": 78
+      },
+      "combatProfile": {
+        "headshotRate": 0.3,
+        "reliability": 0.592,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 355
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -103671,6 +107995,24 @@
         "agentSpecialization": 51,
         "roleFlexibility": 65
       },
+      "combatProfile": {
+        "headshotRate": 0.2925,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2024,
+            "rounds": 713
+          },
+          {
+            "year": 2025,
+            "rounds": 811
+          },
+          {
+            "year": 2026,
+            "rounds": 355
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 40,
@@ -104044,6 +108386,16 @@
         "agentSpecialization": 38,
         "roleFlexibility": 81
       },
+      "combatProfile": {
+        "headshotRate": 0.25,
+        "reliability": 0.823,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 494
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 55,
@@ -104374,6 +108726,16 @@
         "objectiveDuty": 48,
         "agentSpecialization": 72,
         "roleFlexibility": 53
+      },
+      "combatProfile": {
+        "headshotRate": 0.3,
+        "reliability": 0.345,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 207
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -104729,6 +109091,24 @@
         "objectiveDuty": 39,
         "agentSpecialization": 50,
         "roleFlexibility": 61
+      },
+      "combatProfile": {
+        "headshotRate": 0.2629,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2024,
+            "rounds": 713
+          },
+          {
+            "year": 2025,
+            "rounds": 811
+          },
+          {
+            "year": 2026,
+            "rounds": 481
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -105340,6 +109720,32 @@
         "agentSpecialization": 46,
         "roleFlexibility": 73
       },
+      "combatProfile": {
+        "headshotRate": 0.3749,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 879
+          },
+          {
+            "year": 2022,
+            "rounds": 1380
+          },
+          {
+            "year": 2024,
+            "rounds": 662
+          },
+          {
+            "year": 2025,
+            "rounds": 742
+          },
+          {
+            "year": 2026,
+            "rounds": 684
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 90,
@@ -105843,6 +110249,24 @@
         "objectiveDuty": 37,
         "agentSpecialization": 55,
         "roleFlexibility": 55
+      },
+      "combatProfile": {
+        "headshotRate": 0.2893,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2024,
+            "rounds": 1445
+          },
+          {
+            "year": 2025,
+            "rounds": 1013
+          },
+          {
+            "year": 2026,
+            "rounds": 684
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -106371,6 +110795,28 @@
         "objectiveDuty": 38,
         "agentSpecialization": 55,
         "roleFlexibility": 64
+      },
+      "combatProfile": {
+        "headshotRate": 0.332,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 441
+          },
+          {
+            "year": 2024,
+            "rounds": 826
+          },
+          {
+            "year": 2025,
+            "rounds": 763
+          },
+          {
+            "year": 2026,
+            "rounds": 661
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -106936,6 +111382,28 @@
         "objectiveDuty": 38,
         "agentSpecialization": 54,
         "roleFlexibility": 79
+      },
+      "combatProfile": {
+        "headshotRate": 0.2773,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 388
+          },
+          {
+            "year": 2024,
+            "rounds": 1445
+          },
+          {
+            "year": 2025,
+            "rounds": 864
+          },
+          {
+            "year": 2026,
+            "rounds": 278
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -107546,6 +112014,32 @@
         "agentSpecialization": 73,
         "roleFlexibility": 32
       },
+      "combatProfile": {
+        "headshotRate": 0.3067,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 176
+          },
+          {
+            "year": 2023,
+            "rounds": 441
+          },
+          {
+            "year": 2024,
+            "rounds": 1190
+          },
+          {
+            "year": 2025,
+            "rounds": 990
+          },
+          {
+            "year": 2026,
+            "rounds": 278
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 99,
@@ -108019,6 +112513,28 @@
         "objectiveDuty": 39,
         "agentSpecialization": 61,
         "roleFlexibility": 53
+      },
+      "combatProfile": {
+        "headshotRate": 0.305,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 599
+          },
+          {
+            "year": 2022,
+            "rounds": 175
+          },
+          {
+            "year": 2025,
+            "rounds": 1428
+          },
+          {
+            "year": 2026,
+            "rounds": 795
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -108597,6 +113113,32 @@
         "agentSpecialization": 56,
         "roleFlexibility": 56
       },
+      "combatProfile": {
+        "headshotRate": 0.3187,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 85
+          },
+          {
+            "year": 2022,
+            "rounds": 470
+          },
+          {
+            "year": 2024,
+            "rounds": 573
+          },
+          {
+            "year": 2025,
+            "rounds": 727
+          },
+          {
+            "year": 2026,
+            "rounds": 795
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 30,
@@ -109162,6 +113704,32 @@
         "objectiveDuty": 38,
         "agentSpecialization": 45,
         "roleFlexibility": 55
+      },
+      "combatProfile": {
+        "headshotRate": 0.312,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 127
+          },
+          {
+            "year": 2022,
+            "rounds": 338
+          },
+          {
+            "year": 2024,
+            "rounds": 697
+          },
+          {
+            "year": 2025,
+            "rounds": 750
+          },
+          {
+            "year": 2026,
+            "rounds": 795
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -109751,6 +114319,32 @@
         "agentSpecialization": 43,
         "roleFlexibility": 83
       },
+      "combatProfile": {
+        "headshotRate": 0.3064,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 916
+          },
+          {
+            "year": 2023,
+            "rounds": 484
+          },
+          {
+            "year": 2024,
+            "rounds": 656
+          },
+          {
+            "year": 2025,
+            "rounds": 1181
+          },
+          {
+            "year": 2026,
+            "rounds": 795
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 90,
@@ -110155,6 +114749,16 @@
         "objectiveDuty": 37,
         "agentSpecialization": 59,
         "roleFlexibility": 60
+      },
+      "combatProfile": {
+        "headshotRate": 0.24,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 795
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -110570,6 +115174,24 @@
         "objectiveDuty": 41,
         "agentSpecialization": 62,
         "roleFlexibility": 67
+      },
+      "combatProfile": {
+        "headshotRate": 0.3502,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 282
+          },
+          {
+            "year": 2025,
+            "rounds": 1428
+          },
+          {
+            "year": 2026,
+            "rounds": 1336
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -111097,6 +115719,28 @@
         "objectiveDuty": 44,
         "agentSpecialization": 64,
         "roleFlexibility": 54
+      },
+      "combatProfile": {
+        "headshotRate": 0.2741,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 425
+          },
+          {
+            "year": 2024,
+            "rounds": 1673
+          },
+          {
+            "year": 2025,
+            "rounds": 1204
+          },
+          {
+            "year": 2026,
+            "rounds": 1336
+          }
+        ]
       },
       "roleMastery": {
         "SEN": {
@@ -111636,6 +116280,28 @@
         "agentSpecialization": 54,
         "roleFlexibility": 74
       },
+      "combatProfile": {
+        "headshotRate": 0.3077,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 226
+          },
+          {
+            "year": 2022,
+            "rounds": 942
+          },
+          {
+            "year": 2025,
+            "rounds": 554
+          },
+          {
+            "year": 2026,
+            "rounds": 1336
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 95,
@@ -112130,6 +116796,24 @@
         "agentSpecialization": 53,
         "roleFlexibility": 52
       },
+      "combatProfile": {
+        "headshotRate": 0.3276,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 216
+          },
+          {
+            "year": 2025,
+            "rounds": 1428
+          },
+          {
+            "year": 2026,
+            "rounds": 1336
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 65,
@@ -112548,6 +117232,20 @@
         "agentSpecialization": 52,
         "roleFlexibility": 29
       },
+      "combatProfile": {
+        "headshotRate": 0.2689,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 351
+          },
+          {
+            "year": 2026,
+            "rounds": 1336
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 20,
@@ -112853,6 +117551,16 @@
         "objectiveDuty": 40,
         "agentSpecialization": 51,
         "roleFlexibility": 70
+      },
+      "combatProfile": {
+        "headshotRate": 0.33,
+        "reliability": 0.9,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 540
+          }
+        ]
       },
       "roleMastery": {
         "CON": {
@@ -113385,6 +118093,32 @@
         "agentSpecialization": 49,
         "roleFlexibility": 38
       },
+      "combatProfile": {
+        "headshotRate": 0.2896,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2021,
+            "rounds": 873
+          },
+          {
+            "year": 2022,
+            "rounds": 1374
+          },
+          {
+            "year": 2024,
+            "rounds": 197
+          },
+          {
+            "year": 2025,
+            "rounds": 1204
+          },
+          {
+            "year": 2026,
+            "rounds": 540
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 20,
@@ -113878,6 +118612,28 @@
         "objectiveDuty": 41,
         "agentSpecialization": 53,
         "roleFlexibility": 61
+      },
+      "combatProfile": {
+        "headshotRate": 0.278,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 287
+          },
+          {
+            "year": 2024,
+            "rounds": 656
+          },
+          {
+            "year": 2025,
+            "rounds": 1204
+          },
+          {
+            "year": 2026,
+            "rounds": 540
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -114483,6 +119239,32 @@
         "agentSpecialization": 58,
         "roleFlexibility": 67
       },
+      "combatProfile": {
+        "headshotRate": 0.2875,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 176
+          },
+          {
+            "year": 2023,
+            "rounds": 585
+          },
+          {
+            "year": 2024,
+            "rounds": 954
+          },
+          {
+            "year": 2025,
+            "rounds": 704
+          },
+          {
+            "year": 2026,
+            "rounds": 540
+          }
+        ]
+      },
       "roleMastery": {
         "SEN": {
           "value": 95,
@@ -114828,6 +119610,16 @@
         "agentSpecialization": 71,
         "roleFlexibility": 44
       },
+      "combatProfile": {
+        "headshotRate": 0.31,
+        "reliability": 0.422,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 253
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 55,
@@ -115127,6 +119919,20 @@
         "objectiveDuty": 38,
         "agentSpecialization": 64,
         "roleFlexibility": 61
+      },
+      "combatProfile": {
+        "headshotRate": 0.33,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 615
+          },
+          {
+            "year": 2026,
+            "rounds": 680
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -115517,6 +120323,16 @@
         "objectiveDuty": 39,
         "agentSpecialization": 66,
         "roleFlexibility": 36
+      },
+      "combatProfile": {
+        "headshotRate": 0.23,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 680
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -116046,6 +120862,32 @@
         "agentSpecialization": 53,
         "roleFlexibility": 56
       },
+      "combatProfile": {
+        "headshotRate": 0.2962,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 307
+          },
+          {
+            "year": 2023,
+            "rounds": 1002
+          },
+          {
+            "year": 2024,
+            "rounds": 1047
+          },
+          {
+            "year": 2025,
+            "rounds": 786
+          },
+          {
+            "year": 2026,
+            "rounds": 680
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 70,
@@ -116478,6 +121320,20 @@
         "objectiveDuty": 39,
         "agentSpecialization": 56,
         "roleFlexibility": 36
+      },
+      "combatProfile": {
+        "headshotRate": 0.2779,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 232
+          },
+          {
+            "year": 2026,
+            "rounds": 680
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -116937,6 +121793,28 @@
         "agentSpecialization": 66,
         "roleFlexibility": 45
       },
+      "combatProfile": {
+        "headshotRate": 0.2787,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 180
+          },
+          {
+            "year": 2024,
+            "rounds": 662
+          },
+          {
+            "year": 2025,
+            "rounds": 411
+          },
+          {
+            "year": 2026,
+            "rounds": 425
+          }
+        ]
+      },
       "roleMastery": {
         "DUE": {
           "value": 95,
@@ -117271,6 +122149,16 @@
         "objectiveDuty": 37,
         "agentSpecialization": 42,
         "roleFlexibility": 78
+      },
+      "combatProfile": {
+        "headshotRate": 0.31,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 865
+          }
+        ]
       },
       "roleMastery": {
         "INI": {
@@ -117765,6 +122653,28 @@
         "agentSpecialization": 71,
         "roleFlexibility": 65
       },
+      "combatProfile": {
+        "headshotRate": 0.3327,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2023,
+            "rounds": 134
+          },
+          {
+            "year": 2024,
+            "rounds": 266
+          },
+          {
+            "year": 2025,
+            "rounds": 426
+          },
+          {
+            "year": 2026,
+            "rounds": 865
+          }
+        ]
+      },
       "roleMastery": {
         "CON": {
           "value": 90,
@@ -118192,6 +123102,20 @@
         "agentSpecialization": 43,
         "roleFlexibility": 83
       },
+      "combatProfile": {
+        "headshotRate": 0.304,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2025,
+            "rounds": 733
+          },
+          {
+            "year": 2026,
+            "rounds": 865
+          }
+        ]
+      },
       "roleMastery": {
         "INI": {
           "value": 65,
@@ -118557,6 +123481,16 @@
         "objectiveDuty": 37,
         "agentSpecialization": 79,
         "roleFlexibility": 32
+      },
+      "combatProfile": {
+        "headshotRate": 0.29,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2026,
+            "rounds": 865
+          }
+        ]
       },
       "roleMastery": {
         "DUE": {
@@ -119002,6 +123936,28 @@
         "objectiveDuty": 39,
         "agentSpecialization": 53,
         "roleFlexibility": 37
+      },
+      "combatProfile": {
+        "headshotRate": 0.2455,
+        "reliability": 1,
+        "contributions": [
+          {
+            "year": 2022,
+            "rounds": 176
+          },
+          {
+            "year": 2024,
+            "rounds": 662
+          },
+          {
+            "year": 2025,
+            "rounds": 363
+          },
+          {
+            "year": 2026,
+            "rounds": 865
+          }
+        ]
       },
       "roleMastery": {
         "INI": {

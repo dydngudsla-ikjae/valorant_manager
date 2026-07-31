@@ -3,13 +3,15 @@ import { MATCH, ST, go } from '../../core/state.js';
 import { agImg } from '../../data/agents.js';
 import { mapAssets } from '../../data/geo/maps.js';
 import { LEAGUES } from '../../data/leagues.js';
-import { backToHub, cancelTacticalTimeout, confirmTacticalTimeout, openTacticalTimeout, pauseMap, playOneRound, resumeMap, simCurrentMap, skipMatch, updateTimeoutPolicy } from '../match-flow.js';
+import { backToHub, cancelTacticalTimeout, confirmTacticalTimeout, openTacticalTimeout, pauseMap, playOneRound, resumeMap, setPlaybackSpeed, simCurrentMap, skipCurrentRound, skipMatch, updateTimeoutPolicy } from '../match-flow.js';
 import { agentLabel, mapLabel, policyLabel, tacticLabel, tr } from '../../i18n.js';
 import { ATTACK_POLICY_OPTIONS, DEFENSE_POLICY_OPTIONS, POLICY_PRESETS } from '../../core/tactics/tactical-policy.js';
 import { timeoutAvailability } from '../../core/timeouts.js';
 import { teamLogo } from '../../data/team-logos.js';
 import { playerRoleAbilityOVR, ROLE_FIT_PERCENT } from '../../core/ratings.js';
 import SEASON_SUMMARY from '../../data/player-season-summary.json' with { type: 'json' };
+import { abilityNameLabel } from '../../data/combat-assets.js';
+import { createPortal } from 'react-dom';
 
 function DraftPanel() {
   const cc = MATCH.comps[MATCH.curMap];
@@ -95,7 +97,7 @@ function FeedRow({ f }) {
         : <span style={{ color: 'var(--muted)' }}> vs {f.loserBuyLbl==='full-buy'?tr('풀 바이','full-buy'):f.loserBuyLbl==='force'?tr('강제 구매','force'):f.loserBuyLbl}</span>}
       <span style={{ color: 'var(--muted)' }}> · FB {f.fbKiller}</span>
       {f.topKiller && ` · ${f.topKiller.name} ${f.topKiller.k}k`}{' '}
-      {f.ability && <span className={`abtag${f.ability.ult ? ' ult' : ''}`}>{f.ability.name}</span>}{' '}
+      {f.ability && <span className={`abtag${f.ability.ult ? ' ult' : ''}`}>{abilityNameLabel(f.ability.name)}</span>}{' '}
       {f.clutch && <span className="cltag">{f.clutch.player} 1v{f.clutch.vs}</span>}{' '}
       {(f.defuse || f.plant) && <span className="evtag">{f.defuse ? tr('해체','defuse') : tr('설치','plant')}</span>}
       <span style={{ float: 'right', color: 'var(--text)' }}>{f.h} - {f.a}</span>
@@ -129,23 +131,28 @@ function RunningControls(){
   const side=MATCH.playerSide||'home';
   const roundsPlayed=MATCH.mapSimulation?.r||0;
   const availability=MATCH.timeouts?timeoutAvailability(MATCH.timeouts,side,roundsPlayed):{remaining:0,limit:2,phase:'regulation',segment:null};
-  const canTimeout=playback.betweenRounds&&roundsPlayed>0&&availability.remaining>0;
+  const timeoutQueued=MATCH.timeoutQueued?.side===side;
+  const canTimeout=roundsPlayed>0&&availability.remaining>0&&!editing;
   const autoMode=!playback.paused&&!playback.stopAfterRound;
   const stepMode=!!playback.stopAfterRound||(playback.paused&&playback.betweenRounds);
   const allowance=availability.phase==='overtime'?tr(`연장 ${availability.segment+1}구간`,`OT segment ${availability.segment+1}`):tr('정규 구간','Regulation');
-  return <>
+  return <div className="running-control-wrap">
     <div className="match-control-status">
       <span>{playback.paused?(playback.betweenRounds?tr('일시정지 · 라운드 대기','Paused · Between rounds'):tr('일시정지','Paused')):tr('자동 진행 중','Auto playing')}</span>
       <span>{tr('타임아웃','Timeout')} {availability.remaining}/{availability.limit} · {allowance}</span>
     </div>
-    <div className="btnrow match-controls">
-      <button className={'btn mode-button'+(autoMode?' active':'')} disabled={editing} onClick={resumeMap}>▶ {tr('계속 진행','Continue')}</button>
-      <button className={'btn mode-button'+(stepMode?' active':'')} disabled={editing} onClick={playOneRound}>{playback.stopAfterRound?tr('현재 라운드 후 정지','Stop after round'):tr('한 라운드 진행','Play one round')}</button>
-      <button className="btn ghost" disabled={editing||playback.paused} onClick={pauseMap}>⏸ {tr('일시정지','Pause')}</button>
-      <button className="btn timeout-button" disabled={!canTimeout} onClick={openTacticalTimeout}>{tr('타임아웃','Timeout')} · {availability.remaining}</button>
+    <div className="broadcast-controls" role="group" aria-label={tr('중계 재생 제어','Broadcast playback controls')}>
+      <button className={'broadcast-control play continue'+(autoMode?' active':'')} disabled={editing} onClick={resumeMap} title={tr('계속 진행','Continue')} aria-label={tr('계속 진행','Continue')}><span className="control-play-icon double"><i/><i/></span></button>
+      <button className={'broadcast-control play one-round'+(stepMode?' active':'')} disabled={editing} onClick={playOneRound} title={playback.stopAfterRound?tr('현재 라운드 후 정지','Stop after round'):tr('한 라운드 진행','Play one round')} aria-label={tr('한 라운드 진행','Play one round')}><span className="control-play-icon"><i/></span></button>
+      <button className="broadcast-control round-skip" disabled={editing||playback.betweenRounds} onClick={skipCurrentRound} title={tr('현재 라운드 건너뛰기','Skip current round')} aria-label={tr('현재 라운드 건너뛰기','Skip current round')}><span className="control-skip-icon"><i/><em/></span></button>
+      <button className="broadcast-control pause" disabled={editing||playback.paused} onClick={pauseMap} title={tr('일시정지','Pause')} aria-label={tr('일시정지','Pause')}><span className="control-pause-icon"><i/><i/></span></button>
+      <i className="broadcast-control-divider" aria-hidden="true"/>
+      {[1,2,4].map(rate=><button className={'broadcast-control speed'+(playback.speed===rate?' active':'')} disabled={editing} onClick={()=>setPlaybackSpeed(rate)} title={`${rate}×`} aria-label={`${rate}×`} key={rate}>{rate}×</button>)}
+      <i className="broadcast-control-divider" aria-hidden="true"/>
+      <button className={'broadcast-control timeout'+(timeoutQueued?' queued':'')} disabled={!canTimeout} onClick={openTacticalTimeout} title={timeoutQueued?tr('타임아웃 예약 취소','Cancel queued timeout'):`${tr('타임아웃','Timeout')} ${availability.remaining}/${availability.limit}`} aria-label={tr('타임아웃','Timeout')}><span>{timeoutQueued?tr('타임 아웃 예약','TIME OUT QUEUED'):tr('타임 아웃','TIME OUT')}</span><small>{availability.remaining}</small></button>
     </div>
     <TimeoutEditor/>
-  </>;
+  </div>;
 }
 
 export function MatchFeed() {
@@ -162,10 +169,14 @@ export function MatchFeed() {
 export function MatchButtons() {
   useStore();
   if (!MATCH) return null;
-  const myId = ST.teams[ST.myTeamIdx].id;
+  const myId = ST.teams[ST.myTeamIdx]?.id??MATCH.home?.id;
   const phase = MATCH.fx.played ? 'end' : MATCH.running ? 'running' : 'start';
 
-  if(phase==='running')return <RunningControls/>;
+  if(phase==='running'){
+    const target=typeof document!=='undefined'?document.getElementById('broadcastControls'):null;
+    const controls=<RunningControls/>;
+    return target?createPortal(controls,target):controls;
+  }
 
   if (phase === 'end') {
     if(MATCH.diagnostic)return <div className="btnrow"><button className="btn gold" onClick={()=>go('scMapLab')}>{tr('진단실로 돌아가기','Back to Map Lab')}</button></div>;
@@ -177,7 +188,7 @@ export function MatchButtons() {
   }
   return (
     <div className="btnrow match-start-actions">
-      <button className="btn" onClick={() => simCurrentMap('normal')}>▶ {tr('관전','Watch')}</button>
+      <button className="btn" onClick={() => simCurrentMap(1)}>▶ {tr('관전','Watch')} · 1×</button>
       <button className="btn ghost" style={{ width: 'auto' }} onClick={() => skipMatch()}>⏭ {tr('건너뛰기','Skip')}</button>
     </div>
   );

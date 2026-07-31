@@ -1,4 +1,4 @@
-import { BUYMOD, SIDEMOD, createEconomyState, homeSideAt, planBuy, resetEconomyForRound, settleEconomy } from './economy.js';
+import { BUYMOD, SIDEMOD, createTeamEconomyState, homeSideAt, planTeamBuy, resetTeamEconomyForRound, settleTeamEconomy } from './economy.js';
 import { kitOf, playerAttribute, playerOVR } from './ratings.js';
 import { rollForm, teamPower } from './season.js';
 import { spatialRound } from './spatial.js';
@@ -9,6 +9,7 @@ import { experienceModifier, objectiveDuty } from './simulation-model.js';
 import { createTacticalState, recordTacticalOutcome } from './tactics/adaptation.js';
 import { planRoundTactics } from './tactics/round-planner.js';
 import { mapGeo } from '../data/geo/maps.js';
+import { createAbilityState, planRoundAbilities, prepareAbilityBuy, resetAbilityInventory, settleAbilityRound } from './ability-system.js';
 
 export function rand5(){return Math.floor(random()*5);}
 
@@ -41,6 +42,11 @@ export function applyRoundStats(box,rd){
   const deathsBySide={home:0,away:0};
   const tradedVictims=new Set((rd.kills||[]).filter(kill=>kill.traded&&kill.tradeOf).map(kill=>kill.tradeOf));
   for(const unit of rd.spatial?.units||[]){if(roundStats[unit.name])roundStats[unit.name].survived=unit.deathT==null;}
+  for(const event of rd.spatial?.events||[]){
+    if(!['damage','abilityDamage'].includes(event.type)||event.lethal||!event.source)continue;
+    const source=box[event.source],sourceRound=roundStats[event.source],amount=Math.max(0,event.amount||0);
+    if(source)source.damage+=amount;if(sourceRound)sourceRound.damage+=amount;
+  }
   for(const kill of rd.kills||[]){
     const killer=box[kill.killer],victim=box[kill.victim],assist=kill.assist&&box[kill.assist];
     const killerRound=roundStats[kill.killer],victimRound=roundStats[kill.victim],assistRound=roundStats[kill.assist];
@@ -93,7 +99,8 @@ export function createMapSimulation(home,away,cc,homeStartAtk){
   const agBy=agentMap(cc);
   const baseH=teamPower(home,hForm)+cc.home.delta;
   const baseA=teamPower(away,aForm)+cc.away.delta;
-  const economy={home:createEconomyState(),away:createEconomyState()};
+  const economy={home:createTeamEconomyState(home),away:createTeamEconomyState(away)};
+  const abilityState=createAbilityState(home,away,agBy);
   const tacticalState=createTacticalState(),geo=mapGeo(cc.mapName);
   const avg=(team,key)=>team.roster.reduce((sum,pl)=>sum+playerAttribute(pl,key),0)/team.roster.length;
   const effR=(pl,form,ctx={})=>{
@@ -105,21 +112,29 @@ export function createMapSimulation(home,away,cc,homeStartAtk){
     value+=experienceModifier(pl,{agent:agBy[pl.name],map:cc.mapName,opening:ctx.opening,attacking:ctx.attacking});
     return value;
   };
-  return{version:'map-state-v1',simulationSeed,home,away,cc,homeStartAtk,hForm,aForm,agBy,baseH,baseA,economy,tacticalState,geo,h:0,a:0,r:0,rounds:[],avg,effR};
+  return{version:'map-state-v2-abilities',simulationSeed,home,away,cc,homeStartAtk,hForm,aForm,agBy,baseH,baseA,economy,abilityState,tacticalState,geo,h:0,a:0,r:0,rounds:[],avg,effR};
 }
 
 export function mapSimulationDone(state){return((state.h>=13||state.a>=13)&&Math.abs(state.h-state.a)>=2)||state.r>50;}
 
 function runNextRound(state){
     if(mapSimulationDone(state))return null;
-    const {home,away,cc,homeStartAtk,hForm,aForm,agBy,baseH,baseA,economy,tacticalState,geo,avg,effR,rounds}=state;
+    const {home,away,cc,homeStartAtk,hForm,aForm,agBy,baseH,baseA,economy,abilityState,tacticalState,geo,avg,effR,rounds}=state;
     let {h,a,r}=state;
     const roundSeed=rngSnapshot();
     const hSide=homeSideAt(r,homeStartAtk), aSide=hSide==='atk'?'def':'atk';
     const isPistol=(r===0||r===12);
-    resetEconomyForRound(economy.home,r);resetEconomyForRound(economy.away,r);
-    const planH=planBuy(economy.home,isPistol),planA=planBuy(economy.away,isPistol);
+    resetAbilityInventory(abilityState,r);
+    resetTeamEconomyForRound(economy.home,r);resetTeamEconomyForRound(economy.away,r);
+    const planH=planTeamBuy(economy.home,home,{isPistol,agents:agBy}),planA=planTeamBuy(economy.away,away,{isPistol,agents:agBy});
     const buyH=planH.buy,buyA=planA.buy;
+    const loadouts={home:planH.loadouts,away:planA.loadouts};
+    const abilityPurchases={
+      home:prepareAbilityBuy(abilityState,home,'home',agBy,economy.home,loadouts.home,planH.buy),
+      away:prepareAbilityBuy(abilityState,away,'away',agBy,economy.away,loadouts.away,planA.buy)
+    };
+    planH.playerAfterBuy=economy.home.players.map(player=>player.credits);planH.afterBuy=Math.round(planH.playerAfterBuy.reduce((s,n)=>s+n,0)/5);planH.spend=planH.before-planH.afterBuy;
+    planA.playerAfterBuy=economy.away.players.map(player=>player.credits);planA.afterBuy=Math.round(planA.playerAfterBuy.reduce((s,n)=>s+n,0)/5);planA.spend=planA.before-planA.afterBuy;
     const econH=BUYMOD[buyH]*(1-Math.max(0,avg(home,'combatEfficiency')-60)/160);
     const econA=BUYMOD[buyA]*(1-Math.max(0,avg(away,'combatEfficiency')-60)/160);
     const powH=baseH+SIDEMOD[cc.home.stance][hSide]+econH;
@@ -138,9 +153,10 @@ function runNextRound(state){
     const atkBuy=atkSide==='home'?buyH:buyA,defBuy=defSide==='home'?buyH:buyA;
     const atkStance=atkSide==='home'?cc.home.stance:cc.away.stance,defStance=defSide==='home'?cc.home.stance:cc.away.stance;
     const scoreDiff=atkSide==='home'?h-a:a-h;
+    const abilityPlan=planRoundAbilities(abilityState,{home,away,agBy,atkSide,scoreDiff});
     const atkPolicy=atkSide==='home'?cc.home.tacticalPolicy:cc.away.tacticalPolicy,defPolicy=defSide==='home'?cc.home.tacticalPolicy:cc.away.tacticalPolicy;
     const tactics=planRoundTactics({state:tacticalState,round:r+1,mapGeo:geo,atkTeam:atkTeamObj,defTeam:defSide==='home'?home:away,atkKey:atkSide,defKey:defSide,atkBuy,defBuy,isPistol,scoreDiff,atkStance,defStance,utilityStrength:utilStrength,atkPolicy,defPolicy});
-    const res=spatialRound(home,away,{mapName:cc.mapName,atkTeamKey:atkSide,defTeamKey:defSide,teamGap,ratingOf,reconStrength,utilStrength,teamplay,objective,isPistol,tacticalPlan:tactics});
+    const res=spatialRound(home,away,{mapName:cc.mapName,atkTeamKey:atkSide,defTeamKey:defSide,teamGap,ratingOf,reconStrength,utilStrength,teamplay,objective,isPistol,tacticalPlan:tactics,loadouts,abilityPlan});
     const kills=res.kills, fb=res.fb, site=res.site;
     const homeWon = res.winner==='home';
     if(homeWon)h++; else a++;
@@ -151,27 +167,18 @@ function runNextRound(state){
     const clutch=res.clutch;
     recordTacticalOutcome(tacticalState,{round:r+1,atkKey:atkSide,defKey:defSide,site,attackTactic:tactics.attack.type,defenseTactic:tactics.defense.type,winner:winSide,planted:plant});
     const atkIsHome=atkSide==='home';
-    const settledH=settleEconomy(economy.home,{won:homeWon,planted:plant&&atkIsHome});
-    const settledA=settleEconomy(economy.away,{won:!homeWon,planted:plant&&!atkIsHome});
-    // ability moments for the broadcast visuals (names/agents); positions/timing come from the tick log
-    const abilities=[];
-    const nAb=1+Math.floor(random()*3);
-    for(let ai=0;ai<nAb;ai++){
-      const abSide=random()<0.6?winSide:(winSide==='home'?'away':'home');
-      const Tm=abSide==='home'?home:away;
-      const dims=['in','co','su','le']; const dim=dims[Math.floor(random()*dims.length)];
-      const pl=pickByKit(Tm,abSide==='home'?hForm:aForm,agBy,dim,3);
-      const kit=kitOf(agBy[pl.name],pl.role);
-      const idx=random()<0.14?3:Math.floor(random()*3);
-      abilities.push({player:pl.name, agentName:agBy[pl.name], name:kit.ab[idx], ult:idx===3, side:abSide, kind:dim});
-    }
+    const settledH=settleTeamEconomy(economy.home,{won:homeWon,planted:plant&&atkIsHome,units:res.units.filter(unit=>unit.side==='home'),loadouts:loadouts.home});
+    const settledA=settleTeamEconomy(economy.away,{won:!homeWon,planted:plant&&!atkIsHome,units:res.units.filter(unit=>unit.side==='away'),loadouts:loadouts.away});
+    const abilities=res.abilityEvs||abilityPlan.uses;
+    const abilitySettlement=settleAbilityRound(abilityState,{kills,planter,orbCaptures:res.orbCaptures});
     const ability=abilities[0]||null;
     const round={n:r+1,roundSeed,hSide,aSide,winner:winSide,buyH,buyA,isPistol,kills,fb,
-      economy:{home:{...planH,...settledH},away:{...planA,...settledA}},
+      economy:{home:{...planH,...settledH},away:{...planA,...settledA}},loadouts,abilityPurchases,abilityState:abilitySettlement.snapshot,
+      preparation:{...res.preparation,purchases:{home:{weapons:loadouts.home,abilities:abilityPurchases.home},away:{weapons:loadouts.away,abilities:abilityPurchases.away}},tactics},
       tactics,
       phases:res.phaseSummary,tradeSummary:res.tradeSummary,
       ability,abilities,plant,defuse,planter,defuser,clutch,site,h,a,
-      spatial:{units:res.units,events:res.events,duration:res.duration,site:res.site,phases:res.phaseSummary,tradeSummary:res.tradeSummary},
+      spatial:{units:res.units,events:res.events,duration:res.duration,site:res.site,phases:res.phaseSummary,tradeSummary:res.tradeSummary,orbCaptures:res.orbCaptures,orbMarkers:res.orbMarkers,abilityObjects:res.abilityObjects},
       reconEv:res.reconEv,utilEvs:res.utilEvs};
     rounds.push(round);r++;Object.assign(state,{h,a,r});return round;
 }

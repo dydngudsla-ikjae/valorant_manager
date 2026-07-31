@@ -39,6 +39,7 @@ export function applyRealStats(){
     pl.playerId=s.playerId; pl.teamId=s.teamId; pl.role=s.primaryRole||pl.role;
     pl.attributes=s.appliedAttributes; pl.baseAttributes=s.baseAttributes; pl.season2026Attributes=s.season2026Attributes;
     pl.attributeReliability=s.attributeReliability; pl.tendencies=s.tendencies; pl.mapMastery=s.mapMastery;
+    pl.combatProfile=s.combatProfile;
     pl.form=s.form; pl.sample2026=s.sample2026; pl.runtimeModel=RUNTIME_2026.modelVersion;
     pl.prof=Object.assign({DUE:1,INI:1,SEN:1,CON:1},Object.fromEntries(Object.entries(s.roleMastery||{}).map(([r,v])=>[r,v.gameProficiency])));
     pl.pool=(s.agentMastery||[]).filter(x=>x.role).map(x=>({agent:x.agent,mastery:x.gameMastery,role:x.role,readiness:x.readiness,reliability:x.reliability,usage2026:x.usage2026,lastObservedYear:x.lastObservedYear}));

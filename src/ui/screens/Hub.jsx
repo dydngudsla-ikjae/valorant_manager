@@ -88,7 +88,6 @@ export function Hub() {
         </div>
         <div className="btnrow" style={{ margin: 0, width: 'auto' }}>
           <button className="btn ghost" style={{ width: 'auto' }} onClick={() => go('scTournament')}>{tr('대회 일정','Tournament')}</button>
-          <button className="btn ghost" style={{ width: 'auto' }} onClick={() => go('scMapLab')}>{tr('맵 진단','Map Lab')}</button>
           <button className="btn ghost" style={{ width: 'auto' }} onClick={() => go('scStats')}>{tr('대회 통계','Competition Stats')}</button>
           <button className="btn ghost" style={{ width: 'auto' }} onClick={() => go('scSquad')}>{tr('선수단','Squad')}</button>
           <button className="btn" style={{ width: 'auto' }} disabled={ST.seasonOver} onClick={() => startNextMatch()}>

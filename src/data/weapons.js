@@ -5,9 +5,34 @@ export const WEAP={
   full:['Vandal','Phantom','Operator','Vandal','Phantom'],
 };
 
-export const WCOST={Classic:0,Ghost:500,Sheriff:800,Frenzy:450,Stinger:950,Spectre:1600,Marshal:950,Bulldog:2050,Vandal:2900,Phantom:2900,Operator:4700};
+const bands=(near,mid=near,far=mid)=>({near,mid,far});
 
-export const SCOST={none:0,light:400,heavy:1000};
+// Canonical economy + combat definition. Both the buy planner and duel engine
+// derive their values from here so a balance update cannot desync them.
+export const WEAPON_DATA=Object.freeze({
+  Classic:  {cost:0,    head:bands(78,66,66),   body:bands(26,22,22), leg:bands(22,18,18), cadence:.42},
+  Frenzy:   {cost:450,  head:bands(78,63,63),   body:bands(26,21,21), leg:bands(22,17,17), cadence:.30},
+  Ghost:    {cost:500,  head:bands(105,87,87),  body:bands(30,25,25), leg:bands(25,21,21), cadence:.40},
+  Sheriff:  {cost:800,  head:bands(159,159,145),body:bands(55,55,50), leg:bands(46,46,42), cadence:.55},
+  Stinger:  {cost:1100, head:bands(67,57,57),   body:bands(27,23,23), leg:bands(22,19,19), cadence:.24},
+  Spectre:  {cost:1600, head:bands(78,66,60),   body:bands(26,22,20), leg:bands(22,18,17), cadence:.27},
+  Bulldog:  {cost:2050, head:bands(116,116,92), body:bands(35,35,28), leg:bands(29,29,23), cadence:.34},
+  Phantom:  {cost:2900, head:bands(156,140,140),body:bands(39,35,35), leg:bands(33,29,29), cadence:.29},
+  Vandal:   {cost:2900, head:bands(160),         body:bands(40),       leg:bands(34),       cadence:.31},
+  Marshal:  {cost:950,  head:bands(202),         body:bands(101),      leg:bands(85),       cadence:.82},
+  Operator: {cost:4700, head:bands(255),         body:bands(150),      leg:bands(120),      cadence:1.15},
+  BladeStorm:{cost:0, head:bands(150),body:bands(50),leg:bands(42),cadence:.24},
+});
+
+export const ARMOR_DATA=Object.freeze({
+  none:  {cost:0,shield:0,absorption:.66},
+  light: {cost:400,shield:25,absorption:.66},
+  heavy: {cost:1000,shield:50,absorption:.66},
+  regen: {cost:650,shield:25,absorption:1,regenerationPool:50},
+});
+
+export const WCOST=Object.fromEntries(Object.entries(WEAPON_DATA).map(([name,data])=>[name,data.cost]));
+export const SCOST=Object.fromEntries(Object.entries(ARMOR_DATA).map(([name,data])=>[name,data.cost]));
 // choose a loadout from a player's credits (Valorant-like thresholds)
 
 export const ABFX={
