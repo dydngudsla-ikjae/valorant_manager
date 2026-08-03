@@ -6,6 +6,7 @@ import { mapAssets, MAPGEO } from '../../data/geo/maps.js';
 import { openMapLab } from '../match-flow.js';
 import { mapLabel, tr } from '../../i18n.js';
 import { semanticRegionRaster } from '../../data/geo/semantic-regions.js';
+import { navLineTest, navPathTest, navSnapForMap } from '../../core/spatial.js';
 
 const lineStyle=(from,to)=>({left:`${from.x}%`,top:`${from.y}%`,width:`${Math.hypot(to.x-from.x,to.y-from.y)}%`,transform:`rotate(${Math.atan2(to.y-from.y,to.x-from.x)*180/Math.PI}deg)`});
 const AREA_COLORS=[[92,155,211],[135,185,104],[160,119,196],[211,119,109],[215,166,77],[77,183,177],[105,121,190],[194,103,160]];
@@ -24,16 +25,77 @@ function SemanticRegions({map,geo}){
 }
 
 function StaticMapTest({map,geo}){
+  const [mode,setMode]=useState('sight'),[points,setPoints]=useState([]),[walls,setWalls]=useState([]),[wallStart,setWallStart]=useState(null),[copied,setCopied]=useState(false);
+  useEffect(()=>{setPoints([]);setWalls([]);setWallStart(null);setMode('sight');},[map]);
+  const sight=mode==='sight'&&points.length===2?navLineTest(map,points[0],points[1],walls):null;
+  const movement=mode==='path'&&points.length===2?navPathTest(map,points[0],points[1],walls):null;
+  const selectMode=next=>{setMode(next);setPoints([]);setWallStart(null);};
+  const place=event=>{
+    if(map!=='Ascent')return;
+    const rect=event.currentTarget.getBoundingClientRect(),raw={x:+(((event.clientX-rect.left)/rect.width)*100).toFixed(3),y:+(((event.clientY-rect.top)/rect.height)*100).toFixed(3)};
+    if(mode==='wall'){
+      if(!wallStart)setWallStart(raw);else{setWalls(current=>[...current,{id:`manual-wall-${current.length+1}`,from:wallStart,to:raw,width:.8}]);setWallStart(null);}
+      return;
+    }
+    const point=navSnapForMap(map,raw);setPoints(current=>current.length<2?[...current,point]:[point]);
+  };
+  const copyWalls=async()=>{await navigator.clipboard.writeText(JSON.stringify({map,blockers:walls},null,2));setCopied(true);setTimeout(()=>setCopied(false),1400);};
+  const sightLine=sight?lineStyle(sight.from,sight.to):null,pathPoints=movement?.path?.map(point=>`${point.x},${point.y}`).join(' ');
+  const status=mode==='wall'?(wallStart?tr('벽의 끝점을 선택하세요','Select the wall end point'):tr('벽의 시작점과 끝점을 차례로 선택하세요','Select the wall start and end points')):mode==='path'?(movement?(movement.reachable?tr('이동 가능한 경로','Reachable movement path'):tr('도달할 수 없는 위치','Destination unreachable')):points.length?tr('도착 위치를 선택하세요','Select destination'):tr('출발 위치를 선택하세요','Select start point')):(sight?(sight.clear?tr('서로 사격 가능','Clear line of fire'):tr('벽에 가려 사격 불가','Line of fire blocked')):points.length?tr('두 번째 선수 위치를 선택하세요','Place the second player'):tr('첫 번째 선수 위치를 선택하세요','Place the first player'));
   return <section className="labteststage" aria-label={`${mapLabel(map)} map test`}>
-    <div className="labtestmap" style={{backgroundImage:`url("${mapAssets(map).tactical}")`}}>
+    {map==='Ascent'&&<div className="labmaptools">
+      <div>{[['sight','시야·사격','Sight'],['path','이동 경로','Movement'],['wall','벽 편집','Wall Editor']].map(([id,ko,en])=><button className={mode===id?'on':''} onClick={()=>selectMode(id)} key={id}>{tr(ko,en)}</button>)}</div>
+      <div><button onClick={()=>{setPoints([]);setWallStart(null);}}>{tr('선택 초기화','Clear Points')}</button><button onClick={()=>setWalls(current=>current.slice(0,-1))} disabled={!walls.length}>{tr('벽 되돌리기','Undo Wall')}</button><button onClick={copyWalls} disabled={!walls.length}>{copied?tr('복사됨','Copied'):tr('벽 JSON 복사','Copy Wall JSON')}</button></div>
+    </div>}
+    <div className={'labtestmap'+(map==='Ascent'?' sight-enabled':'')} onClick={place} style={{backgroundImage:`url("${mapAssets(map).tactical}")`}}>
       <SemanticRegions map={map} geo={geo}/>
       {geo.siteNames.map(site=>{const zone=geo.plantZone(site);return <span className="mvplantarea" style={{left:`${zone.x-zone.w/2}%`,top:`${zone.y-zone.h/2}%`,width:`${zone.w}%`,height:`${zone.h}%`}} key={`site-${site}`}/>;})}
       {(geo.orbs||[]).map(orb=><span className="mvorb" style={{left:`${orb.x}%`,top:`${orb.y}%`}} title={orb.label} key={orb.id}><i/></span>)}
       {(geo.annotations?.barriers||[]).map(barrier=><span className={`mvbarrier ${barrier.side}`} style={lineStyle(barrier.from,barrier.to)} title={barrier.id} key={barrier.id}/>)}
       {(geo.annotations?.doors||[]).flatMap(door=>[<span className="mvdoor" style={lineStyle(door.from,door.to)} title={door.id} key={door.id}/>,<span className="mvdoorbutton" style={{left:`${door.button.x}%`,top:`${door.button.y}%`}} title={`${door.id} button`} key={`${door.id}-button`}/>])}
       {(geo.annotations?.stairs||[]).map(stair=><span className="mvstairs" style={{left:`${stair.at.x}%`,top:`${stair.at.y}%`,width:`${stair.w}%`,height:`${stair.h}%`}} title={stair.id} key={stair.id}/>)}
+      {movement?.reachable&&<svg className="labpathsvg" viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points={pathPoints}/></svg>}
+      {sight&&<span className={'labsightline '+(sight.clear?'clear':'blocked')} style={sightLine}/>}
+      {sight?.firstBlocked&&!sight.clear&&<span className="labsightblock" style={{left:`${sight.firstBlocked.x}%`,top:`${sight.firstBlocked.y}%`}}>×</span>}
+      {walls.map(wall=><span className="labmanualwall" style={{...lineStyle(wall.from,wall.to),height:`${wall.width}%`}} key={wall.id}/>)}
+      {wallStart&&<span className="labwallpoint" style={{left:`${wallStart.x}%`,top:`${wallStart.y}%`}}/>}
+      {points.map((player,index)=><span className={`labplayerpin p${index+1}`} style={{left:`${player.x}%`,top:`${player.y}%`}} key={`player-${index}`}><img src={index?'/img/agents/omen.png':'/img/agents/jett.png'} alt=""/><b>{index?'B':'A'}</b></span>)}
     </div>
+    {map==='Ascent'&&<div className={'labsightresult '+(sight?(sight.clear?'clear':'blocked'):movement?(movement.reachable?'clear':'blocked'):'waiting')}><div><b>{status}</b><span>{sight?`A ${sight.from.x.toFixed(2)}, ${sight.from.y.toFixed(2)} · B ${sight.to.x.toFixed(2)}, ${sight.to.y.toFixed(2)} · ${tr('거리','Distance')} ${Math.hypot(sight.to.x-sight.from.x,sight.to.y-sight.from.y).toFixed(1)}`:movement?`${tr('경로 거리','Path distance')} ${movement.distance.toFixed(1)} · ${tr('임시 벽','Temporary walls')} ${walls.length}`:`${tr('임시 벽','Temporary walls')} ${walls.length}`}</span></div></div>}
   </section>;
+}
+
+function MapTestWorkspace({map,setMap,geo}){
+  const raster=semanticRegionRaster(map),counts=new Int32Array(raster?.areas.length||0);let unassigned=0;
+  if(raster)for(let index=0;index<raster.owner.length;index++){
+    if(raster.cells[index]!=='1')continue;
+    if(raster.owner[index]<0)unassigned++;
+    else counts[raster.owner[index]]++;
+  }
+  const detailed=map==='Ascent';
+  return <div className="labtestworkspace">
+    <nav className="labtestnav" aria-label={tr('검사할 맵 선택','Select map to inspect')}>
+      {MAPS.map(name=><button className={name===map?'selected':''} onClick={()=>setMap(name)} key={`test-${name}`}>
+        <b>{mapLabel(name)}</b><span>{MAPGEO[name].siteNames.join(' · ')}</span>
+      </button>)}
+    </nav>
+    <div className="labtestbody">
+      <StaticMapTest map={map} geo={geo}/>
+      <aside className="labregionlegend">
+        <div className="labregionhead">
+          <div><b>{mapLabel(map)}</b><span>{detailed?tr('상세 구역 좌표','Detailed Regions'):tr('기본 좌표 오버레이','Coarse Coordinate Overlay')}</span></div>
+          <em className={unassigned?'warn':'ok'}>{tr('미할당','Unassigned')} {unassigned}</em>
+        </div>
+        <p>{detailed?tr('마우스를 올려 세부 구역의 경계를 확인하세요.','Hover to inspect detailed region boundaries.'):tr('게임 구동용 임시 영역입니다. 세부 경계는 추후 맵별로 조정합니다.','These are coarse gameplay regions. Detailed boundaries will be calibrated later.')}</p>
+        <div className="labregionlist">
+          {(raster?.areas||[]).map((area,index)=><div key={area.id}>
+            <i style={{backgroundColor:`rgb(${AREA_COLORS[index%AREA_COLORS.length].join(',')})`}}/>
+            <span>{tr(area.ko,area.en)}</span><small>{counts[index].toLocaleString()}</small>
+          </div>)}
+        </div>
+      </aside>
+    </div>
+  </div>;
 }
 
 export function MapLab(){
@@ -62,7 +124,7 @@ export function MapLab(){
         </div>
       </div>
 
-      {mapTest?<StaticMapTest map={map} geo={geo}/>:<div className="labgrid">
+      {mapTest?<MapTestWorkspace map={map} setMap={setMap} geo={geo}/>:<div className="labgrid">
         <section className="panel labsettings">
           <div className="ph">{tr('테스트 경기 설정','Test Match Setup')}</div>
           <label>

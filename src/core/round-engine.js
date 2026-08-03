@@ -9,7 +9,7 @@ import { experienceModifier, objectiveDuty } from './simulation-model.js';
 import { createTacticalState, recordTacticalOutcome } from './tactics/adaptation.js';
 import { planRoundTactics } from './tactics/round-planner.js';
 import { mapGeo } from '../data/geo/maps.js';
-import { createAbilityState, planRoundAbilities, prepareAbilityBuy, resetAbilityInventory, settleAbilityRound } from './ability-system.js';
+import { createAbilityState, planRoundAbilities, prepareAbilityBuy, resetAbilityInventory, restoreUnusedAbilityPlans, settleAbilityRound } from './ability-system.js';
 
 export function rand5(){return Math.floor(random()*5);}
 
@@ -48,15 +48,16 @@ export function applyRoundStats(box,rd){
     if(source)source.damage+=amount;if(sourceRound)sourceRound.damage+=amount;
   }
   for(const kill of rd.kills||[]){
-    const killer=box[kill.killer],victim=box[kill.victim],assist=kill.assist&&box[kill.assist];
-    const killerRound=roundStats[kill.killer],victimRound=roundStats[kill.victim],assistRound=roundStats[kill.assist];
+    const killer=box[kill.killer],victim=box[kill.victim],assistNames=[...new Set(kill.assists?.length?kill.assists:(kill.assist?[kill.assist]:[]))];
+    const killerRound=roundStats[kill.killer],victimRound=roundStats[kill.victim];
     const victimSide=kill.side==='home'?'away':'home',killNumber=deathsBySide[victimSide]++;
     if(killer){killer.k++;killer.damage+=kill.damage??150;if(kill.traded)killer.tradeKills++;}
     if(killerRound){killerRound.k++;killerRound.damage+=kill.damage??150;killerRound.acs+=Math.max(70,150-killNumber*20);}
     if(victim){victim.d++;victim.damage+=kill.retaliationDamage??0;}
     if(victimRound)victimRound.damage+=kill.retaliationDamage??0;
-    if(assist){assist.a++;if(assistRound){assistRound.a++;assistRound.acs+=25;}}
+    for(const name of assistNames){const assist=box[name],assistRound=roundStats[name];if(assist)assist.a++;if(assistRound){assistRound.a++;assistRound.acs+=25;}}
   }
+  for(const death of (rd.spatial?.events||[]).filter(event=>event.type==='spikeExplosionDeath'))if(box[death.victim])box[death.victim].d++;
   for(const [name,stat] of Object.entries(roundStats)){
     const b=box[name];b.rounds++;
     b.acs+=stat.damage+stat.acs+Math.max(0,stat.k-1)*50;
@@ -169,16 +170,17 @@ function runNextRound(state){
     const atkIsHome=atkSide==='home';
     const settledH=settleTeamEconomy(economy.home,{won:homeWon,planted:plant&&atkIsHome,units:res.units.filter(unit=>unit.side==='home'),loadouts:loadouts.home});
     const settledA=settleTeamEconomy(economy.away,{won:!homeWon,planted:plant&&!atkIsHome,units:res.units.filter(unit=>unit.side==='away'),loadouts:loadouts.away});
-    const abilities=res.abilityEvs||abilityPlan.uses;
+    const abilities=res.abilityEvs||[];
+    const restoredAbilities=restoreUnusedAbilityPlans(abilityState,{plannedUses:abilityPlan.uses,usedEvents:abilities});
     const abilitySettlement=settleAbilityRound(abilityState,{kills,planter,orbCaptures:res.orbCaptures});
     const ability=abilities[0]||null;
     const round={n:r+1,roundSeed,hSide,aSide,winner:winSide,buyH,buyA,isPistol,kills,fb,
-      economy:{home:{...planH,...settledH},away:{...planA,...settledA}},loadouts,abilityPurchases,abilityState:abilitySettlement.snapshot,
+      economy:{home:{...planH,...settledH},away:{...planA,...settledA}},loadouts,abilityPurchases,restoredAbilities,abilityState:abilitySettlement.snapshot,
       preparation:{...res.preparation,purchases:{home:{weapons:loadouts.home,abilities:abilityPurchases.home},away:{weapons:loadouts.away,abilities:abilityPurchases.away}},tactics},
       tactics,
       phases:res.phaseSummary,tradeSummary:res.tradeSummary,
       ability,abilities,plant,defuse,planter,defuser,clutch,site,h,a,
-      spatial:{units:res.units,events:res.events,duration:res.duration,site:res.site,phases:res.phaseSummary,tradeSummary:res.tradeSummary,orbCaptures:res.orbCaptures,orbMarkers:res.orbMarkers,abilityObjects:res.abilityObjects},
+      spatial:{units:res.units,events:res.events,duration:res.duration,site:res.site,timing:res.timing,phases:res.phaseSummary,tradeSummary:res.tradeSummary,teamIntel:res.teamIntel,teamCommunication:res.teamCommunication,executeCoordination:res.executeCoordination,defenseDecision:res.defenseDecision,retakePlan:res.events.find(event=>event.type==='retakePlan')||null,orbCaptures:res.orbCaptures,orbMarkers:res.orbMarkers,abilityObjects:res.abilityObjects},
       reconEv:res.reconEv,utilEvs:res.utilEvs};
     rounds.push(round);r++;Object.assign(state,{h,a,r});return round;
 }

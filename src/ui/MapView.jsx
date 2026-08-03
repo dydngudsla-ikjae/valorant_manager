@@ -32,7 +32,8 @@ export function MapView(){
         <div className="fieldwrap">
           <div className="mvfield" id="mvField"></div>
           <div className="killfeed" id="killFeed"></div>
-          <div className="mvcommentary" id="mvPhase"></div>
+          <div className="mvcommentary coach-comms" id="mvPhase"></div>
+          <details className="coachcommshistory" id="coachCommsHistory"><summary><span>TEAM COMMS LOG</span><b id="coachCommsCount">0</b></summary><ol id="coachCommsList"></ol></details>
         </div>
         <div className="bcards" id="cardsAway"></div>
         <div className="roundbreak" id="roundBreak"></div>

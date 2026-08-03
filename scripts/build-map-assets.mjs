@@ -17,6 +17,16 @@ const maps = {
   Icebox: 'E2AD5C54-4114-A870-9641-8EA21279579A',
 };
 
+// Tactical PNGs use the same gray fill for some solid interior structures and
+// walkable floor. These small masks preserve manually verified collision walls.
+const manualBlockers = {
+  Ascent: [
+    { x1: 48.5, y1: 54.3, x2: 52.0, y2: 56.3, id: 'mid-courtyard-link-wall-left' },
+    { x1: 54.3, y1: 54.3, x2: 56.3, y2: 56.3, id: 'mid-courtyard-link-wall-right' },
+  ],
+};
+const pointSegmentDistance=(point,from,to)=>{const dx=to.x-from.x,dy=to.y-from.y,length2=dx*dx+dy*dy;if(!length2)return Math.hypot(point.x-from.x,point.y-from.y);const t=Math.max(0,Math.min(1,((point.x-from.x)*dx+(point.y-from.y)*dy)/length2));return Math.hypot(point.x-(from.x+t*dx),point.y-(from.y+t*dy));};
+
 await mkdir(TARGET, { recursive: true });
 await mkdir(GEO, { recursive: true });
 
@@ -43,7 +53,9 @@ for (const [name, uuid] of Object.entries(maps)) {
   for (let i = 0; i < info.width * info.height; i += 1) {
     const offset=i*info.channels,r=data[offset],g=data[offset+1],b=data[offset+2],a=data[offset+3];
     const wallOutline=r>=185&&g>=185&&b>=185;
-    cells += a>=32&&!wallOutline ? '1' : '0';
+    const x=(i%info.width+.5)/info.width*100,y=(((i/info.width)|0)+.5)/info.height*100;
+    const manuallyBlocked=(manualBlockers[name]||[]).some(block=>block.from&&block.to?pointSegmentDistance({x,y},block.from,block.to)<=(block.width??.8)/2:x>=block.x1&&x<=block.x2&&y>=block.y1&&y<=block.y2);
+    cells += a>=32&&!wallOutline&&!manuallyBlocked ? '1' : '0';
   }
   await writeFile(path.join(GEO, `${slug}-navgrid.json`), `${JSON.stringify({ w: 160, h: 160, cells })}\n`);
   manifest.maps[name] = {

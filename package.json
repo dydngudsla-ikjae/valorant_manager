@@ -31,6 +31,7 @@
     "verify:compositions": "node .\\runtime_2026\\scripts\\verify-composition-generator.mjs",
     "verify:economy": "node .\\runtime_2026\\scripts\\verify-economy-engine.mjs",
     "validate:simulation": "node .\\runtime_2026\\scripts\\validate-simulation-balance.mjs",
+    "validate:vct-distributions": "node .\\runtime_2026\\scripts\\validate-vct-distributions.mjs",
     "verify:formats": "node .\\runtime_2026\\scripts\\verify-match-formats.mjs",
     "verify:maps": "node .\\runtime_2026\\scripts\\verify-map-engine.mjs",
     "verify:tactics": "node .\\runtime_2026\\scripts\\verify-tactics-engine.mjs",

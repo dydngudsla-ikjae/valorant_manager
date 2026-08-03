@@ -25,8 +25,25 @@ function createGeo(name,{sites,plantZones={},atkSpawn,defSpawn,mid,routes,chokes
   const generated=Object.fromEntries(siteNames.map(site=>[site,routeBarrier(routes[site],site)]));
   const midBarrier={id:'mid',center:{...mid},from:pt(mid.x-4,mid.y),to:pt(mid.x+4,mid.y)};
   const barrierMap={...generated,mid:midBarrier,...barriers};
+  const coarseAreas=[
+    ...siteNames.flatMap(site=>[
+      {id:`${site.toLowerCase()}-site`,ko:`${site} 지점`,en:`${site} Site`,label:{...sites[site]}},
+      {id:`${site.toLowerCase()}-main`,ko:`${site} 진입로`,en:`${site} Main`,label:{...(chokes[site]||routes[site]?.main?.at(-2)||sites[site])}},
+      {id:`${site.toLowerCase()}-lobby`,ko:`${site} 로비`,en:`${site} Lobby`,label:{...(routes[site]?.main?.[1]||routes[site]?.main?.[0]||atkSpawn)}},
+      {id:`${site.toLowerCase()}-link`,ko:`${site} 연결부`,en:`${site} Link`,label:{...(routes[site]?.mid?.at(-2)||mid)}},
+    ]),
+    {id:'mid',ko:'중앙',en:'Mid',label:{...mid}},
+    {id:'atk-spawn',ko:'공격팀 진영 시작 지점',en:'Attacker Spawn',label:{...atkSpawn}},
+    {id:'def-spawn',ko:'수비팀 진영 시작 지점',en:'Defender Spawn',label:{...defSpawn}},
+  ];
+  const resolvedAnnotations={
+    barriers:annotations.barriers??Object.values(barrierMap).map(barrier=>({id:`coarse-${barrier.id}`,side:'attack',from:{...barrier.from},to:{...barrier.to}})),
+    doors:annotations.doors??[],
+    stairs:annotations.stairs??[],
+    areas:annotations.areas??coarseAreas,
+  };
   return {
-    name,assets:MAP_ASSETS[name],siteNames,atkSpawn:spawn,barriers:barrierMap,plantZones,annotations,orbs:orbs.map((orb,index)=>({id:`${name.toLowerCase()}-orb-${index+1}`,...orb})),
+    name,assets:MAP_ASSETS[name],siteNames,atkSpawn:spawn,barriers:barrierMap,plantZones,annotations:resolvedAnnotations,orbs:orbs.map((orb,index)=>({id:`${name.toLowerCase()}-orb-${index+1}`,...orb})),
     pts:{defSpawn,botMid:mid},
     site(s){return sites[s]||sites[siteNames[0]];},
     plantZone(s){const c=plantZones[s]||this.site(s);return{x:c.x,y:c.y,w:c.w||8,h:c.h||6};},
@@ -42,6 +59,13 @@ function createGeo(name,{sites,plantZones={},atkSpawn,defSpawn,mid,routes,chokes
     },
     midHolds(){return[pt(mid.x-4,mid.y),pt(mid.x+4,mid.y),pt(mid.x,mid.y-4)];},
     holds(s){return [...this.siteHolds(s),...this.midHolds().slice(0,2)];},
+    stagingPoints(s){
+      const route=this.routeMain(s),ch=this.choke(s),previous=route.slice(0,-1).sort((a,b)=>Math.hypot(a.x-ch.x,a.y-ch.y)-Math.hypot(b.x-ch.x,b.y-ch.y))[0]||atkSpawn,dx=previous.x-ch.x,dy=previous.y-ch.y,len=Math.max(1,Math.hypot(dx,dy)),back={x:dx/len,y:dy/len},perp={x:-back.y,y:back.x};
+      return[0,1,2,3,4].map(index=>pt(ch.x+back.x*(index*1.8)+perp.x*((index%2?1:-1)*(.7+index*.18)),ch.y+back.y*(index*1.8)+perp.y*((index%2?1:-1)*(.7+index*.18))));
+    },
+    entryPoints(s){return[this.site(s),...this.siteHolds(s)];},
+    postPlantPositions(s){const ch=this.choke(s),holds=this.siteHolds(s);return[pt(this.plantZone(s).x+2,this.plantZone(s).y),...holds,pt((ch.x+this.site(s).x)/2,(ch.y+this.site(s).y)/2)];},
+    infoPeekPoints(s){const route=this.routeMain(s),ch=this.choke(s),approach=route.slice(0,-1).sort((a,b)=>Math.hypot(a.x-ch.x,a.y-ch.y)-Math.hypot(b.x-ch.x,b.y-ch.y))[0]||ch;return[ch,pt((ch.x+approach.x)/2,(ch.y+approach.y)/2)];},
     barrier(s){return barrierMap[s]||barrierMap[siteNames[0]];},
   };
 }
@@ -94,31 +118,37 @@ export const MAPGEO={
   }),
   Bind:createGeo('Bind',{
     sites:{A:pt(72,29),B:pt(29,28)},atkSpawn:pt(59,94),defSpawn:pt(53,8),mid:pt(51,53),
+    plantZones:{A:{x:72.5,y:32.75,w:9.5,h:9.5},B:{x:29.25,y:27.875,w:8.5,h:6.75}},
     routes:{A:{main:[pt(72,80),pt(78,57),pt(72,40),pt(72,29)],mid:[pt(56,76),pt(51,53),pt(63,42),pt(72,29)]},B:{main:[pt(45,78),pt(27,63),pt(23,43),pt(29,28)],mid:[pt(53,72),pt(51,53),pt(38,43),pt(29,28)]}},
     chokes:{A:pt(72,40),B:pt(23,43)},orbs:[{x:78,y:56,label:'A Bath'},{x:25,y:59,label:'B Long'}],
   }),
   Haven:createGeo('Haven',{
     sites:{A:pt(38,82),B:pt(39,49),C:pt(38,15)},atkSpawn:pt(91,49),defSpawn:pt(8,35),mid:pt(54,50),
+    plantZones:{A:{x:36.5,y:84.625,w:10.5,h:14.75},B:{x:39.5,y:49.875,w:9.5,h:10.25},C:{x:37.625,y:14.25,w:9.75,h:11.5}},
     routes:{A:{main:[pt(78,65),pt(61,72),pt(48,78),pt(38,82)],mid:[pt(73,52),pt(54,50),pt(47,67),pt(38,82)]},B:{main:[pt(74,50),pt(57,50),pt(39,49)],mid:[pt(70,42),pt(54,50),pt(39,49)]},C:{main:[pt(77,33),pt(60,25),pt(47,19),pt(38,15)],mid:[pt(72,47),pt(54,50),pt(46,32),pt(38,15)]}},
     chokes:{A:pt(48,78),B:pt(50,49),C:pt(47,19)},orbs:[{x:59,y:74,label:'A Long'},{x:59,y:24,label:'C Long'}],
   }),
   Split:createGeo('Split',{
     sites:{A:pt(35,82),B:pt(32,10)},atkSpawn:pt(39,95),defSpawn:pt(75,18),mid:pt(52,49),
+    plantZones:{A:{x:32.625,y:82.75,w:7.75,h:13.5},B:{x:33.375,y:10,w:18.25,h:10.5}},
     routes:{A:{main:[pt(34,90),pt(27,75),pt(35,82)],mid:[pt(45,82),pt(52,49),pt(42,66),pt(35,82)]},B:{main:[pt(48,82),pt(68,61),pt(61,35),pt(45,20),pt(32,10)],mid:[pt(46,77),pt(52,49),pt(43,31),pt(32,10)]}},
     chokes:{A:pt(27,75),B:pt(45,20)},orbs:[{x:31,y:79,label:'A Main'},{x:48,y:25,label:'B Main'}],
   }),
   Lotus:createGeo('Lotus',{
     sites:{A:pt(91,33),B:pt(50,43),C:pt(9,46)},atkSpawn:pt(50,93),defSpawn:pt(59,7),mid:pt(50,52),
+    plantZones:{A:{x:88.125,y:32.25,w:9.25,h:11.5},B:{x:48.5,y:42.125,w:13,h:7.75},C:{x:10.875,y:45.75,w:10.25,h:9.5}},
     routes:{A:{main:[pt(72,76),pt(84,60),pt(91,45),pt(91,33)],mid:[pt(55,72),pt(50,52),pt(69,44),pt(91,33)]},B:{main:[pt(50,74),pt(50,58),pt(50,43)],mid:[pt(57,72),pt(50,52),pt(50,43)]},C:{main:[pt(34,77),pt(17,65),pt(9,46)],mid:[pt(45,72),pt(50,52),pt(28,50),pt(9,46)]}},
     chokes:{A:pt(91,45),B:pt(50,52),C:pt(20,50)},orbs:[{x:81,y:55,label:'A Rubble'},{x:19,y:58,label:'C Mound'}],
   }),
   Sunset:createGeo('Sunset',{
     sites:{A:pt(83,34),B:pt(14,43)},atkSpawn:pt(49,94),defSpawn:pt(50,7),mid:pt(50,50),
+    plantZones:{A:{x:82,y:37.5,w:11,h:12.5},B:{x:12.5,y:43,w:15.5,h:11}},
     routes:{A:{main:[pt(68,78),pt(79,59),pt(83,45),pt(83,34)],mid:[pt(55,73),pt(50,50),pt(66,42),pt(83,34)]},B:{main:[pt(31,77),pt(20,62),pt(14,43)],mid:[pt(44,73),pt(50,50),pt(31,45),pt(14,43)]}},
     chokes:{A:pt(83,45),B:pt(25,47)},orbs:[{x:76,y:59,label:'A Main'},{x:25,y:61,label:'B Main'}],
   }),
   Icebox:createGeo('Icebox',{
     sites:{A:pt(74,78),B:pt(62,17)},atkSpawn:pt(8,61),defSpawn:pt(90,50),mid:pt(49,51),
+    plantZones:{A:{x:72.875,y:81,w:10.75,h:18.5},B:{x:61.375,y:22,w:13.75,h:12}},
     routes:{A:{main:[pt(25,69),pt(47,74),pt(64,78),pt(74,78)],mid:[pt(28,60),pt(49,51),pt(61,67),pt(74,78)]},B:{main:[pt(23,45),pt(38,29),pt(51,20),pt(62,17)],mid:[pt(28,57),pt(49,51),pt(55,32),pt(62,17)]}},
     chokes:{A:pt(64,78),B:pt(55,32)},orbs:[{x:52,y:75,label:'A Belt'},{x:44,y:29,label:'B Main'}],
   }),

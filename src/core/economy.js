@@ -3,7 +3,7 @@ import { SCOST, WCOST, WEAP, WEAPON_DATA } from '../data/weapons.js';
 import { random } from './rng.js';
 import { ECONOMY_MODEL } from './economy-model.js';
 
-export const BUYMOD={pistol:0,full:0,bonus:-1.25,force:-3,eco:-6};
+export const BUYMOD={pistol:0,full:0,bonus:-1.25,semi:-1.8,force:-3,eco:-6};
 
 export const SIDEMOD={AGGRO:{atk:2,def:-1},CONTROL:{atk:1,def:1},LOCKDOWN:{atk:-1,def:3},BALANCED:{atk:0,def:0}};
 
@@ -55,6 +55,7 @@ function teamBuyDecision(state,isPistol){
   const fullReady=credits.filter(value=>value>=3300).length;
   if(fullReady>=4)return state.players.filter(player=>player.carried&&weaponTier(player.carried.weapon)>=3).length>=3?'bonus':'full';
   const average=credits.reduce((sum,value)=>sum+value,0)/credits.length;
+  if(fullReady>=2||average>=ECONOMY_MODEL.thresholds.semi)return 'semi';
   if(average>=2050&&(state.lossStreak>=2||average>=2700))return 'force';
   return 'eco';
 }
@@ -86,6 +87,12 @@ function affordableLoadout({player,index,buy,wantsOperator,account}){
     else if(budget>=WCOST.Vandal+SCOST.light){weapon=preferredRifle(player,index);shield='light';}
     else if(budget>=WCOST.Bulldog+SCOST.light){weapon='Bulldog';shield='light';}
     else if(budget>=WCOST.Spectre+SCOST.light){weapon='Spectre';shield='light';}
+  }else if(buy==='semi'){
+    if(wantsOperator&&budget>=WCOST.Operator+SCOST.light){weapon='Operator';shield='light';}
+    else if(budget>=WCOST.Vandal+SCOST.light){weapon=preferredRifle(player,index);shield='light';}
+    else if(budget>=WCOST.Bulldog+SCOST.heavy){weapon='Bulldog';shield='heavy';}
+    else if(budget>=WCOST.Spectre+SCOST.heavy){weapon='Spectre';shield='heavy';}
+    else if(budget>=WCOST.Spectre+SCOST.light){weapon='Spectre';shield='light';}
   }else if(buy==='force'){
     if(budget>=WCOST.Bulldog+SCOST.light){weapon='Bulldog';shield='light';}
     else if(budget>=WCOST.Spectre+SCOST.light){weapon='Spectre';shield='light';}
@@ -114,6 +121,9 @@ export function planTeamBuy(state,team,{isPistol=false,agents={}}={}){
       const weapon=preferredRifle(team.roster[target],target),cost=WCOST[weapon];
       const donor=state.players.map((account,index)=>({index,credits:account.credits})).filter(item=>item.index!==target&&item.credits>=cost).sort((a,b)=>b.credits-a.credits)[0];
       if(!donor)continue;
+      // The recipient sells a weapon bought during this same buy phase before
+      // accepting the drop. Carried weapons cannot be refunded.
+      if(!loadouts[target].carried){const refund=WCOST[loadouts[target].weapon]||0;state.players[target].credits+=refund;loadouts[target].spent-=refund;loadouts[target].remaining=state.players[target].credits;}
       state.players[donor.index].credits-=cost;loadouts[donor.index].spent+=cost;loadouts[donor.index].remaining=state.players[donor.index].credits;
       loadouts[target].weapon=weapon;loadouts[target].receivedFrom=team.roster[donor.index].name;
       drops.push({from:team.roster[donor.index].name,to:team.roster[target].name,weapon,cost});
@@ -145,13 +155,13 @@ export function homeSideAt(r,homeStartAtk){
   return atk?'atk':'def';
 }
 
-export function buyLabel(b){return b==='pistol'?'pistol':b==='full'?'full-buy':b==='bonus'?'bonus':b==='force'?'force':'eco';}
+export function buyLabel(b){return b==='pistol'?'pistol':b==='full'?'full-buy':b==='bonus'?'bonus':b==='semi'?'semi-buy':b==='force'?'force':'eco';}
 
 export function loadoutFor(buy,i,role){
   let weapon,shield;
   if(buy==='pistol'){weapon=WEAP.pistol[i]; shield='light';}
   else if(buy==='eco'){weapon=WEAP.eco[i]; shield=(i%2?'none':'light');}
-  else if(buy==='force'){weapon=WEAP.force[i]; shield='light';}
+  else if(buy==='force'||buy==='semi'){weapon=WEAP.force[i]; shield=buy==='semi'?'heavy':'light';}
   else {weapon=(role==='SEN'&&i===2)?'Operator':WEAP.full[i]; shield='heavy';}
   return {weapon,shield};
 }

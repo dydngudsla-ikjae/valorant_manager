@@ -3,6 +3,10 @@
   "defaultMatches": 100,
   "bestOf": 1,
   "seed": "vlm-validation-2026",
+  "vctDistribution": {
+    "years": [2023, 2024, 2025, 2026],
+    "simulationMatches": 40
+  },
   "thresholds": {
     "minimumAverageRounds": 13,
     "maximumAverageRounds": 26,

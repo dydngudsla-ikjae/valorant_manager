@@ -300,6 +300,9 @@ export function simCurrentMap(speed){
   MATCH.timeouts=createTimeoutLedger();
   MATCH.timeoutEditor=null;
   MATCH.timeoutQueued=null;
+  // The management view defaults to the manager's team radio rather than a
+  // neutral broadcast commentary feed.
+  MATCH.viewMode='coach';
   // Broadcasts start in one-round mode: play the opening round, then wait for
   // the manager instead of silently running the whole map.
   MATCH.playback={speed,paused:false,betweenRounds:true,scheduled:false,stopAfterRound:true};

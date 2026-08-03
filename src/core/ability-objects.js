@@ -9,11 +9,11 @@ const OBJECT_RULES={
   global_smoke:{kind:'smoke',hp:0,windup:.5,duration:15,destructible:false}
 };
 
-export function createAbilityObject(use,index,{sitePoint,chokePoint,attackSide,ownerPoint,placedAt=0}={}){
+export function createAbilityObject(use,index,{sitePoint,chokePoint,attackSide,ownerPoint,placedAt=0,instanceId=null}={}){
   const rule=OBJECT_RULES[use.mechanic];if(!rule)return null;
   const local=['turret_anchor','vulnerable_trap','remote_area_damage'].includes(use.mechanic);
   const point=local&&ownerPoint?ownerPoint:(use.side===attackSide?chokePoint:sitePoint);
-  return{id:`ability-object-${index+1}`,owner:use.player,side:use.side,ability:use.name,mechanic:use.mechanic,edge:use.edge||0,...rule,x:point.x,y:point.y,placedAt,activeAt:placedAt+rule.windup,expiresAt:placedAt+rule.duration,currentHP:rule.hp,destroyedAt:null,destroyedBy:null};
+  return{id:`ability-object-${instanceId??index+1}`,owner:use.player,side:use.side,ability:use.name,mechanic:use.mechanic,edge:use.edge||0,...rule,x:point.x,y:point.y,placedAt,activeAt:placedAt+rule.windup,expiresAt:placedAt+rule.duration,currentHP:rule.hp,destroyedAt:null,destroyedBy:null};
 }
 
 export function createAbilityObjects(uses,context={}){

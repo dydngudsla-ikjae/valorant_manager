@@ -12,6 +12,7 @@ import { agentLabel, mapLabel, tacticLabel, tr } from '../i18n.js';
 import { agentAbilityDefinitions } from '../data/abilities.js';
 import { ABFX, SKILL_R, TYPEKO, TYPESYM } from '../data/weapons.js';
 import { buildMatchDiagnosticReport } from './match-diagnostics.js';
+import { ROUND_TIMING, roundClockAt } from '../core/round-timing.js';
 
 const mvContentField=()=>MV.cameraLayer||document.getElementById('mvField');
 
@@ -25,7 +26,7 @@ export function mvUpdateDiagnostics(stage='snapshot',currentRound=null){
     if(count){const total=report.issues.length;count.textContent=`${total} issue${total===1?'':'s'}`;count.className=total?'hasissues':'clean';}
   }catch(error){
     // Diagnostics are observability only; they must never stop the match loop.
-    output.textContent=JSON.stringify({reportVersion:'map-diagnostic-v2-agents',stage,diagnosticFailure:{name:error?.name,message:error?.message,stack:error?.stack}},null,2);
+    output.textContent=JSON.stringify({reportVersion:'map-diagnostic-v3-decisions',stage,diagnosticFailure:{name:error?.name,message:error?.message,stack:error?.stack}},null,2);
     if(count){count.textContent='diagnostic error';count.className='hasissues';}
     console.error('Map diagnostics failed without stopping playback',error);
   }
@@ -377,8 +378,10 @@ export function mvPlayRound(rd,speed,onDone){
   const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const playerTag=name=>`<strong class="comment-player">${escapeHtml(name)}</strong>`;
   const siteTag=site=>`<strong class="comment-site">${escapeHtml(site)}</strong>`;
-  const setPhase=t=>{if(phase){phase.className='mvcommentary';phase.textContent=t;}};
-  const announce=(html,moment='')=>{if(!phase)return;phase.className='mvcommentary';phase.innerHTML=html;if(moment){void phase.offsetWidth;phase.className=`mvcommentary moment-${moment}`;}};
+  const coachMode=(MATCH.viewMode||'coach')==='coach';
+  const setPhase=t=>{if(!phase||coachMode)return;if(phase){phase.className='mvcommentary';phase.textContent=t;}};
+  const announce=(html,moment='',teamVoice=false)=>{if(!phase||(coachMode&&!teamVoice))return;phase.className=`mvcommentary${coachMode?' coach-comms':''}`;phase.innerHTML=html;if(moment){void phase.offsetWidth;phase.className=`mvcommentary${coachMode?' coach-comms':''} moment-${moment}`;}};
+  const coachAnnounce=(speaker,html,kind='player',at=0)=>{announce(`<span class="comms-channel">${tr('팀 음성','TEAM COMMS')}</span><strong class="comms-speaker ${kind}">${escapeHtml(speaker)}</strong><span class="comms-line">${html}</span>`,'',true);const list=document.getElementById('coachCommsList'),count=document.getElementById('coachCommsCount');if(!list)return;const row=document.createElement('li');row.className=kind;row.innerHTML=`<time>${fmtClock(ROUND_TIMING.roundSeconds-at)}</time><b>${escapeHtml(speaker)}</b><span>${html}</span>`;list.prepend(row);while(list.children.length>40)list.removeChild(list.lastChild);if(count)count.textContent=String(list.children.length);};
   const timerEl=document.getElementById('rTimer');
   const playerSide=MATCH.playerSide||'home',playerIsAttacking=playerSide===atkTeamSide;
   const visibleTactic=rd.tactics?(playerIsAttacking?`${tr('우리 팀 공격','Our attack')} · ${tacticLabel(rd.tactics.attack.type)}`:`${tr('우리 팀 수비','Our defense')} · ${tacticLabel(rd.tactics.defense.type)}`):tr('구매 · 라운드 준비','Buy · Round setup');
@@ -387,7 +390,31 @@ export function mvPlayRound(rd,speed,onDone){
   MV._planted=false; MV._plantAt=0;
 
   // ---- event queue (kills/plant/defuse/util/recon from log + ability visuals) ----
-  const evs=sp.events.slice();
+  const evs=sp.events.slice();const commsList=document.getElementById('coachCommsList'),commsCount=document.getElementById('coachCommsCount'),commsHistory=document.getElementById('coachCommsHistory');if(commsList)commsList.innerHTML='';if(commsCount)commsCount.textContent='0';if(commsHistory)commsHistory.open=false;
+  if(coachMode){
+    const comms=sp.teamCommunication?.teams?.[playerSide];
+    const ownNames=new Set(sp.units.filter(unit=>unit.side===playerSide).map(unit=>unit.name));
+    const factLine=fact=>{
+      if(fact.type==='enemy_sighting')return `${siteTag(fact.site||rd.site)} ${tr('적 확인.','enemy spotted.')}`;
+      if(fact.type==='enemy_footsteps'){const direction=fact.detail?.direction,areaLabel=value=>escapeHtml(String(value||'').replaceAll('-',' ').toUpperCase());return direction?`${areaLabel(direction.from)} → ${areaLabel(direction.to)} ${tr('방향으로 뛰는 소리예요.','running footsteps.')}`:`${siteTag(fact.site||rd.site)} ${tr('쪽 발소리 들려요.','footsteps heard.')}`;}
+      if(fact.type==='teammate_death')return `${tr('아군이 쓰러졌어요.','Teammate down.')}`;
+      if(fact.type==='spike_planted')return `${siteTag(fact.site||rd.site)} ${tr('스파이크 설치 확인.','spike planted.')}`;
+      if(fact.type==='utility_ready')return `<strong class="comment-ability">${escapeHtml(abilityNameLabel(fact.detail?.ability||''))}</strong> ${tr('준비됐어요.','is ready.')}`;
+      if(fact.type==='utility_unavailable')return `<strong class="comment-ability">${escapeHtml(abilityNameLabel(fact.detail?.ability||''))}</strong> ${tr('아직 준비 안 됐어요.','is not ready yet.')}`;
+      if(fact.type==='utility_used')return `<strong class="comment-ability">${escapeHtml(abilityNameLabel(fact.detail?.ability||''))}</strong> ${tr('사용했어요.','used.')}`;
+      return null;
+    };
+    for(const fact of comms?.facts||[]){const line=factLine(fact);if(line)evs.push({t:fact.receivedAt??fact.t,type:'coachCall',speaker:fact.from||tr('선수','PLAYER'),line,callKind:'player'});}
+    const proposalLine=proposal=>({wait_for_utility:tr('스킬 준비될 때까지 잠깐 기다려요.','Wait for my utility.'),continue_probe:tr('제가 반대편 조금 더 확인할게요.','I will probe the other side.'),commit_site:tr('여기 들어갈 수 있어요. 진입하죠.','We can hit this site. Let us go.'),follow_rotation_sound:tr('백업 가는 소리예요. 제가 더 파볼게요.','I hear the rotation. Let me push deeper.')}[proposal.type]||null);
+    for(const proposal of comms?.proposals||[]){const line=proposalLine(proposal);if(line)evs.push({t:proposal.receivedAt??proposal.t,type:'coachCall',speaker:proposal.from||tr('선수','PLAYER'),line,callKind:'proposal'});}
+    const decisionLine=decision=>{
+      const mode=decision.mode||decision.type;
+      const lines={GATHER_INFO:tr('서두르지 말고 정보 더 모아.','Stay patient. Gather more information.'),WAIT_UTILITY:tr('스킬 기다리고 같이 맞춰.','Wait for utility and synchronize.'),COMMIT_SITE:tr(`${decision.targetSite||decision.site||rd.site}로 모여서 진입한다.`,`Group and execute ${decision.targetSite||decision.site||rd.site}.`),ROTATE_SITE:tr(`${decision.targetSite||decision.site||rd.site}로 전환한다.`,`Rotate to ${decision.targetSite||decision.site||rd.site}.`),REGROUP:tr('흩어지지 말고 다시 모여.','Regroup. Do not go alone.'),POST_PLANT_HOLD:tr('설치 후 자리 잡고 교차각 만들어.','Take post-plant positions and set crossfires.'),REINFORCE:tr('확인된 쪽으로 지원 가.','Reinforce the confirmed site.'),RETAKE:tr('같이 모여서 리테이크한다.','Group up for the retake.'),SAVE:tr('무리하지 말고 장비 보존해.','Do not force it. Save your equipment.'),wait_for_utility:tr('좋아, 스킬 준비까지 기다린다.','Hold. We wait for utility.'),rotate:tr(`${decision.site||rd.site} 지원 가.`,`Rotate to ${decision.site||rd.site}.`),save:tr('이번 라운드는 장비 보존한다.','Save this round.'),formation_change:tr('대형 바꾼다. 새 배치 확인해.','Changing formation. Check your assignment.')};
+      const defenseCalls={info_peek:tr('한 명 짧게 확인하고 바로 복귀해.','One player take a quick peek and fall back.'),utility_check:tr('스킬로 입구 확인해. 나머지는 자리 유지.','Check the entrance with utility. Everyone else hold.'),control_push:tr('둘이 같이 공간 확인하고 무리하지 말고 빠져.','Take space as a pair, then fall back safely.'),fallback:tr('정보 확인 끝. 원래 자리로 복귀해.','Information gathered. Return to your anchor.')};return lines[mode]||defenseCalls[mode]||null;
+    };
+    for(const decision of comms?.decisions||[]){const line=decisionLine(decision);if(line)evs.push({t:decision.t,type:'coachCall',speaker:decision.igl||comms.igl||'IGL',line,callKind:'igl'});}
+    for(const unit of sp.units.filter(unit=>ownNames.has(unit.name))){for(const thought of unit.decisionTimeline||[]){const lines={assemble_for_execute:tr('진입 지점으로 합류할게요.','Moving to the execute staging point.'),execute_entry_release:tr('진입합니다. 바로 따라와요.','Going in. Trade me.'),entry_role_inherited:tr('제가 선두 이어받을게요.','I am taking point.'),rotate_after_teammate_death:tr('아군 사망 확인, 지원 갈게요.','Teammate down. I am rotating.'),spike_planted_confirmed:tr('설치 확인. 리테이크 합류할게요.','Plant confirmed. Joining the retake.'),retrieve_dropped_spike:tr('스파이크 회수할게요.','I will recover the spike.'),plant_spike:tr('설치할게요. 엄호해줘요.','Planting. Cover me.'),escape_spike_blast:tr('폭발 범위에서 빠질게요.','Getting out of the blast radius.'),defuse_time_impossible_save:tr('해체 시간 없어. 장비 보존할게요.','No time to defuse. Saving my weapon.')};const line=lines[thought.reason];if(line)evs.push({t:thought.t,type:'coachCall',speaker:unit.name,line,callKind:'player'});}}
+  }
   const hasSpatialAbilities=evs.some(event=>event.type==='ability');
   const abList=rd.abilities&&rd.abilities.length?rd.abilities:(rd.ability?[rd.ability]:[]);
   if(!hasSpatialAbilities)abList.forEach((ab,i)=>evs.push({t:Math.min(dur-0.1,1.8+i*(dur-1.8)/(abList.length+1)),type:'ability',ab}));
@@ -395,7 +422,9 @@ export function mvPlayRound(rd,speed,onDone){
   let ei=0, firstBlood=false;
 
   function fireEvent(e){
-    if(e.type==='damage'||e.type==='abilityDamage'){
+    if(e.type==='coachCall'){
+      coachAnnounce(e.speaker,e.line,e.callKind,e.t);
+    } else if(e.type==='damage'||e.type==='abilityDamage'){
       if(MV.hpBy)MV.hpBy[e.victim]=e.remainingHP;
       if(e.type==='abilityDamage')announce(`${playerTag(e.source)}${tr(' 선수의 ',' deals damage with ')}<strong class="comment-ability">${escapeHtml(abilityNameLabel(e.ability))}</strong>${tr('이 적중합니다.','.')}`);
       refreshPanels();
@@ -433,6 +462,8 @@ export function mvPlayRound(rd,speed,onDone){
     } else if(e.type==='defuse'){
       mvSpike(e.x,e.y,true);
       announce(`${playerTag(e.defuser)}${tr(' 선수가 스파이크를 해체합니다!',' defuses the spike!')}`,'objective');
+    } else if(e.type==='spikeExplode'){
+      field.querySelectorAll('.mvspike').forEach(element=>element.remove());const blast=document.createElement('div');blast.className='mvspikeblast';blast.style.left=e.x+'%';blast.style.top=e.y+'%';field.appendChild(blast);setTimeout(()=>blast.remove(),1200);if(MV.roundClock)MV.roundClock.explosionHoldUntil=MV.roundClock.virtualElapsed+1200;for(const victim of e.victims||[])mvKill(null,victim);
     } else if(e.type==='util'){
       const el=document.createElement('div'); el.className='fx fx-'+(e.kind==='flash'?'flash':'smoke')+' atk';
       el.style.left=e.x+'%'; el.style.top=e.y+'%'; el.innerHTML='<span class="fxsym">'+(TYPESYM[e.kind]||'')+'</span>';
@@ -462,7 +493,7 @@ export function mvPlayRound(rd,speed,onDone){
     } else if(e.type==='ability'){const ab=e.ab||e;MV.usedAbilities.add(`${ab.player}:${ab.name}`);const spatialObject=['reveal_scan','drone_tag','turret_anchor','vulnerable_trap','remote_area_damage','detain_zone','vision_block','global_smoke'].includes(ab.mechanic);if(!spatialObject)mvAbility(ab,rd);announce(`${playerTag(ab.player)}${tr(' 선수가 ',' uses ')}<strong class="comment-ability">${escapeHtml(abilityNameLabel(ab.name))}</strong>${tr(' 스킬을 사용합니다.','.')}`);refreshPanels(); }
   }
 
-  const preparationWall=2500,moveWall=Math.max(1000,dur*1000),holdWall=2100;
+  const preparationWall=ROUND_TIMING.preparationPlaybackMs,moveWall=Math.max(1000,dur*1000),holdWall=ROUND_TIMING.roundBreakPlaybackMs;
   let plantTe=-1,barrierReleased=false;
   function firePlantClock(){}
   function frame(ts){
@@ -482,11 +513,11 @@ export function mvPlayRound(rd,speed,onDone){
     while(ei<evs.length && evs[ei].t<=te){ if(evs[ei].type==='plant'&&plantTe<0)plantTe=evs[ei].t; fireEvent(evs[ei]); ei++; }
     field.querySelectorAll('[data-sim-expire]').forEach(element=>{if(Number(element.dataset.simExpire)<=te)element.remove();});
     if(timerEl){ if(el<preparationWall){timerEl.classList.remove('spike');timerEl.textContent=tr('준비','READY');}
-      else if(plantTe>=0){timerEl.classList.add('spike');timerEl.textContent=fmtClock(45-(te-plantTe));}
-      else {timerEl.classList.remove('spike');timerEl.textContent=fmtClock(100-te);} }
+      else {const clockState=roundClockAt(te,plantTe>=0?plantTe:null);timerEl.classList.toggle('spike',clockState.phase==='post_plant');timerEl.textContent=fmtClock(clockState.remaining);} }
     if(el < preparationWall+moveWall){if(!clock.paused)MV.raf=requestAnimationFrame(frame);}
     else {
       while(ei<evs.length){ if(evs[ei].type==='plant'&&plantTe<0)plantTe=evs[ei].t; fireEvent(evs[ei]); ei++; }
+      if(clock.explosionHoldUntil&&el<clock.explosionHoldUntil){if(!clock.paused)MV.raf=requestAnimationFrame(frame);return;}
       announce(`<strong class="comment-team">${escapeHtml(rd.winner===atkTeamSide?atkShort:defShort)}</strong>${tr('이 라운드를 가져갑니다!',' wins the round!')}`,'round');
       if(timerEl)timerEl.textContent='0:00';
       const scoreH=document.getElementById('bScoreH'),scoreA=document.getElementById('bScoreA');if(scoreH)scoreH.textContent=rd.h;if(scoreA)scoreA.textContent=rd.a;

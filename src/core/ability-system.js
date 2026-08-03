@@ -27,7 +27,7 @@ export function prepareAbilityBuy(state,team,side,agBy,economy,loadouts,buy){
     for(const def of defs){
       if(def.ultimate)continue;
       if(def.signature){ps.abilities[def.id]=def.maxCharges;continue;}
-      const target=buy==='full'||buy==='force'?def.maxCharges:buy==='pistol'?Math.min(1,def.maxCharges):0;
+      const target=buy==='full'?def.maxCharges:buy==='force'||buy==='semi'?Math.min(1,def.maxCharges):buy==='pistol'?Math.min(1,def.maxCharges):0;
       while((ps.abilities[def.id]||0)<target&&account.credits>=def.cost){
         account.credits-=def.cost;loadout.spent+=def.cost;loadout.remaining=account.credits;ps.abilities[def.id]++;purchases.push({player:player.name,ability:def.name,cost:def.cost});
       }
@@ -60,7 +60,7 @@ export function planRoundAbilities(state,{home,away,agBy,atkSide,scoreDiff=0}){
       if(!available||!shouldUse(def,player,side,atkSide,{scorePressure}))continue;
       if(def.ultimate)ps.ultPoints-=def.ultCost;else ps.abilities[def.id]--;
       const phase=side===atkSide?'EXECUTE':'HOLD',reason=def.type==='recon'?'missing_recent_information':def.type==='trap'?'secure_initial_control':def.type==='smoke'?'block_expected_sightline':def.ultimate?'high_round_leverage':'create_combat_advantage';
-      const use={player:player.name,agentName:ps.agent,name:def.name,type:def.type,mechanic:def.mechanic,damage:def.damage,duration:def.duration,edge:def.edge,decisionSkill:+decisionSkill(player,def).toFixed(1),decision:{phase,reason,scorePressure},ult:def.ultimate,side,cost:def.cost,remaining:def.ultimate?ps.ultPoints:ps.abilities[def.id],ultCost:def.ultCost};uses.push(use);
+      const use={player:player.name,agentName:ps.agent,name:def.name,type:def.type,mechanic:def.mechanic,damage:def.damage,duration:def.duration,edge:def.edge,decisionSkill:+decisionSkill(player,def).toFixed(1),decision:{phase,reason,scorePressure},ult:def.ultimate,signature:def.signature,recharge:def.recharge,side,cost:def.cost,remaining:def.ultimate?ps.ultPoints:ps.abilities[def.id],ultCost:def.ultCost};uses.push(use);
       const m=modifiers[side],edge=def.edge*(def.ultimate?1:0.65+random()*.35);
       if(OBJECT_MECHANICS.has(def.mechanic)){/* spatial object owns its active window */}
       else if(def.type==='recon')m.information+=edge;
@@ -86,6 +86,12 @@ export function settleAbilityRound(state,{kills=[],planter=null,orbCaptures=[]}=
   });
   add(planter,1);orbCaptures.forEach(capture=>add(capture.player,1));
   return{gained,snapshot:abilitySnapshot(state)};
+}
+
+export function restoreUnusedAbilityPlans(state,{plannedUses=[],usedEvents=[]}={}){
+  const used=new Map();for(const event of usedEvents){const key=`${event.player}:${event.name}`;used.set(key,(used.get(key)||0)+1);}
+  const restored=[];for(const use of plannedUses){const key=`${use.player}:${use.name}`,count=used.get(key)||0;if(count>0){used.set(key,count-1);continue;}const ps=state.players[use.player];if(!ps)continue;if(use.ult)ps.ultPoints=clamp(ps.ultPoints+(use.ultCost||0),0,12);else{const def=agentAbilityDefinitions(ps.agent).find(entry=>entry.name===use.name),id=def?.id;if(id)ps.abilities[id]=Math.min(def.maxCharges,(ps.abilities[id]||0)+1);}restored.push({player:use.player,ability:use.name,ultimate:!!use.ult});}
+  return restored;
 }
 
 export function abilitySnapshot(state){

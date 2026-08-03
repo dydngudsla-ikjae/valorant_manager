@@ -1,0 +1,346 @@
+{
+  "reportVersion": "vct-distribution-validation-v1",
+  "generatedAt": "2026-08-03T08:24:19.867Z",
+  "seed": "vlm-validation-2026-vct-distribution",
+  "real": {
+    "sample": {
+      "years": [
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "maps": 4097,
+      "rounds": 86877,
+      "playerRounds": 3287519
+    },
+    "map": {
+      "averageRounds": 21.205,
+      "overtimeRate": 0.1091
+    },
+    "winMethods": {
+      "elimination": 0.6499,
+      "detonation": 0.1115,
+      "defuse": 0.2065,
+      "timeExpiry": 0.0321
+    },
+    "players": {
+      "rating": 0.8991,
+      "acs": 197.236,
+      "kast": 0.6446,
+      "adr": 121.1755,
+      "kpr": 0.6927,
+      "apr": 0.2894,
+      "fkpr": 0.0933,
+      "fdpr": 0.0933,
+      "headshot": 0.2501,
+      "kd": 0.9986,
+      "rounds": 3287519,
+      "kills": 2276923,
+      "deaths": 2280148
+    },
+    "eco": {
+      "Eco: 0-5k": {
+        "rounds": 17329,
+        "winRate": 0.3642
+      },
+      "Semi-buy: 10-20k": {
+        "rounds": 28886,
+        "winRate": 0.5077
+      },
+      "Full buy: 20k+": {
+        "rounds": 68920,
+        "winRate": 0.5578
+      },
+      "Semi-eco: 5-10k": {
+        "rounds": 6537,
+        "winRate": 0.2165
+      }
+    }
+  },
+  "simulation": {
+    "sample": {
+      "matches": 40,
+      "maps": 40,
+      "rounds": 861
+    },
+    "map": {
+      "averageRounds": 21.525,
+      "overtimeRate": 0.15,
+      "averageRoundSeconds": 60.68,
+      "plantRate": 0.6005
+    },
+    "postPlant": {
+      "defuseStarts": 190,
+      "defuseStops": 102,
+      "defuseHalves": 89,
+      "savePlans": 78,
+      "plantAtTotal": 19755.899999999994,
+      "averagePlantAt": 38.21,
+      "defuseStartPerPlant": 0.3675,
+      "defuseSuccessPerStart": 0.4632
+    },
+    "combat": {
+      "damageEvents": 17148,
+      "partialBursts": 0,
+      "partialDamage": 0,
+      "totalDamage": 820055,
+      "abilityDamageEvents": 76,
+      "abilityDamage": 3901,
+      "abilityKills": 7,
+      "disengages": 5267,
+      "partialDamagePerRound": 0,
+      "totalDamagePerRound": 952.44,
+      "disengagesPerRound": 6.12
+    },
+    "winMethods": {
+      "elimination": 0.8107,
+      "detonation": 0.0546,
+      "defuse": 0.1022,
+      "timeExpiry": 0.0325
+    },
+    "players": {
+      "rating": 0.8997,
+      "acs": 190.2621,
+      "kast": 0.629,
+      "adr": 95.2458,
+      "kpr": 0.6608,
+      "apr": 0.2555,
+      "fkpr": 0.1,
+      "fdpr": 0.1,
+      "headshot": 0.2929,
+      "kd": 0.9861,
+      "rounds": 8610,
+      "kills": 5689,
+      "deaths": 5769
+    },
+    "eco": {
+      "pistol": {
+        "rounds": 160,
+        "winRate": 0.5
+      },
+      "full": {
+        "rounds": 616,
+        "winRate": 0.5763
+      },
+      "eco": {
+        "rounds": 93,
+        "winRate": 0.1183
+      },
+      "semi": {
+        "rounds": 409,
+        "winRate": 0.3496
+      },
+      "force": {
+        "rounds": 36,
+        "winRate": 0.1944
+      },
+      "bonus": {
+        "rounds": 408,
+        "winRate": 0.6495
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "key": "map.averageRounds",
+      "real": 21.205,
+      "simulation": 21.525,
+      "delta": 0.32,
+      "error": 0.0151,
+      "mode": "relative",
+      "limit": 0.15,
+      "status": "pass"
+    },
+    {
+      "key": "map.overtimeRate",
+      "real": 0.1091,
+      "simulation": 0.15,
+      "delta": 0.0409,
+      "error": 0.0409,
+      "mode": "absolute",
+      "limit": 0.05,
+      "status": "pass"
+    },
+    {
+      "key": "winMethods.elimination",
+      "real": 0.6499,
+      "simulation": 0.8107,
+      "delta": 0.1608,
+      "error": 0.1608,
+      "mode": "absolute",
+      "limit": 0.08,
+      "status": "fail"
+    },
+    {
+      "key": "winMethods.detonation",
+      "real": 0.1115,
+      "simulation": 0.0546,
+      "delta": -0.0569,
+      "error": 0.0569,
+      "mode": "absolute",
+      "limit": 0.08,
+      "status": "pass"
+    },
+    {
+      "key": "winMethods.defuse",
+      "real": 0.2065,
+      "simulation": 0.1022,
+      "delta": -0.1043,
+      "error": 0.1043,
+      "mode": "absolute",
+      "limit": 0.08,
+      "status": "warn"
+    },
+    {
+      "key": "winMethods.timeExpiry",
+      "real": 0.0321,
+      "simulation": 0.0325,
+      "delta": 0.0004,
+      "error": 0.0004,
+      "mode": "absolute",
+      "limit": 0.08,
+      "status": "pass"
+    },
+    {
+      "key": "players.rating",
+      "real": 0.8991,
+      "simulation": 0.8997,
+      "delta": 0.0006,
+      "error": 0.0007,
+      "mode": "relative",
+      "limit": 0.15,
+      "status": "pass"
+    },
+    {
+      "key": "players.acs",
+      "real": 197.236,
+      "simulation": 190.2621,
+      "delta": -6.9739,
+      "error": 0.0354,
+      "mode": "relative",
+      "limit": 0.15,
+      "status": "pass"
+    },
+    {
+      "key": "players.kast",
+      "real": 0.6446,
+      "simulation": 0.629,
+      "delta": -0.0156,
+      "error": 0.0156,
+      "mode": "absolute",
+      "limit": 0.08,
+      "status": "pass"
+    },
+    {
+      "key": "players.adr",
+      "real": 121.1755,
+      "simulation": 95.2458,
+      "delta": -25.9297,
+      "error": 0.214,
+      "mode": "relative",
+      "limit": 0.15,
+      "status": "warn"
+    },
+    {
+      "key": "players.kpr",
+      "real": 0.6927,
+      "simulation": 0.6608,
+      "delta": -0.0319,
+      "error": 0.0461,
+      "mode": "relative",
+      "limit": 0.15,
+      "status": "pass"
+    },
+    {
+      "key": "players.apr",
+      "real": 0.2894,
+      "simulation": 0.2555,
+      "delta": -0.0339,
+      "error": 0.1171,
+      "mode": "relative",
+      "limit": 0.15,
+      "status": "pass"
+    },
+    {
+      "key": "players.fkpr",
+      "real": 0.0933,
+      "simulation": 0.1,
+      "delta": 0.0067,
+      "error": 0.0718,
+      "mode": "relative",
+      "limit": 0.15,
+      "status": "pass"
+    },
+    {
+      "key": "players.fdpr",
+      "real": 0.0933,
+      "simulation": 0.1,
+      "delta": 0.0067,
+      "error": 0.0718,
+      "mode": "relative",
+      "limit": 0.15,
+      "status": "pass"
+    },
+    {
+      "key": "players.kd",
+      "real": 0.9986,
+      "simulation": 0.9861,
+      "delta": -0.0125,
+      "error": 0.0125,
+      "mode": "relative",
+      "limit": 0.15,
+      "status": "pass"
+    },
+    {
+      "key": "players.headshot",
+      "real": 0.2501,
+      "simulation": 0.2929,
+      "delta": 0.0428,
+      "error": 0.0428,
+      "mode": "absolute",
+      "limit": 0.08,
+      "status": "pass"
+    }
+  ],
+  "summary": {
+    "passed": 13,
+    "warnings": 2,
+    "failed": 1
+  },
+  "diagnostics": [
+    {
+      "key": "players.adr",
+      "real": 121.1755,
+      "simulation": 95.2458,
+      "delta": -25.9297,
+      "error": 0.214,
+      "mode": "relative",
+      "limit": 0.15,
+      "status": "warn",
+      "likelyCause": "총기 피해·엄폐·교전 거리"
+    },
+    {
+      "key": "winMethods.elimination",
+      "real": 0.6499,
+      "simulation": 0.8107,
+      "delta": 0.1608,
+      "error": 0.1608,
+      "mode": "absolute",
+      "limit": 0.08,
+      "status": "fail",
+      "likelyCause": "사이트 진입 전후 전멸 빈도"
+    },
+    {
+      "key": "winMethods.defuse",
+      "real": 0.2065,
+      "simulation": 0.1022,
+      "delta": -0.1043,
+      "error": 0.1043,
+      "mode": "absolute",
+      "limit": 0.08,
+      "status": "warn",
+      "likelyCause": "리테이크 성공률과 해체 판단"
+    }
+  ]
+}

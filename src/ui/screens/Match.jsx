@@ -94,7 +94,7 @@ function FeedRow({ f }) {
       {f.trades>0&&<span className="tradetag">TRADE ×{f.trades}</span>}{' '}
       {f.isPistol
         ? <span style={{ color: 'var(--muted)' }}> {tr('피스톨','pistol')}</span>
-        : <span style={{ color: 'var(--muted)' }}> vs {f.loserBuyLbl==='full-buy'?tr('풀 바이','full-buy'):f.loserBuyLbl==='force'?tr('강제 구매','force'):f.loserBuyLbl}</span>}
+        : <span style={{ color: 'var(--muted)' }}> vs {f.loserBuyLbl==='full-buy'?tr('풀 바이','full-buy'):f.loserBuyLbl==='semi-buy'?tr('세미 바이','semi-buy'):f.loserBuyLbl==='force'?tr('강제 구매','force'):f.loserBuyLbl==='bonus'?tr('보너스','bonus'):f.loserBuyLbl==='eco'?tr('에코','eco'):f.loserBuyLbl}</span>}
       <span style={{ color: 'var(--muted)' }}> · FB {f.fbKiller}</span>
       {f.topKiller && ` · ${f.topKiller.name} ${f.topKiller.k}k`}{' '}
       {f.ability && <span className={`abtag${f.ability.ult ? ' ult' : ''}`}>{abilityNameLabel(f.ability.name)}</span>}{' '}

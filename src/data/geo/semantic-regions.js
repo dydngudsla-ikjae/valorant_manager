@@ -1,7 +1,13 @@
 import ASCENT_NAV from './ascent-navgrid.json' with { type: 'json' };
+import BIND_NAV from './bind-navgrid.json' with { type: 'json' };
+import HAVEN_NAV from './haven-navgrid.json' with { type: 'json' };
+import SPLIT_NAV from './split-navgrid.json' with { type: 'json' };
+import LOTUS_NAV from './lotus-navgrid.json' with { type: 'json' };
+import SUNSET_NAV from './sunset-navgrid.json' with { type: 'json' };
+import ICEBOX_NAV from './icebox-navgrid.json' with { type: 'json' };
 import { MAPGEO } from './maps.js';
 
-const NAV={Ascent:ASCENT_NAV};
+const NAV={Ascent:ASCENT_NAV,Bind:BIND_NAV,Haven:HAVEN_NAV,Split:SPLIT_NAV,Lotus:LOTUS_NAV,Sunset:SUNSET_NAV,Icebox:ICEBOX_NAV};
 const CACHE=new Map();
 
 function insidePolygon(x,y,points){
@@ -20,7 +26,8 @@ function orthogonalPoints(points){
 }
 
 function areaPolygons(area){
-  return area.polygons?.length?area.polygons:[area.points];
+  if(area.polygons?.length)return area.polygons;
+  return area.points?.length?[area.points]:[];
 }
 
 export function semanticRegionRaster(mapName){
@@ -40,6 +47,19 @@ export function semanticRegionRaster(mapName){
     }
     owner[index]=matches[0]??-1;
   }
+  // Coarse maps may define semantic regions by anchor only. Give every area a
+  // unique walkable seed before propagation, without stealing an authored cell.
+  areas.forEach((area,areaIndex)=>{
+    if(owner.includes(areaIndex))return;
+    let best=-1,bestDistance=Infinity;
+    for(let index=0;index<owner.length;index++){
+      if(nav.cells[index]!=='1'||owner[index]>=0)continue;
+      const x=(index%nav.w+.5)/nav.w*100,y=(((index/nav.w)|0)+.5)/nav.h*100;
+      const distance=(area.label.x-x)**2+(area.label.y-y)**2;
+      if(distance<bestDistance){bestDistance=distance;best=index;}
+    }
+    if(best>=0)owner[best]=areaIndex;
+  });
   // Fill authored axis-aligned extents before graph propagation. Boundaries
   // therefore follow vertical/horizontal map cuts instead of diagonal fronts.
   const bounds=areas.flatMap((area,areaIndex)=>areaPolygons(area).map(points=>({areaIndex,minX:Math.min(...points.map(point=>point[0])),maxX:Math.max(...points.map(point=>point[0])),minY:Math.min(...points.map(point=>point[1])),maxY:Math.max(...points.map(point=>point[1]))})));
