@@ -308,7 +308,7 @@ export function mvPlayRound(rd,speed,onDone){
   MATCH.away.roster.forEach((pl,i)=>wepBy[pl.name]=loadoutsAway[i].weapon);
   const kf=document.getElementById('killFeed'); if(kf)kf.innerHTML='';
   const refreshPanels=()=>{ mvRenderCards('home',MATCH.home,rd.hSide,loadoutsHome); mvRenderCards('away',MATCH.away,rd.aSide,loadoutsAway); };
-  field.classList.remove('fast'); field.querySelectorAll('.mvtracer,.mvspike,.mvpulse,.mvablabel,.fx,.sight,.plantzone,.mvplantarea,.mvorb,.ability-object,.mvbarrier,.mvdoor,.mvdoorbutton,.mvstairs,.mvprep').forEach(e=>e.remove());
+  field.classList.remove('fast'); field.querySelectorAll('.mvtracer,.mvspike,.mvpulse,.mvablabel,.fx,.sight,.plantzone,.mvplantarea,.mvorb,.ability-object,.ability-object-radius,.mvbarrier,.mvdoor,.mvdoorbutton,.mvstairs,.mvprep').forEach(e=>e.remove());
   for(const site of curGeo().siteNames||[]){const zone=curGeo().plantZone(site),area=document.createElement('div');area.className='mvplantarea';area.dataset.site=site;area.style.left=(zone.x-zone.w/2)+'%';area.style.top=(zone.y-zone.h/2)+'%';area.style.width=zone.w+'%';area.style.height=zone.h+'%';area.innerHTML=`<b>${site}</b>`;field.appendChild(area);}
   for(const orb of curGeo().orbs||[]){const marker=document.createElement('div');marker.className='mvorb';marker.dataset.orbId=orb.id;marker.style.left=orb.x+'%';marker.style.top=orb.y+'%';marker.title=orb.label;marker.innerHTML='<i></i>';field.appendChild(marker);}
   const barrierVisuals=curGeo().annotations?.barriers||rd.preparation?.barriers||[];
@@ -485,12 +485,25 @@ export function mvPlayRound(rd,speed,onDone){
       announce(`${playerTag(e.player)}${tr(' 선수의 오브 확보가 중단됩니다.',' has the orb capture interrupted.')}`);
     } else if(e.type==='abilityObjectPlace'){
       const object=document.createElement('div');object.className=`ability-object ${e.side} kind-${e.kind}`;object.dataset.objectId=e.objectId;object.dataset.simExpire=String(e.expiresAt);object.style.left=e.x+'%';object.style.top=e.y+'%';object.title=abilityNameLabel(e.ability);object.innerHTML=`<i>${TYPESYM[e.kind]||'◆'}</i>`;field.appendChild(object);
+      if(['lockdown','smoke'].includes(e.kind)&&e.radius){const radius=document.createElement('div');radius.className=`ability-object-radius ${e.side} kind-${e.kind}`;radius.dataset.objectId=e.objectId;radius.dataset.simExpire=String(e.kind==='lockdown'?e.activeAt:e.expiresAt);radius.style.left=e.x+'%';radius.style.top=e.y+'%';radius.style.width=(e.radius*2)+'%';radius.style.height=(e.radius*2)+'%';field.appendChild(radius);}
     } else if(e.type==='abilityObjectDestroy'){
       const object=field.querySelector(`.ability-object[data-object-id="${e.objectId}"]`);if(object){object.classList.add('destroyed');object.dataset.simExpire=String(e.t+.5);}
+      field.querySelector(`.ability-object-radius[data-object-id="${e.objectId}"]`)?.remove();
       announce(`${playerTag(e.player)}${tr(' 선수가 ',' destroys ')}<strong class="comment-ability">${escapeHtml(abilityNameLabel(e.ability))}</strong>${tr('을 파괴합니다.','.')}`);
+    } else if(e.type==='lockdownPulse'){
+      field.querySelector(`.ability-object-radius[data-object-id="${e.objectId}"]`)?.remove();field.querySelector(`.ability-object[data-object-id="${e.objectId}"]`)?.remove();
+      announce(`${tr('LOCKDOWN 발동 · ','LOCKDOWN activated · ')}${e.affected?.length||0}${tr('명 구금',' detained')}`,'objective');
+    } else if(e.type==='detainedApplied'){
+      announce(`${playerTag(e.victim)}${tr(' 선수가 구금됐습니다.',' is detained.')}`,'objective');
+    } else if(e.type==='blindApplied'&&e.ability==='Flashpoint'){
+      const el=document.createElement('div');el.className=`fx fx-flash ${e.side}`;el.style.left=e.x+'%';el.style.top=e.y+'%';el.innerHTML='<span class="fxsym">✦</span>';el.dataset.simExpire=String(e.t+.65);field.appendChild(el);announce(`${playerTag(e.victim)}${tr(' 선수가 섬광에 완전히 노출됩니다.',' is fully blinded by Flashpoint.')}`);
+    } else if(e.type==='concussApplied'&&['Fault Line','Rolling Thunder'].includes(e.ability)){
+      const el=document.createElement('div');el.className=`fx fx-stun ${e.side}`;el.style.left=e.x+'%';el.style.top=e.y+'%';el.innerHTML='<span class="fxsym">≋</span>';el.dataset.simExpire=String(e.t+Math.min(1.2,e.duration));field.appendChild(el);announce(`${playerTag(e.victim)}${tr(' 선수가 충격에 휩싸입니다.',' is concussed.')}`);
+    } else if(e.type==='aftershockTick'){
+      const el=document.createElement('div');el.className=`fx fx-molly ${e.side}`;el.style.left=e.x+'%';el.style.top=e.y+'%';el.innerHTML=`<span class="fxsym">${e.tick}</span>`;el.dataset.simExpire=String(e.t+.55);field.appendChild(el);if(e.hitPlayers?.length)announce(`${tr('여진 폭발이 ','Aftershock hits ')}${e.hitPlayers.map(playerTag).join(', ')}${tr(' 선수를 덮칩니다.','.')}`,'kill');
     } else if(e.type==='abilityObjectExpire'){
-      field.querySelector(`.ability-object[data-object-id="${e.objectId}"]`)?.remove();
-    } else if(e.type==='ability'){const ab=e.ab||e;MV.usedAbilities.add(`${ab.player}:${ab.name}`);const spatialObject=['reveal_scan','drone_tag','turret_anchor','vulnerable_trap','remote_area_damage','detain_zone','vision_block','global_smoke'].includes(ab.mechanic);if(!spatialObject)mvAbility(ab,rd);announce(`${playerTag(ab.player)}${tr(' 선수가 ',' uses ')}<strong class="comment-ability">${escapeHtml(abilityNameLabel(ab.name))}</strong>${tr(' 스킬을 사용합니다.','.')}`);refreshPanels(); }
+      field.querySelector(`.ability-object[data-object-id="${e.objectId}"]`)?.remove();field.querySelector(`.ability-object-radius[data-object-id="${e.objectId}"]`)?.remove();
+    } else if(e.type==='ability'){const ab=e.ab||e;MV.usedAbilities.add(`${ab.player}:${ab.name}`);const spatialObject=['reveal_scan','drone_tag','turret_anchor','vulnerable_trap','remote_area_damage','detain_zone','vision_block','global_smoke','wall_aftershock','wall_flash','line_concuss','rolling_concuss'].includes(ab.mechanic);if(!spatialObject)mvAbility(ab,rd);announce(`${playerTag(ab.player)}${tr(' 선수가 ',' uses ')}<strong class="comment-ability">${escapeHtml(abilityNameLabel(ab.name))}</strong>${tr(' 스킬을 사용합니다.','.')}`);refreshPanels(); }
   }
 
   const preparationWall=ROUND_TIMING.preparationPlaybackMs,moveWall=Math.max(1000,dur*1000),holdWall=ROUND_TIMING.roundBreakPlaybackMs;

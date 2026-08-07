@@ -171,7 +171,7 @@ function runNextRound(state){
     const settledH=settleTeamEconomy(economy.home,{won:homeWon,planted:plant&&atkIsHome,units:res.units.filter(unit=>unit.side==='home'),loadouts:loadouts.home});
     const settledA=settleTeamEconomy(economy.away,{won:!homeWon,planted:plant&&!atkIsHome,units:res.units.filter(unit=>unit.side==='away'),loadouts:loadouts.away});
     const abilities=res.abilityEvs||[];
-    const restoredAbilities=restoreUnusedAbilityPlans(abilityState,{plannedUses:abilityPlan.uses,usedEvents:abilities});
+    const restoredAbilities=restoreUnusedAbilityPlans(abilityState,{plannedUses:abilityPlan.uses,usedEvents:res.events});
     const abilitySettlement=settleAbilityRound(abilityState,{kills,planter,orbCaptures:res.orbCaptures});
     const ability=abilities[0]||null;
     const round={n:r+1,roundSeed,hSide,aSide,winner:winSide,buyH,buyA,isPistol,kills,fb,

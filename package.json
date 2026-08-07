@@ -32,10 +32,12 @@
     "verify:economy": "node .\\runtime_2026\\scripts\\verify-economy-engine.mjs",
     "validate:simulation": "node .\\runtime_2026\\scripts\\validate-simulation-balance.mjs",
     "validate:vct-distributions": "node .\\runtime_2026\\scripts\\validate-vct-distributions.mjs",
+    "diagnose:adr": "node .\\runtime_2026\\scripts\\diagnose-adr.mjs",
     "verify:formats": "node .\\runtime_2026\\scripts\\verify-match-formats.mjs",
     "verify:maps": "node .\\runtime_2026\\scripts\\verify-map-engine.mjs",
     "verify:tactics": "node .\\runtime_2026\\scripts\\verify-tactics-engine.mjs",
     "verify:phases": "node .\\runtime_2026\\scripts\\verify-round-phases.mjs",
+    "verify:trades": "node .\\runtime_2026\\scripts\\verify-trade-system.mjs",
     "verify:abilities": "node .\\runtime_2026\\scripts\\verify-ability-engine.mjs",
     "verify:agents": "node .\\runtime_2026\\scripts\\verify-agent-loop.mjs"
   },

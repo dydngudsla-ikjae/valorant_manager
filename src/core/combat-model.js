@@ -8,7 +8,7 @@ export const WEAPON_DAMAGE=WEAPON_DATA;
 
 const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
 const distanceBand=distance=>distance<=8?'near':distance<=15?'mid':'far';
-const BURST_SIZE={Classic:2,Frenzy:4,Ghost:2,Sheriff:1,Stinger:4,Spectre:4,Bulldog:3,Phantom:3,Vandal:3,Marshal:1,Operator:1,BladeStorm:1};
+const BURST_SIZE={Classic:2,Frenzy:4,Ghost:2,Sheriff:1,Stinger:4,Spectre:4,Bulldog:3,Phantom:3,Vandal:3,Marshal:1,Operator:1,BladeStorm:1,Headhunter:1,TourDeForce:1,Overdrive:1};
 const BURST_SPREAD={1:0,2:.13,3:.115,4:.1};
 
 export function createVitalState(shieldType='none',shieldValue=null){
@@ -50,5 +50,6 @@ export function rollWeaponBurst({weapon='Classic',distance=10,headshotRate=.24,f
     const bulletAccuracy=clamp(accuracy-index*spread-(moving&&index>0?.035:0),.08,.92),hit=random()<bulletAccuracy;
     bullets.push({index,accuracy:+bulletAccuracy.toFixed(3),hit,...(hit?rollWeaponHit({weapon,distance,headshotRate,firepower,ratingEdge}):{})});
   }
-  return {weapon,count,bullets,cooldown:profile.cadence*(1+count*.25)*(.92+random()*.18),distanceBand:distanceBand(distance)};
+  const cadenceMultiplier=weapon==='TourDeForce'?1:1+count*.25;
+  return {weapon,count,bullets,cooldown:profile.cadence*cadenceMultiplier*(.92+random()*.18),distanceBand:distanceBand(distance)};
 }

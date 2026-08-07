@@ -42,15 +42,18 @@ export function recordAgentDecision(unit,time,intent,reason,context={}){
     destination:destination?{x:rounded(destination.x),y:rounded(destination.y)}:undefined,
     visibleEnemies:context.visibleEnemies??undefined,exposure:context.exposure??undefined,
     alliesAlive:context.alliesAlive??undefined,enemiesAlive:context.enemiesAlive??undefined,
+    siteAnchor:context.siteAnchor??undefined,confirmedAttackers:context.confirmedAttackers??undefined,
+    backupEta:Number.isFinite(context.backupEta)?rounded(context.backupEta):undefined,
+    nearbySupport:context.nearbySupport??undefined,
     hp:unit.hp,shield:unit.shield,confidence:Number.isFinite(context.confidence)?+context.confidence.toFixed(2):undefined,
   });
 }
 
-export function perceiveAgents({units,enemiesOf,lineOfSight,distance,sight,time}){
+export function perceiveAgents({units,enemiesOf,lineOfSight,distance,sight,sightFor,time}){
   const result=new Map();
   for(const unit of units){
     if(!unit.alive)continue;
-    const visible=enemiesOf(unit).filter(enemy=>enemy.alive&&distance(unit,enemy)<sight&&lineOfSight(unit,enemy)).map(enemy=>({unit:enemy,distance:distance(unit,enemy)})).sort((a,b)=>a.distance-b.distance);
+    const vision=sightFor?sightFor(unit,time):sight,visible=enemiesOf(unit).filter(enemy=>enemy.alive&&distance(unit,enemy)<vision&&lineOfSight(unit,enemy)).map(enemy=>({unit:enemy,distance:distance(unit,enemy)})).sort((a,b)=>a.distance-b.distance);
     const newContacts=visible.filter(seen=>time-(unit.mind.contacts.get(seen.unit.name)?.time??-99)>.5);
     for(const seen of visible)unit.mind.contacts.set(seen.unit.name,{time,x:seen.unit.x,y:seen.unit.y});
     result.set(unit,{visible,newContacts});
@@ -70,7 +73,7 @@ function chooseTarget(unit,visible,allies,lineOfSight,distance){
   return best;
 }
 
-export function decideAgentIntents({units,perceptions,alliesOf,lineOfSight,distance,time,planted,phase}){
+export function decideAgentIntents({units,perceptions,alliesOf,lineOfSight,distance,time,planted,phase,defenseSide,defenseTactic='STANDARD',defenseAssessment}){
   const intents=[];
   for(const unit of units){
     if(!unit.alive)continue;
@@ -88,7 +91,13 @@ export function decideAgentIntents({units,perceptions,alliesOf,lineOfSight,dista
     const moving=!!(unit.path&&unit.seg<unit.path.length),outnumbered=exposure>=2,teamOutnumbered=baseContext.alliesAlive<baseContext.enemiesAlive,wounded=(unit.hp+unit.shield)<=Math.max(45,(unit.startingVital||100)*.5),committedRetake=planted&&unit.retakeRole==='clear';
     const recognizesDanger=random()<clamp(.35+unit.mind.discipline/130,.65,.98);
     const shouldDisengage=!committedRetake&&recognizesDanger&&(outnumbered||wounded&&teamOutnumbered||wounded&&planted&&unit.side!==target.unit.side);
-    if(shouldDisengage){const reason=outnumbered?'outnumbered_exposure':teamOutnumbered?'wounded_team_disadvantage':'wounded_postplant_reposition';recordAgentDecision(unit,time,'cover',reason,{...baseContext,target:target.unit,confidence:unit.mind.discipline/100});intents.push({type:'cover',actor:unit,exposure,reason});continue;}
+    if(shouldDisengage){
+      const defense=unit.side===defenseSide?defenseAssessment?.(unit,view)||{}:{};
+      const confirmedAttackers=Math.max(exposure,defense.confirmedAttackers||0),backupEta=Number.isFinite(defense.backupEta)?defense.backupEta:Infinity,nearbySupport=defense.nearbySupport||0;
+      const concedeSite=!planted&&unit.side===defenseSide&&['CONTACT','EXECUTE'].includes(phase)&&outnumbered&&(exposure>=3||['RETAKE','PASSIVE'].includes(defenseTactic)),reason=concedeSite?'anchor_concedes_for_retake':outnumbered?'outnumbered_exposure':teamOutnumbered?'wounded_team_disadvantage':'wounded_postplant_reposition';
+      const decisionContext={...baseContext,target:target.unit,confidence:unit.mind.discipline/100,siteAnchor:!!defense.siteAnchor,confirmedAttackers,backupEta,nearbySupport};
+      recordAgentDecision(unit,time,concedeSite?'rotate':'cover',reason,decisionContext);intents.push({type:concedeSite?'concede':'cover',actor:unit,target:target.unit,distance:target.distance,moving,exposure,reason,decisionContext});continue;
+    }
     if(time<(unit.nextDuelT||0)){recordAgentDecision(unit,time,'hold','weapon_recovery',{...baseContext,target:target.unit});continue;}
     const firstSeenAt=unit.mind.firstSeenAt?.[target.unit.name];
     unit.mind.firstSeenAt??={};

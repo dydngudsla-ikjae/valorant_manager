@@ -25,7 +25,8 @@ export function evaluateIglDecision(team,t,context){
     scores.HOLD_SETUP=clamp(60-(team.knowledge.confidence||0)*35+(timeRemaining>45?12:0));
     scores.REINFORCE=clamp((team.knowledge.confidence||0)*72+(team.knowledge.source==='teammate_death'?18:0));
     scores.RETAKE=planted?clamp(64+numbers*13+(timeRemaining>18?20:timeRemaining>10?4:-24)+utility.ready*4):0;
-    scores.SAVE=clamp(planted?(enemiesAlive-alliesAlive)*24+(timeRemaining<13?38:0)+Math.max(0,equipmentValue-2200)/55:0);
+    const saveDeficit=enemiesAlive-alliesAlive,saveEligible=planted&&(saveDeficit>=4||(saveDeficit>=3&&timeRemaining<20)||(saveDeficit>=2&&timeRemaining<12)||(saveDeficit>=1&&timeRemaining<7));
+    scores.SAVE=saveEligible?clamp(saveDeficit*24+(timeRemaining<13?38:0)+Math.max(0,equipmentValue-2200)/55):0;
   }
   let [mode,score]=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
   if(mode==='ROTATE_SITE'&&alternative===currentSite)mode='GATHER_INFO';

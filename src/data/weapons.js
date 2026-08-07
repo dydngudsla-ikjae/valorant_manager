@@ -22,6 +22,9 @@ export const WEAPON_DATA=Object.freeze({
   Marshal:  {cost:950,  head:bands(202),         body:bands(101),      leg:bands(85),       cadence:.82},
   Operator: {cost:4700, head:bands(255),         body:bands(150),      leg:bands(120),      cadence:1.15},
   BladeStorm:{cost:0, head:bands(150),body:bands(50),leg:bands(42),cadence:.24},
+  Headhunter:{cost:0, head:bands(159),body:bands(55),leg:bands(46),cadence:.42},
+  TourDeForce:{cost:0, head:bands(255),body:bands(150),leg:bands(120),cadence:1/.9},
+  Overdrive:{cost:0, head:bands(54),body:bands(18),leg:bands(15),cadence:.1},
 });
 
 export const ARMOR_DATA=Object.freeze({

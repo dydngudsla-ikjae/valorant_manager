@@ -1,6 +1,6 @@
 {
   "reportVersion": "vct-distribution-validation-v1",
-  "generatedAt": "2026-08-03T08:24:19.867Z",
+  "generatedAt": "2026-08-07T08:09:43.875Z",
   "seed": "vlm-validation-2026-vct-distribution",
   "real": {
     "sample": {
@@ -62,57 +62,340 @@
     "sample": {
       "matches": 40,
       "maps": 40,
-      "rounds": 861
+      "rounds": 829
     },
     "map": {
-      "averageRounds": 21.525,
-      "overtimeRate": 0.15,
-      "averageRoundSeconds": 60.68,
-      "plantRate": 0.6005
+      "averageRounds": 20.725,
+      "overtimeRate": 0.05,
+      "averageRoundSeconds": 64.23,
+      "plantRate": 0.6333
     },
     "postPlant": {
-      "defuseStarts": 190,
-      "defuseStops": 102,
-      "defuseHalves": 89,
-      "savePlans": 78,
-      "plantAtTotal": 19755.899999999994,
-      "averagePlantAt": 38.21,
-      "defuseStartPerPlant": 0.3675,
-      "defuseSuccessPerStart": 0.4632
+      "defuseStarts": 247,
+      "defuseStops": 118,
+      "defuseHalves": 135,
+      "defuserReleases": 310,
+      "savePlans": 164,
+      "noStartSave": 137,
+      "noStartDefendersEliminated": 191,
+      "noStartNoRelease": 1,
+      "noStartAfterRelease": 4,
+      "plantAtTotal": 21434,
+      "byPlantNumbers": {
+        "4v3": {
+          "plants": 38,
+          "elimination": 19,
+          "detonation": 8,
+          "defuse": 11,
+          "savePlans": 10
+        },
+        "5v3": {
+          "plants": 47,
+          "elimination": 19,
+          "detonation": 23,
+          "defuse": 5,
+          "savePlans": 27
+        },
+        "1v3": {
+          "plants": 9,
+          "elimination": 2,
+          "detonation": 0,
+          "defuse": 7,
+          "savePlans": 0
+        },
+        "2v2": {
+          "plants": 13,
+          "elimination": 9,
+          "detonation": 0,
+          "defuse": 4,
+          "savePlans": 0
+        },
+        "2v1": {
+          "plants": 15,
+          "elimination": 13,
+          "detonation": 0,
+          "defuse": 2,
+          "savePlans": 0
+        },
+        "3v3": {
+          "plants": 14,
+          "elimination": 5,
+          "detonation": 0,
+          "defuse": 9,
+          "savePlans": 0
+        },
+        "4v4": {
+          "plants": 33,
+          "elimination": 12,
+          "detonation": 6,
+          "defuse": 15,
+          "savePlans": 5
+        },
+        "4v2": {
+          "plants": 51,
+          "elimination": 43,
+          "detonation": 4,
+          "defuse": 4,
+          "savePlans": 6
+        },
+        "4v1": {
+          "plants": 57,
+          "elimination": 47,
+          "detonation": 10,
+          "defuse": 0,
+          "savePlans": 16
+        },
+        "5v1": {
+          "plants": 42,
+          "elimination": 20,
+          "detonation": 22,
+          "defuse": 0,
+          "savePlans": 42
+        },
+        "1v2": {
+          "plants": 15,
+          "elimination": 2,
+          "detonation": 0,
+          "defuse": 13,
+          "savePlans": 0
+        },
+        "3v2": {
+          "plants": 36,
+          "elimination": 27,
+          "detonation": 1,
+          "defuse": 8,
+          "savePlans": 0
+        },
+        "1v4": {
+          "plants": 6,
+          "elimination": 1,
+          "detonation": 0,
+          "defuse": 5,
+          "savePlans": 0
+        },
+        "1v1": {
+          "plants": 8,
+          "elimination": 7,
+          "detonation": 0,
+          "defuse": 1,
+          "savePlans": 0
+        },
+        "5v4": {
+          "plants": 20,
+          "elimination": 9,
+          "detonation": 3,
+          "defuse": 8,
+          "savePlans": 4
+        },
+        "2v4": {
+          "plants": 13,
+          "elimination": 2,
+          "detonation": 1,
+          "defuse": 10,
+          "savePlans": 0
+        },
+        "3v4": {
+          "plants": 15,
+          "elimination": 3,
+          "detonation": 0,
+          "defuse": 12,
+          "savePlans": 0
+        },
+        "2v3": {
+          "plants": 15,
+          "elimination": 3,
+          "detonation": 1,
+          "defuse": 11,
+          "savePlans": 0
+        },
+        "5v2": {
+          "plants": 53,
+          "elimination": 22,
+          "detonation": 30,
+          "defuse": 1,
+          "savePlans": 39
+        },
+        "3v1": {
+          "plants": 23,
+          "elimination": 20,
+          "detonation": 0,
+          "defuse": 3,
+          "savePlans": 0
+        },
+        "3v5": {
+          "plants": 2,
+          "elimination": 0,
+          "detonation": 2,
+          "defuse": 0,
+          "savePlans": 1
+        }
+      },
+      "averagePlantAt": 40.83,
+      "defuseStartPerPlant": 0.4705,
+      "defuseSuccessPerStart": 0.5223
     },
     "combat": {
-      "damageEvents": 17148,
+      "damageEvents": 15276,
       "partialBursts": 0,
       "partialDamage": 0,
-      "totalDamage": 820055,
-      "abilityDamageEvents": 76,
-      "abilityDamage": 3901,
-      "abilityKills": 7,
-      "disengages": 5267,
+      "totalDamage": 780311,
+      "abilityDamageEvents": 6103,
+      "abilityDamage": 64471.5,
+      "abilityKills": 231,
+      "abilityHeals": 3,
+      "healing": 81,
+      "utilityAffectedShots": 9571,
+      "disengages": 4447,
       "partialDamagePerRound": 0,
-      "totalDamagePerRound": 952.44,
-      "disengagesPerRound": 6.12
+      "totalDamagePerRound": 941.27,
+      "disengagesPerRound": 5.36
+    },
+    "abilityUsage": {
+      "byAgent": {
+        "Viper": 725,
+        "Raze": 528,
+        "Omen": 462,
+        "Jett": 436,
+        "Astra": 413,
+        "Cypher": 390,
+        "Killjoy": 367,
+        "Brimstone": 328,
+        "Sova": 311,
+        "Vyse": 249,
+        "Yoru": 177,
+        "Fade": 176,
+        "Neon": 175,
+        "Phoenix": 172,
+        "Chamber": 171,
+        "Tejo": 160,
+        "Skye": 135,
+        "Breach": 118,
+        "KAY/O": 65,
+        "Gekko": 29,
+        "Sage": 22,
+        "Clove": 16,
+        "Deadlock": 16
+      },
+      "byAbility": {
+        "Snake Bite": 339,
+        "Nanoswarm": 219,
+        "Cloudburst": 207,
+        "Shrouded Step": 207,
+        "Paint Shells": 200,
+        "Toxic Screen": 188,
+        "Trapwire": 170,
+        "Poison Cloud": 162,
+        "Shock Bolt": 159,
+        "Blast Pack": 154,
+        "Gravity Well": 151,
+        "Boom Bot": 141,
+        "Stim Beacon": 134,
+        "Cyber Cage": 121,
+        "Curveball": 117,
+        "Nova Pulse": 117,
+        "Tailwind": 115,
+        "Arc Rose": 114,
+        "Dark Cover": 114,
+        "Paranoia": 113,
+        "Nebula": 108,
+        "Incendiary": 103,
+        "Shear": 94,
+        "Fakeout": 91,
+        "Owl Drone": 84,
+        "Spycam": 83,
+        "Sky Smoke": 81,
+        "Fast Lane": 79,
+        "Updraft": 79,
+        "Prowler": 78,
+        "Trademark": 77,
+        "Alarmbot": 68,
+        "Rendezvous": 66,
+        "Turret": 65,
+        "Aftershock": 59,
+        "Special Delivery": 58,
+        "Recon Bolt": 56,
+        "Seize": 51,
+        "Guided Salvo": 49,
+        "Guiding Light": 47,
+        "High Gear": 46,
+        "Stealth Drone": 46,
+        "Regrowth": 42,
+        "Relay Bolt": 40,
+        "Astral Form": 37,
+        "Blindside": 37,
+        "Haunt": 37,
+        "Razorvine": 36,
+        "Viper's Pit": 36,
+        "Blade Storm": 35,
+        "Gatecrash": 35,
+        "Trailblazer": 34,
+        "Hot Hands": 33,
+        "Showstopper": 33,
+        "Flashpoint": 28,
+        "FRAG/ment": 28,
+        "From the Shadows": 28,
+        "Fault Line": 27,
+        "FLASH/drive": 20,
+        "Mosh Pit": 17,
+        "Neural Theft": 16,
+        "Barrier Orb": 15,
+        "Lockdown": 15,
+        "Dimensional Drift": 14,
+        "Headhunter": 14,
+        "Tour De Force": 14,
+        "Blaze": 12,
+        "Hunter's Fury": 12,
+        "Seekers": 12,
+        "ZERO/point": 11,
+        "Nightfall": 10,
+        "Orbital Strike": 10,
+        "Overdrive": 10,
+        "Run It Back": 10,
+        "GravNet": 8,
+        "Armageddon": 7,
+        "Barrier Mesh": 7,
+        "Meddle": 7,
+        "Ruse": 7,
+        "Dizzy": 6,
+        "NULL/cmd": 6,
+        "Steel Garden": 5,
+        "Rolling Thunder": 4,
+        "Wingman": 4,
+        "Slow Orb": 3,
+        "Healing Orb": 2,
+        "Resurrection": 2,
+        "Thrash": 2,
+        "Not Dead Yet": 1,
+        "Pick-me-up": 1,
+        "Sonic Sensor": 1
+      },
+      "chamber": {
+        "equips": 28,
+        "shots": 58,
+        "tourSlowZones": 9,
+        "tourSlows": 3
+      }
     },
     "winMethods": {
-      "elimination": 0.8107,
-      "detonation": 0.0546,
-      "defuse": 0.1022,
-      "timeExpiry": 0.0325
+      "elimination": 0.6647,
+      "detonation": 0.1339,
+      "defuse": 0.1556,
+      "timeExpiry": 0.0458
     },
     "players": {
-      "rating": 0.8997,
-      "acs": 190.2621,
-      "kast": 0.629,
-      "adr": 95.2458,
-      "kpr": 0.6608,
-      "apr": 0.2555,
+      "rating": 0.9037,
+      "acs": 189.3244,
+      "kast": 0.6426,
+      "adr": 94.1114,
+      "kpr": 0.6499,
+      "apr": 0.3001,
       "fkpr": 0.1,
       "fdpr": 0.1,
-      "headshot": 0.2929,
-      "kd": 0.9861,
-      "rounds": 8610,
-      "kills": 5689,
-      "deaths": 5769
+      "headshot": 0.2893,
+      "kd": 0.9604,
+      "rounds": 8290,
+      "kills": 5388,
+      "deaths": 5610
     },
     "eco": {
       "pistol": {
@@ -120,24 +403,24 @@
         "winRate": 0.5
       },
       "full": {
-        "rounds": 616,
-        "winRate": 0.5763
+        "rounds": 555,
+        "winRate": 0.5622
       },
       "eco": {
-        "rounds": 93,
-        "winRate": 0.1183
+        "rounds": 105,
+        "winRate": 0.2
       },
       "semi": {
-        "rounds": 409,
-        "winRate": 0.3496
-      },
-      "force": {
-        "rounds": 36,
-        "winRate": 0.1944
+        "rounds": 415,
+        "winRate": 0.4024
       },
       "bonus": {
-        "rounds": 408,
-        "winRate": 0.6495
+        "rounds": 396,
+        "winRate": 0.6136
+      },
+      "force": {
+        "rounds": 27,
+        "winRate": 0.2222
       }
     }
   },
@@ -145,9 +428,9 @@
     {
       "key": "map.averageRounds",
       "real": 21.205,
-      "simulation": 21.525,
-      "delta": 0.32,
-      "error": 0.0151,
+      "simulation": 20.725,
+      "delta": -0.48,
+      "error": 0.0226,
       "mode": "relative",
       "limit": 0.15,
       "status": "pass"
@@ -155,29 +438,29 @@
     {
       "key": "map.overtimeRate",
       "real": 0.1091,
-      "simulation": 0.15,
-      "delta": 0.0409,
-      "error": 0.0409,
+      "simulation": 0.05,
+      "delta": -0.0591,
+      "error": 0.0591,
       "mode": "absolute",
       "limit": 0.05,
-      "status": "pass"
+      "status": "warn"
     },
     {
       "key": "winMethods.elimination",
       "real": 0.6499,
-      "simulation": 0.8107,
-      "delta": 0.1608,
-      "error": 0.1608,
+      "simulation": 0.6647,
+      "delta": 0.0148,
+      "error": 0.0148,
       "mode": "absolute",
       "limit": 0.08,
-      "status": "fail"
+      "status": "pass"
     },
     {
       "key": "winMethods.detonation",
       "real": 0.1115,
-      "simulation": 0.0546,
-      "delta": -0.0569,
-      "error": 0.0569,
+      "simulation": 0.1339,
+      "delta": 0.0224,
+      "error": 0.0224,
       "mode": "absolute",
       "limit": 0.08,
       "status": "pass"
@@ -185,19 +468,19 @@
     {
       "key": "winMethods.defuse",
       "real": 0.2065,
-      "simulation": 0.1022,
-      "delta": -0.1043,
-      "error": 0.1043,
+      "simulation": 0.1556,
+      "delta": -0.0509,
+      "error": 0.0509,
       "mode": "absolute",
       "limit": 0.08,
-      "status": "warn"
+      "status": "pass"
     },
     {
       "key": "winMethods.timeExpiry",
       "real": 0.0321,
-      "simulation": 0.0325,
-      "delta": 0.0004,
-      "error": 0.0004,
+      "simulation": 0.0458,
+      "delta": 0.0137,
+      "error": 0.0137,
       "mode": "absolute",
       "limit": 0.08,
       "status": "pass"
@@ -205,9 +488,9 @@
     {
       "key": "players.rating",
       "real": 0.8991,
-      "simulation": 0.8997,
-      "delta": 0.0006,
-      "error": 0.0007,
+      "simulation": 0.9037,
+      "delta": 0.0046,
+      "error": 0.0051,
       "mode": "relative",
       "limit": 0.15,
       "status": "pass"
@@ -215,9 +498,9 @@
     {
       "key": "players.acs",
       "real": 197.236,
-      "simulation": 190.2621,
-      "delta": -6.9739,
-      "error": 0.0354,
+      "simulation": 189.3244,
+      "delta": -7.9116,
+      "error": 0.0401,
       "mode": "relative",
       "limit": 0.15,
       "status": "pass"
@@ -225,9 +508,9 @@
     {
       "key": "players.kast",
       "real": 0.6446,
-      "simulation": 0.629,
-      "delta": -0.0156,
-      "error": 0.0156,
+      "simulation": 0.6426,
+      "delta": -0.002,
+      "error": 0.002,
       "mode": "absolute",
       "limit": 0.08,
       "status": "pass"
@@ -235,9 +518,9 @@
     {
       "key": "players.adr",
       "real": 121.1755,
-      "simulation": 95.2458,
-      "delta": -25.9297,
-      "error": 0.214,
+      "simulation": 94.1114,
+      "delta": -27.0641,
+      "error": 0.2233,
       "mode": "relative",
       "limit": 0.15,
       "status": "warn"
@@ -245,9 +528,9 @@
     {
       "key": "players.kpr",
       "real": 0.6927,
-      "simulation": 0.6608,
-      "delta": -0.0319,
-      "error": 0.0461,
+      "simulation": 0.6499,
+      "delta": -0.0428,
+      "error": 0.0618,
       "mode": "relative",
       "limit": 0.15,
       "status": "pass"
@@ -255,9 +538,9 @@
     {
       "key": "players.apr",
       "real": 0.2894,
-      "simulation": 0.2555,
-      "delta": -0.0339,
-      "error": 0.1171,
+      "simulation": 0.3001,
+      "delta": 0.0107,
+      "error": 0.037,
       "mode": "relative",
       "limit": 0.15,
       "status": "pass"
@@ -285,9 +568,9 @@
     {
       "key": "players.kd",
       "real": 0.9986,
-      "simulation": 0.9861,
-      "delta": -0.0125,
-      "error": 0.0125,
+      "simulation": 0.9604,
+      "delta": -0.0382,
+      "error": 0.0383,
       "mode": "relative",
       "limit": 0.15,
       "status": "pass"
@@ -295,52 +578,41 @@
     {
       "key": "players.headshot",
       "real": 0.2501,
-      "simulation": 0.2929,
-      "delta": 0.0428,
-      "error": 0.0428,
+      "simulation": 0.2893,
+      "delta": 0.0392,
+      "error": 0.0392,
       "mode": "absolute",
       "limit": 0.08,
       "status": "pass"
     }
   ],
   "summary": {
-    "passed": 13,
+    "passed": 14,
     "warnings": 2,
-    "failed": 1
+    "failed": 0
   },
   "diagnostics": [
     {
       "key": "players.adr",
       "real": 121.1755,
-      "simulation": 95.2458,
-      "delta": -25.9297,
-      "error": 0.214,
+      "simulation": 94.1114,
+      "delta": -27.0641,
+      "error": 0.2233,
       "mode": "relative",
       "limit": 0.15,
       "status": "warn",
       "likelyCause": "총기 피해·엄폐·교전 거리"
     },
     {
-      "key": "winMethods.elimination",
-      "real": 0.6499,
-      "simulation": 0.8107,
-      "delta": 0.1608,
-      "error": 0.1608,
+      "key": "map.overtimeRate",
+      "real": 0.1091,
+      "simulation": 0.05,
+      "delta": -0.0591,
+      "error": 0.0591,
       "mode": "absolute",
-      "limit": 0.08,
-      "status": "fail",
-      "likelyCause": "사이트 진입 전후 전멸 빈도"
-    },
-    {
-      "key": "winMethods.defuse",
-      "real": 0.2065,
-      "simulation": 0.1022,
-      "delta": -0.1043,
-      "error": 0.1043,
-      "mode": "absolute",
-      "limit": 0.08,
+      "limit": 0.05,
       "status": "warn",
-      "likelyCause": "리테이크 성공률과 해체 판단"
+      "likelyCause": "접전 생성 강도"
     }
   ]
 }
