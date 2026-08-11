@@ -110,6 +110,12 @@ export function navRouteThrough(nodes){ let out=[]; for(let i=0;i<nodes.length-1
 
 export function sdist(a,b){ return Math.hypot(a.x-b.x,a.y-b.y); }
 
+// Simulation positions are percentages of the tactical-map canvas, not metres.
+// Keep locomotion/combat tuning in map units, but convert auditory distance so
+// VALORANT's 50 m running-footstep radius does not become half of the map image.
+const MAP_UNIT_TO_METERS=1.5;
+export function soundDistanceMeters(a,b){return sdist(a,b)*MAP_UNIT_TO_METERS;}
+
 export const SP_TUNE={ holdBonus:3.0, execBonus:1.2, peekPenalty:1.0, gapMul:1.0, scale:26, utilSuppress:0.85, utilWindow:4.0, reconBase:0.18, reconGain:0.5 };
 
 export const SP_SETUPS=[{A:2,mid:1,B:2,w:6},{A:2,mid:0,B:3,w:2},{A:3,mid:0,B:2,w:2},{A:1,mid:1,B:3,w:1},{A:3,mid:1,B:1,w:1},{A:2,mid:2,B:1,w:1},{A:1,mid:2,B:2,w:1}];
@@ -241,7 +247,7 @@ export function spatialRound(home,away,opts){
         if(target.side!==owner.side)recordUtilityContribution(owner.name,target.name,use.name,t,{effectUntil:t+4,assistTail:2});
         hits.push({player:target.name,side:target.side,along:+hit.along.toFixed(2)});
       }
-      events.push({t,type:'isoUndercutCast',source:owner.name,side:owner.side,ability:use.name,maxDistance:40,width:4,duration:4,passesWalls:true,hits,x:owner.x,y:owner.y});
+      events.push({t,type:'isoUndercutCast',source:owner.name,side:owner.side,ability:use.name,maxDistance:40,width:4,duration:4,passesWalls:true,hits,targetX:owner.x+aim.dx*40,targetY:owner.y+aim.dy*40,x:owner.x,y:owner.y});
     }
     if(use.mechanic==='iso_double_tap'){
       owner.channelUntil=t+1;owner.isoDoubleTapActiveAt=t+1;owner.isoDoubleTapUntil=t+13;owner.isoShieldActiveAt=t+1;owner.isoShieldUntil=t+13;owner.isoShield=true;
@@ -340,15 +346,16 @@ export function spatialRound(home,away,opts){
     }
     const abilityEnemies=use.side===atkTeamKey?aliveDef():aliveAtk();
     const visibleTarget=abilityEnemies.filter(enemy=>sdist(owner,enemy)<SIGHT*1.4&&navLOS(owner,enemy)).sort((a,b)=>sdist(owner,a)-sdist(owner,b))[0];
+    const decisionTarget=entry.runtimeDecision?.targetPoint;
     const fallbackAbilityPoint=use.mechanic==='reveal_scan'?plantAtSite:snap(G.choke(site));
-    let targetPoint=['reyna_leer','harbor_storm_surge','harbor_cove','deadlock_gravnet','clove_meddle','clove_ruse','sage_slow_orb','gekko_mosh','kayo_fragment','kayo_zero_point','phoenix_hot_hands','reveal_scan','brim_incendiary','brim_sky_smoke','brim_orbital_strike','fade_haunt','fade_seize','astra_gravity','astra_nova','astra_nebula','cosmic_divide','remote_area_damage','acid_pool','vyse_razorvine'].includes(use.mechanic)?(planted?plantAtSite:visibleTarget?{x:visibleTarget.x,y:visibleTarget.y}:fallbackAbilityPoint):null;
+    let targetPoint=['reyna_leer','harbor_storm_surge','harbor_cove','deadlock_gravnet','clove_meddle','clove_ruse','sage_slow_orb','gekko_mosh','kayo_fragment','kayo_zero_point','phoenix_hot_hands','reveal_scan','brim_incendiary','brim_sky_smoke','brim_orbital_strike','fade_haunt','fade_seize','astra_gravity','astra_nova','astra_nebula','cosmic_divide','remote_area_damage','acid_pool','vyse_razorvine'].includes(use.mechanic)?(decisionTarget||(planted?plantAtSite:visibleTarget?{x:visibleTarget.x,y:visibleTarget.y}:fallbackAbilityPoint)):null;
     if(use.mechanic==='clove_ruse'&&targetPoint&&sdist(owner,targetPoint)>15){const dx=targetPoint.x-owner.x,dy=targetPoint.y-owner.y,distance=Math.hypot(dx,dy);targetPoint=snap({x:owner.x+dx/distance*15,y:owner.y+dy/distance*15});}
     if(use.mechanic==='brim_stim_beacon')targetPoint={x:owner.x,y:owner.y};
     const objectOwnerPoint=['sage_barrier','deadlock_barrier_mesh'].includes(use.mechanic)?snap({x:owner.x+Math.cos(owner.face*Math.PI/180)*7,y:owner.y+Math.sin(owner.face*Math.PI/180)*7}):(['cypher_tripwire','vyse_shear'].includes(use.mechanic)?snap(G.choke(owner.zone==='mid'?site:(owner.zone||site))):{x:owner.x,y:owner.y});
     const object=createAbilityObject(use,index,{sitePoint:plantAtSite,chokePoint:G.choke(site),attackSide:atkTeamKey,ownerPoint:objectOwnerPoint,ownerFacing:owner.face,targetPoint,placedAt:t,instanceId:`${index+1}-${entry.reuses}`});
     if(object?.mechanic==='sage_barrier')object.face=(owner.face+90)%360;
     if(object?.mechanic==='iso_contingency'){object.travelFace=owner.face;object.face=(owner.face+90)%360;object.slowMode=planted||owner.mind?.intent==='hold';object.travelSpeed=object.moveSpeed*(object.slowMode?.5:1);}
-    if(object){if(object.toxinSource){object.expiresAt=object.activeAt+use.duration;if(object.usesFuel!==false)viperToxinStates.set(object.owner,viperToxinStates.get(object.owner)||createViperToxinState());}if(object.mechanic==='gekko_wingman'&&use.side===atkTeamKey&&!planted&&owner===spikeCarrier){object.objectiveTask='plant';object.objectivePoint={...plantAtSite};object.carriesSpike=true;owner.carrier=false;spikeCarrier=null;events.push({t,type:'gekkoWingmanTakeSpike',player:owner.name,side:owner.side,objectId:object.id,site,x:owner.x,y:owner.y});}else if(object.mechanic==='gekko_wingman'&&use.side===defTeamKey&&planted){object.objectiveTask='defuse';object.objectivePoint={...plantAtSite};}abilityObjects.push(object);events.push({t,type:'abilityObjectPlace',objectId:object.id,player:object.owner,side:object.side,ability:object.ability,mechanic:object.mechanic,kind:object.kind,hp:object.hp,radius:object.radius||null,activeAt:object.activeAt,expiresAt:object.expiresAt,x:object.x,y:object.y});if(object.mechanic!=='toxin_pit')events.push({t:object.expiresAt,type:'abilityObjectExpire',objectId:object.id,player:object.owner,side:object.side,ability:object.ability,mechanic:object.mechanic,x:object.x,y:object.y});}
+    if(object){if(object.toxinSource){object.expiresAt=object.activeAt+use.duration;if(object.usesFuel!==false)viperToxinStates.set(object.owner,viperToxinStates.get(object.owner)||createViperToxinState());}if(object.mechanic==='gekko_wingman'&&use.side===atkTeamKey&&!planted&&owner===spikeCarrier){object.objectiveTask='plant';object.objectivePoint={...plantAtSite};object.carriesSpike=true;owner.carrier=false;spikeCarrier=null;events.push({t,type:'gekkoWingmanTakeSpike',player:owner.name,side:owner.side,objectId:object.id,site,x:owner.x,y:owner.y});}else if(object.mechanic==='gekko_wingman'&&use.side===defTeamKey&&planted){object.objectiveTask='defuse';object.objectivePoint={...plantAtSite};}abilityObjects.push(object);events.push({t,type:'abilityObjectPlace',objectId:object.id,player:object.owner,side:object.side,ability:object.ability,mechanic:object.mechanic,kind:object.kind,hp:object.hp,radius:object.radius||null,effectRadius:object.explosionRadius||object.detectionRadius||object.blastRadius||object.radius||null,length:object.length||object.wallLength||null,width:object.width||null,face:object.face??object.travelFace??owner.face,activeAt:object.activeAt,expiresAt:object.expiresAt,x:object.x,y:object.y});if(object.mechanic!=='toxin_pit')events.push({t:object.expiresAt,type:'abilityObjectExpire',objectId:object.id,player:object.owner,side:object.side,ability:object.ability,mechanic:object.mechanic,x:object.x,y:object.y});}
     if(['flash','recon','stun','trap','smoke','wall'].includes(use.type)&&!['wall_nearsight','wall_flash','line_concuss','rolling_concuss'].includes(use.mechanic)){
       const defaultWindow=['smoke','wall','trap'].includes(use.type)?8:5,effectUntil=object?.expiresAt??t+Math.max(defaultWindow,use.duration||0),assistTail=use.type==='smoke'?2:1.5;
       recentTeamUtility[use.side].push({player:use.player,ability:use.name,type:use.type,edge:use.edge||0,t,effectUntil,assistTail,assistUntil:effectUntil+assistTail,x:object?.x??owner.x,y:object?.y??owner.y});
@@ -462,6 +469,12 @@ export function spatialRound(home,away,opts){
   }
   if(hasInfo) events.push({t:1.0,type:'recon',x:plantAtSite.x,y:plantAtSite.y,site});
   pendingAbilities.filter(entry=>isPreplaced(entry.use)).forEach(entry=>activateAbility(entry,0));
+  function recentDefensivePressure(t){
+    const facts=teamComms.sides[defTeamKey].facts.filter(fact=>['enemy_sighting','enemy_footsteps','teammate_death'].includes(fact.type)&&(fact.receivedAt??fact.t??-99)>=t-5&&(fact.confidence??0)>=.6);
+    if(!facts.length)return null;
+    const latest=facts.at(-1),pressureSite=latest.site||teamComms.sides[defTeamKey].knowledge.site;
+    return pressureSite&&G.siteNames.includes(pressureSite)?{site:pressureSite,fact:latest}:null;
+  }
   function abilityUseWindow(entry,t){
     const use=entry.use,owner=unitByName.get(use.player);if(!owner)return null;if(!owner.alive){if(use.mechanic==='clove_not_dead_yet'&&owner.deathT!=null&&t-owner.deathT<=3)return{phase:'CONTACT',reason:'conditional_self_resurrection'};if(use.mechanic==='clove_ruse'&&(contact||planted)&&(owner.side===atkTeamKey?aliveAtk():aliveDef()).length)return{phase:planted?'POST_PLANT':'CONTACT',reason:'post_death_smoke_support'};return null;}const attacking=use.side===atkTeamKey,nearChoke=sdist(owner,G.choke(site))<18,nearEnemy=(attacking?aliveDef():aliveAtk()).some(enemy=>sdist(owner,enemy)<SIGHT*1.25),executeStatus=executePlan?.status;
     if(use.mechanic==='skye_regrowth'){const wounded=allUnits.some(unit=>unit.alive&&unit!==owner&&unit.side===owner.side&&unit.hp<90&&sdist(owner,unit)<=12&&navLOS(owner,unit));return wounded?{phase:'SUSTAIN',reason:'heal_nearby_wounded_ally'}:null;}
@@ -476,6 +489,8 @@ export function spatialRound(home,away,opts){
     if(use.mechanic==='headhunter'&&nearEnemy&&(contact||t>=8)&&(WEAPON_DAMAGE[owner.weapon]?.cost||0)<=1600)return{phase:'CONTACT',reason:'equip_precision_sidearm_for_economy_duel'};
     if(use.mechanic==='brim_stim_beacon'&&((attacking&&nearChoke&&['countdown','executing'].includes(executeStatus))||(!attacking&&contact&&nearEnemy)))return{phase:attacking?'EXECUTE':'HOLD',reason:attacking?'stim_coordinated_entry':'stim_defensive_contact'};
     if(attacking){
+      const attackMode=teamComms.sides[atkTeamKey].iglState?.mode,informationAbility=use.type==='recon';
+      if(informationAbility&&t>=3&&!contact&&(['GATHER_INFO','OPENING'].includes(attackMode)||!executePlan||executeStatus==='assembling'))return{phase:'INFORMATION',reason:'scan_before_site_commit',targetSite:site,targetPoint:snap(G.choke(site))};
       if(['flash','stun'].includes(use.type)&&planted&&nearEnemy)return{phase:'POST_PLANT',reason:'interrupt_confirmed_retake'};
       if(['recon','smoke','flash','stun','wall'].includes(use.type)&&nearChoke&&['countdown','executing'].includes(executeStatus))return{phase:'EXECUTE',reason:'coordinated_site_entry'};
       if(use.type==='move'&&contact&&nearEnemy)return{phase:'CONTACT',reason:'take_or_escape_duel'};
@@ -483,8 +498,11 @@ export function spatialRound(home,away,opts){
       if(use.type==='molly'&&contact&&nearEnemy)return{phase:'CONTACT',reason:'clear_contested_space'};
       if(use.type==='trap'&&t>=4&&owner.role==='lurk')return{phase:'INFORMATION',reason:'secure_lurk_flank'};
     }else{
+      const pressure=recentDefensivePressure(t);
+      if(use.type==='smoke'&&pressure&&!planted)return{phase:'HOLD',reason:'smoke_pressured_main_from_team_intel',targetSite:pressure.site,targetPoint:snap(G.choke(pressure.site)),evidence:pressure.fact.type};
       if(use.type==='heal'&&owner.hp<85)return{phase:'SUSTAIN',reason:'recover_after_damage'};
-      if(['smoke','flash','stun','wall'].includes(use.type)&&contact&&nearEnemy)return{phase:'HOLD',reason:'delay_confirmed_pressure'};
+      if(use.type==='smoke'&&contact&&!planted)return{phase:'HOLD',reason:'smoke_confirmed_site_contact',targetSite:site,targetPoint:snap(G.choke(site))};
+      if(['flash','stun','wall'].includes(use.type)&&contact&&nearEnemy)return{phase:'HOLD',reason:'delay_confirmed_pressure'};
       if(use.type==='recon'&&t>=6&&!contact&&defenseDecision.mode==='UTILITY_CHECK')return{phase:'INFORMATION',reason:'active_information_check'};
       if(['molly','trap'].includes(use.type)&&((contact&&nearEnemy)||planted))return{phase:planted?'RETAKE':'HOLD',reason:planted?'clear_post_plant_position':'deny_site_entry'};
       if(use.type==='move'&&contact&&nearEnemy)return{phase:'CONTACT',reason:'defensive_reposition'};
@@ -513,13 +531,13 @@ export function spatialRound(home,away,opts){
   function shareRunningFootsteps(t){
     for(const runner of allUnits.filter(unit=>unit.alive&&unit.mind.movementMode==='run')){
       const previous=runner.lastSoundPosition||{x:runner.x,y:runner.y};runner.lastSoundPosition={x:runner.x,y:runner.y};if(sdist(previous,runner)<.15)continue;
-      for(const listener of allUnits.filter(unit=>unit.alive&&unit.side!==runner.side&&t>=(unit.deafenedUntil||0)&&sdist(unit,runner)<=RUN_HEARING_RADIUS&&!projectileBlocked(unit,runner,t))){
-        listener.mind.heardSteps??=new Map();listener.mind.footstepSiteReports??=new Map();const soundId=`${runner.side}:${runner.idx}`,prior=listener.mind.heardSteps.get(soundId),distance=sdist(listener,runner),reportedSite=nearestSite(runner),area=semanticAreaAt(activeMapName,runner.x,runner.y),areaId=area?.id||reportedSite;
+      for(const listener of allUnits.filter(unit=>unit.alive&&unit.side!==runner.side&&t>=(unit.deafenedUntil||0)&&soundDistanceMeters(unit,runner)<=RUN_HEARING_RADIUS&&!projectileBlocked(unit,runner,t))){
+        listener.mind.heardSteps??=new Map();listener.mind.footstepSiteReports??=new Map();const soundId=`${runner.side}:${runner.idx}`,prior=listener.mind.heardSteps.get(soundId),mapDistance=sdist(listener,runner),distance=soundDistanceMeters(listener,runner),reportedSite=nearestSite(runner),area=semanticAreaAt(activeMapName,runner.x,runner.y),areaId=area?.id||reportedSite;
         const recentPrior=prior&&t-prior.t<=2,receding=recentPrior?distance-prior.distance>.45:false,approaching=recentPrior?prior.distance-distance>.45:false,confidence=Math.max(.35,Math.min(.78,.78-distance/RUN_HEARING_RADIUS*.35)),motion=receding?'receding':approaching?'approaching':'lateral',fromArea=recentPrior?prior.areaId:null,direction=fromArea&&fromArea!==areaId?{from:fromArea,to:areaId}:null;listener.mind.heardSteps.set(soundId,{t,distance,motion,areaId});
         const lastReport=listener.mind.footstepSiteReports.get(reportedSite),shouldReport=!lastReport||(motion!==lastReport.motion&&t-lastReport.t>=1.5);if(!shouldReport)continue;listener.mind.footstepSiteReports.set(reportedSite,{t,motion});
         shareTeamIntel(listener.side,runner,t,'enemy_footsteps',`sound-${runner.side}-${runner.idx}`,null,listener);
         const fact=teamComms.playerKnowledge[listener.name].facts.at(-1);if(fact){fact.confidence=+confidence.toFixed(2);fact.detail={movement:'run',receding,approaching,direction,area:areaId,distanceBand:distance<RUN_HEARING_RADIUS*.4?'near':distance<RUN_HEARING_RADIUS*.75?'mid':'far'};}
-        events.push({t,type:'sound',kind:'footstep',listener:listener.name,side:listener.side,sourceId:`sound-${runner.side}-${runner.idx}`,movement:'run',receding,approaching,direction,area:areaId,distance:+distance.toFixed(2),x:runner.x,y:runner.y});
+        events.push({t,type:'sound',kind:'footstep',listener:listener.name,side:listener.side,sourceId:`sound-${runner.side}-${runner.idx}`,movement:'run',receding,approaching,direction,area:areaId,distance:+distance.toFixed(2),distanceMeters:+distance.toFixed(2),mapDistance:+mapDistance.toFixed(2),x:runner.x,y:runner.y});
         if(receding&&listener.side===atkTeamKey&&!listener.mind.rotationSoundProposed){listener.mind.rotationSoundProposed=true;proposePlayerAction(teamComms,listener,t,'follow_rotation_sound',{site:nearestSite(runner),reason:'enemy_running_away',requestedAction:'probe_vacated_space',confidence,urgency:.48,evidence:[`sound-${runner.side}-${runner.idx}`]});}
       }
     }

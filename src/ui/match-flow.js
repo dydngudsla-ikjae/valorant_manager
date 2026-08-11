@@ -9,7 +9,7 @@ import { agentMap, applyRoundStats, createMapSimulation, finalizeRatings, mapSim
 import { createStandings, firstUnplayedWeek, makeSchedule, pickMaps, recordFixtureResult, simRestOfWeek, sortedStandings, teamObj } from '../core/season.js';
 import { MATCH, ST, bump, go, setMatch, toast } from '../core/state.js';
 import { MV } from '../data/geo/ascent.js';
-import { LEAGUES, MAPS } from '../data/leagues.js';
+import { LEAGUES, PLAYABLE_MAPS } from '../data/leagues.js';
 import { selectAutomaticLineup } from '../core/roster.js';
 import { deriveSeed, withSeed } from '../core/rng.js';
 import { matchFormat, vetoOrder } from '../core/match-format.js';
@@ -86,8 +86,14 @@ export function openMapLab({homeIndex,awayIndex,map,homeStartsAttack=true,teams=
 /* ============ MAP VETO (coach bans/picks) ============ */
 
 export function startVeto(){
+  if(PLAYABLE_MAPS.length<2){
+    MATCH.mapPool=pickMaps(MATCH.bestOf);
+    MATCH.veto={remaining:[...PLAYABLE_MAPS],picks:[],acts:[],order:[],step:0,skippedForValidatedPool:true};
+    startMapDraft(0);
+    return;
+  }
   const order=vetoOrder(MATCH.bestOf,MATCH.playerSide);
-  MATCH.veto={remaining:[...MAPS], picks:[], acts:[], order, step:0};
+  MATCH.veto={remaining:[...PLAYABLE_MAPS], picks:[], acts:[], order, step:0};
   go('scVeto');
   bump(); // Veto (React) reads MATCH.veto via useStore()
   stepVeto();

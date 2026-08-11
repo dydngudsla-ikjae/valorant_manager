@@ -2,7 +2,7 @@ import { draftPair } from './draft.js';
 import { playerAttribute, playerOVR } from './ratings.js';
 import { applyRoundStats, finalizeRatings, freshBox, simOneMap } from './round-engine.js';
 import { ST } from './state.js';
-import { MAPS } from '../data/leagues.js';
+import { PLAYABLE_MAPS } from '../data/leagues.js';
 import { deriveSeed, random, withSeed } from './rng.js';
 import { completeBracketMatch, createDoubleEliminationBracket, readyBracketMatches } from './tournament.js';
 
@@ -100,7 +100,7 @@ export function teamObj(id){return ST.teams.find(t=>t.id===id);}
 
 /* DEV: skip map veto and play a single Ascent map (Bo1). Set false to restore veto/Bo3. */
 
-export function pickMaps(n){const pool=[...MAPS];for(let i=pool.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}return pool.slice(0,n);}
+export function pickMaps(n){const pool=[...PLAYABLE_MAPS];for(let i=pool.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}return Array.from({length:n},(_,index)=>pool[index%pool.length]);}
 
 export function simRestOfWeek(wi, skipFx){
   ST.schedule[wi].forEach(f=>{

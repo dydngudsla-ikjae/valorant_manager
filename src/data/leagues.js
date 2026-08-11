@@ -11,6 +11,9 @@ export const ROLE = {
 };
 
 export const MAPS=["Ascent","Bind","Haven","Split","Lotus","Sunset","Icebox"];
+// Only maps whose navigation, semantic regions and broadcast geometry have
+// completed manual validation belong here. Keep MAPS as the full asset catalog.
+export const PLAYABLE_MAPS=["Ascent"];
 
 /* p(): compact player factory  — name, role, aim,sense,clutch,util,mental */
 

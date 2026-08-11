@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../useStore.js';
 import { ST, go } from '../../core/state.js';
-import { LEAGUES, MAPS } from '../../data/leagues.js';
+import { LEAGUES, MAPS, PLAYABLE_MAPS } from '../../data/leagues.js';
 import { mapAssets, MAPGEO } from '../../data/geo/maps.js';
 import { openMapLab } from '../match-flow.js';
 import { mapLabel, tr } from '../../i18n.js';
@@ -75,8 +75,8 @@ function MapTestWorkspace({map,setMap,geo}){
   const detailed=map==='Ascent';
   return <div className="labtestworkspace">
     <nav className="labtestnav" aria-label={tr('검사할 맵 선택','Select map to inspect')}>
-      {MAPS.map(name=><button className={name===map?'selected':''} onClick={()=>setMap(name)} key={`test-${name}`}>
-        <b>{mapLabel(name)}</b><span>{MAPGEO[name].siteNames.join(' · ')}</span>
+      {MAPS.map(name=><button className={`${name===map?'selected ':''}${PLAYABLE_MAPS.includes(name)?'validated':'pending'}`} onClick={()=>setMap(name)} key={`test-${name}`}>
+        <b>{mapLabel(name)}</b><span>{PLAYABLE_MAPS.includes(name)?tr('검증 완료','VALIDATED'):tr('검증 대기','PENDING')}</span>
       </button>)}
     </nav>
     <div className="labtestbody">
@@ -156,9 +156,9 @@ export function MapLab(){
         </section>
 
         <section className="panel labmaps">
-          <div className="ph">{tr('맵 선택','Select Map')} <span className="rl">{MAPS.length}</span></div>
+          <div className="ph">{tr('맵 선택','Select Map')} <span className="rl">{PLAYABLE_MAPS.length}</span></div>
           <div className="labmapgrid">
-            {MAPS.map(name=><button
+            {PLAYABLE_MAPS.map(name=><button
               className={'labmap'+(name===map?' selected':'')}
               onClick={()=>setMap(name)}
               style={{backgroundImage:`linear-gradient(180deg,rgba(6,9,14,.1),rgba(6,9,14,.88)),url("${mapAssets(name).splash}")`}}

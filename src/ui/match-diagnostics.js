@@ -103,7 +103,7 @@ function summarizeRound(round){
     teamIntel:round.spatial?.teamIntel||null,
     teamCommunication:round.spatial?.teamCommunication||null,
     executeCoordination:round.spatial?.executeCoordination||null,
-    audio:{model:{walk:'silent',run:{hearingRadius:50,wallOcclusion:false,directionTrackedBySemanticArea:true}},footsteps:events.filter(event=>event.type==='sound'&&event.kind==='footstep').map(({t,listener,side,sourceId,movement,receding,approaching,direction,area,distance,x,y})=>({t:+t.toFixed(2),listener,side,sourceId,movement,receding,approaching,direction,area,distance,x:+x.toFixed(2),y:+y.toFixed(2)}))},
+    audio:{model:{walk:'silent',run:{hearingRadiusMeters:50,mapUnitToMeters:1.5,wallOcclusion:false,directionTrackedBySemanticArea:true}},footsteps:events.filter(event=>event.type==='sound'&&event.kind==='footstep').map(({t,listener,side,sourceId,movement,receding,approaching,direction,area,distance,distanceMeters,mapDistance,x,y})=>({t:+t.toFixed(2),listener,side,sourceId,movement,receding,approaching,direction,area,distance,distanceMeters,mapDistance,x:+x.toFixed(2),y:+y.toFixed(2)}))},
     defenseRotations:events.filter(event=>event.type==='defenseRotation').map(({t,site,source,confidence,players,anchors})=>({t:+t.toFixed(2),site,source,confidence,players,anchors})),
     abilities:{purchases:round.abilityPurchases,restoredUnusedPlans:round.restoredAbilities||[],uses:abilityEvents.map(({t,player,agentName,name,type,mechanic,ult,decisionSkill,decision,runtimeDecision,x,y})=>({t:+t.toFixed(2),player,agent:agentName,name,type,mechanic,ultimate:ult,decisionSkill,plannedDecision:decision,runtimeDecision,x,y})),timing:{count:abilityEvents.length,firstUse:abilityEvents.length?+Math.min(...abilityEvents.map(event=>event.t)).toFixed(2):null,openingBurst:abilityEvents.filter(event=>event.t>0&&event.t<3).length},objects:(round.spatial?.abilityObjects||[]).map(({id,owner,ability,mechanic,hp,placedAt,activeAt,expiresAt,destroyedAt,destroyedBy,x,y})=>({id,owner,ability,mechanic,hp,placedAt,activeAt,expiresAt,destroyedAt,destroyedBy,x,y})),ultState:round.abilityState,orbs:round.spatial?.orbCaptures||[],orbMarkers:(round.spatial?.orbMarkers||[])},
     issues:inspectRound(round),
@@ -142,6 +142,11 @@ function aggregate(rounds){
 export function buildMatchDiagnosticReport(match,{stage='snapshot',currentRound=null}={}){
   const state=match?.mapSimulation,rounds=state?.rounds||[],roundReports=rounds.map(summarizeRound);
   const issues=roundReports.flatMap(round=>round.issues.map(issue=>({round:round.n,...issue})));
+  const visuals=match?.visualDiagnostics||null;
+  if(visuals?.staleTimedElements?.length)issues.push({code:'stale_skill_visuals',count:visuals.staleTimedElements.length,elements:visuals.staleTimedElements});
+  if(visuals?.orphanLinkedElements?.length)issues.push({code:'orphan_skill_visuals',count:visuals.orphanLinkedElements.length,elements:visuals.orphanLinkedElements});
+  if(visuals?.overflowCards?.length)issues.push({code:'skill_hud_card_overflow',players:visuals.overflowCards});
+  if(match?.playback?.paused&&visuals&&!visuals.pausedClass)issues.push({code:'paused_visuals_not_frozen'});
   const score={home:state?.h||0,away:state?.a||0};
   if(rounds.length!==score.home+score.away)issues.push({code:'score_round_count_mismatch',rounds:rounds.length,score});
   const comp=match?.comps?.[match.curMap];
@@ -157,6 +162,7 @@ export function buildMatchDiagnosticReport(match,{stage='snapshot',currentRound=
     teams:{home:{id:match?.home?.teamId||match?.home?.id,name:match?.home?.name},away:{id:match?.away?.teamId||match?.away?.id,name:match?.away?.name}},
     composition:{home:comp?.home?.agents?.map(({name,agent,role,mastery,roleFit})=>({name,agent,role,mastery,roleFit})),away:comp?.away?.agents?.map(({name,agent,role,mastery,roleFit})=>({name,agent,role,mastery,roleFit}))},
     state:{running:!!match?.running,playback:match?.playback?{speed:match.playback.speed,paused:match.playback.paused,betweenRounds:match.playback.betweenRounds,stopAfterRound:!!match.playback.stopAfterRound}:null,timeoutQueued:match?.timeoutQueued||null,coordinateProbes:match?.coordinateProbes||[],roundsPlayed:rounds.length,score},
+    visuals,
     summary:aggregate(rounds),issues,
     currentRound:currentRound?summarizeRound(currentRound):roundReports.at(-1)||null,
     rounds:roundReports,

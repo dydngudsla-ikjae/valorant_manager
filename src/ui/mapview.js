@@ -15,12 +15,14 @@ import { buildMatchDiagnosticReport } from './match-diagnostics.js';
 import { ROUND_TIMING, roundClockAt } from '../core/round-timing.js';
 
 const mvContentField=()=>MV.cameraLayer||document.getElementById('mvField');
+function collectVisualDiagnostics(){const field=mvContentField(),now=MV.currentSimTime||0;if(!field)return null;const timed=[...field.querySelectorAll('[data-sim-expire]')],objects=[...field.querySelectorAll('.ability-object')],objectIds=new Set(objects.map(element=>element.dataset.objectId).filter(Boolean)),linked=[...field.querySelectorAll('.ability-object-radius,.ability-object-wall,.mvultimate-zone')],cards=[...document.querySelectorAll('.bcard')];return{version:'skill-visual-v1',simulationTime:+now.toFixed(2),pausedClass:field.classList.contains('playback-paused'),counts:{objects:objects.length,ranges:field.querySelectorAll('.ability-object-radius').length,walls:field.querySelectorAll('.ability-object-wall').length,projectiles:field.querySelectorAll('.mvprojectile').length,beams:field.querySelectorAll('.mvabilitybeam').length,impacts:field.querySelectorAll('.mvabilityimpact').length,ultimateZones:field.querySelectorAll('.mvultimate-zone').length,statuses:field.querySelectorAll('.mvstatus').length},staleTimedElements:timed.filter(element=>Number(element.dataset.simExpire)<=now-.01).map(element=>({className:element.className,expiresAt:Number(element.dataset.simExpire)})),orphanLinkedElements:linked.filter(element=>element.dataset.objectId&&!objectIds.has(element.dataset.objectId)).map(element=>({className:element.className,objectId:element.dataset.objectId})),overflowCards:cards.filter(card=>card.scrollWidth>card.clientWidth+1||card.scrollHeight>card.clientHeight+1).map(card=>card.querySelector('.pcname')?.textContent||'unknown')};}
 
 export function mvUpdateDiagnostics(stage='snapshot',currentRound=null){
   if(!MATCH?.diagnostic)return;
   const output=document.getElementById('diagnosticOutput'),count=document.getElementById('diagnosticIssueCount');
   if(!output)return;
   try{
+    MATCH.visualDiagnostics=collectVisualDiagnostics();
     const report=buildMatchDiagnosticReport(MATCH,{stage,currentRound});
     output.textContent=JSON.stringify(report,null,2);
     if(count){const total=report.issues.length;count.textContent=`${total} issue${total===1?'':'s'}`;count.className=total?'hasissues':'clean';}
@@ -84,11 +86,40 @@ export function shieldPips(sh){const n=sh==='heavy'?2:sh==='light'?1:0;
 
 export function abbr(a){return (a||'').replace('/','').slice(0,2);}
 
+const STATUS_VISUALS={
+  blinded:{icon:'\u25c9',ko:'실명',en:'BLIND'},nearsight:{icon:'\u25d0',ko:'근시',en:'NEAR'},
+  vulnerable:{icon:'\u25bd',ko:'취약',en:'VULN'},suppressed:{icon:'\u00d7',ko:'제압',en:'SUPP'},
+  concussed:{icon:'\u2248',ko:'뇌진탕',en:'STUN'},slowed:{icon:'\u2304',ko:'둔화',en:'SLOW'},
+  detained:{icon:'\u2298',ko:'구금',en:'DETAIN'},intangible:{icon:'\u25c7',ko:'무형',en:'PHASE'},
+  overheal:{icon:'+',ko:'초과회복',en:'OVERHEAL'},shielded:{icon:'\u25c8',ko:'방탄',en:'SHIELD'},
+  revealed:{icon:'\u2316',ko:'발각',en:'REVEAL'},decayed:{icon:'\u2212',ko:'부패',en:'DECAY'},
+  jammed:{icon:'\u2297',ko:'무기 봉쇄',en:'JAM'},hasted:{icon:'\u00bb',ko:'가속',en:'HASTE'},channeling:{icon:'\u25cc',ko:'집중',en:'CHANNEL'}
+};
+const statusMarkup=(player,now=MV.currentSimTime||0,limit=99)=>Object.entries(MV.statusBy?.[player]||{})
+  .filter(([,state])=>state.expiresAt>now+.001).sort((a,b)=>a[1].expiresAt-b[1].expiresAt)
+  .slice(0,limit)
+  .map(([kind,state])=>{const meta=STATUS_VISUALS[kind];if(!meta)return'';const remaining=Math.max(0,state.expiresAt-now);return `<span class="mvstatus status-${kind}" title="${tr(meta.ko,meta.en)} ${remaining.toFixed(1)}s"><b>${meta.icon}</b><small>${remaining.toFixed(1)}</small></span>`;}).join('');
+function renderDotStatus(player){const index=MV.nameIdx?.[player],dot=index&&MV.dots[index.side+index.i];if(!dot)return;let stack=dot.querySelector('.mvstatusstack');if(!stack){stack=document.createElement('span');stack.className='mvstatusstack';dot.appendChild(stack);}stack.innerHTML=statusMarkup(player);dot.classList.toggle('has-status',!!stack.innerHTML);}
+function applyStatus(player,kind,event){if(!player||!STATUS_VISUALS[kind])return;MV.statusBy??={};MV.statusBy[player]??={};const now=Number(event.t)||0,duration=Math.max(.15,Number(event.duration??event.healthDuration??event.nearsightSeconds??event.slowSeconds??1));MV.statusBy[player][kind]={expiresAt:Number(event.expiresAt)||now+duration};renderDotStatus(player);}
+function clearStatus(player,kind){if(MV.statusBy?.[player]){if(kind)delete MV.statusBy[player][kind];else delete MV.statusBy[player];}renderDotStatus(player);}
+function abilityIcon(player,ability){return abilityAssets(MV.agBy?.[player]||'').find(asset=>asset.name?.en===ability||asset.name?.ko===ability)?.src||'';}
+function moveAbilityObject(event){if(!event.objectId||!Number.isFinite(event.x)||!Number.isFinite(event.y))return;const field=mvContentField(),object=field?.querySelector(`.ability-object[data-object-id="${event.objectId}"]`);if(!object)return;for(const element of field.querySelectorAll(`[data-object-id="${event.objectId}"]`)){element.style.left=event.x+'%';element.style.top=event.y+'%';}object.classList.add('moving');clearTimeout(object._moveTimer);object._moveTimer=setTimeout(()=>object.classList.remove('moving'),180);}
+function pulseAbilityObject(event,kind='triggered'){if(!event.objectId)return;const object=mvContentField()?.querySelector(`.ability-object[data-object-id="${event.objectId}"]`);if(!object)return;object.classList.remove(kind);void object.offsetWidth;object.classList.add(kind);setTimeout(()=>object.classList.remove(kind),520);}
+function renderTeleport(event){const field=mvContentField();if(!field)return;field.querySelector(`.mvchannel[data-player="${event.player}"]`)?.remove();const line=document.createElement('div'),dx=event.targetX-event.fromX,dy=event.targetY-event.fromY;line.className=`mvchannel ${event.side} ${event.teleportType}`;line.dataset.player=event.player;line.dataset.simExpire=String(event.completeAt);line.style.left=event.fromX+'%';line.style.top=event.fromY+'%';line.style.width=Math.hypot(dx,dy)+'%';line.style.transform=`rotate(${Math.atan2(dy,dx)*180/Math.PI}deg)`;line.innerHTML='<i></i>';field.appendChild(line);}
+function launchProjectile(event,kind='projectile'){const field=mvContentField(),end=Number(event.impactAt??(event.t+(event.flightTime||.65)));if(!field||!Number.isFinite(event.targetX)||!Number.isFinite(event.targetY))return;const projectile=document.createElement('div');projectile.className=`mvprojectile ${event.side} ${kind}`;projectile.dataset.start=String(event.t);projectile.dataset.end=String(end);projectile.dataset.fromX=String(event.x);projectile.dataset.fromY=String(event.y);projectile.dataset.targetX=String(event.targetX);projectile.dataset.targetY=String(event.targetY);projectile.dataset.simExpire=String(end+.08);const icon=abilityIcon(event.player||event.source,event.ability);projectile.innerHTML=icon?`<img src="${icon}" alt="">`:'<i></i>';field.appendChild(projectile);updateProjectile(projectile,event.t);}
+function updateProjectile(projectile,time){const start=Number(projectile.dataset.start),end=Number(projectile.dataset.end),ratio=Math.max(0,Math.min(1,(time-start)/Math.max(.01,end-start))),x=Number(projectile.dataset.fromX)+(Number(projectile.dataset.targetX)-Number(projectile.dataset.fromX))*ratio,y=Number(projectile.dataset.fromY)+(Number(projectile.dataset.targetY)-Number(projectile.dataset.fromY))*ratio;projectile.style.left=x+'%';projectile.style.top=(y-Math.sin(ratio*Math.PI)*2.2)+'%';projectile.style.setProperty('--travel',String(ratio));}
+function renderBeam(event,kind='beam'){const field=mvContentField();if(!field||!Number.isFinite(event.targetX)||!Number.isFinite(event.targetY))return;const beam=document.createElement('div'),dx=event.targetX-event.x,dy=event.targetY-event.y;beam.className=`mvabilitybeam ${event.side} ${kind}`;beam.dataset.simExpire=String(event.t+.42);beam.style.left=event.x+'%';beam.style.top=event.y+'%';beam.style.width=Math.hypot(dx,dy)+'%';beam.style.setProperty('--beam-width',(event.width||2)+'px');beam.style.transform=`rotate(${Math.atan2(dy,dx)*180/Math.PI}deg)`;field.appendChild(beam);}
+function renderImpact(event,kind='impact'){const field=mvContentField();if(!field||!Number.isFinite(event.x)||!Number.isFinite(event.y))return;const impact=document.createElement('div');impact.className=`mvabilityimpact ${event.side} ${kind}`;impact.dataset.simExpire=String(event.expiresAt??event.t+.55);impact.style.left=event.x+'%';impact.style.top=event.y+'%';const size=Math.max(5,Math.min(20,(event.radius||6)*2));impact.style.width=size+'%';impact.style.height=size+'%';field.appendChild(impact);}
+function showUltimate(event,duration=2.2){const field=mvContentField();if(!field)return;field.querySelector('.mvultimate-banner')?.remove();const player=event.player||event.owner||event.source,icon=abilityIcon(player,event.ability),banner=document.createElement('div');banner.className=`mvultimate-banner ${event.side||''}`;banner.dataset.simExpire=String(event.t+duration);banner.innerHTML=`${icon?`<img src="${icon}" alt="">`:''}<span><small>ULTIMATE</small><b>${abilityNameLabel(event.ability||event.type)}</b><em>${player||''}</em></span>`;field.appendChild(banner);}
+function renderUltimateZone(event,kind,expiresAt){const field=mvContentField();if(!field||!Number.isFinite(event.x)||!Number.isFinite(event.y)||!event.radius)return;const zone=document.createElement('div');zone.className=`mvultimate-zone ${event.side||''} ${kind}`;zone.dataset.ultimateKind=kind;if(event.objectId)zone.dataset.objectId=event.objectId;zone.dataset.simExpire=String(expiresAt);zone.dataset.ultEnd=String(expiresAt);zone.style.left=event.x+'%';zone.style.top=event.y+'%';zone.style.width=(event.radius*2)+'%';zone.style.height=(event.radius*2)+'%';zone.innerHTML='<b></b><time></time>';field.appendChild(zone);}
+function renderKillContract(event){const field=mvContentField(),sourceIndex=MV.nameIdx?.[event.source],targetIndex=MV.nameIdx?.[event.target],source=sourceIndex&&MV.st[sourceIndex.side+sourceIndex.i],target=targetIndex&&MV.st[targetIndex.side+targetIndex.i];if(!field||!source||!target)return;const line=document.createElement('div'),dx=target.x-source.x,dy=target.y-source.y;line.className=`mvcontract ${event.side||''}`;line.dataset.contractId=event.contractId;line.dataset.simExpire=String(event.resolvesAt);line.style.left=source.x+'%';line.style.top=source.y+'%';line.style.width=Math.hypot(dx,dy)+'%';line.style.transform=`rotate(${Math.atan2(dy,dx)*180/Math.PI}deg)`;line.innerHTML='<i></i><i></i>';field.appendChild(line);}
+function buildAbilityUi(round){const ui={},events=round.spatial?.events||[],used=events.filter(event=>event.type==='ability');for(const team of [MATCH.home,MATCH.away])for(const player of team.roster){const agent=MV.agBy?.[player.name]||'',defs=agentAbilityDefinitions(agent,player.role),final=round.abilityState?.[player.name]||MATCH.mapSimulation?.abilityState?.players?.[player.name]||{},abilities={},playerUses=used.filter(event=>event.player===player.name);for(const def of defs.filter(definition=>!definition.ultimate)){let charges=final.abilities?.[def.id]??0;if(agent==='Astra')charges=(final.astraStars??0)+playerUses.filter(event=>!event.ult).reduce((sum,event)=>sum+(event.chargesUsed||1),0);else if(agent==='Reyna'&&['Devour','Dismiss'].includes(def.name))charges=(final.reynaSoulCharges??0)+playerUses.filter(event=>['Devour','Dismiss'].includes(event.name)).reduce((sum,event)=>sum+(event.chargesUsed||1),0);else for(const event of playerUses.filter(event=>event.name===def.name))charges+=event.chargesUsed||1;abilities[def.id]={charges:Math.min(def.maxCharges||charges,charges),max:def.maxCharges||1,cooldownUntil:0};}const gain=events.reduce((sum,event)=>sum+(event.type==='kill'&&(event.killer===player.name||event.victim===player.name)&&event.cause!=='spike'?1:0)+(event.type==='plant'&&event.planter===player.name?1:0)+(event.type==='orbCapture'&&event.player===player.name?1:0),0),ultSpent=playerUses.filter(event=>event.ult).reduce((sum,event)=>sum+(event.ultCost||0),0);ui[player.name]={agent,abilities,ultPoints:Math.max(0,(final.ultPoints??0)+ultSpent-gain)};}return ui;}
+
 export function mvBuild(home,away,agBy){
   const viewport=document.getElementById('mvField'); if(!viewport)return;
   viewport.innerHTML='';
   const field=document.createElement('div');field.className='mvcamera';viewport.appendChild(field);MV.cameraLayer=field;
-  MV.nameIdx={}; MV.dots={}; MV.st={}; MV.agBy=agBy; MV.hpBy={};MV.camera={x:50,y:50,zoom:1};MV.duelFocus=null;MV.duelCandidate=null;
+  MV.nameIdx={}; MV.dots={}; MV.st={}; MV.agBy=agBy; MV.hpBy={};MV.statusBy={};MV.currentSimTime=0;MV.camera={x:50,y:50,zoom:1};MV.duelFocus=null;MV.duelCandidate=null;
   field.style.transform='translate(0%,0%) scale(1)';
   const mapName=(MATCH.mapPool&&MATCH.mapPool[MATCH.curMap])||'Ascent';
   const series=document.getElementById('bSeries');if(series){series.innerHTML=MATCH.mapPool.map((map,index)=>{const isCurrent=index===MATCH.curMap,pick=MATCH.veto?.picks?.find(item=>item.map===map),team=pick?(pick.side==='home'?MATCH.home:MATCH.away):(MATCH.diagnostic&&isCurrent?MATCH.home:null),logo=teamLogo(team?.teamId||team?.id,team?.name),result=MATCH.mapResults[index];return `<span class="${isCurrent?'current':''}${result?' complete':''}">${mapLabel(map)}${logo?`<img src="${logo}" alt="${team.short}">`:'<b>◇</b>'}${result?`<em>${result.h}-${result.a}</em>`:''}</span>`;}).join('<i>›</i>');}
@@ -110,7 +141,7 @@ export function mvBuild(home,away,agBy){
   const mk=(side,team)=>team.roster.forEach((pl,i)=>{
     const d=document.createElement('div'); d.className='mvdot '+side;
     const _ag=agBy?agBy[pl.name]:''; const _im=agImg(_ag);
-    d.innerHTML=`<span class="lbl">${pl.name}</span>`+(_im?`<img class="dotimg" src="${_im}" alt="${_ag}">`:`<span class="agi">${abbr(_ag)}</span>`);
+    d.innerHTML=`<span class="lbl">${pl.name}</span>`+(_im?`<img class="dotimg" src="${_im}" alt="${_ag}">`:`<span class="agi">${abbr(_ag)}</span>`)+`<span class="mvstatusstack"></span>`;
     field.appendChild(d);
     MV.dots[side+i]=d; MV.nameIdx[pl.name]={side,i}; MV.hpBy[pl.name]=100; MV.st[side+i]={x:50,y:50,tx:50,ty:50,dead:false,path:null,seg:0};
   });
@@ -151,18 +182,22 @@ export function mvStopRAF(){ if(MV.raf&&typeof cancelAnimationFrame==='function'
 export function mvPauseRound(){
   const clock=MV.roundClock;if(!clock||clock.paused)return;
   clock.paused=true;
+  mvContentField()?.classList.add('playback-paused');
   if(MV.raf&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(MV.raf);MV.raf=null;
+  mvUpdateDiagnostics('playback_paused');
 }
 
 export function mvResumeRound(){
   const clock=MV.roundClock;if(!clock||!clock.paused)return;
   clock.paused=false;clock.lastTs=null;
+  mvContentField()?.classList.remove('playback-paused');
+  mvUpdateDiagnostics('playback_resumed');
   if(typeof requestAnimationFrame==='function')MV.raf=requestAnimationFrame(clock.frame);
 }
 
 export function mvSetPlaybackRate(rate){const clock=MV.roundClock;if(clock)clock.rate=Math.max(1,Math.min(4,Number(rate)||1));}
 export function mvStepRound(milliseconds=100){const clock=MV.roundClock;if(!clock||!clock.paused)return false;clock.pendingStep=(clock.pendingStep||0)+milliseconds;clock.frame(typeof performance!=='undefined'?performance.now():Date.now());return true;}
-export function mvSkipRound(){const clock=MV.roundClock;if(!clock)return false;clock.skipRequested=true;clock.paused=false;clock.lastTs=null;clock.virtualElapsed=clock.finishAt;if(MV.raf&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(MV.raf);if(typeof requestAnimationFrame==='function')MV.raf=requestAnimationFrame(clock.frame);return true;}
+export function mvSkipRound(){const clock=MV.roundClock;if(!clock)return false;clock.skipRequested=true;clock.paused=false;clock.lastTs=null;clock.virtualElapsed=clock.finishAt;mvContentField()?.classList.remove('playback-paused');if(MV.raf&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(MV.raf);if(typeof requestAnimationFrame==='function')MV.raf=requestAnimationFrame(clock.frame);return true;}
 
 export function mvRenderAlive(atkAlive,defAlive,atkShort,defShort){
   const el=document.getElementById('mvAlive'); if(!el)return;
@@ -179,14 +214,15 @@ export function mvRenderCards(which,team,side,loadouts){
     const b=MATCH.box[pl.name]||{k:0,d:0}; const lo=loadouts[i]||{weapon:'',shield:'none'};
     const dead=MV.st[which+i]&&MV.st[which+i].dead;
     const agent=MV.agBy?MV.agBy[pl.name]:'';
-    const agentAbilities=abilityAssets(agent),used=MV.usedAbilities||new Set(),abilityState=MATCH.mapSimulation?.abilityState?.players?.[pl.name],definitions=agentAbilityDefinitions(agent,pl.role);
-    const abilities=agentAbilities.filter(a=>a.slot!=='ultimate').map(a=>{const def=definitions.find(item=>item.name===a.name.en),charges=def?(abilityState?.abilities?.[def.id]??0):0;return `<span class="pcability ${charges?'':'used'}"><img src="${a.src}" alt="" title="${localizedAbilityName(a)}"><b>${charges}</b></span>`;}).join('');
-    const ult=agentAbilities.find(a=>a.slot==='ultimate'),ultDef=definitions.find(item=>item.ultimate),ultMax=ultDef?.ultCost||7,ultPoints=abilityState?.ultPoints??0;
+    const agentAbilities=abilityAssets(agent),used=MV.usedAbilities||new Set(),abilityState=MV.abilityUi?.[pl.name],definitions=agentAbilityDefinitions(agent,pl.role),suppressed=(MV.statusBy?.[pl.name]?.suppressed?.expiresAt||0)>(MV.currentSimTime||0);
+    const abilities=agentAbilities.filter(a=>a.slot!=='ultimate').map(a=>{const def=definitions.find(item=>item.name===a.name.en),state=def?abilityState?.abilities?.[def.id]:null,charges=state?.charges??0,cooldown=Math.max(0,(state?.cooldownUntil||0)-(MV.currentSimTime||0)),unavailable=dead||suppressed||(!charges&&cooldown<=0);return `<span class="pcability ${unavailable?'used':''}${suppressed?' suppressed':''}${cooldown>0?' cooldown':''}"><img src="${a.src}" alt="" title="${localizedAbilityName(a)}">${cooldown>0?`<em>${Math.ceil(cooldown)}</em>`:`<b>${charges}</b>`}</span>`;}).join('');
+    const ult=agentAbilities.find(a=>a.slot==='ultimate'),ultDef=definitions.find(item=>item.ultimate),ultMax=ultDef?.ultCost||7,ultPoints=abilityState?.ultPoints??0,ultReady=ultPoints>=ultMax&&!dead&&!suppressed;
     const weapon=weaponAsset(lo.weapon),armorValue=lo.shieldValue??(lo.shield==='heavy'?50:lo.shield==='light'||lo.shield==='regen'?25:0);
     return `<div class="bcard ${which}${dead?' dead':''}">
       <div class="pcag">${agImg(agent)?`<img class="pcagimg" src="${agImg(agent)}" alt="">`:abbr(agent)}</div>
+      <div class="pcstatuses">${statusMarkup(pl.name,MV.currentSimTime||0,3)}</div>
       <div class="pcmain"><div class="pcname" title="${pl.name}">${pl.name}</div><div class="pcvitals"><span class="pchealth">HP ${dead?0:(MV.hpBy?.[pl.name]??100)}</span><span class="pcarmorvalue">AR ${dead?0:armorValue}</span></div></div>
-      <div class="pcabilities">${abilities}${ult?`<span class="pcult" title="${localizedAbilityName(ult)}">${ultPoints}/${ultMax}</span>`:''}</div>
+      <div class="pcabilities">${abilities}${ult?`<span class="pcult${ultReady?' ready':''}${suppressed?' suppressed':''}" title="${localizedAbilityName(ult)}"><i style="--ult:${Math.min(1,ultPoints/ultMax)}"></i><b>${ultPoints}/${ultMax}</b></span>`:''}</div>
       <div class="pcloadout">${weapon?`<img class="pcweaponimg" src="${weapon}" alt="">`:''}</div>
       <div class="pcmeta"><span class="pckd">K/D ${b.k}/${b.d}</span><span class="pccr">${lo.remaining!=null?('₵ '+lo.remaining):''}</span></div>
     </div>`;
@@ -288,7 +324,9 @@ export function mvPlayRound(rd,speed,onDone){
   const field=mvContentField();
   if(!field){ onDone(); return; }
   mvStopRAF();
+  field.classList.remove('playback-paused');
   MV.usedAbilities=new Set();
+  MV.statusBy={};MV.currentSimTime=0;
   MV.duelFocus=null;MV.duelCandidate=null;
   const stage=document.querySelector('.viewerstage'),roundBreak=document.getElementById('roundBreak');if(stage)stage.classList.remove('round-break');if(roundBreak)roundBreak.innerHTML='';
   const initialRate=speed==='fast'?4:Math.max(1,Math.min(4,Number(speed)||1)),fast=false;
@@ -308,7 +346,7 @@ export function mvPlayRound(rd,speed,onDone){
   MATCH.away.roster.forEach((pl,i)=>wepBy[pl.name]=loadoutsAway[i].weapon);
   const kf=document.getElementById('killFeed'); if(kf)kf.innerHTML='';
   const refreshPanels=()=>{ mvRenderCards('home',MATCH.home,rd.hSide,loadoutsHome); mvRenderCards('away',MATCH.away,rd.aSide,loadoutsAway); };
-  field.classList.remove('fast'); field.querySelectorAll('.mvtracer,.mvspike,.mvpulse,.mvablabel,.fx,.sight,.plantzone,.mvplantarea,.mvorb,.ability-object,.ability-object-radius,.mvbarrier,.mvdoor,.mvdoorbutton,.mvstairs,.mvprep').forEach(e=>e.remove());
+  field.classList.remove('fast'); field.querySelectorAll('.mvtracer,.mvspike,.mvpulse,.mvablabel,.fx,.sight,.plantzone,.mvplantarea,.mvorb,.ability-object,.ability-object-radius,.ability-object-wall,.mvchannel,.mvprojectile,.mvabilitybeam,.mvabilityimpact,.mvultimate-banner,.mvultimate-zone,.mvcontract,.mvbarrier,.mvdoor,.mvdoorbutton,.mvstairs,.mvprep').forEach(e=>e.remove());
   for(const site of curGeo().siteNames||[]){const zone=curGeo().plantZone(site),area=document.createElement('div');area.className='mvplantarea';area.dataset.site=site;area.style.left=(zone.x-zone.w/2)+'%';area.style.top=(zone.y-zone.h/2)+'%';area.style.width=zone.w+'%';area.style.height=zone.h+'%';area.innerHTML=`<b>${site}</b>`;field.appendChild(area);}
   for(const orb of curGeo().orbs||[]){const marker=document.createElement('div');marker.className='mvorb';marker.dataset.orbId=orb.id;marker.style.left=orb.x+'%';marker.style.top=orb.y+'%';marker.title=orb.label;marker.innerHTML='<i></i>';field.appendChild(marker);}
   const barrierVisuals=curGeo().annotations?.barriers||rd.preparation?.barriers||[];
@@ -321,7 +359,7 @@ export function mvPlayRound(rd,speed,onDone){
   Object.values(MV.dots).forEach(d=>{d.classList.remove('dead');d.classList.remove('clutch');});
 
   // ---- replay directly from recorded per-tick position tracks (exact engine motion) ----
-  const sp=rd.spatial; const dur=sp.duration||8;
+  const sp=rd.spatial; const dur=sp.duration||8;MV.abilityUi=buildAbilityUi(rd);
   const uByKey={}; sp.units.forEach(u=>uByKey[u.side+u.idx]=u);
   const preparationByPlayer=new Map((rd.preparation?.players||[]).map(entry=>[entry.player,entry]));
   const walkers={};
@@ -422,6 +460,53 @@ export function mvPlayRound(rd,speed,onDone){
   let ei=0, firstBlood=false;
 
   function fireEvent(e){
+    const directStatuses={blindApplied:'blinded',nearsightApplied:'nearsight',vulnerableApplied:'vulnerable',suppressedApplied:'suppressed',concussApplied:'concussed',detainedApplied:'detained',slowApplied:'slowed',weaponJammed:'jammed'};
+    if(directStatuses[e.type])applyStatus(e.victim,directStatuses[e.type],e);
+    if(e.type==='harborHighTideCross')applyStatus(e.target,'slowed',e);
+    if(e.type==='harborReckoningHit'){applyStatus(e.target,'slowed',e);applyStatus(e.target,'nearsight',e);}
+    if(e.type==='harborStormSurgeDetonate')for(const player of e.affected||[]){applyStatus(player,'slowed',e);applyStatus(player,'nearsight',e);}
+    if(e.type==='reynaDismiss')applyStatus(e.player,'intangible',e);
+    if(e.type==='reynaDevourTick'&&e.temporaryHealth>0)applyStatus(e.player,'overheal',{...e,duration:e.permanent?99:10});
+    if(e.type==='clovePickMeUp'){if(e.temporaryHealth>0)applyStatus(e.player,'overheal',e);applyStatus(e.player,'hasted',{...e,duration:e.hasteDuration});}
+    if(e.type==='isoDoubleTapActive')applyStatus(e.player,'shielded',{...e,duration:(e.expiresAt||e.t+20)-e.t});
+    if(e.type==='isoShieldBreak'||e.type==='isoShieldExpire')clearStatus(e.player,'shielded');
+    if(e.type==='weaponJamEnd')clearStatus(e.player,'jammed');
+    if(e.type==='toxinDecay')applyStatus(e.victim,'decayed',{...e,duration:2.5});
+    if(e.type==='toxinDecayRecovery'&&e.remaining<=.01)clearStatus(e.player,'decayed');
+    if(e.type==='cloveMeddleDecay')applyStatus(e.victim,'decayed',{...e,expiresAt:e.recoverAt});
+    if(e.type==='teleportStart'){applyStatus(e.player,'channeling',{...e,duration:e.completeAt-e.t});renderTeleport(e);}
+    if(e.type==='teleportComplete'||e.type==='teleportCancel'){clearStatus(e.player,'channeling');field.querySelector(`.mvchannel[data-player="${e.player}"]`)?.remove();}
+    if(e.type==='spycamTag')applyStatus(e.target,'revealed',{...e,duration:e.revealSeconds});
+    if(['owlDroneRevealPulse','neuralTheftPulse','reconBoltPulse','fadeHauntScan'].includes(e.type))for(const player of e.affected||[]){applyStatus(player,'revealed',{...e,duration:e.revealSeconds||e.duration||1});}
+    if(e.type==='toxinDecay'||e.type==='cloveMeddleDecay')MV.hpBy[e.victim]=e.remainingHP;
+    if(e.type==='toxinDecayRecovery')MV.hpBy[e.player]=e.remainingHP;
+    if(e.type==='shockBoltLaunch')launchProjectile(e,'shock');
+    if(e.type==='tejoSpecialDeliveryCast')launchProjectile(e,'grenade');
+    if(e.type==='tejoGuidedSalvoLaunch')launchProjectile(e,'missile');
+    if(e.type==='razeExplosiveCast')launchProjectile(e,e.mechanic==='rocket_explosion'?'rocket':'grenade');
+    if(e.type==='isoUndercutCast')renderBeam(e,'undercut');
+    if(['razeExplosiveImpact','tejoExplosiveImpact','boomBotTrigger','blastPackDetonate'].includes(e.type))renderImpact(e,e.mechanic||e.type);
+    if(e.type==='brimOrbitalWarning')renderImpact({...e,radius:e.radius,expiresAt:e.activeAt},'orbital-warning');
+    if(e.type==='viperPitActivate'){showUltimate(e);renderUltimateZone(e,'viper-pit',e.t+99);}
+    if(e.type==='viperPitCollapse'){field.querySelector(`.mvultimate-zone[data-object-id="${e.objectId}"]`)?.remove();}
+    if(e.type==='kayoNullCmdStart'){showUltimate(e);applyStatus(e.player,'hasted',e);renderUltimateZone({...e,radius:25},'null-cmd',e.t+e.duration);}
+    if(e.type==='kayoNullCmdPulse')renderImpact({...e,expiresAt:e.t+.45},'null-pulse');
+    if(e.type==='reynaEmpressStart'){showUltimate({...e,ability:e.ability||'Empress'});applyStatus(e.player,'hasted',{...e,duration:99});}
+    if(e.type==='steelGardenCast'){showUltimate(e);renderUltimateZone(e,'steel-garden',e.t+e.windup);}
+    if(e.type==='steelGardenPulse'){field.querySelector('.mvultimate-zone.steel-garden')?.remove();renderImpact({...e,expiresAt:e.t+.8},'steel-pulse');}
+    if(e.type==='isoKillContractCapture'){showUltimate({...e,player:e.source,ability:'Kill Contract'});renderKillContract(e);}
+    if(e.type==='isoKillContractResolve')field.querySelector(`.mvcontract[data-contract-id="${e.contractId}"]`)?.remove();
+    if(e.type==='abilityObjectPlace'&&['detain_zone','cosmic_divide','harbor_reckoning'].includes(e.mechanic))showUltimate(e);
+    const addUlt=(player,amount=1)=>{const state=MV.abilityUi?.[player];if(state)state.ultPoints=Math.min(12,(state.ultPoints||0)+amount);};
+    if(e.type==='kill'&&e.cause!=='spike'){addUlt(e.killer);addUlt(e.victim);}
+    if(e.type==='plant')addUlt(e.planter);
+    if(e.type==='orbCapture')addUlt(e.player);
+    if(e.type==='ability'){
+      const playerState=MV.abilityUi?.[e.player],definitions=agentAbilityDefinitions(e.agentName||playerState?.agent||''),definition=definitions.find(item=>item.name===e.name);
+      if(playerState&&definition){if(e.ult)playerState.ultPoints=Math.max(0,playerState.ultPoints-(e.ultCost||definition.ultCost||0));else{const state=playerState.abilities[definition.id];if(state){state.charges=Math.max(0,state.charges-(e.chargesUsed||1));if(e.recharge?.type==='cooldown')state.cooldownUntil=e.t+e.recharge.seconds;}if(playerState.agent==='Astra'||(playerState.agent==='Reyna'&&['Devour','Dismiss'].includes(e.name))){for(const [id,shared] of Object.entries(playerState.abilities)){const sharedDefinition=definitions.find(item=>item.id===id),eligible=playerState.agent==='Astra'?!sharedDefinition?.ultimate:['Devour','Dismiss'].includes(sharedDefinition?.name);if(eligible)shared.charges=state?.charges??0;}}}}
+    }
+    if(e.objectId&&/(Move|Advance)$/.test(e.type))moveAbilityObject(e);
+    if(e.objectId&&/(Trigger|Detonate|Pulse|Fire|Hit|Pounce|Resolve)$/.test(e.type))pulseAbilityObject(e);
     if(e.type==='coachCall'){
       coachAnnounce(e.speaker,e.line,e.callKind,e.t);
     } else if(e.type==='damage'||e.type==='abilityDamage'){
@@ -429,6 +514,7 @@ export function mvPlayRound(rd,speed,onDone){
       if(e.type==='abilityDamage')announce(`${playerTag(e.source)}${tr(' 선수의 ',' deals damage with ')}<strong class="comment-ability">${escapeHtml(abilityNameLabel(e.ability))}</strong>${tr('이 적중합니다.','.')}`);
       refreshPanels();
     } else if(e.type==='kill'){
+      clearStatus(e.victim);
       if(MV.hpBy)MV.hpBy[e.victim]=0;
       mvKill(e.killer,e.victim);
       if(kf){ const kk=MV.nameIdx[e.killer]; if(kk){ const row=document.createElement('div'); row.className='kfrow '+kk.side;
@@ -485,10 +571,18 @@ export function mvPlayRound(rd,speed,onDone){
       announce(`${playerTag(e.player)}${tr(' 선수의 오브 확보가 중단됩니다.',' has the orb capture interrupted.')}`);
     } else if(e.type==='abilityObjectPlace'){
       const object=document.createElement('div');object.className=`ability-object ${e.side} kind-${e.kind}`;object.dataset.objectId=e.objectId;object.dataset.simExpire=String(e.expiresAt);object.style.left=e.x+'%';object.style.top=e.y+'%';object.title=abilityNameLabel(e.ability);object.innerHTML=`<i>${TYPESYM[e.kind]||'◆'}</i>`;field.appendChild(object);
-      if(['lockdown','smoke'].includes(e.kind)&&e.radius){const radius=document.createElement('div');radius.className=`ability-object-radius ${e.side} kind-${e.kind}`;radius.dataset.objectId=e.objectId;radius.dataset.simExpire=String(e.kind==='lockdown'?e.activeAt:e.expiresAt);radius.style.left=e.x+'%';radius.style.top=e.y+'%';radius.style.width=(e.radius*2)+'%';radius.style.height=(e.radius*2)+'%';field.appendChild(radius);}
+      const icon=abilityIcon(e.player,e.ability);object.classList.add(`mechanic-${e.mechanic||'generic'}`);object.innerHTML=icon?`<img src="${icon}" alt=""><span class="ability-object-hp"></span>`:`${object.innerHTML}<span class="ability-object-hp"></span>`;
+      const areaMechanics=new Set(['detain_zone','remote_area_damage','acid_pool','gekko_mosh','kayo_fragment','sage_slow_orb','brim_incendiary','brim_orbital_strike','fade_seize','astra_gravity','astra_nova','deadlock_gravnet','deadlock_sonic_sensor','harbor_storm_surge','toxin_pit','vyse_razorvine','chamber_trademark','vulnerable_trap','kayo_zero_point']);
+      const wallMechanics=new Set(['sage_barrier','deadlock_barrier_mesh','toxin_screen','harbor_high_tide','iso_contingency','cosmic_divide','neon_fast_lane','phoenix_blaze','vyse_shear']);
+      const visualRadius=e.effectRadius||e.radius;if((['lockdown','smoke'].includes(e.kind)||areaMechanics.has(e.mechanic))&&visualRadius){const radius=document.createElement('div');radius.className=`ability-object-radius ${e.side} kind-${e.kind} mechanic-${e.mechanic}`;radius.dataset.objectId=e.objectId;radius.dataset.simExpire=String(e.kind==='lockdown'?e.activeAt:e.expiresAt);radius.style.left=e.x+'%';radius.style.top=e.y+'%';radius.style.width=(visualRadius*2)+'%';radius.style.height=(visualRadius*2)+'%';field.appendChild(radius);}
+      if(wallMechanics.has(e.mechanic)){const wall=document.createElement('div'),length=Math.max(6,e.length||e.width||18);wall.className=`ability-object-wall ${e.side} mechanic-${e.mechanic}`;wall.dataset.objectId=e.objectId;wall.dataset.simExpire=String(e.expiresAt);wall.style.left=e.x+'%';wall.style.top=e.y+'%';wall.style.width=length+'%';wall.style.transform=`translate(-50%,-50%) rotate(${Number(e.face)||0}deg)`;field.appendChild(wall);}
+    } else if(e.type==='abilityObjectDamage'){
+      const object=field.querySelector(`.ability-object[data-object-id="${e.objectId}"]`);if(object){pulseAbilityObject(e,'damaged');const hp=object.querySelector('.ability-object-hp');if(hp){hp.textContent=Math.max(0,Math.round(e.remainingHP??0));hp.classList.add('show');}}
     } else if(e.type==='abilityObjectDestroy'){
       const object=field.querySelector(`.ability-object[data-object-id="${e.objectId}"]`);if(object){object.classList.add('destroyed');object.dataset.simExpire=String(e.t+.5);}
       field.querySelector(`.ability-object-radius[data-object-id="${e.objectId}"]`)?.remove();
+      field.querySelector(`.ability-object-wall[data-object-id="${e.objectId}"]`)?.remove();
+      field.querySelector(`.mvultimate-zone[data-object-id="${e.objectId}"]`)?.remove();
       announce(`${playerTag(e.player)}${tr(' 선수가 ',' destroys ')}<strong class="comment-ability">${escapeHtml(abilityNameLabel(e.ability))}</strong>${tr('을 파괴합니다.','.')}`);
     } else if(e.type==='lockdownPulse'){
       field.querySelector(`.ability-object-radius[data-object-id="${e.objectId}"]`)?.remove();field.querySelector(`.ability-object[data-object-id="${e.objectId}"]`)?.remove();
@@ -502,7 +596,7 @@ export function mvPlayRound(rd,speed,onDone){
     } else if(e.type==='aftershockTick'){
       const el=document.createElement('div');el.className=`fx fx-molly ${e.side}`;el.style.left=e.x+'%';el.style.top=e.y+'%';el.innerHTML=`<span class="fxsym">${e.tick}</span>`;el.dataset.simExpire=String(e.t+.55);field.appendChild(el);if(e.hitPlayers?.length)announce(`${tr('여진 폭발이 ','Aftershock hits ')}${e.hitPlayers.map(playerTag).join(', ')}${tr(' 선수를 덮칩니다.','.')}`,'kill');
     } else if(e.type==='abilityObjectExpire'){
-      field.querySelector(`.ability-object[data-object-id="${e.objectId}"]`)?.remove();field.querySelector(`.ability-object-radius[data-object-id="${e.objectId}"]`)?.remove();
+      field.querySelector(`.ability-object[data-object-id="${e.objectId}"]`)?.remove();field.querySelector(`.ability-object-radius[data-object-id="${e.objectId}"]`)?.remove();field.querySelector(`.ability-object-wall[data-object-id="${e.objectId}"]`)?.remove();field.querySelector(`.mvultimate-zone[data-object-id="${e.objectId}"]`)?.remove();
     } else if(e.type==='ability'){const ab=e.ab||e;MV.usedAbilities.add(`${ab.player}:${ab.name}`);const spatialObject=['reveal_scan','drone_tag','turret_anchor','vulnerable_trap','remote_area_damage','detain_zone','vision_block','global_smoke','wall_aftershock','wall_flash','line_concuss','rolling_concuss'].includes(ab.mechanic);if(!spatialObject)mvAbility(ab,rd);announce(`${playerTag(ab.player)}${tr(' 선수가 ',' uses ')}<strong class="comment-ability">${escapeHtml(abilityNameLabel(ab.name))}</strong>${tr(' 스킬을 사용합니다.','.')}`);refreshPanels(); }
   }
 
@@ -523,7 +617,11 @@ export function mvPlayRound(rd,speed,onDone){
       if(cone){ cone.style.left=s.x.toFixed(2)+'%'; cone.style.top=s.y.toFixed(2)+'%'; cone.style.transform='translate(-50%,-50%) rotate('+(p.f||0)+'deg)'; } });
     updateCamera(te,el<preparationWall);
     if(!barrierReleased&&el>=preparationWall){barrierReleased=true;field.querySelectorAll('.mvbarrier,.mvprep').forEach(element=>element.remove());announce(tr('배리어가 해제되고 라운드가 시작됩니다.','Barriers drop. The round is live.'));}
+    MV.currentSimTime=te;
     while(ei<evs.length && evs[ei].t<=te){ if(evs[ei].type==='plant'&&plantTe<0)plantTe=evs[ei].t; fireEvent(evs[ei]); ei++; }
+    field.querySelectorAll('.mvprojectile').forEach(projectile=>updateProjectile(projectile,te));
+    field.querySelectorAll('[data-ult-end] time').forEach(time=>{const zone=time.closest('[data-ult-end]'),remaining=Math.max(0,Number(zone.dataset.ultEnd)-te);time.textContent=remaining.toFixed(1);});
+    const statusTick=Math.floor(te*4);if(statusTick!==MV.lastStatusTick){MV.lastStatusTick=statusTick;let changed=false;for(const [player,statuses] of Object.entries(MV.statusBy||{})){for(const [kind,state] of Object.entries(statuses)){if(state.expiresAt<=te+.001){delete statuses[kind];changed=true;}}renderDotStatus(player);}for(const player of Object.values(MV.abilityUi||{}))for(const state of Object.values(player.abilities||{})){if(state.cooldownUntil&&state.cooldownUntil<=te+.001){state.cooldownUntil=0;state.charges=Math.min(state.max,state.charges+1);changed=true;}}if(changed||Object.keys(MV.statusBy||{}).some(player=>Object.keys(MV.statusBy[player]).length)||Object.values(MV.abilityUi||{}).some(player=>Object.values(player.abilities||{}).some(state=>state.cooldownUntil>te)))refreshPanels();}
     field.querySelectorAll('[data-sim-expire]').forEach(element=>{if(Number(element.dataset.simExpire)<=te)element.remove();});
     if(timerEl){ if(el<preparationWall){timerEl.classList.remove('spike');timerEl.textContent=tr('준비','READY');}
       else {const clockState=roundClockAt(te,plantTe>=0?plantTe:null);timerEl.classList.toggle('spike',clockState.phase==='post_plant');timerEl.textContent=fmtClock(clockState.remaining);} }
