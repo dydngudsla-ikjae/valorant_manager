@@ -128,6 +128,54 @@ export const AGENT_ABILITY_OVERRIDES={
     Trailblazer:{verified:true,cost:250,maxCharges:1,type:'recon',mechanic:'skye_trailblazer',damage:30,edge:.66,duration:6},
     'Guiding Light':{verified:true,cost:0,extraChargeCost:250,maxCharges:2,type:'flash',signature:true,recharge:{type:'cooldown',seconds:50},mechanic:'skye_guiding_light',edge:.72,duration:2.25},
     Seekers:{verified:true,ultimate:true,ultCost:8,type:'ult',mechanic:'skye_seekers',edge:1.4,duration:15}
+  },
+  'KAY/O':{
+    'FRAG/ment':{verified:true,cost:200,maxCharges:1,type:'molly',mechanic:'kayo_fragment',damage:60,edge:.64,duration:4},
+    'FLASH/drive':{verified:true,cost:250,maxCharges:2,type:'flash',mechanic:'kayo_flash_drive',edge:.68,duration:2.25},
+    'ZERO/point':{verified:true,cost:0,maxCharges:1,type:'recon',signature:true,recharge:{type:'cooldown',seconds:50},mechanic:'kayo_zero_point',edge:.76,duration:8},
+    'NULL/cmd':{verified:true,ultimate:true,ultCost:8,type:'ult',mechanic:'kayo_null_cmd',edge:1.45,duration:12}
+  },
+  Gekko:{
+    'Mosh Pit':{verified:true,cost:250,maxCharges:1,type:'molly',mechanic:'gekko_mosh',damage:150,edge:.68,duration:4},
+    Wingman:{verified:true,cost:300,maxCharges:1,type:'recon',mechanic:'gekko_wingman',edge:.72,duration:6},
+    Dizzy:{verified:true,cost:0,maxCharges:1,type:'flash',signature:true,mechanic:'gekko_dizzy',edge:.74,duration:1},
+    Thrash:{verified:true,ultimate:true,ultCost:8,type:'ult',mechanic:'gekko_thrash',edge:1.45,duration:6}
+  },
+  Sage:{
+    'Barrier Orb':{verified:true,cost:400,maxCharges:1,type:'wall',mechanic:'sage_barrier',edge:.78,duration:30},
+    'Slow Orb':{verified:true,cost:200,maxCharges:2,type:'molly',mechanic:'sage_slow_orb',edge:.64,duration:7},
+    'Healing Orb':{verified:true,cost:0,maxCharges:1,type:'heal',signature:true,recharge:{type:'cooldown',seconds:45},mechanic:'sage_healing_orb',edge:.72,duration:5},
+    Resurrection:{verified:true,ultimate:true,ultCost:8,type:'ult',mechanic:'sage_resurrection',edge:1.55,duration:3.3}
+  },
+  Clove:{
+    'Pick-me-up':{verified:true,cost:200,maxCharges:1,type:'heal',mechanic:'clove_pick_me_up',edge:.7,duration:10},
+    Meddle:{verified:true,cost:250,maxCharges:1,type:'molly',mechanic:'clove_meddle',edge:.68,duration:5},
+    Ruse:{verified:true,cost:0,extraChargeCost:150,maxCharges:2,type:'smoke',signature:true,recharge:{type:'cooldown',seconds:40},mechanic:'clove_ruse',edge:.74,duration:13.5},
+    'Not Dead Yet':{verified:true,ultimate:true,ultCost:8,type:'ult',mechanic:'clove_not_dead_yet',edge:1.5,duration:12}
+  },
+  Deadlock:{
+    GravNet:{verified:true,cost:0,maxCharges:1,type:'stun',signature:true,recharge:{type:'cooldown',seconds:50},mechanic:'deadlock_gravnet',edge:.72,duration:6},
+    'Sonic Sensor':{verified:true,cost:200,maxCharges:2,type:'trap',mechanic:'deadlock_sonic_sensor',edge:.64,duration:90},
+    'Barrier Mesh':{verified:true,cost:400,maxCharges:1,type:'wall',signature:false,mechanic:'deadlock_barrier_mesh',edge:.78,duration:30},
+    Annihilation:{verified:true,ultimate:true,ultCost:7,type:'ult',mechanic:'deadlock_annihilation',edge:1.5,duration:7}
+  },
+  Harbor:{
+    'Storm Surge':{verified:true,cost:200,maxCharges:1,type:'stun',mechanic:'harbor_storm_surge',edge:.68,duration:4},
+    'High Tide':{verified:true,cost:300,maxCharges:1,type:'wall',signature:false,mechanic:'harbor_high_tide',edge:.78,duration:15},
+    Cove:{verified:true,cost:0,maxCharges:1,type:'smoke',signature:true,recharge:{type:'cooldown',seconds:30},mechanic:'harbor_cove',edge:.76,duration:19.25},
+    Reckoning:{verified:true,ultimate:true,ultCost:7,type:'ult',mechanic:'harbor_reckoning',edge:1.5,duration:7}
+  },
+  Iso:{
+    Contingency:{verified:true,cost:200,maxCharges:1,type:'wall',mechanic:'iso_contingency',edge:.72,duration:5},
+    Undercut:{verified:true,cost:300,maxCharges:1,type:'stun',mechanic:'iso_undercut',edge:.72,duration:4},
+    'Double Tap':{verified:true,cost:0,maxCharges:1,type:'buff',signature:true,mechanic:'iso_double_tap',edge:.82,duration:12},
+    'Kill Contract':{verified:true,ultimate:true,ultCost:7,type:'ult',mechanic:'iso_kill_contract',edge:1.55,duration:15}
+  },
+  Reyna:{
+    Leer:{verified:true,cost:250,maxCharges:2,type:'flash',mechanic:'reyna_leer',edge:.7,duration:2},
+    Devour:{verified:true,cost:200,maxCharges:2,type:'heal',signature:false,mechanic:'reyna_devour',edge:.68,duration:2},
+    Dismiss:{verified:true,cost:200,maxCharges:2,type:'move',signature:false,mechanic:'reyna_dismiss',edge:.76,duration:1.5},
+    Empress:{verified:true,ultimate:true,ultCost:7,type:'ult',mechanic:'reyna_empress',edge:1.5,duration:999}
   }
 };
 

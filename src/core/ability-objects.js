@@ -14,6 +14,38 @@ const OBJECT_RULES={
   phoenix_hot_hands:{kind:'molly',hp:0,windup:.7,duration:4.7,radius:5,damage:60,healPerSecond:12.5,maxSelfHeal:50,persistsAfterOwnerDeath:true,destructible:false},
   skye_trailblazer:{kind:'trailblazer',hp:80,windup:.4,duration:6.4,radius:22.5,moveSpeed:10,leapRange:4,blastRadius:6,damage:30,concussSeconds:4,shootable:true,destructible:true},
   skye_seekers:{kind:'seekers',hp:120,windup:.5,duration:15.5,radius:40,moveSpeed:10,seekerCount:3,triggerRange:3,nearsightSeconds:3,nearsightRange:7,shootable:true,destructible:true},
+  kayo_fragment:{kind:'molly',hp:0,windup:1,duration:5,radius:5,damage:60,pulses:4,pulseInterval:1,persistsAfterOwnerDeath:true,destructible:false},
+  kayo_zero_point:{kind:'suppression_blade',hp:20,windup:1,duration:2.5,radius:25,suppressSeconds:8,shootable:true,destructible:true},
+  gekko_mosh:{kind:'molly',hp:0,windup:.8,duration:4.8,radius:7,damagePerSecond:10,explosionDamage:150,persistsAfterOwnerDeath:true,destructible:false},
+  gekko_wingman:{kind:'wingman',hp:60,windup:.25,duration:12.25,radius:24,moveSpeed:8,triggerRange:4,blastRadius:6,concussSeconds:2.5,shootable:true,destructible:true,reclaimable:true,reclaimSeconds:1.5,reclaimCooldown:15},
+  gekko_dizzy:{kind:'dizzy',hp:20,windup:.35,duration:1.35,radius:24,moveSpeed:7,shotRange:24,blindSeconds:1,shootable:true,destructible:true,reclaimable:true,reclaimSeconds:1.5,reclaimCooldown:15},
+  gekko_thrash:{kind:'thrash',hp:180,windup:.25,duration:6.25,radius:30,moveSpeed:10,leapRange:4,blastRadius:8,detainSeconds:6,shootable:true,destructible:true,reclaimable:true,reclaimSeconds:1.5,reclaimCooldown:15},
+  // Segment HP and fortification timing are isolated simulation constants;
+  // Riot's current public notes expose cost/range but not the complete wall profile.
+  sage_barrier:{kind:'solid_wall',hp:400,windup:.5,duration:30.5,length:10,width:1.5,segments:4,initialHP:400,fortifiedHP:800,fortifySeconds:3.3,shootable:true,destructible:true},
+  sage_slow_orb:{kind:'slow',hp:0,windup:.6,duration:7.6,radius:7,moveMultiplier:.5,persistsAfterOwnerDeath:true,destructible:false},
+  // Radius, decay amount, smoke radius, and revive timing remain isolated
+  // model constants where Riot's public pages describe behavior without values.
+  clove_meddle:{kind:'decay',hp:0,windup:.75,duration:5.75,radius:6,decay:90,debuffSeconds:5,destructible:false},
+  clove_ruse:{kind:'smoke',hp:0,windup:.75,duration:14.25,radius:4.5,postDeathRange:15,destructible:false},
+  // GravNet's 13m total size is live data. Removal timing and movement
+  // multiplier are explicit simulation constants until Riot publishes them.
+  deadlock_gravnet:{kind:'gravnet',hp:0,windup:.55,duration:6.55,radius:6.5,moveMultiplier:.35,removeSeconds:1.5,destructible:false},
+  deadlock_sonic_sensor:{kind:'sound_sensor',hp:20,windup:1,duration:90,detectionRadius:9,triggerDelay:1,concussSeconds:3.5,destructible:true},
+  // Mesh blocks agents, not vision or bullets. The radial footprint is a
+  // tunable approximation of its centre node and four projected arms.
+  deadlock_barrier_mesh:{kind:'mesh_wall',hp:680,windup:.5,duration:30.5,radius:5.5,nodeCount:5,destructible:true},
+  deadlock_annihilation:{kind:'nanowire_pulse',hp:0,windup:.5,duration:7.5,radius:30,cocoonHP:600,pullSpeed:7,captureRange:30,destructible:false},
+  harbor_storm_surge:{kind:'storm_surge',hp:0,windup:1,duration:5,radius:6,slowSeconds:4,nearsightSeconds:4,moveMultiplier:.5,destructible:false},
+  harbor_high_tide:{kind:'water_wall',hp:0,windup:.5,duration:15.5,length:60,width:2,height:8,slowSeconds:.6,moveMultiplier:.5,destructible:false},
+  harbor_cove:{kind:'shield_smoke',hp:680,windup:.5,duration:19.75,radius:4.5,shieldHP:680,shielded:false,destructible:true},
+  // Wave dimensions and debuff duration are explicit model constants. Live
+  // Reckoning can be reactivated to stop its forward travel for seven seconds.
+  harbor_reckoning:{kind:'surge_wave',hp:0,windup:.6,duration:7.6,length:40,width:18,moveSpeed:12.5,slowSeconds:4,nearsightSeconds:4,destructible:false},
+  // Contingency blocks bullets while preserving vision. Its alternate cast
+  // uses half travel speed without changing the wall lifetime.
+  iso_contingency:{kind:'moving_bullet_wall',hp:0,windup:.25,duration:5.25,length:7,width:1.2,moveSpeed:7,destructible:false},
+  reyna_leer:{kind:'leer_eye',hp:100,windup:.3,duration:2.3,radius:35,nearsightSeconds:.35,nearsightRange:7,shootable:true,destructible:true},
   turret_anchor:{kind:'turret',hp:100,windup:.75,duration:90,radius:40,activationRange:40,reactivationSeconds:2,burstSize:3,burstCooldown:.75,damageBands:{near:8,mid:6,far:4},destructible:true},
   // Riot publishes the 7m detection and 40m owner range, but not every
   // internal movement/explosion value. Keep the modeled values explicit so
@@ -53,8 +85,8 @@ const OBJECT_RULES={
 
 export function createAbilityObject(use,index,{sitePoint,chokePoint,attackSide,ownerPoint,ownerFacing=0,targetPoint,placedAt=0,instanceId=null}={}){
   const rule=OBJECT_RULES[use.mechanic];if(!rule)return null;
-  const local=['skye_trailblazer','skye_seekers','phoenix_blaze','drone_tag','tejo_stealth_drone','fade_prowler','fade_nightfall','yoru_fakeout','yoru_gatecrash','neon_fast_lane','turret_anchor','vulnerable_trap','chamber_trademark','rendezvous_anchor','cypher_tripwire','spycam_recon','vyse_shear','vyse_razorvine','remote_area_damage','acid_pool','toxin_cloud','toxin_screen','toxin_pit','detain_zone','boom_bot','blast_pack'].includes(use.mechanic);
-  const point=['phoenix_hot_hands','reveal_scan','brim_incendiary','brim_stim_beacon','brim_sky_smoke','brim_orbital_strike','fade_haunt','fade_seize','astra_gravity','astra_nova','astra_nebula','cosmic_divide','remote_area_damage','acid_pool','toxin_cloud','vyse_razorvine'].includes(use.mechanic)&&targetPoint?targetPoint:(local&&ownerPoint?ownerPoint:(use.side===attackSide?chokePoint:sitePoint));
+  const local=['iso_contingency','harbor_high_tide','harbor_reckoning','deadlock_sonic_sensor','deadlock_barrier_mesh','deadlock_annihilation','sage_barrier','gekko_wingman','gekko_dizzy','gekko_thrash','skye_trailblazer','skye_seekers','phoenix_blaze','drone_tag','tejo_stealth_drone','fade_prowler','fade_nightfall','yoru_fakeout','yoru_gatecrash','neon_fast_lane','turret_anchor','vulnerable_trap','chamber_trademark','rendezvous_anchor','cypher_tripwire','spycam_recon','vyse_shear','vyse_razorvine','remote_area_damage','acid_pool','toxin_cloud','toxin_screen','toxin_pit','detain_zone','boom_bot','blast_pack'].includes(use.mechanic);
+  const point=['reyna_leer','harbor_storm_surge','harbor_cove','deadlock_gravnet','clove_meddle','clove_ruse','sage_slow_orb','gekko_mosh','kayo_fragment','kayo_zero_point','phoenix_hot_hands','reveal_scan','brim_incendiary','brim_stim_beacon','brim_sky_smoke','brim_orbital_strike','fade_haunt','fade_seize','astra_gravity','astra_nova','astra_nebula','cosmic_divide','remote_area_damage','acid_pool','toxin_cloud','vyse_razorvine'].includes(use.mechanic)&&targetPoint?targetPoint:(local&&ownerPoint?ownerPoint:(use.side===attackSide?chokePoint:sitePoint));
   return{id:`ability-object-${instanceId??index+1}`,owner:use.player,side:use.side,ability:use.name,mechanic:use.mechanic,edge:use.edge||0,damage:use.damage||0,...rule,x:point.x,y:point.y,face:ownerFacing,placedAt,activeAt:placedAt+rule.windup,expiresAt:placedAt+rule.duration,lastDamageAt:placedAt+rule.windup,currentHP:rule.hp,destroyedAt:null,destroyedBy:null};
 }
 
@@ -72,12 +104,13 @@ const intersects=(a,b,c,d)=>{const o1=orientation(a,b,c),o2=orientation(a,b,d),o
 
 export function abilityObjectContains(object,point,time){
   if(!abilityObjectActive(object,time))return false;
-  if(object.kind==='smoke_wall'||object.kind==='fire_wall'){const wall=wallSegment(object);return segmentPointDistance(point,wall.from,wall.to)<=object.width/2;}
+  if(['smoke_wall','fire_wall','water_wall'].includes(object.kind)){const wall=wallSegment(object);return segmentPointDistance(point,wall.from,wall.to)<=object.width/2;}
   return object.radius!=null&&Math.hypot(point.x-object.x,point.y-object.y)<=object.radius;
 }
 
 export function abilityObjectBlocksSight(object,from,to,time){
-  if(!['smoke','smoke_wall','fire_wall','dual_wall'].includes(object?.kind)||!abilityObjectActive(object,time))return false;
+  if(!['smoke','shield_smoke','smoke_wall','fire_wall','water_wall','dual_wall','solid_wall'].includes(object?.kind)||!abilityObjectActive(object,time))return false;
+  if(object.kind==='solid_wall'){const wall=wallSegment(object);return intersects(from,to,wall.from,wall.to)||segmentPointDistance(wall.from,from,to)<=object.width/2||segmentPointDistance(wall.to,from,to)<=object.width/2;}
   if(object.kind==='dual_wall'){
     const angle=(object.face||0)*Math.PI/180,directionVector={x:Math.cos(angle),y:Math.sin(angle)},normal={x:-Math.sin(angle),y:Math.cos(angle)};
     const dissolveStart=object.activeAt+(object.fullDuration||0),dissolveDuration=Math.max(.001,object.dissolveDuration||0);
@@ -91,7 +124,7 @@ export function abilityObjectBlocksSight(object,from,to,time){
     }
     return false;
   }
-  if(object.kind==='smoke_wall'||object.kind==='fire_wall'){const wall=wallSegment(object);return intersects(from,to,wall.from,wall.to)||segmentPointDistance(wall.from,from,to)<=object.width/2||segmentPointDistance(wall.to,from,to)<=object.width/2;}
+  if(['smoke_wall','fire_wall','water_wall'].includes(object.kind)){const wall=wallSegment(object);return intersects(from,to,wall.from,wall.to)||segmentPointDistance(wall.from,from,to)<=object.width/2||segmentPointDistance(wall.to,from,to)<=object.width/2;}
   const dx=to.x-from.x,dy=to.y-from.y,length2=dx*dx+dy*dy;
   const distance=point=>Math.hypot(point.x-object.x,point.y-object.y);
   // Two actors already inside the same smoke can still resolve a close duel;
@@ -102,7 +135,9 @@ export function abilityObjectBlocksSight(object,from,to,time){
 }
 
 export function abilityObjectBlocksProjectile(object,from,to,time){
-  if(object?.kind!=='cosmic_wall'||!abilityObjectActive(object,time))return false;
+  if(!['cosmic_wall','solid_wall','shield_smoke','moving_bullet_wall'].includes(object?.kind)||!abilityObjectActive(object,time))return false;
+  if(object.kind==='shield_smoke'){if(!object.shielded||object.currentHP<=0)return false;const dx=to.x-from.x,dy=to.y-from.y,length2=dx*dx+dy*dy,ratio=length2?Math.max(0,Math.min(1,((object.x-from.x)*dx+(object.y-from.y)*dy)/length2)):0;return Math.hypot(object.x-(from.x+ratio*dx),object.y-(from.y+ratio*dy))<=object.radius;}
+  if(object.kind==='solid_wall'){const wall=wallSegment(object);return intersects(from,to,wall.from,wall.to)||segmentPointDistance(wall.from,from,to)<=object.width/2||segmentPointDistance(wall.to,from,to)<=object.width/2;}
   const angle=(object.face||0)*Math.PI/180,half=object.length/2,wall={from:{x:object.x-Math.cos(angle)*half,y:object.y-Math.sin(angle)*half},to:{x:object.x+Math.cos(angle)*half,y:object.y+Math.sin(angle)*half}};return intersects(from,to,wall.from,wall.to);
 }
 

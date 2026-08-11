@@ -63,7 +63,7 @@ export const ABFX={
   'Stim Beacon':'buff','Incendiary':'molly','Sky Smoke':'smoke','Orbital Strike':'ult',
   'Snake Bite':'molly','Poison Cloud':'smoke','Toxic Screen':'wall',"Viper's Pit":'ult',
   'Gravity Well':'stun','Nova Pulse':'stun','Nebula':'smoke','Astral Form':'ult',
-  'Cascade':'wall','Cove':'smoke','High Tide':'wall','Reckoning':'ult',
+  'Storm Surge':'stun','Cove':'smoke','High Tide':'wall','Reckoning':'ult',
   'Pick-me-up':'heal','Meddle':'molly','Ruse':'smoke','Not Dead Yet':'ult',
 };
 

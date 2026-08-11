@@ -32,7 +32,7 @@ export const AGENT_KITS = {
   Brimstone:{en:3,in:3,co:8,su:5,cl:4,le:5,ab:['Stim Beacon','Incendiary','Sky Smoke','Orbital Strike']},
   Viper:{en:3,in:4,co:9,su:4,cl:6,le:6,ab:['Snake Bite','Poison Cloud','Toxic Screen',"Viper's Pit"]},
   Astra:{en:2,in:5,co:9,su:5,cl:5,le:3,ab:['Gravity Well','Nova Pulse','Nebula','Astral Form']},
-  Harbor:{en:3,in:4,co:8,su:5,cl:4,le:3,ab:['Cascade','Cove','High Tide','Reckoning']},
+  Harbor:{en:3,in:4,co:8,su:5,cl:4,le:3,ab:['Storm Surge','High Tide','Cove','Reckoning']},
   Clove:{en:5,in:3,co:7,su:4,cl:7,le:4,ab:['Pick-me-up','Meddle','Ruse','Not Dead Yet']},
 };
 

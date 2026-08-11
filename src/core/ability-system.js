@@ -8,19 +8,27 @@ for(const mechanic of ['tejo_stealth_drone','tejo_special_delivery','tejo_guided
 for(const mechanic of ['brim_incendiary','brim_stim_beacon','brim_sky_smoke','brim_orbital_strike'])OBJECT_MECHANICS.add(mechanic);
 for(const mechanic of ['phoenix_curveball','phoenix_blaze','phoenix_hot_hands','phoenix_run_it_back'])OBJECT_MECHANICS.add(mechanic);
 for(const mechanic of ['skye_regrowth','skye_trailblazer','skye_guiding_light','skye_seekers'])OBJECT_MECHANICS.add(mechanic);
+for(const mechanic of ['kayo_fragment','kayo_flash_drive','kayo_zero_point','kayo_null_cmd'])OBJECT_MECHANICS.add(mechanic);
+for(const mechanic of ['gekko_mosh','gekko_wingman','gekko_dizzy','gekko_thrash'])OBJECT_MECHANICS.add(mechanic);
+for(const mechanic of ['sage_barrier','sage_slow_orb','sage_healing_orb','sage_resurrection'])OBJECT_MECHANICS.add(mechanic);
+for(const mechanic of ['clove_pick_me_up','clove_meddle','clove_ruse','clove_not_dead_yet'])OBJECT_MECHANICS.add(mechanic);
+for(const mechanic of ['deadlock_gravnet','deadlock_sonic_sensor','deadlock_barrier_mesh','deadlock_annihilation'])OBJECT_MECHANICS.add(mechanic);
+for(const mechanic of ['harbor_storm_surge','harbor_high_tide','harbor_cove','harbor_reckoning'])OBJECT_MECHANICS.add(mechanic);
+for(const mechanic of ['iso_contingency','iso_undercut','iso_double_tap','iso_kill_contract'])OBJECT_MECHANICS.add(mechanic);
+for(const mechanic of ['reyna_leer','reyna_devour','reyna_dismiss','reyna_empress'])OBJECT_MECHANICS.add(mechanic);
 
 export function createAbilityState(home,away,agBy){
   const players={};
   for(const [side,team] of [['home',home],['away',away]])for(const player of team.roster){
     const agent=agBy[player.name],defs=agentAbilityDefinitions(agent,player.role);
-    players[player.name]={side,agent,ultPoints:0,signatureProgress:0,astraStars:agent==='Astra'?0:null,abilities:Object.fromEntries(defs.map(def=>[def.id,0]))};
+    players[player.name]={side,agent,ultPoints:0,signatureProgress:0,astraStars:agent==='Astra'?0:null,reynaSoulCharges:agent==='Reyna'?0:null,abilities:Object.fromEntries(defs.map(def=>[def.id,0]))};
   }
   return{version:'ability-state-v1',players};
 }
 
 export function resetAbilityInventory(state,roundIndex){
   if(roundIndex!==0&&roundIndex!==12)return state;
-  for(const ps of Object.values(state.players)){for(const id of Object.keys(ps.abilities))ps.abilities[id]=0;if(ps.agent==='Astra')ps.astraStars=0;}
+  for(const ps of Object.values(state.players)){for(const id of Object.keys(ps.abilities))ps.abilities[id]=0;if(ps.agent==='Astra')ps.astraStars=0;if(ps.agent==='Reyna')ps.reynaSoulCharges=0;}
   return state;
 }
 
@@ -29,8 +37,10 @@ export function prepareAbilityBuy(state,team,side,agBy,economy,loadouts,buy){
   team.roster.forEach((player,index)=>{
     const ps=state.players[player.name],defs=agentAbilityDefinitions(agBy[player.name],player.role),account=economy.players[index],loadout=loadouts[index];
     if(ps.agent==='Astra'){ps.astraStars=Math.max(ps.astraStars||0,1);const target=buy==='full'?5:['force','semi','pistol'].includes(buy)?2:0;while(ps.astraStars<target&&account.credits>=150){account.credits-=150;loadout.spent+=150;loadout.remaining=account.credits;ps.astraStars++;purchases.push({player:player.name,ability:'Star',cost:150,sharedCharge:true});}return;}
+    if(ps.agent==='Reyna'){const target=buy==='full'?2:['force','semi','pistol'].includes(buy)?1:0;while(ps.reynaSoulCharges<target&&account.credits>=200){account.credits-=200;loadout.spent+=200;loadout.remaining=account.credits;ps.reynaSoulCharges++;purchases.push({player:player.name,ability:'Soul Harvest',cost:200,sharedCharge:true});}}
     for(const def of defs){
       if(def.ultimate)continue;
+      if(ps.agent==='Reyna'&&['Devour','Dismiss'].includes(def.name))continue;
       if(def.signature){
         // Signatures refresh one free charge. Agents such as Omen may buy an
         // additional charge instead of receiving their whole capacity free.
@@ -69,12 +79,12 @@ export function planRoundAbilities(state,{home,away,agBy,atkSide,scoreDiff=0}){
   for(const [side,team] of [['home',home],['away',away]])for(const player of team.roster){
     const ps=state.players[player.name],defs=agentAbilityDefinitions(agBy[player.name],player.role);
     for(const def of defs){
-      const astraStar=ps.agent==='Astra'&&!def.ultimate,available=def.ultimate?ps.ultPoints>=def.ultCost:astraStar?(ps.astraStars||0)>0:(ps.abilities[def.id]||0)>0;
+      const astraStar=ps.agent==='Astra'&&!def.ultimate,reynaSoul=ps.agent==='Reyna'&&['Devour','Dismiss'].includes(def.name);if(reynaSoul&&def.name==='Devour'&&random()<.45)continue;const available=def.ultimate?ps.ultPoints>=def.ultCost:astraStar?(ps.astraStars||0)>0:reynaSoul?(ps.reynaSoulCharges||0)>0:(ps.abilities[def.id]||0)>0;
       if(!available||!shouldUse(def,player,side,atkSide,{scorePressure}))continue;
       const chargesUsed=def.mechanic==='headhunter'?(ps.abilities[def.id]||0):1;
-      if(def.ultimate)ps.ultPoints-=def.ultCost;else if(astraStar)ps.astraStars--;else ps.abilities[def.id]-=chargesUsed;
+      if(def.ultimate)ps.ultPoints-=def.ultCost;else if(astraStar)ps.astraStars--;else if(reynaSoul)ps.reynaSoulCharges--;else ps.abilities[def.id]-=chargesUsed;
       const phase=side===atkSide?'EXECUTE':'HOLD',reason=def.type==='recon'?'missing_recent_information':def.type==='trap'?'secure_initial_control':def.type==='smoke'?'block_expected_sightline':def.ultimate?'high_round_leverage':'create_combat_advantage';
-      const use={player:player.name,agentName:ps.agent,name:def.name,type:def.type,mechanic:def.mechanic,damage:def.damage,duration:def.duration,edge:def.edge,decisionSkill:+decisionSkill(player,def).toFixed(1),decision:{phase,reason,scorePressure},ult:def.ultimate,signature:def.signature,recharge:def.recharge,side,cost:def.cost,chargesUsed,ammo:chargesUsed,remaining:def.ultimate?ps.ultPoints:astraStar?ps.astraStars:ps.abilities[def.id],ultCost:def.ultCost,sharedResource:astraStar?'astra_star':null};uses.push(use);
+      const use={player:player.name,agentName:ps.agent,name:def.name,type:def.type,mechanic:def.mechanic,damage:def.damage,duration:def.duration,edge:def.edge,decisionSkill:+decisionSkill(player,def).toFixed(1),decision:{phase,reason,scorePressure},ult:def.ultimate,signature:def.signature,recharge:def.recharge,side,cost:def.cost,chargesUsed,ammo:chargesUsed,remaining:def.ultimate?ps.ultPoints:astraStar?ps.astraStars:reynaSoul?ps.reynaSoulCharges:ps.abilities[def.id],ultCost:def.ultCost,sharedResource:astraStar?'astra_star':reynaSoul?'reyna_soul':null};uses.push(use);
       const m=modifiers[side],edge=def.edge*(def.ultimate?1:0.65+random()*.35);
       if(OBJECT_MECHANICS.has(def.mechanic)){/* spatial object owns its active window */}
       else if(def.type==='recon')m.information+=edge;
@@ -107,10 +117,10 @@ export function restoreUnusedAbilityPlans(state,{plannedUses=[],usedEvents=[]}={
   const shots=new Map();for(const event of usedEvents.filter(event=>event.type==='chamberWeaponShot')){const key=`${event.player}:${event.ability}`;shots.set(key,(shots.get(key)||0)+1);}
   const restored=[];for(const use of plannedUses){const key=`${use.player}:${use.name}`,count=used.get(key)||0,ps=state.players[use.player];if(!ps)continue;
     if(use.mechanic==='headhunter'&&count>0){used.set(key,count-1);const def=agentAbilityDefinitions(ps.agent).find(entry=>entry.name===use.name),spent=Math.min(use.chargesUsed||1,shots.get(key)||0),amount=Math.max(0,(use.chargesUsed||1)-spent);if(def&&amount)ps.abilities[def.id]=Math.min(def.maxCharges,(ps.abilities[def.id]||0)+amount);if(amount)restored.push({player:use.player,ability:use.name,ultimate:false,charges:amount});continue;}
-    if(count>0){used.set(key,count-1);continue;}if(use.ult)ps.ultPoints=clamp(ps.ultPoints+(use.ultCost||0),0,12);else if(use.sharedResource==='astra_star')ps.astraStars=Math.min(5,(ps.astraStars||0)+(use.chargesUsed||1));else{const def=agentAbilityDefinitions(ps.agent).find(entry=>entry.name===use.name),id=def?.id,amount=use.chargesUsed||1;if(id)ps.abilities[id]=Math.min(def.maxCharges,(ps.abilities[id]||0)+amount);}restored.push({player:use.player,ability:use.name,ultimate:!!use.ult,charges:use.ult?0:(use.chargesUsed||1)});}
+    if(count>0){used.set(key,count-1);continue;}if(use.ult)ps.ultPoints=clamp(ps.ultPoints+(use.ultCost||0),0,12);else if(use.sharedResource==='astra_star')ps.astraStars=Math.min(5,(ps.astraStars||0)+(use.chargesUsed||1));else if(use.sharedResource==='reyna_soul')ps.reynaSoulCharges=Math.min(2,(ps.reynaSoulCharges||0)+(use.chargesUsed||1));else{const def=agentAbilityDefinitions(ps.agent).find(entry=>entry.name===use.name),id=def?.id,amount=use.chargesUsed||1;if(id)ps.abilities[id]=Math.min(def.maxCharges,(ps.abilities[id]||0)+amount);}restored.push({player:use.player,ability:use.name,ultimate:!!use.ult,charges:use.ult?0:(use.chargesUsed||1)});}
   return restored;
 }
 
 export function abilitySnapshot(state){
-  return Object.fromEntries(Object.entries(state.players).map(([name,ps])=>[name,{agent:ps.agent,ultPoints:ps.ultPoints,astraStars:ps.astraStars,abilities:{...ps.abilities}}]));
+  return Object.fromEntries(Object.entries(state.players).map(([name,ps])=>[name,{agent:ps.agent,ultPoints:ps.ultPoints,astraStars:ps.astraStars,reynaSoulCharges:ps.reynaSoulCharges,abilities:{...ps.abilities}}]));
 }

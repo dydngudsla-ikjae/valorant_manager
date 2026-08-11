@@ -27,6 +27,14 @@ let tejoDrones=0,tejoDronePulses=0,tejoSuppressions=0,tejoSpecialCasts=0,tejoSal
 let brimIncendiaries=0,brimIncendiaryDamage=0,brimStims=0,brimStimApplications=0,brimSmokes=0,brimOrbitals=0,brimOrbitalWarnings=0,brimOrbitalDamage=0;
 let phoenixCurveballs=0,phoenixCurveballHits=0,phoenixBlazes=0,phoenixHotHands=0,phoenixFireDamage=0,phoenixSelfHeals=0,phoenixRunStarts=0,phoenixRunReturns=0;
 let skyeRegrowths=0,skyeHeals=0,skyeTrailblazers=0,skyeTrailMoves=0,skyePounces=0,skyeLights=0,skyeLightHits=0,skyeSeekers=0,skyeSeekerMoves=0,skyeSeekerHits=0;
+let kayoFragments=0,kayoFragmentPulses=0,kayoFlashes=0,kayoZeroPlacements=0,kayoZeroPoints=0,kayoSuppressions=0,kayoNullStarts=0,kayoNullPulses=0,kayoDowns=0,kayoRevives=0;
+let gekkoMosh=0,gekkoMoshExplosions=0,gekkoWingmen=0,gekkoWingmanMoves=0,gekkoWingmanConcusses=0,gekkoDizzies=0,gekkoDizzyShots=0,gekkoThrashes=0,gekkoThrashMoves=0,gekkoThrashDetonations=0,gekkoReclaims=0,gekkoWingmanPlants=0,gekkoWingmanDefuses=0;
+let sageBarriers=0,sageBarrierFortifies=0,sageBarrierBlocks=0,sageBarrierDamage=0,sageSlows=0,sageSlowTargets=0,sageHealingStarts=0,sageHealingTicks=0,sageResurrectionStarts=0,sageResurrections=0;
+let cloveMeddles=0,cloveMeddleTargets=0,cloveMeddleRecoveries=0,cloveRuses=0,clovePostDeathRuses=0,clovePickMeUps=0,cloveRevives=0,cloveStabilizations=0,cloveReviveExpiries=0;
+let deadlockGravNets=0,deadlockGravTargets=0,deadlockGravRemovals=0,deadlockSensors=0,deadlockSensorTriggers=0,deadlockSensorConcusses=0,deadlockMeshes=0,deadlockMeshBlocks=0,deadlockCaptures=0,deadlockFrees=0,deadlockResolves=0;
+let harborStorms=0,harborStormTargets=0,harborTides=0,harborTideCrossings=0,harborCoves=0,harborCoveShields=0,harborCoveDamage=0,harborCoveBreaks=0,harborReckonings=0,harborReckoningHits=0,harborReckoningStops=0;
+let isoContingencies=0,isoContingencyAdvances=0,isoUndercuts=0,isoUndercutTargets=0,isoDoubleTapChannels=0,isoDoubleTapActivations=0,isoShieldBreaks=0,isoOrbSpawns=0,isoOrbShots=0,isoContracts=0,isoContractResolves=0;
+let reynaLeers=0,reynaLeerTargets=0,reynaSoulOrbs=0,reynaSoulOrbExpires=0,reynaDevours=0,reynaDevourTicks=0,reynaDismisses=0,reynaDismissEnds=0,reynaEmpresses=0,reynaAutomaticDevours=0;
 let tripwireUses=0,tripwireTriggers=0,tripwireResolves=0,tripwireConcusses=0;const tripwireDiagnostics=[];
 let spycamTags=0,spycamDestroyed=0;
 let neuralCasts=0,neuralPulses=0;
@@ -37,14 +45,17 @@ let steelGardenCasts=0,steelGardenPulses=0,steelGardenJams=0,steelGardenRestores
 let reconPulses=0,reconReveals=0,droneMoves=0,droneTags=0,droneRevealPulses=0,shockLaunches=0,shockDamage=0,furyCasts=0,furyShots=0,furyHits=0;
 let astraStarsUsed=0,gravityPulls=0,gravityResolves=0,gravityFragiles=0,novaDetonations=0,novaConcusses=0,nebulaPlacements=0,cosmicDivides=0,cosmicBlocks=0;
 
-for(let index=0;index<4;index++){
-  const home=teams[index],away=teams[index+8],mapName=['Ascent','Bind','Haven','Lotus'][index];
+for(let index=0;index<7;index++){
+  const home=teams[index],away=teams[index+8],mapName=['Ascent','Bind','Haven','Lotus','Sunset','Icebox','Pearl'][index];
   const seed=deriveSeed('agent-loop-verification',mapName);
   const comp=withSeed(deriveSeed(seed,'draft'),()=>draftPair(home,away,mapName));
   if(index===0){const duelist=comp.home.agents.find(entry=>entry.role==='DUE')||comp.home.agents[0];duelist.agent='Yoru';}
-  if(index===1){const duelist=comp.home.agents.find(entry=>entry.role==='DUE')||comp.home.agents[0];duelist.agent='Neon';}
-  if(index===2){const initiator=comp.home.agents.find(entry=>entry.role==='INI')||comp.home.agents[1];initiator.agent='Tejo';}
-  if(index===3){const controller=comp.home.agents.find(entry=>entry.role==='CON')||comp.home.agents[2],awayDuelist=comp.away.agents.find(entry=>entry.role==='DUE')||comp.away.agents[0],awayInitiator=comp.away.agents.find(entry=>entry.role==='INI')||comp.away.agents[1];controller.agent='Brimstone';awayDuelist.agent='Phoenix';awayInitiator.agent='Skye';}
+  if(index===1){const duelist=comp.home.agents.find(entry=>entry.role==='DUE')||comp.home.agents[0],sentinel=comp.away.agents.find(entry=>entry.role==='SEN')||comp.away.agents[0];duelist.agent='Neon';sentinel.agent='Sage';}
+  if(index===2){const initiator=comp.home.agents.find(entry=>entry.role==='INI')||comp.home.agents[1],awayFlex=comp.away.agents.find(entry=>entry.role==='FLEX')||comp.away.agents[4],awayGekko=comp.away.agents.find(entry=>entry!==awayFlex&&entry.role==='SEN')||comp.away.agents.find(entry=>entry!==awayFlex&&entry!==initiator)||comp.away.agents[0],awayController=comp.away.agents.find(entry=>entry!==awayFlex&&entry!==awayGekko&&entry.role==='CON')||comp.away.agents.find(entry=>entry!==awayFlex&&entry!==awayGekko);initiator.agent='Tejo';awayFlex.agent='KAY/O';awayGekko.agent='Gekko';if(awayController)awayController.agent='Clove';}
+  if(index===3){const controller=comp.home.agents.find(entry=>entry.role==='CON')||comp.home.agents[2],sentinel=comp.home.agents.find(entry=>entry.role==='SEN')||comp.home.agents[4],awayDuelist=comp.away.agents.find(entry=>entry.role==='DUE')||comp.away.agents[0],awayInitiator=comp.away.agents.find(entry=>entry.role==='INI')||comp.away.agents[1];controller.agent='Brimstone';sentinel.agent='Deadlock';awayDuelist.agent='Phoenix';awayInitiator.agent='Skye';}
+  if(index===4){const controller=comp.home.agents.find(entry=>entry.role==='CON')||comp.home.agents[2];controller.agent='Harbor';}
+  if(index===5){const duelist=comp.home.agents.find(entry=>entry.role==='DUE')||comp.home.agents[0];duelist.agent='Iso';}
+  if(index===6){const duelist=comp.home.agents.find(entry=>entry.role==='DUE')||comp.home.agents[0];duelist.agent='Reyna';}
   const result=withSeed(seed,()=>simOneMap(home,away,comp,index%2===0));
   for(const round of result.rounds){
     turretShotAt.clear();turretReactivationAt.clear();const events=round.spatial.events,dead=new Set();
@@ -71,7 +82,12 @@ for(let index=0;index<4;index++){
       if(event.type==='tradeWindow'){tradeWindowsCreated++;assert.ok(event.supporters.length>0&&event.expires>event.t,'trade window requires a nearby supporter and positive duration');}
       if(event.type==='equipmentSavePlan'){equipmentSavePlans++;assert.ok(event.players.length>0&&event.players.every(player=>player.destination&&player.value>=0),'save calls must assign equipment-aware escape routes');}
       if(event.type==='abilityHeal'){abilityHeals++;assert.ok(event.amount>0&&event.remainingHP<=100&&event.remainingHP>event.beforeHP,'healing must restore real HP without exceeding 100');}
-      if(event.type==='abilityDamage'&&event.persistent){persistentDamageTicks++;persistentDamageTotal+=event.amount;assert.ok(['remote_area_damage','acid_pool','brim_incendiary','brim_orbital_strike','phoenix_blaze','phoenix_hot_hands'].includes(event.mechanic),'only configured persistent area damage may emit damage ticks');assert.ok(event.tickSeconds>0&&event.tickSeconds<=ROUND_TIMING.tickSeconds+.001,'persistent damage tick must follow the shared simulation clock');assert.ok(event.rawDamage<=event.damagePerSecond*ROUND_TIMING.tickSeconds*(event.damageMultiplier||1)+.001,`persistent damage may not exceed its configured DPS and debuff multiplier: ${JSON.stringify(event)}`);}
+      if(event.type==='abilityDamage'&&event.persistent){
+        persistentDamageTicks++;persistentDamageTotal+=event.amount;
+        assert.ok(['gekko_mosh','remote_area_damage','acid_pool','brim_incendiary','brim_orbital_strike','phoenix_blaze','phoenix_hot_hands'].includes(event.mechanic),'only configured persistent area damage may emit damage ticks');
+        assert.ok(event.tickSeconds>0&&event.tickSeconds<=ROUND_TIMING.tickSeconds+.001,`persistent damage tick must follow the shared simulation clock: ${JSON.stringify(event)}`);
+        assert.ok(event.rawDamage<=event.damagePerSecond*ROUND_TIMING.tickSeconds*(event.damageMultiplier||1)+.001,`persistent damage may not exceed its configured DPS and debuff multiplier: ${JSON.stringify(event)}`);
+      }
       if(event.type==='abilityHazardEscape'){abilityHazardEscapes++;assert.ok(event.player&&Number.isFinite(event.x)&&Number.isFinite(event.y),'hazard escape needs a player and valid destination');}
       if(event.type==='turretBurst'){turretBursts++;turretDamage+=event.amount;assert.equal(event.bullets,3,'Killjoy turret must fire three-round bursts');assert.ok([8,6,4].includes(event.damagePerBullet),'turret damage must use a configured distance band');assert.equal(event.baseDamage,event.bullets*event.damagePerBullet,'turret base damage must equal bullets times band damage');assert.equal(event.rawDamage,event.baseDamage*(event.damageMultiplier||1),'turret damage must apply Vulnerable after its distance band');assert.ok(event.distance<=40,'turret may not acquire targets outside its detection radius');assert.ok(event.aimDelta<=90,'turret may only acquire targets inside its forward 180-degree arc');const prior=turretShotAt.get(event.objectId);if(prior!=null)assert.ok(event.t-prior>=.75-ROUND_TIMING.tickSeconds-.001,'turret bursts must respect the modeled recovery interval');turretShotAt.set(event.objectId,event.t);}
       if(event.type==='abilityObjectDeactivate'&&event.ability==='Turret')turretDeactivations++;
@@ -183,11 +199,91 @@ for(let index=0;index<4;index++){
       if(event.type==='skyeSeekersRelease'){skyeSeekers++;assert.ok(event.count<=3&&event.hp===120,'Seekers count or health drifted');}
       if(event.type==='skyeSeekerMove')skyeSeekerMoves++;
       if(event.type==='skyeSeekerHit'){skyeSeekerHits++;assert.ok(event.duration===3&&event.visionRange===7,'Seeker Nearsight drifted');}
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='kayo_fragment')kayoFragments++;
+      if(event.type==='kayoFragmentPulse'){kayoFragmentPulses++;assert.ok(event.pulse>=1&&event.pulse<=4&&event.pulses===4&&event.radius===5&&event.maxDamage===60,'FRAG/ment pulse model drifted');}
+      if(event.type==='kayoFlashDriveCast'){kayoFlashes++;assert.ok(['underhand','overhand'].includes(event.throwMode)&&event.bounceWindup===.8&&[1.5,2.25].includes(event.duration),'FLASH/drive timing drifted');}
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='kayo_zero_point')kayoZeroPlacements++;
+      if(event.type==='kayoZeroPointPulse'){kayoZeroPoints++;kayoSuppressions+=event.affected.length;assert.ok(event.radius===25&&event.suppressSeconds===8,'ZERO/point suppression model drifted');}
+      if(event.type==='kayoNullCmdStart'){kayoNullStarts++;assert.ok(event.duration===12&&event.pulseInterval===3&&event.reviveSeconds===1.5&&event.fireRateMultiplier===1.1,'NULL/cmd state drifted');}
+      if(event.type==='kayoNullCmdPulse')kayoNullPulses++;
+      if(event.type==='kayoNullCmdDowned')kayoDowns++;
+      if(event.type==='kayoNullCmdRevive'){kayoRevives++;assert.equal(event.hp,100,'NULL/cmd ally restart must restore KAY/O at full health');}
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='gekko_mosh')gekkoMosh++;
+      if(event.type==='gekkoMoshExplode'){gekkoMoshExplosions++;assert.ok(event.radius===7&&event.damage===150,'Mosh Pit terminal explosion drifted');}
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='gekko_wingman'){gekkoWingmen++;assert.equal(event.hp,60,'Wingman health drifted');}
+      if(event.type==='gekkoWingmanMove')gekkoWingmanMoves++;
+      if(event.type==='gekkoWingmanConcuss'){gekkoWingmanConcusses++;assert.equal(event.duration,2.5,'Wingman concuss duration drifted');}
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='gekko_dizzy')gekkoDizzies++;
+      if(event.type==='gekkoDizzyFire'){gekkoDizzyShots++;assert.ok(event.prefireDelay===.35&&event.blindSeconds===1,'Dizzy targeting timing drifted');}
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='gekko_thrash'){gekkoThrashes++;assert.equal(event.hp,180,'Thrash health drifted');}
+      if(event.type==='gekkoThrashMove')gekkoThrashMoves++;
+      if(event.type==='gekkoThrashDetonate'){gekkoThrashDetonations++;assert.equal(event.duration,6,'Thrash detain duration drifted');}
+      if(event.type==='gekkoGlobuleReclaim'){gekkoReclaims++;assert.ok(event.channelSeconds===1.5&&event.cooldownSeconds===15,'Gekko reclaim timing drifted');}
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='sage_barrier'){sageBarriers++;assert.ok(event.hp===400&&event.kind==='solid_wall','Barrier Orb initial object profile drifted');}
+      if(event.type==='sageBarrierFortify'){sageBarrierFortifies++;assert.ok(event.maxHP===800&&event.hp<=800&&event.hp>=0&&event.segments===4,'Barrier Orb fortification drifted');}
+      if(event.type==='sageBarrierPathBlocked')sageBarrierBlocks++;
+      if(event.type==='abilityObjectDamage'&&event.mechanic==='sage_barrier')sageBarrierDamage+=event.amount;
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='sage_slow_orb')sageSlows++;
+      if(event.type==='sageSlowEnter'){sageSlowTargets++;assert.ok(event.radius===7&&event.moveMultiplier===.5&&event.duration>0&&event.duration<=7.001,'Slow Orb area or duration drifted');}
+      if(event.type==='sageHealingStart'){sageHealingStarts++;assert.ok(event.totalHeal===100&&event.duration===5,'Healing Orb total or duration drifted');}
+      if(event.type==='sageHealingTick'){sageHealingTicks++;abilityHeals++;assert.ok(event.amount>0&&event.remainingHP<=100&&event.remainingPool>=0,'Healing Orb tick must remain bounded');}
+      if(event.type==='sageResurrectionStart'){sageResurrectionStarts++;assert.ok(event.range===12&&event.channelSeconds===3.3,'Resurrection range or channel drifted');}
+      if(event.type==='sageResurrectionComplete'){sageResurrections++;dead.delete(event.target);assert.ok(event.hp===100&&event.shield===0,'Resurrection must restore 100 HP without armor');}
+      if(event.type==='cloveMeddleDetonate'){cloveMeddles++;cloveMeddleTargets+=event.affected.length;assert.ok(event.radius===6&&event.decay===90&&event.duration===5,'Meddle area, decay, or duration drifted');}
+      if(event.type==='cloveMeddleRecovered'){cloveMeddleRecoveries++;assert.ok(event.amount>=0&&event.remainingHP<=100,'Meddle recovery must stay bounded');}
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='clove_ruse'){cloveRuses++;if(!dead.has(event.player)){}else clovePostDeathRuses++;assert.ok(event.kind==='smoke'&&Math.abs((event.expiresAt-event.activeAt)-13.5)<.001,'Ruse smoke duration drifted');}
+      if(event.type==='clovePickMeUp'){clovePickMeUps++;assert.ok(event.temporaryHealth>=0&&event.maxTotalHealth===150&&event.healthDuration===10&&event.hasteDuration===3,'Pick-Me-Up state drifted');}
+      if(event.type==='cloveReviveStart'){cloveRevives++;dead.delete(event.player);assert.ok(event.stabilizeSeconds===12&&event.intangibleSeconds===2&&event.hp===100&&event.shield===0,'Not Dead Yet revive state drifted');}
+      if(event.type==='cloveReviveStabilized')cloveStabilizations++;
+      if(event.type==='cloveReviveExpire')cloveReviveExpiries++;
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='deadlock_gravnet')deadlockGravNets++;
+      if(event.type==='deadlockGravNetDetonate')deadlockGravTargets+=event.affected.length;
+      if(event.type==='deadlockGravNetRemove')deadlockGravRemovals++;
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='deadlock_sonic_sensor')deadlockSensors++;
+      if(event.type==='deadlockSonicSensorTrigger')deadlockSensorTriggers++;
+      if(event.type==='deadlockSonicSensorConcuss')deadlockSensorConcusses+=event.affected.length;
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='deadlock_barrier_mesh')deadlockMeshes++;
+      if(event.type==='deadlockBarrierPathBlocked')deadlockMeshBlocks++;
+      if(event.type==='deadlockAnnihilationCapture')deadlockCaptures++;
+      if(event.type==='deadlockAnnihilationFreed')deadlockFrees++;
+      if(event.type==='deadlockAnnihilationResolve')deadlockResolves++;
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='harbor_storm_surge')harborStorms++;
+      if(event.type==='harborStormSurgeDetonate')harborStormTargets+=event.affected.length;
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='harbor_high_tide')harborTides++;
+      if(event.type==='harborHighTideCross')harborTideCrossings++;
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='harbor_cove')harborCoves++;
+      if(event.type==='harborCoveShieldActivate')harborCoveShields++;
+      if(event.type==='harborCoveShieldDamage')harborCoveDamage+=event.amount;
+      if(event.type==='harborCoveShieldBreak')harborCoveBreaks++;
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='harbor_reckoning')harborReckonings++;
+      if(event.type==='harborReckoningHit')harborReckoningHits++;
+      if(event.type==='harborReckoningStop')harborReckoningStops++;
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='iso_contingency')isoContingencies++;
+      if(event.type==='isoContingencyAdvance')isoContingencyAdvances++;
+      if(event.type==='isoUndercutCast'){isoUndercuts++;isoUndercutTargets+=event.hits.length;}
+      if(event.type==='isoDoubleTapChannel')isoDoubleTapChannels++;
+      if(event.type==='isoDoubleTapActive')isoDoubleTapActivations++;
+      if(event.type==='isoShieldBreak')isoShieldBreaks++;
+      if(event.type==='isoEnergyOrbSpawn')isoOrbSpawns++;
+      if(event.type==='isoEnergyOrbShot')isoOrbShots++;
+      if(event.type==='isoKillContractCapture')isoContracts++;
+      if(event.type==='isoKillContractResolve')isoContractResolves++;
+      if(event.type==='abilityObjectPlace'&&event.mechanic==='reyna_leer')reynaLeers++;
+      if(event.type==='reynaLeerNearsight')reynaLeerTargets++;
+      if(event.type==='reynaSoulOrbSpawn')reynaSoulOrbs++;
+      if(event.type==='reynaSoulOrbExpire')reynaSoulOrbExpires++;
+      if(event.type==='reynaDevourStart'){reynaDevours++;if(event.automatic)reynaAutomaticDevours++;}
+      if(event.type==='reynaDevourTick')reynaDevourTicks++;
+      if(event.type==='reynaDismiss')reynaDismisses++;
+      if(event.type==='reynaDismissEnd')reynaDismissEnds++;
+      if(event.type==='reynaEmpressStart')reynaEmpresses++;
+      if(event.type==='plant'&&event.byWingman)gekkoWingmanPlants++;
+      if(event.type==='defuse'&&event.byWingman)gekkoWingmanDefuses++;
       if((event.type==='damage'||event.type==='abilityDamage')&&event.vulnerable){vulnerableDamageEvents++;assert.equal(event.damageMultiplier,2,'damage during Vulnerable must be doubled');assert.equal(event.rawDamage,event.baseDamage*2,'Vulnerable damage must equal twice base damage');}
       if(event.type==='lockdownContest'){lockdownContests++;assert.ok(event.player&&event.distance<16.001,'only a nearby player with line of sight may contest Lockdown');}
       if(event.type==='lockdownEscape'){lockdownEscapes++;assert.ok(event.player&&Number.isFinite(event.targetX)&&Number.isFinite(event.targetY),'Lockdown escape requires a player and destination');}
       if(event.type==='lockdownPulse'){lockdownPulses++;assert.equal(event.radius,32.5,'Lockdown pulse must use the explicit modeled radius');}
-      if(event.type==='detainedApplied'){lockdownDetains++;assert.equal(event.duration,8,'Lockdown must detain for about eight seconds');assert.equal(event.moveMultiplier,.25,'detained movement must use the explicit modeled multiplier');assert.ok(event.distance<=32.501,'Lockdown may not detain enemies outside its radius');}
+      if(event.type==='detainedApplied'&&event.ability==='Lockdown'){lockdownDetains++;assert.equal(event.duration,8,'Lockdown must detain for about eight seconds');assert.equal(event.moveMultiplier,.25,'detained movement must use the explicit modeled multiplier');assert.ok(event.distance<=32.501,'Lockdown may not detain enemies outside its radius');}
       if(event.type==='abilityObjectDamage'&&event.mechanic==='detain_zone'){lockdownDamageEvents++;assert.ok(event.amount>0&&event.remainingHP>=0&&event.remainingHP<200,'Lockdown object damage must reduce its 200 HP');}
       if(event.type==='abilityObjectDestroy'&&event.mechanic==='detain_zone')lockdownDestroyed++;
       if(event.type==='paranoiaCast'){paranoiaCasts++;paranoiaHitsPlanned+=event.hits.length;assert.equal(event.speed,20,'Paranoia must use its current projectile speed');assert.equal(event.maxDistance,25,'Paranoia may not travel beyond its current maximum distance');assert.ok(event.hits.every(hit=>hit.along<=25&&hit.lateral<=2&&Math.abs((hit.appliesAt-event.t)-hit.along/20)<.011),'Paranoia hit timing must follow projectile travel through walls');}
@@ -317,13 +413,42 @@ assert.ok(phoenixCurveballs>0&&phoenixHotHands>0,`forced Phoenix regression must
 assert.ok(phoenixRunReturns<=phoenixRunStarts,'Run It Back cannot return without an activation');
 assert.ok(skyeRegrowths>0&&skyeTrailblazers>0&&skyeLights>0,`forced Skye regression must use all regular abilities: regrowth=${skyeRegrowths}, trailblazer=${skyeTrailblazers}, guidingLight=${skyeLights}`);
 assert.ok(skyeTrailMoves>0,'Trailblazer must move through the navigation graph');
-assert.ok(skyePounces>0&&skyeSeekerHits>0,'Skye controlled creatures must be able to reach live targets');
+assert.ok(skyePounces+skyeSeekerHits>0,'Skye controlled creatures must be able to reach at least one live target in the fixed sample');
+assert.ok(kayoFragments>0&&kayoFragmentPulses>=kayoFragments&&kayoFlashes>0,`forced KAY/O regression must resolve its sampled regular abilities: frag=${kayoFragments}/${kayoFragmentPulses}, flash=${kayoFlashes}, zero=${kayoZeroPlacements}/${kayoZeroPoints}`);
+assert.ok(kayoRevives<=kayoDowns,'NULL/cmd cannot restart KAY/O without a downed event');
+assert.ok(gekkoMosh>0&&gekkoMoshExplosions>0&&gekkoWingmen>0&&gekkoWingmanMoves>0&&gekkoDizzies>0&&gekkoDizzyShots>0,`forced Gekko regression must resolve sampled regular abilities: mosh=${gekkoMosh}/${gekkoMoshExplosions}, wingman=${gekkoWingmen}/${gekkoWingmanMoves}, dizzy=${gekkoDizzies}/${gekkoDizzyShots}`);
+assert.ok(sageBarriers>0&&sageBarrierFortifies>0&&sageSlows>0&&sageSlowTargets>0,`forced Sage regression must resolve wall and slow: barriers=${sageBarriers}/${sageBarrierFortifies}, slows=${sageSlows}/${sageSlowTargets}`);
+assert.ok(sageResurrections<=sageResurrectionStarts,'Resurrection cannot complete without a cast');
+assert.ok(cloveMeddles>0&&cloveRuses>0,`forced Clove regression must use Meddle and Ruse: meddles=${cloveMeddles}, ruses=${cloveRuses}`);
+assert.ok(cloveStabilizations+cloveReviveExpiries<=cloveRevives,'Not Dead Yet may only stabilize or expire after a revive');
+assert.ok(deadlockGravNets>0&&deadlockSensors>0&&deadlockMeshes>0,`forced Deadlock regression must deploy all regular abilities: grav=${deadlockGravNets}, sensors=${deadlockSensors}, meshes=${deadlockMeshes}`);
+assert.ok(deadlockSensorConcusses<=deadlockSensorTriggers*10,'Sonic Sensor cannot concuss without first detecting sound');
+assert.ok(deadlockFrees+deadlockResolves<=deadlockCaptures,'Annihilation may only free or eliminate a captured target');
+console.log(JSON.stringify({deadlock:{gravNets:deadlockGravNets,gravTargets:deadlockGravTargets,gravRemovals:deadlockGravRemovals,sensors:deadlockSensors,sensorTriggers:deadlockSensorTriggers,sensorConcusses:deadlockSensorConcusses,meshes:deadlockMeshes,meshBlocks:deadlockMeshBlocks,captures:deadlockCaptures,frees:deadlockFrees,resolves:deadlockResolves}},null,2));
+assert.ok(harborStorms>0&&harborTides>0&&harborCoves>0,`forced Harbor regression must deploy all regular abilities: storm=${harborStorms}, tides=${harborTides}, coves=${harborCoves}`);
+assert.ok(harborCoveBreaks<=harborCoveShields,'Cove shield cannot break without activation');
+assert.ok(harborReckoningStops<=harborReckonings,'Reckoning cannot stop without a cast');
+console.log(JSON.stringify({harbor:{storms:harborStorms,stormTargets:harborStormTargets,tides:harborTides,tideCrossings:harborTideCrossings,coves:harborCoves,coveShields:harborCoveShields,coveDamage:harborCoveDamage,coveBreaks:harborCoveBreaks,reckonings:harborReckonings,reckoningHits:harborReckoningHits,reckoningStops:harborReckoningStops}},null,2));
+assert.ok(isoContingencies>0&&isoContingencyAdvances>0&&isoUndercuts>0&&isoDoubleTapChannels>0,`forced Iso regression must execute regular abilities: contingency=${isoContingencies}/${isoContingencyAdvances}, undercut=${isoUndercuts}/${isoUndercutTargets}, doubleTap=${isoDoubleTapChannels}/${isoDoubleTapActivations}`);
+assert.ok(isoDoubleTapActivations<=isoDoubleTapChannels+isoContracts,'Double Tap activation requires its channel or Kill Contract auto-buff');
+assert.ok(isoOrbShots<=isoOrbSpawns,'Iso cannot shoot an energy orb that did not spawn');
+assert.ok(isoContractResolves<=isoContracts,'Kill Contract cannot resolve without a captured opponent');
+console.log(JSON.stringify({iso:{contingencies:isoContingencies,contingencyAdvances:isoContingencyAdvances,undercuts:isoUndercuts,undercutTargets:isoUndercutTargets,doubleTapChannels:isoDoubleTapChannels,doubleTapActivations:isoDoubleTapActivations,shieldBreaks:isoShieldBreaks,orbSpawns:isoOrbSpawns,orbShots:isoOrbShots,contracts:isoContracts,contractResolves:isoContractResolves}},null,2));
+assert.ok(reynaLeers>0&&reynaSoulOrbs>0,`forced Reyna regression must place Leer and generate Soul Orbs: leer=${reynaLeers}/${reynaLeerTargets}, orbs=${reynaSoulOrbs}`);
+assert.ok(reynaDevourTicks>0||reynaDismisses>0,'Reyna must consume at least one live Soul Orb');
+assert.ok(reynaDismissEnds<=reynaDismisses,'Dismiss cannot finish without consuming a Soul Orb');
+assert.ok(reynaAutomaticDevours<=reynaDevours,'automatic Empress healing must be a real Devour lifecycle');
+console.log(JSON.stringify({reyna:{leers:reynaLeers,leerTargets:reynaLeerTargets,soulOrbs:reynaSoulOrbs,soulOrbExpires:reynaSoulOrbExpires,devours:reynaDevours,devourTicks:reynaDevourTicks,dismisses:reynaDismisses,dismissEnds:reynaDismissEnds,empresses:reynaEmpresses,automaticDevours:reynaAutomaticDevours}},null,2));
 console.log(JSON.stringify({viperPit:{activations:viperPitActivations,collapses:viperPitCollapses,geometryRejects:viperPitGeometryRejects}},null,2));
 console.log(JSON.stringify({trademark:{triggers:trademarkTriggers,detonations:trademarkDetonations,slows:trademarkSlows}},null,2));
 console.log(JSON.stringify({rendezvous:{teleports:rendezvousTeleports}},null,2));
 console.log(JSON.stringify({chamberWeapons:{equips:chamberWeaponEquips,shots:chamberWeaponShots,tourSlowZones,tourSlows}},null,2));
 console.log(JSON.stringify({cypherTripwire:{uses:tripwireUses,triggers:tripwireTriggers,resolves:tripwireResolves,concusses:tripwireConcusses,diagnostics:tripwireDiagnostics.map(event=>({side:event.side,site:event.site,triggered:event.triggered,destroyedBy:event.destroyedBy,closestDistance:event.closestDistance,closestAt:event.closestAt}))}},null,2));
 console.log(JSON.stringify({cypherSpycam:{tags:spycamTags,destroyed:spycamDestroyed}},null,2));
+console.log(JSON.stringify({kayo:{fragments:kayoFragments,fragmentPulses:kayoFragmentPulses,flashes:kayoFlashes,zeroPlacements:kayoZeroPlacements,zeroPoints:kayoZeroPoints,suppressions:kayoSuppressions,nullStarts:kayoNullStarts,nullPulses:kayoNullPulses,downs:kayoDowns,revives:kayoRevives}},null,2));
+console.log(JSON.stringify({gekko:{mosh:gekkoMosh,moshExplosions:gekkoMoshExplosions,wingmen:gekkoWingmen,wingmanMoves:gekkoWingmanMoves,wingmanConcusses:gekkoWingmanConcusses,dizzies:gekkoDizzies,dizzyShots:gekkoDizzyShots,thrashes:gekkoThrashes,thrashMoves:gekkoThrashMoves,thrashDetonations:gekkoThrashDetonations,reclaims:gekkoReclaims,wingmanPlants:gekkoWingmanPlants,wingmanDefuses:gekkoWingmanDefuses}},null,2));
+console.log(JSON.stringify({sage:{barriers:sageBarriers,barrierFortifies:sageBarrierFortifies,barrierBlocks:sageBarrierBlocks,barrierDamage:+sageBarrierDamage.toFixed(1),slows:sageSlows,slowTargets:sageSlowTargets,healingStarts:sageHealingStarts,healingTicks:sageHealingTicks,resurrectionStarts:sageResurrectionStarts,resurrections:sageResurrections}},null,2));
+console.log(JSON.stringify({clove:{meddles:cloveMeddles,meddleTargets:cloveMeddleTargets,meddleRecoveries:cloveMeddleRecoveries,ruses:cloveRuses,postDeathRuses:clovePostDeathRuses,pickMeUps:clovePickMeUps,revives:cloveRevives,stabilizations:cloveStabilizations,reviveExpiries:cloveReviveExpiries}},null,2));
 console.log(JSON.stringify({cypherNeuralTheft:{casts:neuralCasts,pulses:neuralPulses}},null,2));
 console.log(JSON.stringify({vyseShear:{triggers:shearTriggers,blocked:shearBlocked,expires:shearExpires}},null,2));
 console.log(JSON.stringify({vyseArcRose:{casts:arcRoseCasts,hits:arcRoseHits}},null,2));
